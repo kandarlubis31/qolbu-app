@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout pageTitle="Kumpulan Doa Mustajab">
+  
+  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm">
+    <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <span class="font-medium text-sm">Kembali</span>
+    </a>
+    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Kumpulan Doa</h1>
+    <div class="w-8"></div>
+  </div>
+
+  <div class="pb-24 px-4 w-full max-w-md mx-auto">
+    
+    <div class="relative mb-4">
+      <input 
+        type="text" 
+        id="search-input" 
+        placeholder="Cari doa (misal: sakit, rizki, hujan)..." 
+        class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400"
+      >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto pb-4 mb-2 scrollbar-hide" id="category-container">
+      <button class="cat-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-500/20" data-cat="all">
+        Semua
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="harian">
+        Sehari-hari
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="pagi_petang">
+        Pagi & Petang
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="sholat">
+        Sholat & Masjid
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="keluarga">
+        Keluarga
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="rizki">
+        Rizki & Hajat
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="lindung">
+        Perlindungan
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="safar">
+        Perjalanan
+      </button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="tahlil">
+        Tahlil & Ziarah
+      </button>
+    </div>
+
+    <div id="doa-container" class="space-y-4 min-h-[50vh]">
+      </div>
+
+    <div id="empty-state" class="hidden text-center py-12">
+      <div class="inline-block p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="m9 9 4 4"/><path d="m9 13 4-4"/></svg>
+      </div>
+      <p class="text-slate-500 dark:text-slate-400 text-sm">Doa tidak ditemukan.</p>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg text-xs font-bold opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+      Teks berhasil disalin!
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<script is:inline>
+  // DATABASE DOA LENGKAP
+  const doaData = [
+    // --- HARIAN ---
+    { cat: "harian", title: "Doa Bangun Tidur", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur", arti: "Segala puji bagi Allah yang menghidupkan kami kembali setelah mematikan kami dan kepada-Nya tempat kembali.", source: "HR. Bukhari", audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3" }, 
+    // Catatan: Audio Al-Fatihah sementara sebagai placeholder untuk contoh yang valid. Ganti URL audio spesifik jika ada.
+    { cat: "harian", title: "Doa Sebelum Tidur", arab: "بِسْمِكَ اللّهُمَّ أَحْيَا وَبِسْمِكَ أَمُوتُ", latin: "Bismika Allahumma ahya wa bismika amut", arti: "Dengan nama-Mu ya Allah aku hidup, dan dengan nama-Mu aku mati.", source: "HR. Bukhari", audio: "" },
+    { cat: "harian", title: "Doa Masuk WC", arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", latin: "Allahumma inni a'udzu bika minal khubutsi wal khabaits", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari godaan setan laki-laki dan perempuan.", source: "HR. Bukhari & Muslim", audio: "" },
+    { cat: "harian", title: "Doa Keluar WC", arab: "غُفْرَانَكَ الْحَمْدُ لِلَّهِ الَّذِي أَذْهَبَ عَنِّي الْأَذَى وَعَافَانِي", latin: "Ghufranak, alhamdulillahilladzi adzhaba 'annil adza wa 'afani", arti: "Aku memohon ampunan-Mu. Segala puji bagi Allah yang telah menghilangkan kotoran dariku dan menyehatkanku.", source: "HR. Abu Dawud", audio: "" },
+    { cat: "harian", title: "Doa Sebelum Makan", arab: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ، بِسْمِ اللَّهِ", latin: "Allahumma barik lana fi ma razaqtana wa qina adzaban nar, bismillah", arti: "Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami, dan peliharalah kami dari siksa api neraka. Dengan nama Allah.", source: "HR. Muslim", audio: "" },
+    { cat: "harian", title: "Doa Sesudah Makan", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", latin: "Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin", arti: "Segala puji bagi Allah yang telah memberi makan dan minum kepada kami dan menjadikan kami orang-orang muslim.", source: "HR. Muslim", audio: "" },
+    { cat: "harian", title: "Doa Memakai Pakaian", arab: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ", latin: "Alhamdulillahilladzi kasani hadza wa razaqanihi min ghairi haulin minni wa la quwwatin", arti: "Segala puji bagi Allah yang telah memakaikan pakaian ini kepadaku dan memberikannya kepadaku tanpa daya dan kekuatan dariku.", source: "HR. Abu Dawud", audio: "" },
+    { cat: "harian", title: "Doa Bercermin", arab: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", latin: "Allahumma kama hassanta khalqi fahassin khuluqi", arti: "Ya Allah, sebagaimana Engkau telah membaguskan penciptaanku, maka baguskanlah pula akhlakku.", source: "HR. Ahmad", audio: "" },
+    { cat: "harian", title: "Doa Keluar Rumah", arab: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", latin: "Bismillahi tawakkaltu 'alallah, laa haula wa laa quwwata illa billah", arti: "Dengan nama Allah, aku bertawakal kepada Allah. Tiada daya dan kekuatan kecuali dengan pertolongan Allah.", source: "HR. Abu Dawud", audio: "" },
+    { cat: "harian", title: "Doa Masuk Rumah", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلِجِ وَخَيْرَ الْمَخْرَجِ بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا", latin: "Allahumma inni as'aluka khairal mauliji wa khairal makhraji bismillahi walajna wa bismillahi kharajna wa 'alallahi rabbina tawakkalna", arti: "Ya Allah, aku memohon kepada-Mu sebaik-baik tempat masuk dan sebaik-baik tempat keluar. Dengan nama Allah kami masuk, dan dengan nama Allah kami keluar, dan kepada Allah Tuhan kami kami bertawakkal.", source: "HR. Abu Dawud", audio: "" },
+    { cat: "harian", title: "Doa Ketika Bersin", arab: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah", arti: "Segala puji bagi Allah.", source: "HR. Bukhari", audio: "" },
+    { cat: "harian", title: "Doa Menjawab Orang Bersin", arab: "يَرْحَمُكَ اللَّهُ", latin: "Yarhamukallah", arti: "Semoga Allah merahmatimu.", source: "HR. Bukhari", audio: "" },
+
+    // --- SHOLAT & MASJID ---
+    { cat: "sholat", title: "Doa Masuk Masjid", arab: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", latin: "Allahummaftah li abwaba rahmatik", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.", source: "HR. Muslim", audio: "" },
+    { cat: "sholat", title: "Doa Keluar Masjid", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", latin: "Allahumma inni as-aluka min fadhlik", arti: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu.", source: "HR. Muslim", audio: "" },
+    { cat: "sholat", title: "Doa Iftitah", arab: "اللهُ أَكْبَرُ كَبِيرًا، وَالْحَمْدُ لِلهِ كَثِيرًا...", latin: "Allahu akbar kabira walhamdulillahi katsira...", arti: "Allah Maha Besar lagi sempurna kebesaran-Nya, segala puji bagi-Nya...", source: "HR. Muslim", audio: "" },
+
+    // --- RIZKI ---
+    { cat: "rizki", title: "Doa Mohon Rezeki Halal", arab: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", latin: "Allahummakfini bihalalika 'an haramika wa aghnini bifadhlika 'amman siwaka", arti: "Ya Allah, cukupkanlah aku dengan yang halal dari-Mu dari yang haram, dan kayakanlah aku dengan karunia-Mu dari selain-Mu.", source: "HR. Tirmidzi", audio: "" },
+    { cat: "rizki", title: "Doa Kebaikan Dunia Akhirat", arab: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", latin: "Rabbana atina fid dunya hasanah wa fil akhirati hasanah wa qina 'adzaban nar", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari siksa neraka.", source: "QS. Al-Baqarah: 201", audio: "" },
+    { cat: "rizki", title: "Doa Agar Mudahkan Urusan", arab: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", latin: "Rabbisyrah li sadri, wa yassir li amri", arti: "Ya Tuhanku, lapangkanlah untukku dadaku, dan mudahkanlah untukku urusanku.", source: "QS. Thaha: 25-26", audio: "" },
+
+    // --- PERLINDUNGAN ---
+    { cat: "lindung", title: "Doa Ketika Hujan", arab: "اللَّهُمَّ صَيِّبًا نَافِعًا", latin: "Allahumma shayyiban nafi'an", arti: "Ya Allah, jadikanlah hujan ini hujan yang bermanfaat.", source: "HR. Bukhari", audio: "" },
+    { cat: "lindung", title: "Doa Menjenguk Orang Sakit", arab: "اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَأْسَ اشْفِ أَنْتَ الشَّافِي...", latin: "Allahumma rabban nasi adzhibil ba'sa isyfi antas syafi...", arti: "Ya Allah, Tuhan manusia, hilangkanlah penyakit ini, sembuhkanlah...", source: "HR. Bukhari", audio: "" },
+    
+    // --- SAFAR ---
+    { cat: "safar", title: "Doa Naik Kendaraan", arab: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ...", latin: "Subhanalladzi sakhkhara lana hadza...", arti: "Maha Suci Allah yang telah menundukkan semua ini bagi kami...", source: "QS. Az-Zukhruf", audio: "" },
+    { cat: "safar", title: "Doa Bepergian", arab: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى...", latin: "Allahumma inna nas-aluka fi safarina hadzal birra wat taqwa...", arti: "Ya Allah, kami memohon kepada-Mu dalam perjalanan ini kebaikan dan ketakwaan...", source: "HR. Muslim", audio: "" }
+  ];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- ELEMENTS ---
+    const container = document.getElementById('doa-container');
+    const searchInput = document.getElementById('search-input');
+    const emptyState = document.getElementById('empty-state');
+    const catBtns = document.querySelectorAll('.cat-btn');
+    const toast = document.getElementById('toast');
+
+    // --- STATE ---
+    let currentCategory = 'all';
+    let searchTerm = '';
+    let globalAudio = null;
+    let globalBtn = null;
+
+    // --- RENDER FUNCTION ---
+    const renderDoa = () => {
+      const filtered = doaData.filter(item => {
+        const matchesCat = currentCategory === 'all' || item.cat === currentCategory;
+        const matchesSearch = 
+          item.title.toLowerCase().includes(searchTerm) || 
+          item.latin.toLowerCase().includes(searchTerm) ||
+          item.arti.toLowerCase().includes(searchTerm);
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      const html = filtered.map(item => `
+        <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50">
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-bold text-slate-800 dark:text-white text-sm uppercase tracking-wide flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              ${item.title}
+            </h3>
+            <div class="flex items-center gap-1">
+              ${item.audio ? `
+                <button class="audio-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="playAudio(this, '${item.audio}')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="play-icon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="pause-icon hidden"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                </button>
+              ` : ''}
+              <button class="copy-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="copyText(this)" data-text="${item.title}\n\n${item.arab}\n${item.latin}\n\nArti:\n${item.arti}\n\nSumber: ${item.source}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl mb-3">
+             <p class="font-amiri text-2xl text-right text-slate-800 dark:text-slate-100 leading-[2.2]" dir="rtl">${item.arab}</p>
+          </div>
+
+          <div class="space-y-1">
+            <p class="text-sm font-bold text-emerald-700 dark:text-emerald-400 italic leading-relaxed">"${item.latin}"</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${item.arti}</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 italic mt-2 uppercase tracking-wide">${item.source}</p>
+          </div>
+        </div>
+      `).join('');
+      
+      container.innerHTML = html;
+    };
+
+    // --- EVENT LISTENERS ---
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value.toLowerCase();
+      renderDoa();
+    });
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCategory = btn.dataset.cat;
+        catBtns.forEach(b => {
+          b.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
+          b.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'border');
+        });
+        btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'border');
+        btn.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
+        renderDoa();
+      });
+    });
+
+    // --- GLOBAL FUNCTIONS ---
+    window.copyText = (btn) => {
+      const text = btn.getAttribute('data-text');
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><polyline points="20 6 9 17 4 12"/></svg>`;
+        toast.classList.remove('opacity-0');
+        setTimeout(() => {
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+          toast.classList.add('opacity-0');
+        }, 1500);
+      });
+    };
+
+    window.playAudio = (btn, url) => {
+      if(!url) {
+          alert("Audio belum tersedia untuk doa ini.");
+          return;
+      }
+
+      const playIcon = btn.querySelector('.play-icon');
+      const pauseIcon = btn.querySelector('.pause-icon');
+
+      // 1. Jika tombol yang diklik SAMA dengan yang sedang main
+      if (globalBtn === btn && globalAudio) {
+        if (!globalAudio.paused) {
+          globalAudio.pause();
+          playIcon.classList.remove('hidden');
+          pauseIcon.classList.add('hidden');
+        } else {
+          globalAudio.play();
+          playIcon.classList.add('hidden');
+          pauseIcon.classList.remove('hidden');
+        }
+        return;
+      }
+
+      // 2. Jika ada audio LAIN yang sedang main, matikan dulu
+      if (globalAudio) {
+        globalAudio.pause();
+        if (globalBtn) {
+          globalBtn.querySelector('.play-icon').classList.remove('hidden');
+          globalBtn.querySelector('.pause-icon').classList.add('hidden');
+        }
+      }
+
+      // 3. Mainkan audio baru
+      globalAudio = new Audio(url);
+      globalBtn = btn;
+
+      globalAudio.play().then(() => {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      }).catch(err => {
+        console.error("Audio Play Error:", err);
+        alert("Gagal memutar audio. Pastikan koneksi internet stabil.");
+      });
+
+      // 4. Reset icon saat selesai
+      globalAudio.onended = () => {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        globalAudio = null;
+        globalBtn = null;
+      };
+    };
+
+    renderDoa();
+  });
+</script>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>

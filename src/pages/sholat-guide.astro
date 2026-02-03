@@ -1,0 +1,539 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// DATA PANDUAN SHOLAT LENGKAP (Sesuai Materi User)
+const guides = [
+  // --- BAGIAN 1: PERSIAPAN ---
+  {
+    id: "niat",
+    category: "Persiapan",
+    title: "1. Niat Sholat (Contoh: Dhuhur)",
+    arab: "اُصَلِّيْ فَرْضَ الظُّهْرِ رَكَعَتَيْنِ لِلّٰهِ تَعَالَى",
+    latin: "Ushalli fardhu dhuhri arba'a raka'aatim mustaqbilal qiblati adaa-an lillaahi ta'aala.",
+    arti: "Aku berniat shalat fardhu Dhuhur empat rakaat menghadap kiblat karena Allah Ta'ala.",
+    desc: "Niat dilakukan di dalam hati berbarengan dengan Takbiratul Ihram. Pastikan suci dari hadats, menutup aurat, dan menghadap kiblat.",
+    audio: null
+  },
+  
+  // --- BAGIAN 2: RAKAAT PERTAMA ---
+  {
+    id: "takbir",
+    category: "Gerakan Sholat",
+    title: "2. Takbiratul Ihram",
+    arab: "اللهُ أَكْبَرُ",
+    latin: "Allāhu Akbar",
+    arti: "Allah Maha Besar",
+    desc: "Angkat kedua tangan sejajar telinga (laki-laki) atau bahu (perempuan). Pandangan lurus ke tempat sujud.",
+    audio: null
+  },
+  {
+    id: "iftitah",
+    category: "Gerakan Sholat",
+    title: "3. Doa Iftitah (Sunnah)",
+    arab: "اَللّٰهُمَّ بَاعِدْ بَيْنِى وَبَيْنَ خَطَايَاىَ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ...",
+    latin: "Allaahumma baa'id bainii wa bayana khathaayaaya kamaa baa'adta bainal masyriqi wal maghribi...",
+    arti: "Ya Allah, jauhkan antara aku dan kesalahanku sebagaimana Engkau jauhkan antara timur dan barat...",
+    desc: "Sunnah dibaca pada rakaat pertama saja setelah Takbiratul Ihram.",
+    audio: null
+  },
+  {
+    id: "fatihah",
+    category: "Gerakan Sholat",
+    title: "4. Membaca Al-Fatihah (Rukun)",
+    arab: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ . الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ...",
+    latin: "Bismillahir rahmaanir rahiim. Alhamdu lillaahi rabbil 'aalamiin...",
+    arti: "Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang. Segala puji bagi Allah, Tuhan semesta alam...",
+    desc: "Wajib dibaca pada setiap rakaat. Jika tidak dibaca, sholat tidak sah.",
+    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3"
+  },
+  {
+    id: "surat_pendek",
+    category: "Gerakan Sholat",
+    title: "5. Surat Pendek (Cth: Al-Ikhlas)",
+    arab: "قُلْ هُوَ اللَّهُ أَحَدٌ . اللَّهُ الصَّمَدُ...",
+    latin: "Qul huwallaahu ahad. Allaahus shomad. Lam yalid wa lam yuulad...",
+    arti: "Katakanlah: Dialah Allah, Yang Maha Esa. Allah adalah Tuhan yang bergantung kepada-Nya segala sesuatu...",
+    desc: "Sunnah dibaca pada rakaat pertama dan kedua setelah Al-Fatihah.",
+    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/112001.mp3"
+  },
+  {
+    id: "ruku",
+    category: "Gerakan Sholat",
+    title: "6. Ruku'",
+    arab: "سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ",
+    latin: "Subhaana rabbiyal 'adhiim (3x)",
+    arti: "Maha Suci Tuhanku yang Maha Agung.",
+    desc: "Membungkuk dengan punggung rata, tangan memegang lutut. Tumakninah (diam sejenak).",
+    audio: null
+  },
+  {
+    id: "itidal",
+    category: "Gerakan Sholat",
+    title: "7. I'tidal (Bangkit dari Ruku')",
+    arab: "سَمِعَ اللهُ لِمَنْ حَمِدَهُ . رَبَّنَا لَكَ الْحَمْدُ...",
+    latin: "Sami'allahu liman hamidah. Rabbanaa lakal hamdu...",
+    arti: "Allah mendengar orang yang memuji-Nya. Ya Tuhan kami, bagi-Mu segala puji.",
+    desc: "Bangkit berdiri tegak kembali. Boleh ditambah doa: Mil'us samaawaati wa mil'ul ardh...",
+    audio: null
+  },
+  {
+    id: "sujud",
+    category: "Gerakan Sholat",
+    title: "8. Sujud",
+    arab: "سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ",
+    latin: "Subhaana rabbiyal a'laa (3x)",
+    arti: "Maha Suci Tuhanku yang Maha Tinggi.",
+    desc: "Pastikan 7 anggota badan menempel lantai: Dahi, kedua telapak tangan, kedua lutut, dan ujung kaki.",
+    audio: null
+  },
+  {
+    id: "duduk",
+    category: "Gerakan Sholat",
+    title: "9. Duduk Diantara Dua Sujud",
+    arab: "رَبِّ اغْفِرْ لِي وَارْحَمْنِي وَاجْبُرْنِي...",
+    latin: "Rabbighfirlii warhamnii wajburnii warfa'nii warzuqnii wahdinii wa 'aafinii wa'fu 'annii.",
+    arti: "Ya Tuhan, ampunilah aku, rahmatilah aku, cukupkanlah aku, angkatlah derajatku, berilah rezeki...",
+    desc: "Duduk iftirasy (menduduki kaki kiri, kaki kanan tegak).",
+    audio: null
+  },
+  
+  // --- BAGIAN 3: TAHIYAT ---
+  {
+    id: "tasyahud_awal",
+    category: "Gerakan Sholat",
+    title: "10. Tasyahud Awal",
+    arab: "التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلهِ...",
+    latin: "Attahiyyaatu lillaahi wash shalawaatu wath thoyyibaat...",
+    arti: "Segala penghormatan, doa, dan kebaikan hanya untuk Allah...",
+    desc: "Dilakukan pada rakaat kedua. Baca syahadat: Asyhadu an laa ilaaha illallaah...",
+    audio: null
+  },
+  {
+    id: "tasyahud_akhir",
+    category: "Gerakan Sholat",
+    title: "11. Tasyahud Akhir & Shalawat",
+    arab: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ...",
+    latin: "Allaahumma sholli 'alaa muhammadin wa 'alaa aali muhammad...",
+    arti: "Ya Allah, limpahkanlah rahmat kepada Nabi Muhammad dan keluarganya...",
+    desc: "Duduk tawarruk (kaki kiri masuk ke bawah kaki kanan). Bacaan sama dengan awal ditambah Shalawat Nabi.",
+    audio: null
+  },
+  
+  // --- BAGIAN 4: PENUTUP ---
+  {
+    id: "salam",
+    category: "Penutup",
+    title: "12. Salam",
+    arab: "السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ",
+    latin: "Assalaamu'alaikum wa rahmatullaah",
+    arti: "Semoga keselamatan dan rahmat Allah tercurah kepadamu.",
+    desc: "Menoleh ke kanan sampai pipi terlihat, lalu ke kiri.",
+    audio: null
+  },
+  {
+    id: "dzikir",
+    category: "Penutup",
+    title: "13. Dzikir Sesudah Sholat",
+    arab: "سُبْحَانَ اللهِ (33x) الْحَمْدُ لِلهِ (33x) اللهُ أَكْبَرُ (33x)",
+    latin: "Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x)",
+    arti: "Maha Suci Allah, Segala Puji bagi Allah, Allah Maha Besar.",
+    desc: "Disunnahkan membaca Istighfar 3x sebelum memulai dzikir ini.",
+    audio: null
+  }
+];
+---
+
+<BaseLayout pageTitle="Panduan Sholat">
+  
+  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm">
+    <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <span class="font-medium text-sm">Kembali</span>
+    </a>
+    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Panduan Sholat</h1>
+    <button id="view-bookmarks" class="flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -mr-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>
+  </div>
+
+  <div class="pb-24 px-4 w-full max-w-md mx-auto">
+    
+    <div class="relative mb-4">
+      <input type="text" id="search-input" placeholder="Cari bacaan (misal: Iftitah, Ruku)..." class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm mb-6 sticky top-32 z-30">
+      <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">
+        <span>Progress Belajar</span>
+        <span><span id="current-step-text">0</span> / {guides.length}</span>
+      </div>
+      <div class="bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
+        <div id="progress-bar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+      </div>
+      <div class="flex gap-2">
+        <button id="practice-btn" class="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 active:scale-95">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Mulai Praktik</span>
+        </button>
+        <button id="reset-progress" class="py-2.5 px-3 rounded-xl text-sm font-bold transition-all bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95" title="Reset Progress">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+      </div>
+      <p class="text-[10px] text-center text-slate-400 mt-2 italic">Mode Praktik otomatis pindah tiap 15 detik.</p>
+    </div>
+
+    <div class="space-y-4" id="guide-container">
+      {guides.map((item, index) => (
+        <details class="group border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 open:shadow-md open:border-emerald-500/50" data-index={index} data-id={item.id}>
+          
+          <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none bg-slate-50/50 dark:bg-slate-800/50 group-open:bg-white dark:group-open:bg-slate-900 transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="step-badge w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs font-bold group-open:bg-emerald-500 group-open:text-white transition-colors">
+                {index + 1}
+              </span>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block mb-0.5">{item.category}</span>
+                <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm group-open:text-emerald-600 dark:group-open:text-emerald-400 transition-colors">
+                  {item.title.split('. ')[1]}
+                </h3>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+               <button class="bookmark-btn p-1.5 text-slate-300 hover:text-rose-500 transition-colors z-20" data-id={item.id} title="Simpan">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+               </button>
+               <span class="transform group-open:rotate-180 transition-transform text-slate-400">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+               </span>
+            </div>
+          </summary>
+
+          <div class="px-5 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
+            <p class="text-xs text-slate-600 dark:text-slate-300 mb-4 italic bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded-lg border border-emerald-100 dark:border-emerald-800/30 leading-relaxed">
+              💡 {item.desc}
+            </p>
+            
+            <div class="text-right mb-4 relative bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl">
+               <p class="font-amiri text-3xl text-slate-800 dark:text-slate-100 leading-[2.2]" dir="rtl">{item.arab}</p>
+            </div>
+
+            <div class="space-y-2 mb-4 px-1">
+              <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 leading-relaxed">{item.latin}</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">"{item.arti}"</p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+               <button 
+                 class="audio-btn flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                 data-audio={item.audio}
+                 disabled={!item.audio}
+               >
+                 {item.audio ? (
+                   <>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                     <span class="btn-text">Putar Audio</span>
+                   </>
+                 ) : (
+                   <>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v6a3 3 0 0 0 5.12 2.12M15 9.34V4h3m-6 9.77a3 3 0 0 1-3-2.12"></path></svg>
+                     <span>Audio N/A</span>
+                   </>
+                 )}
+               </button>
+               
+               <button class="mark-complete-btn px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700" data-id={item.id}>
+                 Tandai Selesai
+               </button>
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <div id="bookmarks-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 relative shadow-2xl animate-fade-in">
+        <button id="close-bookmarks" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-rose-500"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+           Langkah Disimpan
+        </h2>
+        <div id="bookmarks-list" class="space-y-2 max-h-[60vh] overflow-y-auto">
+          </div>
+      </div>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- ELEMENTS ---
+    const allDetails = document.querySelectorAll('details');
+    const progressBar = document.getElementById('progress-bar');
+    const stepText = document.getElementById('current-step-text');
+    const practiceBtn = document.getElementById('practice-btn');
+    const resetBtn = document.getElementById('reset-progress');
+    const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
+    const audioBtns = document.querySelectorAll('.audio-btn');
+    const markCompleteBtns = document.querySelectorAll('.mark-complete-btn');
+    const searchInput = document.getElementById('search-input');
+    const bookmarksModal = document.getElementById('bookmarks-modal');
+    const viewBookmarksBtn = document.getElementById('view-bookmarks');
+    const closeBookmarksBtn = document.getElementById('close-bookmarks');
+    const bookmarksList = document.getElementById('bookmarks-list');
+    
+    // --- STATE ---
+    let practiceMode = false;
+    let practiceTimer = null;
+    let currentStep = 0;
+    let currentAudio = null;
+    let completedSteps = JSON.parse(localStorage.getItem('sholat-completed') || '[]');
+
+    // --- 1. PROGRESS LOGIC ---
+    const updateProgress = () => {
+      const val = completedSteps.length;
+      const pct = (val / allDetails.length) * 100;
+      
+      progressBar.style.width = `${pct}%`;
+      stepText.innerText = val;
+      
+      allDetails.forEach(el => {
+        const id = el.getAttribute('data-id');
+        const badge = el.querySelector('.step-badge');
+        const markBtn = el.querySelector('.mark-complete-btn');
+
+        if (completedSteps.includes(id)) {
+          badge.innerHTML = '✓';
+          badge.classList.add('bg-emerald-500', 'text-white');
+          badge.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
+          if(markBtn) {
+            markBtn.textContent = 'Selesai';
+            markBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400');
+            markBtn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400');
+          }
+        } else {
+          const idx = parseInt(el.getAttribute('data-index')) + 1;
+          badge.innerHTML = idx;
+          badge.classList.remove('bg-emerald-500', 'text-white');
+          badge.classList.add('bg-slate-200', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
+          if(markBtn) {
+            markBtn.textContent = 'Tandai Selesai';
+            markBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400');
+            markBtn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400');
+          }
+        }
+      });
+    };
+
+    updateProgress();
+
+    // Toggle logic
+    allDetails.forEach(el => {
+      el.addEventListener('toggle', () => {
+        if (el.open && !practiceMode) {
+          allDetails.forEach(other => {
+            if (other !== el && other.open) other.open = false;
+          });
+        }
+      });
+    });
+
+    // --- 2. PRACTICE MODE ---
+    const stopPractice = () => {
+      practiceMode = false;
+      clearInterval(practiceTimer);
+      practiceBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span>Mulai Praktik</span>`;
+      practiceBtn.classList.remove('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+      practiceBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
+    };
+
+    const startPractice = () => {
+      practiceMode = true;
+      currentStep = 0;
+      practiceBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> <span>Stop Praktik</span>`;
+      practiceBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
+      practiceBtn.classList.add('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+
+      allDetails.forEach(el => el.open = false);
+
+      const runStep = () => {
+        if (currentStep >= allDetails.length) {
+          stopPractice();
+          alert("Alhamdulillah, praktik sholat selesai!");
+          return;
+        }
+        if(currentStep > 0) allDetails[currentStep - 1].open = false;
+        
+        const target = allDetails[currentStep];
+        target.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        currentStep++;
+      };
+
+      runStep(); 
+      practiceTimer = setInterval(runStep, 15000); // 15 Detik per gerakan (Waktu bacaan)
+    };
+
+    practiceBtn.addEventListener('click', () => {
+      if (practiceMode) stopPractice();
+      else startPractice();
+    });
+
+    // --- 3. RESET ---
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Reset semua progress?')) {
+        completedSteps = [];
+        localStorage.setItem('sholat-completed', '[]');
+        updateProgress();
+      }
+    });
+
+    // --- 4. BOOKMARKS ---
+    const loadBookmarks = () => {
+        const saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
+        bookmarkBtns.forEach(btn => {
+            const id = btn.getAttribute('data-id');
+            const svg = btn.querySelector('svg');
+            if(saved.includes(id)) {
+                svg.setAttribute('fill', 'currentColor');
+                btn.classList.add('text-rose-500');
+                btn.classList.remove('text-slate-300');
+            }
+        });
+        return saved;
+    };
+
+    const renderBookmarksList = () => {
+        const saved = loadBookmarks();
+        bookmarksList.innerHTML = '';
+        if(saved.length === 0) {
+            bookmarksList.innerHTML = '<p class="text-center text-sm text-slate-400 py-4">Belum ada langkah disimpan.</p>';
+            return;
+        }
+        saved.forEach(id => {
+            const el = document.querySelector(`details[data-id="${id}"]`);
+            if(el) {
+                const title = el.querySelector('h3').innerText;
+                const item = document.createElement('div');
+                item.className = 'p-3 bg-slate-50 dark:bg-slate-800 rounded-lg flex justify-between items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer';
+                item.innerHTML = `
+                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200">${title}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                `;
+                item.onclick = () => {
+                    bookmarksModal.classList.add('hidden');
+                    el.open = true;
+                    el.scrollIntoView({behavior: 'smooth', block: 'center'});
+                };
+                bookmarksList.appendChild(item);
+            }
+        });
+    };
+
+    bookmarkBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.getAttribute('data-id');
+            let saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
+            const svg = btn.querySelector('svg');
+
+            if(saved.includes(id)) {
+                saved = saved.filter(s => s !== id);
+                svg.setAttribute('fill', 'none');
+                btn.classList.remove('text-rose-500');
+                btn.classList.add('text-slate-300');
+            } else {
+                saved.push(id);
+                svg.setAttribute('fill', 'currentColor');
+                btn.classList.add('text-rose-500');
+                btn.classList.remove('text-slate-300');
+            }
+            localStorage.setItem('sholat-bookmarks', JSON.stringify(saved));
+        });
+    });
+
+    viewBookmarksBtn.addEventListener('click', () => {
+        renderBookmarksList();
+        bookmarksModal.classList.remove('hidden');
+    });
+    closeBookmarksBtn.addEventListener('click', () => bookmarksModal.classList.add('hidden'));
+
+    // --- 5. AUDIO & COMPLETE ---
+    audioBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const src = btn.getAttribute('data-audio');
+            const txt = btn.querySelector('.btn-text');
+            if(!src) return;
+
+            if (currentAudio && currentAudio.src === src && !currentAudio.paused) {
+                currentAudio.pause();
+                btn.classList.remove('animate-pulse', 'bg-rose-100', 'text-rose-600');
+                btn.classList.add('bg-emerald-50', 'text-emerald-600');
+                if(txt) txt.innerText = "Putar Audio";
+                return;
+            }
+
+            if (currentAudio) {
+                currentAudio.pause();
+                document.querySelectorAll('.audio-btn').forEach(b => {
+                    b.classList.remove('animate-pulse', 'bg-rose-100', 'text-rose-600');
+                    b.classList.add('bg-emerald-50', 'text-emerald-600');
+                    const t = b.querySelector('.btn-text');
+                    if(t) t.innerText = "Putar Audio";
+                });
+            }
+
+            const audio = new Audio(src);
+            currentAudio = audio;
+            audio.play();
+            
+            btn.classList.remove('bg-emerald-50', 'text-emerald-600');
+            btn.classList.add('animate-pulse', 'bg-rose-100', 'text-rose-600');
+            if(txt) txt.innerText = "Jeda";
+            
+            audio.onended = () => {
+                btn.classList.remove('animate-pulse', 'bg-rose-100', 'text-rose-600');
+                btn.classList.add('bg-emerald-50', 'text-emerald-600');
+                if(txt) txt.innerText = "Putar Audio";
+            };
+        });
+    });
+
+    markCompleteBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-id');
+        if (completedSteps.includes(id)) {
+          completedSteps = completedSteps.filter(s => s !== id);
+        } else {
+          completedSteps.push(id);
+        }
+        localStorage.setItem('sholat-completed', JSON.stringify(completedSteps));
+        updateProgress();
+      });
+    });
+
+    // --- 6. SEARCH ---
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        allDetails.forEach(el => {
+            const text = el.innerText.toLowerCase();
+            el.style.display = text.includes(term) ? 'block' : 'none';
+        });
+    });
+
+    loadBookmarks();
+  });
+</script>
+
+<style>
+  .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>

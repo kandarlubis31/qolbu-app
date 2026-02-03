@@ -1,0 +1,645 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout pageTitle="Jadwal Sholat & Kiblat">
+  
+  <div class="sticky top-16 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shadow-sm transition-all">
+    <a href="/" class="flex items-center gap-2 text-slate-500 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-50 dark:active:bg-slate-800">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <span class="font-medium text-sm">Dashboard</span>
+    </a>
+    
+    <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span id="location-text" class="text-xs font-bold text-slate-600 dark:text-slate-300 truncate max-w-[100px]">Mencari...</span>
+    </div>
+    
+    <button id="settings-btn" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+
+  <div class="pb-24 pt-6 px-4 w-full max-w-md mx-auto">
+    
+    <div class="relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-6 text-white shadow-xl shadow-emerald-500/20 mb-6">
+      <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      </div>
+
+      <div class="relative z-10 text-center">
+        <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mb-1">Menuju Waktu</p>
+        <h2 id="next-prayer-name" class="text-2xl font-bold mb-2">Memuat...</h2>
+        
+        <div class="bg-white/20 backdrop-blur-md rounded-xl p-3 inline-block min-w-[140px] border border-white/10 shadow-inner">
+          <h1 id="countdown" class="text-4xl font-black tabular-nums tracking-tight">--:--:--</h1>
+        </div>
+        
+        <div class="mt-4 flex flex-col gap-0.5">
+          <p id="gregorian-date" class="text-xs font-bold text-white">...</p>
+          <p id="hijri-date" class="text-[10px] text-emerald-200">...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-6 shadow-sm border border-slate-100 dark:border-slate-700">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+           <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Arah Kiblat</h3>
+           <p class="text-[10px] text-slate-500">Akurasi bergantung sensor HP</p>
+        </div>
+        <button id="qibla-compass-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.4 2.4"/><path d="m14.1 11.9-2.1 2.1"/><path d="m11 15-3 3"/></svg>
+          Buka Kompas
+        </button>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div class="relative w-12 h-12 flex-shrink-0">
+          <div class="absolute inset-0 rounded-full border-2 border-slate-200 dark:border-slate-600"></div>
+          <div id="qibla-preview-needle" class="absolute inset-0 flex items-center justify-center transition-transform duration-700">
+             <div class="w-1 h-8 bg-emerald-500 rounded-full relative">
+                <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-500 rotate-45"></div>
+             </div>
+          </div>
+        </div>
+        <div>
+           <p class="text-xs text-slate-500 dark:text-slate-400">Sudut dari Utara:</p>
+           <p id="qibla-direction-text" class="text-xl font-bold text-slate-800 dark:text-white">...</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="prayer-list" class="space-y-3">
+      {[1,2,3,4,5].map(() => (
+        <div class="animate-pulse flex items-center justify-between p-4 rounded-2xl bg-slate-100 dark:bg-slate-800">
+          <div class="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          <div class="h-6 w-16 bg-slate-200 dark:bg-slate-700 rounded"></div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-6 text-center">
+        <p class="text-[10px] text-slate-400 bg-slate-100 dark:bg-slate-800 py-2 px-4 rounded-full inline-block">
+            <span class="font-bold text-emerald-500">Info:</span> Waktu sudah ditambah <span id="correction-display">2</span> menit (Ihtiyat).
+        </p>
+    </div>
+
+    <div class="mt-4 text-center">
+      <button id="refresh-loc-btn" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95 border border-slate-100 dark:border-slate-700">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Update Lokasi GPS</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="settings-overlay"></div>
+    <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Pengaturan Sholat</h3>
+        <button id="close-settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      
+      <div class="space-y-6">
+        
+        <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">Koreksi Waktu (Ihtiyat)</h4>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">
+                Tambahkan menit agar sesuai jadwal masjid/Kemenag. Default aman: <strong>+2 Menit</strong>.
+            </p>
+            <div class="flex items-center gap-3">
+                <button id="btn-minus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50">-</button>
+                <div class="flex-1 text-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 h-10 rounded-lg flex items-center justify-center font-mono font-bold" id="input-correction">2</div>
+                <button id="btn-plus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50">+</button>
+            </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Lokasi</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Gunakan GPS Otomatis</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="use-current-location" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
+            </div>
+            
+            <div id="manual-location" class="hidden space-y-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
+              <p class="text-xs text-slate-500">Masukkan koordinat manual:</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-[10px] text-slate-400">Latitude</label>
+                    <input type="number" id="lat-input" placeholder="-6.2000" step="any" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400">Longitude</label>
+                    <input type="number" id="lng-input" placeholder="106.8000" step="any" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
+                </div>
+              </div>
+              <div>
+                 <label class="text-[10px] text-slate-400">Nama Kota (Opsional)</label>
+                 <input type="text" id="city-input" placeholder="Contoh: Jakarta" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <hr class="border-slate-100 dark:border-slate-800"/>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Metode Perhitungan</h4>
+          <select id="calc-method" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500/20">
+            <option value="20">Kemenag RI (Indonesia)</option>
+            <option value="11">MUIS (Singapura)</option>
+            <option value="3">Muslim World League</option>
+            <option value="2">ISNA (North America)</option>
+            <option value="4">Umm Al-Qura (Makkah)</option>
+            <option value="5">Egyptian General Authority</option>
+          </select>
+        </div>
+
+        <hr class="border-slate-100 dark:border-slate-800"/>
+        
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Notifikasi</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Suara Adzan</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="adhan-notification" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Pengingat (10 Menit Sebelum)</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="reminder-notification" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+              </label>
+            </div>
+          </div>
+          <p class="text-[10px] text-amber-500 mt-2 italic">*Izin notifikasi akan diminta saat disimpan.</p>
+        </div>
+        
+        <button id="save-settings-btn" class="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/30">
+          Simpan Perubahan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="qibla-modal" class="fixed inset-0 z-[100] bg-slate-900 hidden text-white">
+    <div class="absolute top-4 right-4 z-20">
+       <button id="close-qibla-btn" class="p-2 bg-slate-800 rounded-full text-slate-300 hover:bg-slate-700">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+       </button>
+    </div>
+
+    <div class="flex flex-col items-center justify-center h-full px-6 relative">
+       <div class="relative w-72 h-72 mb-10">
+          <div class="absolute inset-0 rounded-full border-4 border-slate-700 flex items-center justify-center">
+             <span class="absolute -top-8 font-bold text-emerald-500">Utara</span>
+          </div>
+
+          <div id="qibla-compass-disc" class="absolute inset-0 transition-transform duration-200 ease-out will-change-transform">
+             <div class="w-full h-full rounded-full border border-slate-700/50 bg-slate-800/50 relative">
+                 <div class="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-red-500"></div> <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-slate-600"></div>
+                 <div class="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-1 bg-slate-600"></div>
+                 <div class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-1 bg-slate-600"></div>
+             </div>
+          </div>
+          
+          <div id="qibla-arrow-container" class="absolute inset-0 flex items-center justify-center z-10 transition-transform duration-500">
+             <div class="relative w-16 h-16 animate-pulse">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl">🕋</div>
+             </div>
+             <div class="absolute w-1 h-32 bg-transparent -top-10">
+                <div class="w-full h-1/2 bg-gradient-to-t from-emerald-500 to-transparent mx-auto rounded-full"></div>
+             </div>
+          </div>
+       </div>
+
+       <div class="text-center space-y-2 z-10">
+          <h2 class="text-2xl font-bold">Cari Arah Kiblat</h2>
+          <p class="text-slate-400 text-sm max-w-xs mx-auto">
+             Putar badan Anda sampai ikon Ka'bah lurus dengan panah hijau.
+          </p>
+          <div class="mt-4 p-3 bg-slate-800 rounded-lg inline-block">
+             <p class="text-xs text-slate-400">Arah Kiblat</p>
+             <p id="qibla-degree-modal" class="text-xl font-bold text-emerald-400">...°</p>
+          </div>
+       </div>
+       
+       <button id="ios-permission-btn" class="hidden mt-6 px-6 py-3 bg-emerald-600 rounded-full font-bold shadow-lg">
+          Izinkan Akses Kompas
+       </button>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- DOM ELEMENTS ---
+    const els = {
+      locText: document.getElementById('location-text'),
+      list: document.getElementById('prayer-list'),
+      nextName: document.getElementById('next-prayer-name'),
+      count: document.getElementById('countdown'),
+      hijri: document.getElementById('hijri-date'),
+      gregorian: document.getElementById('gregorian-date'),
+      refresh: document.getElementById('refresh-loc-btn'),
+      corDisplay: document.getElementById('correction-display'),
+      
+      // Settings
+      settingsBtn: document.getElementById('settings-btn'),
+      settingsModal: document.getElementById('settings-modal'),
+      closeSet: document.getElementById('close-settings-btn'),
+      saveSet: document.getElementById('save-settings-btn'),
+      settingsOverlay: document.getElementById('settings-overlay'),
+      
+      // Inputs
+      useGPS: document.getElementById('use-current-location'),
+      manualBox: document.getElementById('manual-location'),
+      latIn: document.getElementById('lat-input'),
+      lngIn: document.getElementById('lng-input'),
+      cityIn: document.getElementById('city-input'),
+      method: document.getElementById('calc-method'),
+      adhan: document.getElementById('adhan-notification'),
+      remind: document.getElementById('reminder-notification'),
+      
+      // Correction Inputs
+      btnMinus: document.getElementById('btn-minus-cor'),
+      btnPlus: document.getElementById('btn-plus-cor'),
+      inputCor: document.getElementById('input-correction'),
+
+      // Qibla
+      qiblaBtn: document.getElementById('qibla-compass-btn'),
+      qiblaModal: document.getElementById('qibla-modal'),
+      closeQibla: document.getElementById('close-qibla-btn'),
+      disc: document.getElementById('qibla-compass-disc'),
+      arrowCont: document.getElementById('qibla-arrow-container'),
+      qiblaText: document.getElementById('qibla-direction-text'),
+      qiblaDegModal: document.getElementById('qibla-degree-modal'),
+      previewNeedle: document.getElementById('qibla-preview-needle'),
+      iosBtn: document.getElementById('ios-permission-btn')
+    };
+
+    // --- STATE ---
+    let state = {
+      lat: -6.2088, // Default JKT
+      lng: 106.8456,
+      city: 'Jakarta',
+      method: 20,
+      useGPS: true,
+      adhan: false,
+      remind: false,
+      qiblaAngle: 0,
+      correction: 2 // Default +2 Minutes (Ihtiyat)
+    };
+    
+    let countdownInterval = null;
+
+    // --- INITIALIZATION ---
+    const init = () => {
+      loadSettings();
+      if (state.useGPS) {
+        getGPS();
+      } else {
+        els.locText.innerText = state.city || "Manual";
+        fetchPrayer(state.lat, state.lng);
+      }
+    };
+
+    // --- HELPERS ---
+    const addMinutes = (timeStr, minutesToAdd) => {
+        const [h, m] = timeStr.split(':').map(Number);
+        const date = new Date();
+        date.setHours(h, m + minutesToAdd, 0); 
+        return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    };
+
+    const getPDate = (timeStr) => {
+        const [h, m] = timeStr.split(':').map(Number);
+        const d = new Date();
+        d.setHours(h, m, 0);
+        return d;
+    };
+
+    // --- CORE FUNCTIONS ---
+
+    const fetchPrayer = async (lat, lng) => {
+      try {
+        calcQibla(lat, lng); // Update Qibla angle too
+
+        const d = new Date();
+        const dateStr = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+        const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lng}&method=${state.method}`;
+        
+        const res = await fetch(url);
+        const json = await res.json();
+        
+        if (json.code === 200) {
+          // APPLY CORRECTION (Ihtiyat)
+          const rawTimings = json.data.timings;
+          const correctedTimings = {};
+          
+          Object.keys(rawTimings).forEach(key => {
+             if(['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Imsak', 'Sunrise'].includes(key)){
+                 correctedTimings[key] = addMinutes(rawTimings[key], state.correction);
+             } else {
+                 correctedTimings[key] = rawTimings[key];
+             }
+          });
+          
+          json.data.timings = correctedTimings;
+          
+          render(json.data);
+          startTimer(correctedTimings);
+          
+          els.corDisplay.innerText = state.correction > 0 ? `+${state.correction}` : state.correction;
+
+        } else {
+          els.locText.innerText = "Error API";
+        }
+      } catch (e) {
+        console.error(e);
+        els.locText.innerText = "Offline / Error";
+      }
+    };
+
+    const render = (data) => {
+      const hijri = data.date.hijri;
+      els.hijri.innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
+      
+      const greg = data.date.gregorian;
+      const days = ['Ahad','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+      const dayName = days[new Date().getDay()];
+      els.gregorian.innerText = `${dayName}, ${greg.day} ${greg.month.en} ${greg.year}`;
+
+      const timings = data.timings;
+      const names = { Imsak:'Imsak', Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
+      
+      const now = new Date();
+      let nextKey = null;
+      let minDiff = Infinity;
+      
+      Object.keys(names).forEach(k => {
+        let pTime = getPDate(timings[k]);
+        if (pTime > now) {
+          const diff = pTime - now;
+          if (diff < minDiff) {
+            minDiff = diff;
+            nextKey = k;
+          }
+        }
+      });
+
+      let isTomorrow = false;
+      if (!nextKey) {
+        nextKey = 'Fajr';
+        isTomorrow = true;
+      }
+
+      els.nextName.innerText = names[nextKey];
+
+      let html = '';
+      Object.keys(names).forEach(k => {
+        const isActive = (k === nextKey && !isTomorrow) || (k === nextKey && isTomorrow && k === 'Fajr'); 
+        
+        html += `
+          <div class="flex items-center justify-between p-4 rounded-2xl transition-all border ${
+            isActive 
+              ? 'bg-emerald-500 text-white shadow-lg border-emerald-500 scale-[1.02]' 
+              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-100 dark:border-slate-700'
+          }">
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 rounded-full ${isActive ? 'bg-white animate-pulse' : 'bg-emerald-500'}"></div>
+              <span class="font-bold text-sm">${names[k]}</span>
+            </div>
+            <span class="font-mono font-bold text-lg">${timings[k]}</span>
+          </div>
+        `;
+      });
+      els.list.innerHTML = html;
+    };
+
+    const startTimer = (timings) => {
+      if (countdownInterval) clearInterval(countdownInterval);
+      
+      const update = () => {
+        const now = new Date();
+        const ordered = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+        let target = null;
+
+        for(let k of ordered) {
+          const t = getPDate(timings[k]);
+          if (t > now) {
+            target = t;
+            break;
+          }
+        }
+
+        if(!target) {
+          const t = getPDate(timings['Fajr']);
+          target = new Date();
+          target.setDate(target.getDate() + 1);
+          target.setHours(t.getHours(), t.getMinutes(), 0);
+        }
+
+        const diff = target - now;
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+
+        els.count.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        
+        // --- NOTIFICATION LOGIC (Fitur yang lu cari!) ---
+        if (state.adhan && diff < 1000 && diff > 0) notify(`Waktu sholat telah tiba!`, 'Adzan');
+        if (state.remind && diff < 600000 && diff > 599000) notify(`10 Menit menuju waktu sholat`, 'Pengingat');
+      };
+      
+      update();
+      countdownInterval = setInterval(update, 1000);
+    };
+
+    const getGPS = () => {
+      els.locText.innerText = "Mencari...";
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          state.lat = pos.coords.latitude;
+          state.lng = pos.coords.longitude;
+          state.city = "GPS Akurat";
+          els.locText.innerText = state.city;
+          els.latIn.value = state.lat;
+          els.lngIn.value = state.lng;
+          fetchPrayer(state.lat, state.lng);
+        },
+        (err) => {
+          alert("Gagal ambil GPS. Pastikan izin lokasi aktif.");
+          els.locText.innerText = "GPS Error";
+          fetchPrayer(state.lat, state.lng);
+        }
+      );
+    };
+
+    // --- QIBLA LOGIC ---
+    const calcQibla = (lat, lng) => {
+      const kaabaLat = 21.4225;
+      const kaabaLng = 39.8262;
+      
+      const φ1 = lat * Math.PI / 180;
+      const φ2 = kaabaLat * Math.PI / 180;
+      const Δλ = (kaabaLng - lng) * Math.PI / 180;
+      
+      const x = Math.sin(Δλ) * Math.cos(φ2);
+      const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+      
+      let q = Math.atan2(x, y) * 180 / Math.PI;
+      state.qiblaAngle = (q + 360) % 360; 
+      
+      els.qiblaText.innerText = `${state.qiblaAngle.toFixed(1)}°`;
+      els.qiblaDegModal.innerText = `${state.qiblaAngle.toFixed(1)}°`;
+      
+      els.previewNeedle.style.transform = `rotate(${state.qiblaAngle}deg)`;
+    };
+
+    const handleCompass = (e) => {
+      let compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
+      els.disc.style.transform = `rotate(${-compass}deg)`;
+      els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
+    };
+
+    const startCompass = () => {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        els.iosBtn.classList.remove('hidden');
+        els.iosBtn.onclick = () => {
+          DeviceOrientationEvent.requestPermission()
+            .then(resp => {
+              if (resp === 'granted') {
+                els.iosBtn.classList.add('hidden');
+                window.addEventListener('deviceorientation', handleCompass, true);
+              } else {
+                alert("Izin kompas ditolak.");
+              }
+            })
+            .catch(console.error);
+        };
+      } else {
+        window.addEventListener('deviceorientationabsolute', handleCompass, true) || window.addEventListener('deviceorientation', handleCompass, true);
+      }
+    };
+
+    const stopCompass = () => {
+       window.removeEventListener('deviceorientation', handleCompass, true);
+       window.removeEventListener('deviceorientationabsolute', handleCompass, true);
+    };
+
+    // --- NOTIFICATIONS API ---
+    const notify = (msg, tag) => {
+      if (Notification.permission === 'granted') {
+        new Notification("Qolbu App", { body: msg, tag: tag, icon: '/favicon.svg' });
+      }
+    };
+
+    const reqNotify = () => {
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission();
+      }
+    };
+
+    // --- SETTINGS HANDLING ---
+    const loadSettings = () => {
+      const s = JSON.parse(localStorage.getItem('sholat-settings') || '{}');
+      if (s.lat) {
+        state = { ...state, ...s };
+        els.useGPS.checked = state.useGPS;
+        els.latIn.value = state.lat;
+        els.lngIn.value = state.lng;
+        els.cityIn.value = state.city;
+        els.method.value = state.method;
+        els.adhan.checked = state.adhan;
+        els.remind.checked = state.remind;
+        els.inputCor.innerText = state.correction;
+        
+        if(!state.useGPS) els.manualBox.classList.remove('hidden');
+      }
+    };
+
+    const saveSettings = () => {
+      state.useGPS = els.useGPS.checked;
+      state.method = els.method.value;
+      state.adhan = els.adhan.checked;
+      state.remind = els.remind.checked;
+      state.correction = parseInt(els.inputCor.innerText);
+      
+      if (!state.useGPS) {
+        state.lat = parseFloat(els.latIn.value) || -6.2;
+        state.lng = parseFloat(els.lngIn.value) || 106.8;
+        state.city = els.cityIn.value || 'Manual';
+      }
+      
+      localStorage.setItem('sholat-settings', JSON.stringify(state));
+      localStorage.removeItem('sholat-data'); 
+      
+      if (state.adhan || state.remind) reqNotify();
+
+      init();
+    };
+
+    // --- EVENT LISTENERS ---
+    els.refresh.addEventListener('click', () => {
+      localStorage.removeItem('sholat-data');
+      getGPS();
+    });
+
+    els.settingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
+    els.closeSet.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
+    els.settingsOverlay.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
+    
+    els.useGPS.addEventListener('change', (e) => {
+       if(e.target.checked) els.manualBox.classList.add('hidden');
+       else els.manualBox.classList.remove('hidden');
+    });
+    
+    els.saveSet.addEventListener('click', () => {
+       saveSettings();
+       els.settingsModal.classList.add('hidden');
+    });
+
+    // Correction Logic
+    els.btnMinus.addEventListener('click', () => {
+        let val = parseInt(els.inputCor.innerText);
+        els.inputCor.innerText = val - 1;
+    });
+    els.btnPlus.addEventListener('click', () => {
+        let val = parseInt(els.inputCor.innerText);
+        els.inputCor.innerText = val + 1;
+    });
+
+    els.qiblaBtn.addEventListener('click', () => {
+       els.qiblaModal.classList.remove('hidden');
+       startCompass();
+    });
+    els.closeQibla.addEventListener('click', () => {
+       els.qiblaModal.classList.add('hidden');
+       stopCompass();
+    });
+
+    // START
+    init();
+  });
+</script>
+
+<style>
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+</style>

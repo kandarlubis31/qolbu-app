@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "judul": "Pengantar Al-Fatihah",
+    "arab": "إِلَى حَضْرَةِ النَّبِيِّ الْمُصْطَفَى صَلَّى اللهُ عَلَيهِ وَسَلَّمَ وَآلِهِ وَصَحْبِهِ وَأَزْوَاجِهِ وَذُرِّيَّاتِهِ وَأَهْلِ بَيْتِهِ الْكِرَامِ، شَيْءٌ لِلهِ لَهُمُ الْفَاتِحَةُ",
+    "latin": "Ila hadrotin-nabiyyil musthofaa shollallahu 'alaihi wa sallama, wa aalihi wa shohbihi wa azwaajihi wa dzurriyyatihi wa ahli baitihil kirom, syai-u lillahi lahumul faatihah.",
+    "arti": "Ke hadirat Nabi pilihan Muhammad SAW, keluarganya, sahabatnya, istri-istrinya, keturunannya, dan ahli baitnya yang mulia, semoga Allah melimpahkan sesuatu untuk mereka, Al-Fatihah."
+  },
+  {
+    "id": 2,
+    "judul": "Surat Al-Ikhlas (3x)",
+    "arab": "قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
+    "latin": "Qul huwallāhu aḥad. Allāhuṣ-ṣamad. Lam yalid wa lam yūlad. Wa lam yakun lahū kufuwan aḥad.",
+    "arti": "Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia."
+  },
+  {
+    "id": 3,
+    "judul": "Surat Al-Falaq",
+    "arab": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِنْ شَرِّ مَا خَلَقَ ۞ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+    "latin": "Qul a‘ūżu birabbil-falaq. Min syarri mā khalaq. Wa min syarri gāsiqin iżā waqab. Wa min syarrin-naffāṡāti fil-‘uqad. Wa min syarri ḥāsidin iżā ḥasad.",
+    "arti": "Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (perempuan-perempuan) penyihir yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki."
+  },
+  {
+    "id": 4,
+    "judul": "Surat An-Nas",
+    "arab": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ",
+    "latin": "Qul a‘ūżu birabbin-nās. Malikin-nās. Ilāhin-nās. Min syarril-waswāsil-khannās. Allażī yuwaswisu fī ṣudūrin-nās. Minal-jinnati wan-nās.",
+    "arti": "Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia."
+  },
+  {
+    "id": 5,
+    "judul": "Tahlil & Takbir",
+    "arab": "لاَ إِلهَ إِلاَّ اللهُ وَاللهُ أَكْبَرُ وَلِلهِ الْحَمْدُ",
+    "latin": "Laa ilaaha illallahu wallahu akbar wa lillahil hamd.",
+    "arti": "Tiada Tuhan selain Allah, Allah Maha Besar, dan bagi Allah segala puji."
+  },
+  {
+    "id": 6,
+    "judul": "Kalimat Toyyibah (33x)",
+    "arab": "لاَ إِلهَ إِلاَّ اللهُ",
+    "latin": "Laa ilaaha illallah",
+    "arti": "Tiada Tuhan selain Allah."
+  },
+  {
+    "id": 7,
+    "judul": "Doa Penutup Singkat",
+    "arab": "اَللَّهُمَّ اغْفِرْ لَهُمْ وَارْحَمْهُمْ وَعَافِهِمْ وَاعْفُ عَنْهُمْ",
+    "latin": "Allahummaghfir lahum warhamhum wa 'aafihim wa'fu 'anhum.",
+    "arti": "Ya Allah, ampunilah mereka, sayangilah mereka, selamatkanlah mereka, dan maafkanlah mereka."
+  }
+]

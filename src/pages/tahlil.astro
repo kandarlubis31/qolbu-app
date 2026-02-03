@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import tahlilData from '../data/tahlil.json';
+---
+
+<BaseLayout pageTitle="Tahlil & Doa">
+  
+  <div class="sticky top-16 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 shadow-sm transition-all">
+    <a href="/" class="flex items-center gap-2 text-slate-500 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-50 dark:active:bg-slate-800">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      <span class="font-medium text-sm">Kembali</span>
+    </a>
+    
+    <button id="settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 hover:text-emerald-600 transition-colors cursor-pointer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+
+  <div class="text-center mb-8 mt-4">
+    <h1 class="font-bold text-2xl text-slate-800 dark:text-white mb-2">Tahlil & Doa Arwah</h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">Bacaan tahlil lengkap untuk mendoakan keluarga yang telah mendahului kita.</p>
+  </div>
+
+  <div class="space-y-6 pb-32">
+    {tahlilData.map((item, index) => (
+      <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+        
+        <div class="flex items-center gap-3 mb-4 border-b border-slate-50 dark:border-slate-700 pb-3">
+          <span class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+            {index + 1}
+          </span>
+          <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm uppercase tracking-wide">
+            {item.judul}
+          </h3>
+        </div>
+
+        <div class="text-right mb-4">
+          <p class="text-arab font-amiri text-3xl leading-[2.2] text-slate-800 dark:text-slate-100" dir="rtl">
+            {item.arab}
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <p class="text-latin text-emerald-600 dark:text-emerald-400 font-medium italic text-sm leading-relaxed">
+            {item.latin}
+          </p>
+          <p class="text-arti text-slate-500 dark:text-slate-400 text-sm leading-relaxed border-l-2 border-slate-200 dark:border-slate-700 pl-3">
+            {item.arti}
+          </p>
+        </div>
+
+      </div>
+    ))}
+
+    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl shadow-lg text-white text-center">
+      <h3 class="font-bold text-lg mb-2">Selesai</h3>
+      <p class="text-sm opacity-90 mb-4">Semoga doa-doa yang dipanjatkan sampai kepada ahli kubur dan diterima oleh Allah SWT.</p>
+      <a href="/" class="inline-block bg-white text-emerald-600 px-6 py-2 rounded-full font-bold text-sm hover:bg-emerald-50 transition-colors">
+        Kembali ke Dashboard
+      </a>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="overlay"></div>
+    <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up ring-1 ring-white/10">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Pengaturan Tampilan</h3>
+        <button id="close-settings" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Ukuran Font Arab</label>
+          <input type="range" id="font-size-range" min="1" max="5" step="1" value="3" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+          <div class="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+            <span>Kecil</span>
+            <span>Sedang</span>
+            <span>Jumbo</span>
+          </div>
+        </div>
+
+        <hr class="border-slate-100 dark:border-slate-800" />
+
+        <div class="flex items-center justify-between">
+          <span class="text-slate-700 dark:text-slate-200 font-medium">Teks Latin</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="toggle-latin" class="sr-only peer" checked>
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+          </label>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span class="text-slate-700 dark:text-slate-200 font-medium">Terjemahan</span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="toggle-arti" class="sr-only peer" checked>
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Elements
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettings = document.getElementById('close-settings');
+    const overlay = document.getElementById('overlay');
+    
+    const fontSizeRange = document.getElementById('font-size-range');
+    const toggleLatin = document.getElementById('toggle-latin');
+    const toggleArti = document.getElementById('toggle-arti');
+
+    // Modal Logic
+    const showModal = () => settingsModal?.classList.remove('hidden');
+    const hideModal = () => settingsModal?.classList.add('hidden');
+
+    settingsBtn?.addEventListener('click', showModal);
+    closeSettings?.addEventListener('click', hideModal);
+    overlay?.addEventListener('click', hideModal);
+
+    // Settings Logic (Mirip Yasin tapi tanpa audio)
+    const applySettings = () => {
+      if(!fontSizeRange) return;
+
+      const size = parseInt(fontSizeRange.value);
+      const showLatin = toggleLatin.checked;
+      const showArti = toggleArti.checked;
+
+      const sizeClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
+      
+      // Update Arab Size
+      document.querySelectorAll('.text-arab').forEach(el => {
+        el.classList.remove(...sizeClasses);
+        el.classList.add(sizeClasses[size - 1]);
+      });
+
+      // Toggle Visibility
+      document.querySelectorAll('.text-latin').forEach(el => {
+        el.style.display = showLatin ? 'block' : 'none';
+      });
+      document.querySelectorAll('.text-arti').forEach(el => {
+        el.style.display = showArti ? 'block' : 'none';
+      });
+
+      // Save State
+      localStorage.setItem('tahlil-settings', JSON.stringify({ size, showLatin, showArti }));
+    };
+
+    // Listeners
+    fontSizeRange?.addEventListener('input', applySettings);
+    toggleLatin?.addEventListener('change', applySettings);
+    toggleArti?.addEventListener('change', applySettings);
+
+    // Load Saved State
+    try {
+      const saved = localStorage.getItem('tahlil-settings');
+      if (saved) {
+        const { size, showLatin, showArti } = JSON.parse(saved);
+        if(fontSizeRange) fontSizeRange.value = size;
+        if(toggleLatin) toggleLatin.checked = showLatin;
+        if(toggleArti) toggleArti.checked = showArti;
+      }
+    } catch (e) { console.error("Setting load error"); }
+    
+    // Apply on load
+    applySettings();
+  });
+</script>
+
+<style>
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+</style>
