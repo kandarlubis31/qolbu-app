@@ -9,7 +9,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       <span class="font-medium text-sm">Kembali</span>
     </a>
-    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Kumpulan Doa</h1>
+    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Ensiklopedia Doa</h1>
     <div class="w-8"></div>
   </div>
 
@@ -19,40 +19,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <input 
         type="text" 
         id="search-input" 
-        placeholder="Cari doa (misal: sakit, rizki, hujan)..." 
-        class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400"
+        placeholder="Cari doa (misal: hutang, jodoh, ujian)..." 
+        class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400 shadow-sm"
       >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     </div>
 
-    <div class="flex gap-2 overflow-x-auto pb-4 mb-2 scrollbar-hide" id="category-container">
-      <button class="cat-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-500/20" data-cat="all">
-        Semua
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="harian">
-        Sehari-hari
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="pagi_petang">
-        Pagi & Petang
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="sholat">
-        Sholat & Masjid
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="keluarga">
-        Keluarga
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="rizki">
-        Rizki & Hajat
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="lindung">
-        Perlindungan
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="safar">
-        Perjalanan
-      </button>
-      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500" data-cat="tahlil">
-        Tahlil & Ziarah
-      </button>
+    <div class="flex gap-2 overflow-x-auto pb-4 mb-2 -mx-4 px-4 scrollbar-hide" id="category-container">
+      <button class="cat-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-500/20 flex-shrink-0" data-cat="all">Semua</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="harian">Sehari-hari</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="quran">Doa Al-Qur'an</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="sholat">Sholat</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="rizki">Rizki & Hajat</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="keluarga">Keluarga</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="sakit">Sakit & Musibah</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="safar">Perjalanan</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="taubat">Taubat & Hati</button>
     </div>
 
     <div id="doa-container" class="space-y-4 min-h-[50vh]">
@@ -65,8 +47,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="text-slate-500 dark:text-slate-400 text-sm">Doa tidak ditemukan.</p>
     </div>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-lg shadow-lg text-xs font-bold opacity-0 transition-opacity duration-300 pointer-events-none z-50">
-      Teks berhasil disalin!
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
+      <span id="toast-msg">Teks berhasil disalin!</span>
     </div>
 
   </div>
@@ -74,55 +57,84 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script is:inline>
-  // DATABASE DOA LENGKAP
+  // DATABASE DOA JUMBO (NO AUDIO - TEXT ONLY)
   const doaData = [
-    // --- HARIAN ---
-    { cat: "harian", title: "Doa Bangun Tidur", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur", arti: "Segala puji bagi Allah yang menghidupkan kami kembali setelah mematikan kami dan kepada-Nya tempat kembali.", source: "HR. Bukhari", audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3" }, 
-    // Catatan: Audio Al-Fatihah sementara sebagai placeholder untuk contoh yang valid. Ganti URL audio spesifik jika ada.
-    { cat: "harian", title: "Doa Sebelum Tidur", arab: "بِسْمِكَ اللّهُمَّ أَحْيَا وَبِسْمِكَ أَمُوتُ", latin: "Bismika Allahumma ahya wa bismika amut", arti: "Dengan nama-Mu ya Allah aku hidup, dan dengan nama-Mu aku mati.", source: "HR. Bukhari", audio: "" },
-    { cat: "harian", title: "Doa Masuk WC", arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", latin: "Allahumma inni a'udzu bika minal khubutsi wal khabaits", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari godaan setan laki-laki dan perempuan.", source: "HR. Bukhari & Muslim", audio: "" },
-    { cat: "harian", title: "Doa Keluar WC", arab: "غُفْرَانَكَ الْحَمْدُ لِلَّهِ الَّذِي أَذْهَبَ عَنِّي الْأَذَى وَعَافَانِي", latin: "Ghufranak, alhamdulillahilladzi adzhaba 'annil adza wa 'afani", arti: "Aku memohon ampunan-Mu. Segala puji bagi Allah yang telah menghilangkan kotoran dariku dan menyehatkanku.", source: "HR. Abu Dawud", audio: "" },
-    { cat: "harian", title: "Doa Sebelum Makan", arab: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ، بِسْمِ اللَّهِ", latin: "Allahumma barik lana fi ma razaqtana wa qina adzaban nar, bismillah", arti: "Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami, dan peliharalah kami dari siksa api neraka. Dengan nama Allah.", source: "HR. Muslim", audio: "" },
-    { cat: "harian", title: "Doa Sesudah Makan", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", latin: "Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin", arti: "Segala puji bagi Allah yang telah memberi makan dan minum kepada kami dan menjadikan kami orang-orang muslim.", source: "HR. Muslim", audio: "" },
-    { cat: "harian", title: "Doa Memakai Pakaian", arab: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ", latin: "Alhamdulillahilladzi kasani hadza wa razaqanihi min ghairi haulin minni wa la quwwatin", arti: "Segala puji bagi Allah yang telah memakaikan pakaian ini kepadaku dan memberikannya kepadaku tanpa daya dan kekuatan dariku.", source: "HR. Abu Dawud", audio: "" },
-    { cat: "harian", title: "Doa Bercermin", arab: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", latin: "Allahumma kama hassanta khalqi fahassin khuluqi", arti: "Ya Allah, sebagaimana Engkau telah membaguskan penciptaanku, maka baguskanlah pula akhlakku.", source: "HR. Ahmad", audio: "" },
-    { cat: "harian", title: "Doa Keluar Rumah", arab: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", latin: "Bismillahi tawakkaltu 'alallah, laa haula wa laa quwwata illa billah", arti: "Dengan nama Allah, aku bertawakal kepada Allah. Tiada daya dan kekuatan kecuali dengan pertolongan Allah.", source: "HR. Abu Dawud", audio: "" },
-    { cat: "harian", title: "Doa Masuk Rumah", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلِجِ وَخَيْرَ الْمَخْرَجِ بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا", latin: "Allahumma inni as'aluka khairal mauliji wa khairal makhraji bismillahi walajna wa bismillahi kharajna wa 'alallahi rabbina tawakkalna", arti: "Ya Allah, aku memohon kepada-Mu sebaik-baik tempat masuk dan sebaik-baik tempat keluar. Dengan nama Allah kami masuk, dan dengan nama Allah kami keluar, dan kepada Allah Tuhan kami kami bertawakkal.", source: "HR. Abu Dawud", audio: "" },
-    { cat: "harian", title: "Doa Ketika Bersin", arab: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah", arti: "Segala puji bagi Allah.", source: "HR. Bukhari", audio: "" },
-    { cat: "harian", title: "Doa Menjawab Orang Bersin", arab: "يَرْحَمُكَ اللَّهُ", latin: "Yarhamukallah", arti: "Semoga Allah merahmatimu.", source: "HR. Bukhari", audio: "" },
+    // --- 1. HARIAN (DAILY) ---
+    { cat: "harian", title: "Doa Bangun Tidur", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur", arti: "Segala puji bagi Allah yang menghidupkan kami kembali setelah mematikan kami dan kepada-Nya tempat kembali.", source: "HR. Bukhari" },
+    { cat: "harian", title: "Doa Sebelum Tidur", arab: "بِسْمِكَ اللّهُمَّ أَحْيَا وَبِسْمِكَ أَمُوتُ", latin: "Bismika Allahumma ahya wa bismika amut", arti: "Dengan nama-Mu ya Allah aku hidup, dan dengan nama-Mu aku mati.", source: "HR. Bukhari" },
+    { cat: "harian", title: "Doa Masuk WC", arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", latin: "Allahumma inni a'udzu bika minal khubutsi wal khabaits", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari godaan setan laki-laki dan perempuan.", source: "HR. Bukhari" },
+    { cat: "harian", title: "Doa Keluar WC", arab: "غُفْرَانَكَ الْحَمْدُ لِلَّهِ الَّذِي أَذْهَبَ عَنِّي الْأَذَى وَعَافَانِي", latin: "Ghufranak, alhamdulillahilladzi adzhaba 'annil adza wa 'afani", arti: "Aku memohon ampunan-Mu. Segala puji bagi Allah yang telah menghilangkan kotoran dariku dan menyehatkanku.", source: "HR. Abu Dawud" },
+    { cat: "harian", title: "Doa Sebelum Makan", arab: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ، بِسْمِ اللَّهِ", latin: "Allahumma barik lana fi ma razaqtana wa qina adzaban nar, bismillah", arti: "Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami, dan peliharalah kami dari siksa api neraka. Dengan nama Allah.", source: "HR. Muslim" },
+    { cat: "harian", title: "Doa Sesudah Makan", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", latin: "Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin", arti: "Segala puji bagi Allah yang telah memberi makan dan minum kepada kami dan menjadikan kami orang-orang muslim.", source: "HR. Muslim" },
+    { cat: "harian", title: "Doa Memakai Pakaian", arab: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ", latin: "Alhamdulillahilladzi kasani hadza wa razaqanihi min ghairi haulin minni wa la quwwatin", arti: "Segala puji bagi Allah yang telah memakaikan pakaian ini kepadaku dan memberikannya kepadaku tanpa daya dan kekuatan dariku.", source: "HR. Abu Dawud" },
+    { cat: "harian", title: "Doa Melepas Pakaian", arab: "بِسْمِ اللهِ الَّذِيْ لَا إِلَهَ إِلَّا هُوَ", latin: "Bismillahil ladzi laa ilaaha illa huwa", arti: "Dengan nama Allah yang tiada Tuhan selain Dia.", source: "HR. Ibnu Sunni" },
+    { cat: "harian", title: "Doa Bercermin", arab: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", latin: "Allahumma kama hassanta khalqi fahassin khuluqi", arti: "Ya Allah, sebagaimana Engkau telah membaguskan penciptaanku, maka baguskanlah pula akhlakku.", source: "HR. Ahmad" },
+    { cat: "harian", title: "Doa Keluar Rumah", arab: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", latin: "Bismillahi tawakkaltu 'alallah, laa haula wa laa quwwata illa billah", arti: "Dengan nama Allah, aku bertawakal kepada Allah. Tiada daya dan kekuatan kecuali dengan pertolongan Allah.", source: "HR. Abu Dawud" },
+    { cat: "harian", title: "Doa Masuk Rumah", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَ الْمَوْلِجِ وَخَيْرَ الْمَخْرَجِ...", latin: "Allahumma inni as'aluka khairal mauliji wa khairal makhraji...", arti: "Ya Allah, aku memohon kepada-Mu sebaik-baik tempat masuk dan sebaik-baik tempat keluar.", source: "HR. Abu Dawud" },
+    { cat: "harian", title: "Doa Ketika Bersin", arab: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah", arti: "Segala puji bagi Allah.", source: "HR. Bukhari" },
+    { cat: "harian", title: "Doa Menjawab Orang Bersin", arab: "يَرْحَمُكَ اللَّهُ", latin: "Yarhamukallah", arti: "Semoga Allah merahmatimu.", source: "HR. Bukhari" },
 
-    // --- SHOLAT & MASJID ---
-    { cat: "sholat", title: "Doa Masuk Masjid", arab: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", latin: "Allahummaftah li abwaba rahmatik", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.", source: "HR. Muslim", audio: "" },
-    { cat: "sholat", title: "Doa Keluar Masjid", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", latin: "Allahumma inni as-aluka min fadhlik", arti: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu.", source: "HR. Muslim", audio: "" },
-    { cat: "sholat", title: "Doa Iftitah", arab: "اللهُ أَكْبَرُ كَبِيرًا، وَالْحَمْدُ لِلهِ كَثِيرًا...", latin: "Allahu akbar kabira walhamdulillahi katsira...", arti: "Allah Maha Besar lagi sempurna kebesaran-Nya, segala puji bagi-Nya...", source: "HR. Muslim", audio: "" },
+    // --- 2. DOA DARI AL-QURAN (RABBANA) ---
+    { cat: "quran", title: "Doa Sapu Jagat", arab: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", latin: "Rabbana atina fid dunya hasanah wa fil akhirati hasanah wa qina 'adzaban nar", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari siksa neraka.", source: "QS. Al-Baqarah: 201" },
+    { cat: "quran", title: "Doa Mohon Kesabaran", arab: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا وَانْصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ", latin: "Rabbana afrigh 'alaina shabran wa tsabbit aqdamana wanshurna 'alal qaumil kafirin", arti: "Ya Tuhan kami, limpahkanlah kesabaran kepada kami, kokohkanlah langkah kami dan tolonglah kami menghadapi orang-orang kafir.", source: "QS. Al-Baqarah: 250" },
+    { cat: "quran", title: "Doa Agar Diterima Amal", arab: "رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ", latin: "Rabbana taqabbal minna innaka antas sami'ul 'alim", arti: "Ya Tuhan kami, terimalah daripada kami (amalan kami), sesungguhnya Engkaulah Yang Maha Mendengar lagi Maha Mengetahui.", source: "QS. Al-Baqarah: 127" },
+    { cat: "quran", title: "Doa Mohon Ampunan", arab: "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ", latin: "Rabbana zhalamna anfusana wa in lam taghfir lana wa tarhamna lanakunanna minal khasirin", arti: "Ya Tuhan kami, kami telah menganiaya diri kami sendiri, dan jika Engkau tidak mengampuni kami dan memberi rahmat kepada kami, niscaya pastilah kami termasuk orang-orang yang merugi.", source: "QS. Al-A'raf: 23" },
+    { cat: "quran", title: "Doa Mohon Pasangan & Anak", arab: "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا", latin: "Rabbana hab lana min azwajina wa dzurriyyatina qurrata a'yunin waj'alna lil muttaqina imama", arti: "Ya Tuhan kami, anugrahkanlah kepada kami istri-istri kami dan keturunan kami sebagai penyenang hati (kami), dan jadikanlah kami imam bagi orang-orang yang bertakwa.", source: "QS. Al-Furqan: 74" },
+    { cat: "quran", title: "Doa Mohon Anak Sholeh", arab: "رَبِّ هَبْ لِي مِنَ الصَّالِحِينَ", latin: "Rabbi hab lii minash shalihiin", arti: "Ya Tuhanku, anugrahkanlah kepadaku (seorang anak) yang termasuk orang-orang yang saleh.", source: "QS. As-Saffat: 100" },
 
-    // --- RIZKI ---
-    { cat: "rizki", title: "Doa Mohon Rezeki Halal", arab: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", latin: "Allahummakfini bihalalika 'an haramika wa aghnini bifadhlika 'amman siwaka", arti: "Ya Allah, cukupkanlah aku dengan yang halal dari-Mu dari yang haram, dan kayakanlah aku dengan karunia-Mu dari selain-Mu.", source: "HR. Tirmidzi", audio: "" },
-    { cat: "rizki", title: "Doa Kebaikan Dunia Akhirat", arab: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", latin: "Rabbana atina fid dunya hasanah wa fil akhirati hasanah wa qina 'adzaban nar", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari siksa neraka.", source: "QS. Al-Baqarah: 201", audio: "" },
-    { cat: "rizki", title: "Doa Agar Mudahkan Urusan", arab: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", latin: "Rabbisyrah li sadri, wa yassir li amri", arti: "Ya Tuhanku, lapangkanlah untukku dadaku, dan mudahkanlah untukku urusanku.", source: "QS. Thaha: 25-26", audio: "" },
+    // --- 3. SHOLAT & MASJID ---
+    { cat: "sholat", title: "Doa Masuk Masjid", arab: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", latin: "Allahummaftah li abwaba rahmatik", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.", source: "HR. Muslim" },
+    { cat: "sholat", title: "Doa Keluar Masjid", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", latin: "Allahumma inni as-aluka min fadhlik", arti: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu.", source: "HR. Muslim" },
+    { cat: "sholat", title: "Doa Setelah Wudhu", arab: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ...", latin: "Asyhadu an laa ilaaha illallahu wahdahu laa syariika lahu...", arti: "Aku bersaksi bahwa tiada Tuhan selain Allah Yang Maha Esa...", source: "HR. Tirmidzi" },
+    { cat: "sholat", title: "Doa Iftitah", arab: "اللهُ أَكْبَرُ كَبِيرًا، وَالْحَمْدُ لِلهِ كَثِيرًا...", latin: "Allahu akbar kabira walhamdulillahi katsira...", arti: "Allah Maha Besar lagi sempurna kebesaran-Nya...", source: "HR. Muslim" },
+    { cat: "sholat", title: "Doa Qunut Subuh", arab: "اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ...", latin: "Allahummahdini fiman hadait...", arti: "Ya Allah, berilah aku petunjuk sebagaimana orang-orang yang telah Engkau beri petunjuk...", source: "HR. Abu Dawud" },
+    { cat: "sholat", title: "Doa Setelah Adzan", arab: "اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ...", latin: "Allahumma rabba hadzihid da'watit tammah...", arti: "Ya Allah, Tuhan yang memiliki seruan yang sempurna ini...", source: "HR. Bukhari" },
 
-    // --- PERLINDUNGAN ---
-    { cat: "lindung", title: "Doa Ketika Hujan", arab: "اللَّهُمَّ صَيِّبًا نَافِعًا", latin: "Allahumma shayyiban nafi'an", arti: "Ya Allah, jadikanlah hujan ini hujan yang bermanfaat.", source: "HR. Bukhari", audio: "" },
-    { cat: "lindung", title: "Doa Menjenguk Orang Sakit", arab: "اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَأْسَ اشْفِ أَنْتَ الشَّافِي...", latin: "Allahumma rabban nasi adzhibil ba'sa isyfi antas syafi...", arti: "Ya Allah, Tuhan manusia, hilangkanlah penyakit ini, sembuhkanlah...", source: "HR. Bukhari", audio: "" },
-    
-    // --- SAFAR ---
-    { cat: "safar", title: "Doa Naik Kendaraan", arab: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ...", latin: "Subhanalladzi sakhkhara lana hadza...", arti: "Maha Suci Allah yang telah menundukkan semua ini bagi kami...", source: "QS. Az-Zukhruf", audio: "" },
-    { cat: "safar", title: "Doa Bepergian", arab: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى...", latin: "Allahumma inna nas-aluka fi safarina hadzal birra wat taqwa...", arti: "Ya Allah, kami memohon kepada-Mu dalam perjalanan ini kebaikan dan ketakwaan...", source: "HR. Muslim", audio: "" }
+    // --- 4. RIZKI & HAJAT ---
+    { cat: "rizki", title: "Doa Mohon Rezeki Halal", arab: "اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", latin: "Allahummakfini bihalalika 'an haramika wa aghnini bifadhlika 'amman siwaka", arti: "Ya Allah, cukupkanlah aku dengan yang halal dari-Mu dari yang haram, dan kayakanlah aku dengan karunia-Mu dari selain-Mu.", source: "HR. Tirmidzi" },
+    { cat: "rizki", title: "Doa Pelunas Hutang", arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَالْعَجْزِ وَالْكَسَلِ...", latin: "Allahumma inni a'udzu bika minal hammi wal hazani...", arti: "Ya Allah, aku berlindung kepada-Mu dari kesusahan dan kedukaan, kelemahan dan kemalasan...", source: "HR. Bukhari" },
+    { cat: "rizki", title: "Doa Agar Mudahkan Urusan", arab: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", latin: "Rabbisyrah li sadri, wa yassir li amri", arti: "Ya Tuhanku, lapangkanlah untukku dadaku, dan mudahkanlah untukku urusanku.", source: "QS. Thaha: 25-26" },
+    { cat: "rizki", title: "Doa Mohon Ilmu Bermanfaat", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا", latin: "Allahumma inni as-aluka 'ilman nafi'an wa rizqan thayyiban wa 'amalan mutaqabbalan", arti: "Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang baik, dan amal yang diterima.", source: "HR. Ibnu Majah" },
+    { cat: "rizki", title: "Doa Sholat Dhuha", arab: "اللَّهُمَّ إِنَّ الضُّحَاءَ ضُحَاؤُكَ وَالْبَهَاءَ بَهَاؤُكَ...", latin: "Allahumma innad dhuha-a dhuha-uka wal baha-a baha-uka...", arti: "Ya Allah, sesungguhnya waktu dhuha adalah waktu dhuha-Mu, keagungan adalah keagungan-Mu...", source: "Doa Masyhur" },
+
+    // --- 5. KELUARGA & RUMAH TANGGA ---
+    { cat: "keluarga", title: "Doa untuk Orang Tua", arab: "رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", latin: "Rabbirhamhuma kama rabbayani shaghira", arti: "Ya Tuhanku, sayangilah mereka keduanya, sebagaimana mereka berdua telah mendidik aku waktu kecil.", source: "QS. Al-Isra: 24" },
+    { cat: "keluarga", title: "Doa untuk Anak (Perlindungan)", arab: "أُعِيذُكُمَا بِكَلِمَاتِ اللَّهِ التَّامَّةِ مِنْ كُلِّ شَيْطَانٍ وَهَامَّةٍ وَمِنْ كُلِّ عَيْنٍ لَامَّةٍ", latin: "U'idzukuma bikalimatillahit tammati min kulli syaithanin wa hammatin wa min kulli 'ainin lammatin", arti: "Aku memohon perlindungan untuk kalian berdua dengan kalimat-kalimat Allah yang sempurna dari segala setan, binatang berbisa, dan pandangan mata yang jahat.", source: "HR. Bukhari" },
+    { cat: "keluarga", title: "Doa Pengantin Baru", arab: "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ", latin: "Barakallahu laka wa baraka 'alaika wa jama'a bainakuma fi khair", arti: "Semoga Allah memberkahimu dan menetapkan berkah atasmu, serta mengumpulkan kalian berdua dalam kebaikan.", source: "HR. Abu Dawud" },
+    { cat: "keluarga", title: "Doa Sebelum Berhubungan", arab: "بِسْمِ اللَّهِ، اللَّهُمَّ جَنِّبْنَا الشَّيْطَانَ وَجَنِّبِ الشَّيْطَانَ مَا رَزَقْتَنَا", latin: "Bismillah, Allahumma jannibnas syaithana wa jannibis syaithana ma razaqtana", arti: "Dengan nama Allah, Ya Allah, jauhkanlah kami dari setan dan jauhkanlah setan dari apa yang Engkau anugerahkan kepada kami.", source: "HR. Bukhari" },
+
+    // --- 6. SAKIT & MUSIBAH (PERLINDUNGAN) ---
+    { cat: "sakit", title: "Doa Menjenguk Orang Sakit", arab: "اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَأْسَ اشْفِ أَنْتَ الشَّافِي...", latin: "Allahumma rabban nasi adzhibil ba'sa isyfi antas syafi...", arti: "Ya Allah, Tuhan manusia, hilangkanlah penyakit ini, sembuhkanlah...", source: "HR. Bukhari" },
+    { cat: "sakit", title: "Doa Ketika Sakit (Pegang Bagian Sakit)", arab: "بِسْمِ اللَّهِ (3x) أَعُوذُ بِاللَّهِ وَقُدْرَتِهِ مِنْ شَرِّ مَا أَجِدُ وَأُحَاذِرُ (7x)", latin: "Bismillah (3x), A'udzu billahi wa qudratihi min syarri ma ajidu wa uhadziru (7x)", arti: "Dengan nama Allah. Aku berlindung kepada Allah dan kekuasaan-Nya dari keburukan apa yang aku rasakan dan aku khawatirkan.", source: "HR. Muslim" },
+    { cat: "sakit", title: "Doa Tertimpa Musibah", arab: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ، اللَّهُمَّ أْجُرْنِي فِي مُصِيبَتِي وَأَخْلِفْ لِي خَيْرًا مِنْهَا", latin: "Inna lillahi wa inna ilaihi raji'un, Allahumma'jurni fi mushibati wa akhlif li khairan minha", arti: "Sesungguhnya kami milik Allah dan kepada-Nya kami kembali. Ya Allah, berilah aku pahala dalam musibahku ini dan gantilah untukku yang lebih baik darinya.", source: "HR. Muslim" },
+    { cat: "sakit", title: "Doa Ketika Hujan Turun", arab: "اللَّهُمَّ صَيِّبًا نَافِعًا", latin: "Allahumma shayyiban nafi'an", arti: "Ya Allah, jadikanlah hujan ini hujan yang bermanfaat.", source: "HR. Bukhari" },
+    { cat: "sakit", title: "Doa Ada Petir", arab: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلَائِكَةُ مِنْ خِيفَتِهِ", latin: "Subhanalladzi yusabbihur ra'du bihamdihi wal malaikatu min khifatihi", arti: "Maha Suci Allah yang petir bertasbih dengan memuji-Nya, begitu juga para malaikat karena takut kepada-Nya.", source: "HR. Malik" },
+
+    // --- 7. PERJALANAN (SAFAR) ---
+    { cat: "safar", title: "Doa Naik Kendaraan", arab: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ...", latin: "Subhanalladzi sakhkhara lana hadza...", arti: "Maha Suci Allah yang telah menundukkan semua ini bagi kami...", source: "QS. Az-Zukhruf" },
+    { cat: "safar", title: "Doa Bepergian (Safar)", arab: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى...", latin: "Allahumma inna nas-aluka fi safarina hadzal birra wat taqwa...", arti: "Ya Allah, kami memohon kepada-Mu dalam perjalanan ini kebaikan dan ketakwaan...", source: "HR. Muslim" },
+    { cat: "safar", title: "Doa Masuk Pasar", arab: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ...", latin: "Laa ilaha illallahu wahdahu laa syariika lahu...", arti: "Tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya...", source: "HR. Tirmidzi" },
+    { cat: "safar", title: "Doa Singgah di Suatu Tempat", arab: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'udzu bikalimatillahit tammati min syarri ma khalaq", arti: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk yang diciptakan-Nya.", source: "HR. Muslim" },
+
+    // --- 8. TAUBAT & HATI ---
+    { cat: "taubat", title: "Sayyidul Istighfar", arab: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ...", latin: "Allahumma anta rabbi la ilaha illa anta, khalaqtani wa ana 'abduka...", arti: "Ya Allah, Engkau adalah Tuhanku, tidak ada Tuhan yang berhak disembah selain Engkau. Engkau telah menciptakanku dan aku adalah hamba-Mu...", source: "HR. Bukhari" },
+    { cat: "taubat", title: "Doa Keteguhan Hati", arab: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", latin: "Ya muqallibal qulub tsabbit qalbi 'ala dinik", arti: "Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu.", source: "HR. Tirmidzi" },
+    { cat: "taubat", title: "Doa Terhindar Kesyirikan", arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أُشْرِكَ بِكَ وَأَنَا أَعْلَمُ، وَأَسْتَغْفِرُكَ لِمَا لَا أَعْلَمُ", latin: "Allahumma inni a'udzu bika an usyrika bika wa ana a'lam, wa astaghfiruka lima la a'lam", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari perbuatan syirik (menyekutukan-Mu) sedangkan aku mengetahuinya, dan aku memohon ampun kepada-Mu terhadap kesyirikan yang tidak aku ketahui.", source: "HR. Ahmad" },
+    { cat: "taubat", title: "Doa Penghapus Dosa Majelis", arab: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَن لاَ إِلَهَ إِلاَّ أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", latin: "Subhanakallahumma wa bihamdika, asyhadu alla ilaha illa anta, astaghfiruka wa atubu ilaik", arti: "Maha Suci Engkau Ya Allah dan segala puji bagi-Mu, aku bersaksi bahwa tidak ada Tuhan selain Engkau, aku memohon ampun kepada-Mu dan bertaubat kepada-Mu.", source: "HR. Tirmidzi" }
   ];
 
   document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTS ---
     const container = document.getElementById('doa-container');
     const searchInput = document.getElementById('search-input');
-    const emptyState = document.getElementById('empty-state');
+    const statusMsg = document.getElementById('empty-state');
     const catBtns = document.querySelectorAll('.cat-btn');
     const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-msg');
 
     // --- STATE ---
     let currentCategory = 'all';
     let searchTerm = '';
-    let globalAudio = null;
-    let globalBtn = null;
 
     // --- RENDER FUNCTION ---
     const renderDoa = () => {
@@ -137,10 +149,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       if (filtered.length === 0) {
         container.innerHTML = '';
-        emptyState.classList.remove('hidden');
+        statusMsg.classList.remove('hidden');
         return;
       }
-      emptyState.classList.add('hidden');
+      statusMsg.classList.add('hidden');
 
       const html = filtered.map(item => `
         <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50">
@@ -149,27 +161,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               ${item.title}
             </h3>
-            <div class="flex items-center gap-1">
-              ${item.audio ? `
-                <button class="audio-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="playAudio(this, '${item.audio}')">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="play-icon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="pause-icon hidden"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                </button>
-              ` : ''}
-              <button class="copy-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="copyText(this)" data-text="${item.title}\n\n${item.arab}\n${item.latin}\n\nArti:\n${item.arti}\n\nSumber: ${item.source}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-              </button>
-            </div>
+            <button class="copy-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90" onclick="copyText('${item.title}', '${item.arab}', '${item.latin}', '${item.arti}')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
           </div>
           
-          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl mb-3">
-             <p class="font-amiri text-2xl text-right text-slate-800 dark:text-slate-100 leading-[2.2]" dir="rtl">${item.arab}</p>
+          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl mb-3 border border-slate-100 dark:border-slate-800/50">
+             <p class="font-amiri text-2xl text-right text-slate-800 dark:text-slate-100 leading-[2.4]" dir="rtl">${item.arab}</p>
           </div>
 
           <div class="space-y-1">
             <p class="text-sm font-bold text-emerald-700 dark:text-emerald-400 italic leading-relaxed">"${item.latin}"</p>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${item.arti}</p>
-            <p class="text-[10px] text-slate-400 dark:text-slate-500 italic mt-2 uppercase tracking-wide">${item.source}</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 italic mt-2 uppercase tracking-wide font-medium">Sumber: ${item.source}</p>
           </div>
         </div>
       `).join('');
@@ -196,72 +200,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
     });
 
-    // --- GLOBAL FUNCTIONS ---
-    window.copyText = (btn) => {
-      const text = btn.getAttribute('data-text');
+    // --- UTILS: COPY TEXT ---
+    const showToast = (msg) => {
+      toastMsg.innerText = msg;
+      toast.classList.remove('opacity-0', 'translate-y-10');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-10');
+      }, 2000);
+    };
+
+    window.copyText = (title, arab, latin, arti) => {
+      const text = `*${title}*\n\n${arab}\n\n${latin}\n\n"${arti}"\n\n_Sent via Qolbu App_`;
       navigator.clipboard.writeText(text).then(() => {
-        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><polyline points="20 6 9 17 4 12"/></svg>`;
-        toast.classList.remove('opacity-0');
-        setTimeout(() => {
-          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
-          toast.classList.add('opacity-0');
-        }, 1500);
+        showToast("Teks berhasil disalin!");
+      }).catch(() => {
+        showToast("Gagal menyalin.");
       });
     };
 
-    window.playAudio = (btn, url) => {
-      if(!url) {
-          alert("Audio belum tersedia untuk doa ini.");
-          return;
-      }
-
-      const playIcon = btn.querySelector('.play-icon');
-      const pauseIcon = btn.querySelector('.pause-icon');
-
-      // 1. Jika tombol yang diklik SAMA dengan yang sedang main
-      if (globalBtn === btn && globalAudio) {
-        if (!globalAudio.paused) {
-          globalAudio.pause();
-          playIcon.classList.remove('hidden');
-          pauseIcon.classList.add('hidden');
-        } else {
-          globalAudio.play();
-          playIcon.classList.add('hidden');
-          pauseIcon.classList.remove('hidden');
-        }
-        return;
-      }
-
-      // 2. Jika ada audio LAIN yang sedang main, matikan dulu
-      if (globalAudio) {
-        globalAudio.pause();
-        if (globalBtn) {
-          globalBtn.querySelector('.play-icon').classList.remove('hidden');
-          globalBtn.querySelector('.pause-icon').classList.add('hidden');
-        }
-      }
-
-      // 3. Mainkan audio baru
-      globalAudio = new Audio(url);
-      globalBtn = btn;
-
-      globalAudio.play().then(() => {
-        playIcon.classList.add('hidden');
-        pauseIcon.classList.remove('hidden');
-      }).catch(err => {
-        console.error("Audio Play Error:", err);
-        alert("Gagal memutar audio. Pastikan koneksi internet stabil.");
-      });
-
-      // 4. Reset icon saat selesai
-      globalAudio.onended = () => {
-        playIcon.classList.remove('hidden');
-        pauseIcon.classList.add('hidden');
-        globalAudio = null;
-        globalBtn = null;
-      };
-    };
-
+    // Initial Render
     renderDoa();
   });
 </script>
