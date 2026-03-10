@@ -206,7 +206,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
              <span class="absolute -top-8 font-bold text-emerald-500">Utara</span>
           </div>
 
-          <div id="qibla-compass-disc" class="absolute inset-0 transition-transform duration-200 ease-out will-change-transform">
+          <div id="qibla-compass-disc" class="absolute inset-0 will-change-transform">
              <div class="w-full h-full rounded-full border border-slate-700/50 bg-slate-800/50 relative">
                  <div class="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-red-500"></div> <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-slate-600"></div>
                  <div class="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-1 bg-slate-600"></div>
@@ -214,9 +214,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
              </div>
           </div>
           
-          <div id="qibla-arrow-container" class="absolute inset-0 flex items-center justify-center z-10 transition-transform duration-500">
-             <div class="relative w-16 h-16 animate-pulse">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl">🕋</div>
+          <div id="qibla-arrow-container" class="absolute inset-0 flex items-center justify-center z-10">
+             <div class="relative w-16 h-16">
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">🕋</div>
              </div>
              <div class="absolute w-1 h-32 bg-transparent -top-10">
                 <div class="w-full h-1/2 bg-gradient-to-t from-emerald-500 to-transparent mx-auto rounded-full"></div>
@@ -227,7 +227,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
        <div class="text-center space-y-2 z-10">
           <h2 class="text-2xl font-bold">Cari Arah Kiblat</h2>
           <p class="text-slate-400 text-sm max-w-xs mx-auto">
-             Putar badan Anda sampai ikon Ka'bah lurus dengan panah hijau.
+             Putar HP Anda mendatar sampai ikon Ka'bah lurus dengan panah hijau.
           </p>
           <div class="mt-4 p-3 bg-slate-800 rounded-lg inline-block">
              <p class="text-xs text-slate-400">Arah Kiblat</p>
@@ -332,10 +332,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     };
 
     // --- CORE FUNCTIONS ---
-
     const fetchPrayer = async (lat, lng) => {
       try {
-        calcQibla(lat, lng); // Update Qibla angle too
+        calcQibla(lat, lng);
 
         const d = new Date();
         const dateStr = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
@@ -345,7 +344,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         const json = await res.json();
         
         if (json.code === 200) {
-          // APPLY CORRECTION (Ihtiyat)
           const rawTimings = json.data.timings;
           const correctedTimings = {};
           
@@ -358,10 +356,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           });
           
           json.data.timings = correctedTimings;
-          
           render(json.data);
           startTimer(correctedTimings);
-          
           els.corDisplay.innerText = state.correction > 0 ? `+${state.correction}` : state.correction;
 
         } else {
@@ -459,7 +455,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         els.count.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         
-        // --- NOTIFICATION LOGIC (Fitur yang lu cari!) ---
         if (state.adhan && diff < 1000 && diff > 0) notify(`Waktu sholat telah tiba!`, 'Adzan');
         if (state.remind && diff < 600000 && diff > 599000) notify(`10 Menit menuju waktu sholat`, 'Pengingat');
       };
@@ -488,7 +483,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       );
     };
 
-    // --- QIBLA LOGIC ---
+    // --- QIBLA LOGIC (FIXED) ---
     const calcQibla = (lat, lng) => {
       const kaabaLat = 21.4225;
       const kaabaLng = 39.8262;
@@ -509,8 +504,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       els.previewNeedle.style.transform = `rotate(${state.qiblaAngle}deg)`;
     };
 
+    // FIXED COMPASS LOGIC
     const handleCompass = (e) => {
-      let compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
+      let compass;
+
+      if (e.webkitCompassHeading !== undefined && e.webkitCompassHeading !== null) {
+          // iOS Devices
+          compass = e.webkitCompassHeading;
+      } else if (e.alpha !== null) {
+          // Android Devices (Convert counter-clockwise alpha to clockwise bearing)
+          compass = 360 - e.alpha;
+      } else {
+          return; // No compass sensor data
+      }
+
       els.disc.style.transform = `rotate(${-compass}deg)`;
       els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
     };
@@ -531,7 +538,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             .catch(console.error);
         };
       } else {
-        window.addEventListener('deviceorientationabsolute', handleCompass, true) || window.addEventListener('deviceorientation', handleCompass, true);
+        // ANDROID: FIXED LISTENER ATTACHMENT
+        // Gunakan IF/ELSE agar tidak bentrok antara absolute dan relative
+        if ('ondeviceorientationabsolute' in window) {
+            window.addEventListener('deviceorientationabsolute', handleCompass, true);
+        } else {
+            window.addEventListener('deviceorientation', handleCompass, true);
+        }
       }
     };
 
