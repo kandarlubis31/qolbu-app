@@ -1,10 +1,13 @@
 ---
 // src/pages/index.astro
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 // Helper Tanggal
-const today = new Date().toLocaleDateString('id-ID', { 
-  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+const today = new Date().toLocaleDateString("id-ID", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 });
 
 // DATABASE MENU (Updated with New Tools)
@@ -14,291 +17,634 @@ const menus = [
     desc: "Waktu Sholat & Imsak",
     href: "/sholat",
     color: "bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400",
-    path: "M3 21h18 M5 21v-7l8-4 8 4v7 M12 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" 
+    path: "M3 21h18 M5 21v-7l8-4 8 4v7 M12 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
   },
   {
     title: "Al-Qur'an",
     desc: "Baca Yasin & 114 Surat",
     href: "/quran",
     color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400",
-    path: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"
+    path: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z",
   },
   {
     title: "Doa Harian",
     desc: "Kumpulan Doa Lengkap",
     href: "/doa",
     color: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400",
-    path: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z M12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+    path: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z M12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z",
   },
   {
     title: "Kalkulator Zakat",
     desc: "Hitung Zakat Maal/Profesi",
     href: "/zakat",
     color: "bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
-    path: "M2 7h20v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm2-4h16v2H4V3zm4 8h2v2H8v-2zm6 0h2v2h-2v-2zm-6 4h2v2H8v-2zm6 0h2v2h-2v-2z"
+    path: "M2 7h20v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm2-4h16v2H4V3zm4 8h2v2H8v-2zm6 0h2v2h-2v-2zm-6 4h2v2H8v-2zm6 0h2v2h-2v-2z",
   },
   {
     title: "Panduan Sholat",
     desc: "Bacaan & Gerakan",
     href: "/sholat-guide",
     color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-400",
-    path: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" // Cross/Plus abstract for guide/add
+    path: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z", 
   },
   {
     title: "Tahlil & Doa",
     desc: "Doa Arwah",
     href: "/tahlil",
     color: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400",
-    path: "M10.29 2.227l1.378 1.379a7.653 7.653 0 0 1 1.777 8.35l-.42.923a1.5 1.5 0 0 1-2.73-.733l.42-.924a4.653 4.653 0 0 0-1.08-5.077L8.257 4.77a.75.75 0 0 0-1.06 1.06l1.378 1.379a7.653 7.653 0 0 1 0 10.828l-1.92 1.92a2.025 2.025 0 0 1-2.864 0l-1.92-1.92a7.653 7.653 0 0 1 0-10.828l3.197-3.197a3 3 0 0 1 4.242 0z"
+    path: "M10.29 2.227l1.378 1.379a7.653 7.653 0 0 1 1.777 8.35l-.42.923a1.5 1.5 0 0 1-2.73-.733l.42-.924a4.653 4.653 0 0 0-1.08-5.077L8.257 4.77a.75.75 0 0 0-1.06 1.06l1.378 1.379a7.653 7.653 0 0 1 0 10.828l-1.92 1.92a2.025 2.025 0 0 1-2.864 0l-1.92-1.92a7.653 7.653 0 0 1 0-10.828l3.197-3.197a3 3 0 0 1 4.242 0z",
   },
   {
     title: "Tasbih Digital",
     desc: "Hitung Dzikir",
     href: "/tasbih",
     color: "bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400",
-    path: "M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z M12 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
-  }
+    path: "M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z M12 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",
+  },
 ];
 ---
 
 <BaseLayout pageTitle="Home">
-  
   <div class="mb-8 pt-4 px-1">
     <div class="flex justify-between items-start">
       <div>
         <div class="flex items-center gap-2 mb-1 opacity-70">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500 dark:text-slate-400"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-          <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{today}</p>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500 dark:text-slate-400">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            {today}
+          </p>
         </div>
         <h1 class="text-3xl font-black text-slate-800 dark:text-white leading-tight">
-          Assalamualaikum, <br/>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300">Sobat Qolbu</span>
+          Assalamualaikum, <br />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300">
+            Sobat Qolbu
+          </span>
         </h1>
       </div>
-      <div class="w-11 h-11 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-sm text-xl">
-        👳‍♂️
+      <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden p-1 flex-shrink-0">
+        <img src="/logo.png" alt="Profile" class="w-full h-full object-contain rounded-full" />
       </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4 mb-10">
+  <div class="grid grid-cols-2 gap-4 mb-10 px-1">
     {menus.map((item, index) => (
-      <a href={item.href} class={`group relative p-5 rounded-[2rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
-        index === 0 
-          ? "col-span-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-transparent shadow-emerald-500/25" 
-          : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none"
-      }`}>
+      <a
+        href={item.href}
+        class={`group relative p-5 rounded-[2rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+          index === 0
+            ? "col-span-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-transparent shadow-emerald-500/25"
+            : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none"
+        }`}
+      >
         <div class="flex items-start justify-between mb-4">
-            <div class={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${
-                index === 0 
-                ? "bg-white/20 text-white backdrop-blur-sm" 
-                : item.color
-            }`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d={item.path} />
-              </svg>
-            </div>
-            
-            <div class={`transition-opacity duration-300 ${
-                index === 0 ? "text-white/70 opacity-100" : "text-slate-300 opacity-0 group-hover:opacity-100"
-            }`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-            </div>
+          <div
+            class={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${
+              index === 0 ? "bg-white/20 text-white backdrop-blur-sm" : item.color
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d={item.path} />
+            </svg>
+          </div>
+
+          <div
+            class={`transition-opacity duration-300 ${
+              index === 0 ? "text-white/70 opacity-100" : "text-slate-300 opacity-0 group-hover:opacity-100"
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </div>
         </div>
 
-        <h3 class={`font-bold text-lg mb-1 leading-tight ${
-            index === 0 ? "text-white" : "text-slate-800 dark:text-slate-100"
-        }`}>{item.title}</h3>
-        
-        <p class={`text-xs font-medium line-clamp-1 ${
-            index === 0 ? "text-emerald-100" : "text-slate-500 dark:text-slate-400"
-        }`}>{item.desc}</p>
-        
+        <h3 class={`font-bold text-lg mb-1 leading-tight ${index === 0 ? "text-white" : "text-slate-800 dark:text-slate-100"}`}>
+          {item.title}
+        </h3>
+
+        <p class={`text-xs font-medium line-clamp-1 ${index === 0 ? "text-emerald-100" : "text-slate-500 dark:text-slate-400"}`}>
+          {item.desc}
+        </p>
+
         {index === 0 && (
           <div class="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-4 -translate-y-4">
-             <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg>
           </div>
         )}
       </a>
     ))}
   </div>
 
-  <div class="p-6 bg-slate-900 dark:bg-black rounded-[2rem] text-white shadow-2xl relative overflow-hidden group min-h-[180px] flex flex-col justify-center border border-slate-800">
+  <div class="p-6 bg-slate-900 dark:bg-black rounded-[2rem] text-white shadow-2xl relative overflow-hidden group min-h-[180px] flex flex-col justify-center border border-slate-800 mx-1">
     <div class="absolute top-0 right-0 opacity-5 transform translate-x-8 -translate-y-8 group-hover:scale-110 transition-transform duration-700">
-      <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+      </svg>
     </div>
-    
+
     <div class="relative z-10 animate-fade-in">
-        <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 backdrop-blur-md border border-white/10">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/></svg>
-          Quote Of The Day
-        </span>
-        
-        <p id="quote-text" class="font-serif italic text-xl leading-relaxed text-slate-100 mb-5 transition-opacity duration-500 opacity-0">
-          "Memuat kata mutiara..."
+      <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 backdrop-blur-md border border-white/10">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+        </svg>
+        Quote Of The Day
+      </span>
+
+      <p id="quote-text" class="font-serif italic text-xl leading-relaxed text-slate-100 mb-5 transition-opacity duration-500 opacity-0">
+        "Memuat kata mutiara..."
+      </p>
+
+      <div class="flex items-center gap-3 opacity-80 transition-opacity duration-500" id="quote-source-container">
+        <div class="h-0.5 w-8 bg-emerald-500 rounded-full"></div>
+        <p id="quote-source" class="text-xs font-bold text-emerald-400 tracking-wide uppercase">
+          ...
         </p>
-        
-        <div class="flex items-center gap-3 opacity-80 transition-opacity duration-500" id="quote-source-container">
-            <div class="h-0.5 w-8 bg-emerald-500 rounded-full"></div>
-            <p id="quote-source" class="text-xs font-bold text-emerald-400 tracking-wide uppercase">...</p>
-        </div>
+      </div>
     </div>
   </div>
-
 </BaseLayout>
 
 <script is:inline>
-  // DATABASE QUOTES ULTIMATE (100 DATA)
-  const quotesData = [
-    { text: "Maka sesungguhnya bersama kesulitan ada kemudahan.", source: "QS. Al-Insyirah: 5" },
-    { text: "Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.", source: "QS. Al-Baqarah: 286" },
-    { text: "Dan bersabarlah kamu, sesungguhnya janji Allah adalah benar.", source: "QS. Ar-Rum: 60" },
-    { text: "Janganlah kamu berduka cita, sesungguhnya Allah bersama kita.", source: "QS. At-Taubah: 40" },
-    { text: "Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram.", source: "QS. Ar-Ra'd: 28" },
-    { text: "Dan barangsiapa bertakwa kepada Allah, niscaya Allah menjadikan baginya jalan keluar.", source: "QS. At-Talaq: 2" },
-    { text: "Sesungguhnya shalat itu mencegah dari perbuatan keji dan mungkar.", source: "QS. Al-Ankabut: 45" },
-    { text: "Berdoalah kepada-Ku, niscaya akan Kuperkenankan bagimu.", source: "QS. Ghafir: 60" },
-    { text: "Maka nikmat Tuhan kamu yang manakah yang kamu dustakan?", source: "QS. Ar-Rahman: 13" },
-    { text: "Dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling kenal-mengenal.", source: "QS. Al-Hujurat: 13" },
-    { text: "Sesungguhnya Allah bersama orang-orang yang sabar.", source: "QS. Al-Baqarah: 153" },
-    { text: "Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu.", source: "QS. Al-Baqarah: 216" },
-    { text: "Barangsiapa beriman kepada Allah, niscaya Dia akan memberi petunjuk kepada hatinya.", source: "QS. At-Taghabun: 11" },
-    { text: "Sesungguhnya rahmat Allah sangat dekat kepada orang-orang yang berbuat kebaikan.", source: "QS. Al-A'raf: 56" },
-    { text: "Dan hanya kepada Tuhanmulah hendaknya kamu berharap.", source: "QS. Al-Insyirah: 8" },
-    { text: "Kehidupan dunia hanyalah permainan dan senda gurau.", source: "QS. Al-Hadid: 20" },
-    { text: "Jangan engkau merasa lemah dan jangan bersedih.", source: "QS. Ali Imran: 139" },
-    { text: "Allah menyukai hamba yang bertawakal.", source: "QS. Ali Imran: 159" },
-    { text: "Harta dan anak-anak adalah perhiasan dunia.", source: "QS. Al-Kahfi: 46" },
-    { text: "Sesungguhnya pertolongan Allah itu dekat.", source: "QS. Al-Baqarah: 214" },
-    { text: "Jadikan sabar dan shalat sebagai penolongmu.", source: "QS. Al-Baqarah: 45" },
-    { text: "Sesungguhnya Allah Maha Mengetahui apa yang ada di langit dan di bumi.", source: "QS. Al-Hajj: 70" },
-    { text: "Dan bertawakallah kepada Allah, cukuplah Allah sebagai pelindung.", source: "QS. Al-Ahzab: 3" },
-    { text: "Sesungguhnya kehidupan akhirat itulah kehidupan yang sebenarnya.", source: "QS. Al-Ankabut: 64" },
-    { text: "Allah bersama orang-orang yang bertakwa dan berbuat kebaikan.", source: "QS. An-Nahl: 128" },
-    { text: "Dan barangsiapa yang bertawakal kepada Allah, niscaya Allah akan mencukupinya.", source: "QS. At-Thalaq: 3" },
-    { text: "Sesungguhnya Allah tidak mengubah keadaan suatu kaum sehingga mereka mengubah keadaan diri mereka sendiri.", source: "QS. Ar-Ra'd: 11" },
-    { text: "Dan Tuhanmu adalah Maha Pemurah, maka berilah ampunan kepada orang yang berbuat kesalahan.", source: "QS. Al-Kahfi: 58" },
-    { text: "Dan katakanlah: 'Bekerjalah kamu, maka Allah dan Rasul-Nya serta orang-orang mukmin akan melihat pekerjaanmu itu.", source: "QS. At-Taubah: 105" },
-    { text: "Dan berikanlah kepada keluarga yang dekat haknya, dan juga kepada orang miskin dan orang musafir.", source: "QS. Al-Isra': 26" },
-    { text: "Dan orang-orang yang beriman dan beramal shalih, Kami akan tutupi kesalahan mereka.", source: "QS. Al-Ankabut: 7" },
-    { text: "Wahai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu.", source: "QS. Ali Imran: 200" },
-    { text: "Sesungguhnya orang-orang yang bertakwa berada dalam taman-taman dan mata air-mata air.", source: "QS. Adz-Dzariyat: 15" },
-    { text: "Dan Kami ciptakan untukmu surga dari emas dan permata.", source: "QS. Al-Insan: 12" },
-    { text: "Sesungguhnya shalat itu adalah kewajiban yang ditentukan waktunya.", source: "QS. An-Nisa: 103" },
-    { text: "Dan mohonlah pertolongan kepada Allah dengan sabar dan shalat.", source: "QS. Al-Baqarah: 45" },
-    { text: "Sesungguhnya Allah tidak menyukai orang-orang yang sombong dan membanggakan diri.", source: "QS. An-Nisa: 36" },
-    { text: "Dan janganlah kamu berjalan di muka bumi dengan angkuh.", source: "QS. Luqman: 18" },
-    { text: "Katakanlah: 'Wahai hamba-hamba-Ku yang melampaui batas, janganlah kamu berputus asa dari rahmat Allah.", source: "QS. Az-Zumar: 53" },
-    { text: "Barangsiapa yang tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri sesuatu yang banyak.", source: "HR. Ahmad" },
-    { text: "Dunia adalah perhiasan, dan sebaik-baik perhiasan dunia adalah wanita shalihah.", source: "HR. Muslim" },
-    { text: "Senyummu di hadapan saudaramu adalah sedekah bagimu.", source: "HR. Tirmidzi" },
-    { text: "Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia.", source: "HR. Ahmad" },
-    { text: "Barangsiapa yang menempuh jalan untuk menuntut ilmu, Allah akan mudahkan baginya jalan menuju surga.", source: "HR. Muslim" },
-    { text: "Kekayaan bukanlah dengan banyaknya harta, namun kekayaan adalah kekayaan hati.", source: "HR. Bukhari" },
+const quotesData = [
+    {
+      text: "Maka sesungguhnya bersama kesulitan ada kemudahan.",
+      source: "QS. Al-Insyirah: 5",
+    },
+    {
+      text: "Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.",
+      source: "QS. Al-Baqarah: 286",
+    },
+    {
+      text: "Dan bersabarlah kamu, sesungguhnya janji Allah adalah benar.",
+      source: "QS. Ar-Rum: 60",
+    },
+    {
+      text: "Janganlah kamu berduka cita, sesungguhnya Allah bersama kita.",
+      source: "QS. At-Taubah: 40",
+    },
+    {
+      text: "Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram.",
+      source: "QS. Ar-Ra'd: 28",
+    },
+    {
+      text: "Dan barangsiapa bertakwa kepada Allah, niscaya Allah menjadikan baginya jalan keluar.",
+      source: "QS. At-Talaq: 2",
+    },
+    {
+      text: "Sesungguhnya shalat itu mencegah dari perbuatan keji dan mungkar.",
+      source: "QS. Al-Ankabut: 45",
+    },
+    {
+      text: "Berdoalah kepada-Ku, niscaya akan Kuperkenankan bagimu.",
+      source: "QS. Ghafir: 60",
+    },
+    {
+      text: "Maka nikmat Tuhan kamu yang manakah yang kamu dustakan?",
+      source: "QS. Ar-Rahman: 13",
+    },
+    {
+      text: "Dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling kenal-mengenal.",
+      source: "QS. Al-Hujurat: 13",
+    },
+    {
+      text: "Sesungguhnya Allah bersama orang-orang yang sabar.",
+      source: "QS. Al-Baqarah: 153",
+    },
+    {
+      text: "Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu.",
+      source: "QS. Al-Baqarah: 216",
+    },
+    {
+      text: "Barangsiapa beriman kepada Allah, niscaya Dia akan memberi petunjuk kepada hatinya.",
+      source: "QS. At-Taghabun: 11",
+    },
+    {
+      text: "Sesungguhnya rahmat Allah sangat dekat kepada orang-orang yang berbuat kebaikan.",
+      source: "QS. Al-A'raf: 56",
+    },
+    {
+      text: "Dan hanya kepada Tuhanmulah hendaknya kamu berharap.",
+      source: "QS. Al-Insyirah: 8",
+    },
+    {
+      text: "Kehidupan dunia hanyalah permainan dan senda gurau.",
+      source: "QS. Al-Hadid: 20",
+    },
+    {
+      text: "Jangan engkau merasa lemah dan jangan bersedih.",
+      source: "QS. Ali Imran: 139",
+    },
+    {
+      text: "Allah menyukai hamba yang bertawakal.",
+      source: "QS. Ali Imran: 159",
+    },
+    {
+      text: "Harta dan anak-anak adalah perhiasan dunia.",
+      source: "QS. Al-Kahfi: 46",
+    },
+    {
+      text: "Sesungguhnya pertolongan Allah itu dekat.",
+      source: "QS. Al-Baqarah: 214",
+    },
+    {
+      text: "Jadikan sabar dan shalat sebagai penolongmu.",
+      source: "QS. Al-Baqarah: 45",
+    },
+    {
+      text: "Sesungguhnya Allah Maha Mengetahui apa yang ada di langit dan di bumi.",
+      source: "QS. Al-Hajj: 70",
+    },
+    {
+      text: "Dan bertawakallah kepada Allah, cukuplah Allah sebagai pelindung.",
+      source: "QS. Al-Ahzab: 3",
+    },
+    {
+      text: "Sesungguhnya kehidupan akhirat itulah kehidupan yang sebenarnya.",
+      source: "QS. Al-Ankabut: 64",
+    },
+    {
+      text: "Allah bersama orang-orang yang bertakwa dan berbuat kebaikan.",
+      source: "QS. An-Nahl: 128",
+    },
+    {
+      text: "Dan barangsiapa yang bertawakal kepada Allah, niscaya Allah akan mencukupinya.",
+      source: "QS. At-Thalaq: 3",
+    },
+    {
+      text: "Sesungguhnya Allah tidak mengubah keadaan suatu kaum sehingga mereka mengubah keadaan diri mereka sendiri.",
+      source: "QS. Ar-Ra'd: 11",
+    },
+    {
+      text: "Dan Tuhanmu adalah Maha Pemurah, maka berilah ampunan kepada orang yang berbuat kesalahan.",
+      source: "QS. Al-Kahfi: 58",
+    },
+    {
+      text: "Dan katakanlah: 'Bekerjalah kamu, maka Allah dan Rasul-Nya serta orang-orang mukmin akan melihat pekerjaanmu itu.",
+      source: "QS. At-Taubah: 105",
+    },
+    {
+      text: "Dan berikanlah kepada keluarga yang dekat haknya, dan juga kepada orang miskin dan orang musafir.",
+      source: "QS. Al-Isra': 26",
+    },
+    {
+      text: "Dan orang-orang yang beriman dan beramal shalih, Kami akan tutupi kesalahan mereka.",
+      source: "QS. Al-Ankabut: 7",
+    },
+    {
+      text: "Wahai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu.",
+      source: "QS. Ali Imran: 200",
+    },
+    {
+      text: "Sesungguhnya orang-orang yang bertakwa berada dalam taman-taman dan mata air-mata air.",
+      source: "QS. Adz-Dzariyat: 15",
+    },
+    {
+      text: "Dan Kami ciptakan untukmu surga dari emas dan permata.",
+      source: "QS. Al-Insan: 12",
+    },
+    {
+      text: "Sesungguhnya shalat itu adalah kewajiban yang ditentukan waktunya.",
+      source: "QS. An-Nisa: 103",
+    },
+    {
+      text: "Dan mohonlah pertolongan kepada Allah dengan sabar dan shalat.",
+      source: "QS. Al-Baqarah: 45",
+    },
+    {
+      text: "Sesungguhnya Allah tidak menyukai orang-orang yang sombong dan membanggakan diri.",
+      source: "QS. An-Nisa: 36",
+    },
+    {
+      text: "Dan janganlah kamu berjalan di muka bumi dengan angkuh.",
+      source: "QS. Luqman: 18",
+    },
+    {
+      text: "Katakanlah: 'Wahai hamba-hamba-Ku yang melampaui batas, janganlah kamu berputus asa dari rahmat Allah.",
+      source: "QS. Az-Zumar: 53",
+    },
+    {
+      text: "Barangsiapa yang tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri sesuatu yang banyak.",
+      source: "HR. Ahmad",
+    },
+    {
+      text: "Dunia adalah perhiasan, dan sebaik-baik perhiasan dunia adalah wanita shalihah.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Senyummu di hadapan saudaramu adalah sedekah bagimu.",
+      source: "HR. Tirmidzi",
+    },
+    {
+      text: "Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia.",
+      source: "HR. Ahmad",
+    },
+    {
+      text: "Barangsiapa yang menempuh jalan untuk menuntut ilmu, Allah akan mudahkan baginya jalan menuju surga.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Kekayaan bukanlah dengan banyaknya harta, namun kekayaan adalah kekayaan hati.",
+      source: "HR. Bukhari",
+    },
     { text: "Kebajikan itu adalah akhlak yang baik.", source: "HR. Muslim" },
-    { text: "Setiap amal tergantung pada niatnya.", source: "HR. Bukhari & Muslim" },
-    { text: "Sesungguhnya Allah itu indah dan menyukai keindahan.", source: "HR. Muslim" },
-    { text: "Barangsiapa tidak mensyukuri yang sedikit, tidak akan mampu mensyukuri yang banyak.", source: "HR. Ahmad" },
-    { text: "Allah mencintai jika salah seorang dari kalian bekerja, ia menyempurnakannya.", source: "HR. Thabrani" },
-    { text: "Orang mukmin yang paling sempurna imannya adalah yang paling baik akhlaknya.", source: "HR. Tirmidzi" },
-    { text: "Sesungguhnya Allah menolong hamba-Nya selama hamba itu menolong saudaranya.", source: "HR. Muslim" },
-    { text: "Tidak ada yang lebih berat pada timbangan mukmin pada hari kiamat selain akhlak yang baik.", source: "HR. Tirmidzi" },
-    { text: "Barangsiapa yang memudahkan kesulitan orang lain, Allah akan memudahkan kesulitannya di dunia dan akhirat.", source: "HR. Muslim" },
-    { text: "Sesungguhnya Allah mengasihi orang yang lembut dalam segala urusan.", source: "HR. Bukhari" },
-    { text: "Sesungguhnya orang yang paling dekat kepadaku adalah yang paling baik akhlaknya.", source: "HR. Tirmidzi" },
-    { text: "Barangsiapa yang memelihara kehormatan saudaranya, Allah akan menjaga wajahnya dari api neraka.", source: "HR. Bukhari" },
-    { text: "Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.", source: "HR. Darimi" },
-    { text: "Sesungguhnya Allah menyukai hamba yang makan dan minum lalu bersyukur.", source: "HR. Muslim" },
-    { text: "Tangan di atas lebih baik dari tangan di bawah.", source: "HR. Bukhari" },
-    { text: "Pahlawan bukanlah orang yang berani meletakkan pedangnya ke pundak lawan, tetapi orang yang sanggup menguasai dirinya dikala ia marah.", source: "HR. Bukhari" },
-    { text: "Barangsiapa yang beriman kepada Allah dan Hari Akhir, maka hendaklah ia berkata baik atau diam.", source: "HR. Bukhari" },
-    { text: "Sebaik-baik kalian adalah yang paling baik kepada keluarganya.", source: "HR. Tirmidzi" },
-    { text: "Shalat lima waktu dan Jumat ke Jumat adalah penghapus dosa di antara keduanya.", source: "HR. Muslim" },
-    { text: "Aku sudah melihat segala bentuk rezeki, tapi tidak aku temukan rezeki yang lebih baik daripada kesabaran.", source: "Umar bin Khattab" },
-    { text: "Jangan menjelaskan tentang dirimu kepada siapa pun, karena yang menyukaimu tidak butuh itu, dan yang membencimu tidak percaya itu.", source: "Ali bin Abi Thalib" },
-    { text: "Balas dendam terbaik adalah menjadikan dirimu lebih baik.", source: "Ali bin Abi Thalib" },
-    { text: "Ilmu itu seperti buruan dan tulisan adalah ikatannya. Ikatlah buruanmu dengan tali yang kuat.", source: "Imam Syafi'i" },
-    { text: "Bila kau tak tahan lelahnya belajar, maka kau harus tahan menanggung perihnya kebodohan.", source: "Imam Syafi'i" },
-    { text: "Hati yang sejuk adalah hati yang senantiasa berdzikir.", source: "Ibnul Qayyim" },
-    { text: "Dunia ini ibarat bayangan. Kalau kau berusaha menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.", source: "Ibnu Qayyim" },
-    { text: "Jangan berduka, apa saja yang hilang darimu akan kembali lagi dalam wujud lain.", source: "Jalaluddin Rumi" },
-    { text: "Apa yang melewatkanku tidak akan pernah menjadi takdirku, dan apa yang ditakdirkan untukku tidak akan pernah melewatkanku.", source: "Umar bin Khattab" },
-    { text: "Orang yang paling berani adalah orang yang mampu menahan hawa nafsunya.", source: "Ali bin Abi Thalib" },
-    { text: "Cintailah kekasihmu sekadarnya saja, boleh jadi ia akan menjadi musuhmu suatu hari nanti.", source: "Ali bin Abi Thalib" },
-    { text: "Waktu ibarat pedang, jika kau tidak menebasnya maka ialah yang akan menebasmu.", source: "Imam Syafi'i" },
-    { text: "Cukuplah dirimu dengan ilmu, dan janganlah mencari ketenaran.", source: "Ali bin Abi Thalib" },
-    { text: "Hati yang kosong dari ilmu adalah padang rumput untuk setan.", source: "Ali bin Abi Thalib" },
-    { text: "Kesulitan adalah jembatan menuju kemudahan.", source: "Ali bin Abi Thalib" },
-    { text: "Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.", source: "Ali bin Abi Thalib" },
-    { text: "Jadilah orang yang bijaksana, tetapi jangan menunjukkan kebijaksanaanmu.", source: "Ali bin Abi Thalib" },
-    { text: "Jika ilmu tanpa amal, ibarat pohon tanpa buah.", source: "Imam Syafi'i" },
-    { text: "Barangsiapa belajar untuk dunia, maka ilmunya tidak akan melampaui langit.", source: "Imam Syafi'i" },
-    { text: "Teman sejati adalah yang mengingatkanmu kepada Allah.", source: "Imam Syafi'i" },
-    { text: "Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.", source: "Imam Syafi'i" },
-    { text: "Jika engkau tidak bisa bermanfaat, janganlah membahayakan.", source: "Imam Syafi'i" },
-    { text: "Dunia adalah ladang akhirat, maka tanamlah dengan amal shalih.", source: "Imam Ghazali" },
-    { text: "Hati yang sakit tidak akan disembuhkan oleh dunia, melainkan oleh ilahi.", source: "Imam Ghazali" },
-    { text: "Ketahuilah bahwa kebahagiaan sejati hanya didapat dengan kecintaan kepada Allah.", source: "Imam Ghazali" },
-    { text: "Janganlah engkau menjual akhiratmu dengan dunia, karena dunia akan sirna dan akhirat kekal.", source: "Imam Ghazali" },
-    { text: "Tawakal adalah cahaya yang menerangi jalan hamba.", source: "Imam Ghazali" },
-    { text: "Cinta kepada Allah adalah fondasi segala kebaikan.", source: "Ibnu Qayyim" },
-    { text: "Ketika Allah mencintai hamba-Nya, Dia uji hamba itu untuk membersihkannya.", source: "Ibnu Qayyim" },
-    { text: "Tidak ada ketenangan hati kecuali dengan mengingat Allah.", source: "Ibnu Qayyim" },
-    { text: "Hati akan berkarat karena dosa dan bersinar karena taubat.", source: "Ibnu Qayyim" },
-    { text: "Jika engkau melihat Allah memberimu nikmat, bersyukurlah.", source: "Ibnu Qayyim" },
-    { text: "Cahaya cinta-Nya akan memandumu dalam kegelapan.", source: "Jalaluddin Rumi" },
-    { text: "Di mana ada rasa sakit, di situ ada obat. Di mana ada kesulitan, di situ ada kemudahan.", source: "Jalaluddin Rumi" },
-    { text: "Hati adalah tempat tinggal Tuhan, jangan biarkan yang lain mendiami.", source: "Jalaluddin Rumi" },
-    { text: "Jadilah seperti matahari, terus memberi cahaya tanpa mengharap balasan.", source: "Jalaluddin Rumi" },
-    { text: "Cinta sejati adalah ketika engkau mencintai-Nya lebih dari dirimu sendiri.", source: "Jalaluddin Rumi" },
-    { text: "Jadikanlah sabar dan shalat sebagai penolongmu.", source: "Umar bin Khattab" },
-    { text: "Hiduplah di dunia seakan-akan kamu akan hidup selamanya, dan beramallah untuk akhirat seakan-akan kamu akan mati besok.", source: "Umar bin Khattab" },
-    { text: "Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.", source: "Umar bin Khattab" },
-    { text: "Janganlah kamu takut kecuali kepada dosa, dan jangan berharap kecuali kepada Rabbmu.", source: "Umar bin Khattab" },
-    { text: "Hitunglah dirimu termasuk orang mati sebelum kematian datang menjemputmu.", source: "Umar bin Khattab" }
+    {
+      text: "Setiap amal tergantung pada niatnya.",
+      source: "HR. Bukhari & Muslim",
+    },
+    {
+      text: "Sesungguhnya Allah itu indah dan menyukai keindahan.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Barangsiapa tidak mensyukuri yang sedikit, tidak akan mampu mensyukuri yang banyak.",
+      source: "HR. Ahmad",
+    },
+    {
+      text: "Allah mencintai jika salah seorang dari kalian bekerja, ia menyempurnakannya.",
+      source: "HR. Thabrani",
+    },
+    {
+      text: "Orang mukmin yang paling sempurna imannya adalah yang paling baik akhlaknya.",
+      source: "HR. Tirmidzi",
+    },
+    {
+      text: "Sesungguhnya Allah menolong hamba-Nya selama hamba itu menolong saudaranya.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Tidak ada yang lebih berat pada timbangan mukmin pada hari kiamat selain akhlak yang baik.",
+      source: "HR. Tirmidzi",
+    },
+    {
+      text: "Barangsiapa yang memudahkan kesulitan orang lain, Allah akan memudahkan kesulitannya di dunia dan akhirat.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Sesungguhnya Allah mengasihi orang yang lembut dalam segala urusan.",
+      source: "HR. Bukhari",
+    },
+    {
+      text: "Sesungguhnya orang yang paling dekat kepadaku adalah yang paling baik akhlaknya.",
+      source: "HR. Tirmidzi",
+    },
+    {
+      text: "Barangsiapa yang memelihara kehormatan saudaranya, Allah akan menjaga wajahnya dari api neraka.",
+      source: "HR. Bukhari",
+    },
+    {
+      text: "Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.",
+      source: "HR. Darimi",
+    },
+    {
+      text: "Sesungguhnya Allah menyukai hamba yang makan dan minum lalu bersyukur.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Tangan di atas lebih baik dari tangan di bawah.",
+      source: "HR. Bukhari",
+    },
+    {
+      text: "Pahlawan bukanlah orang yang berani meletakkan pedangnya ke pundak lawan, tetapi orang yang sanggup menguasai dirinya dikala ia marah.",
+      source: "HR. Bukhari",
+    },
+    {
+      text: "Barangsiapa yang beriman kepada Allah dan Hari Akhir, maka hendaklah ia berkata baik atau diam.",
+      source: "HR. Bukhari",
+    },
+    {
+      text: "Sebaik-baik kalian adalah yang paling baik kepada keluarganya.",
+      source: "HR. Tirmidzi",
+    },
+    {
+      text: "Shalat lima waktu dan Jumat ke Jumat adalah penghapus dosa di antara keduanya.",
+      source: "HR. Muslim",
+    },
+    {
+      text: "Aku sudah melihat segala bentuk rezeki, tapi tidak aku temukan rezeki yang lebih baik daripada kesabaran.",
+      source: "Umar bin Khattab",
+    },
+    {
+      text: "Jangan menjelaskan tentang dirimu kepada siapa pun, karena yang menyukaimu tidak butuh itu, dan yang membencimu tidak percaya itu.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Balas dendam terbaik adalah menjadikan dirimu lebih baik.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Ilmu itu seperti buruan dan tulisan adalah ikatannya. Ikatlah buruanmu dengan tali yang kuat.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Bila kau tak tahan lelahnya belajar, maka kau harus tahan menanggung perihnya kebodohan.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Hati yang sejuk adalah hati yang senantiasa berdzikir.",
+      source: "Ibnul Qayyim",
+    },
+    {
+      text: "Dunia ini ibarat bayangan. Kalau kau berusaha menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.",
+      source: "Ibnu Qayyim",
+    },
+    {
+      text: "Jangan berduka, apa saja yang hilang darimu akan kembali lagi dalam wujud lain.",
+      source: "Jalaluddin Rumi",
+    },
+    {
+      text: "Apa yang melewatkanku tidak akan pernah menjadi takdirku, dan apa yang ditakdirkan untukku tidak akan pernah melewatkanku.",
+      source: "Umar bin Khattab",
+    },
+    {
+      text: "Orang yang paling berani adalah orang yang mampu menahan hawa nafsunya.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Cintailah kekasihmu sekadarnya saja, boleh jadi ia akan menjadi musuhmu suatu hari nanti.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Waktu ibarat pedang, jika kau tidak menebasnya maka ialah yang akan menebasmu.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Cukuplah dirimu dengan ilmu, dan janganlah mencari ketenaran.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Hati yang kosong dari ilmu adalah padang rumput untuk setan.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Kesulitan adalah jembatan menuju kemudahan.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Jadilah orang yang bijaksana, tetapi jangan menunjukkan kebijaksanaanmu.",
+      source: "Ali bin Abi Thalib",
+    },
+    {
+      text: "Jika ilmu tanpa amal, ibarat pohon tanpa buah.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Barangsiapa belajar untuk dunia, maka ilmunya tidak akan melampaui langit.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Teman sejati adalah yang mengingatkanmu kepada Allah.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Jika engkau tidak bisa bermanfaat, janganlah membahayakan.",
+      source: "Imam Syafi'i",
+    },
+    {
+      text: "Dunia adalah ladang akhirat, maka tanamlah dengan amal shalih.",
+      source: "Imam Ghazali",
+    },
+    {
+      text: "Hati yang sakit tidak akan disembuhkan oleh dunia, melainkan oleh ilahi.",
+      source: "Imam Ghazali",
+    },
+    {
+      text: "Ketahuilah bahwa kebahagiaan sejati hanya didapat dengan kecintaan kepada Allah.",
+      source: "Imam Ghazali",
+    },
+    {
+      text: "Janganlah engkau menjual akhiratmu dengan dunia, karena dunia akan sirna dan akhirat kekal.",
+      source: "Imam Ghazali",
+    },
+    {
+      text: "Tawakal adalah cahaya yang menerangi jalan hamba.",
+      source: "Imam Ghazali",
+    },
+    {
+      text: "Cinta kepada Allah adalah fondasi segala kebaikan.",
+      source: "Ibnu Qayyim",
+    },
+    {
+      text: "Ketika Allah mencintai hamba-Nya, Dia uji hamba itu untuk membersihkannya.",
+      source: "Ibnu Qayyim",
+    },
+    {
+      text: "Tidak ada ketenangan hati kecuali dengan mengingat Allah.",
+      source: "Ibnu Qayyim",
+    },
+    {
+      text: "Hati akan berkarat karena dosa dan bersinar karena taubat.",
+      source: "Ibnu Qayyim",
+    },
+    {
+      text: "Jika engkau melihat Allah memberimu nikmat, bersyukurlah.",
+      source: "Ibnu Qayyim",
+    },
+    {
+      text: "Cahaya cinta-Nya akan memandumu dalam kegelapan.",
+      source: "Jalaluddin Rumi",
+    },
+    {
+      text: "Di mana ada rasa sakit, di situ ada obat. Di mana ada kesulitan, di situ ada kemudahan.",
+      source: "Jalaluddin Rumi",
+    },
+    {
+      text: "Hati adalah tempat tinggal Tuhan, jangan biarkan yang lain mendiami.",
+      source: "Jalaluddin Rumi",
+    },
+    {
+      text: "Jadilah seperti matahari, terus memberi cahaya tanpa mengharap balasan.",
+      source: "Jalaluddin Rumi",
+    },
+    {
+      text: "Cinta sejati adalah ketika engkau mencintai-Nya lebih dari dirimu sendiri.",
+      source: "Jalaluddin Rumi",
+    },
+    {
+      text: "Jadikanlah sabar dan shalat sebagai penolongmu.",
+      source: "Umar bin Khattab",
+    },
+    {
+      text: "Hiduplah di dunia seakan-akan kamu akan hidup selamanya, dan beramallah untuk akhirat seakan-akan kamu akan mati besok.",
+      source: "Umar bin Khattab",
+    },
+    {
+      text: "Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.",
+      source: "Umar bin Khattab",
+    },
+    {
+      text: "Janganlah kamu takut kecuali kepada dosa, dan jangan berharap kecuali kepada Rabbmu.",
+      source: "Umar bin Khattab",
+    },
+    {
+      text: "Hitunglah dirimu termasuk orang mati sebelum kematian datang menjemputmu.",
+      source: "Umar bin Khattab",
+    },
   ];
   
-  document.addEventListener('DOMContentLoaded', () => {
-    const textEl = document.getElementById('quote-text');
-    const sourceEl = document.getElementById('quote-source');
-    const container = document.getElementById('quote-source-container');
-    
-    // Fungsi Update Quote
+  document.addEventListener("DOMContentLoaded", () => {
+    const textEl = document.getElementById("quote-text");
+    const sourceEl = document.getElementById("quote-source");
+    const container = document.getElementById("quote-source-container");
+
     const updateQuote = () => {
       // 1. Fade Out
       textEl.style.opacity = 0;
       if (container) container.style.opacity = 0;
 
-      // 2. Tunggu transisi (500ms), lalu ganti teks
+      // 2. Wait, change text
       setTimeout(() => {
         const randomIndex = Math.floor(Math.random() * quotesData.length);
         const selectedQuote = quotesData[randomIndex];
 
         textEl.innerText = `"${selectedQuote.text}"`;
         sourceEl.innerText = selectedQuote.source;
-        
+
         // 3. Fade In
         textEl.style.opacity = 1;
         if (container) container.style.opacity = 1;
       }, 500);
     };
 
-    // Jalankan pertama kali
     updateQuote();
-
-    // Jalankan otomatis tiap 10 detik
-    setInterval(updateQuote, 10000); 
+    setInterval(updateQuote, 10000);
   });
 </script>
 
 <style>
-  .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-  
-  /* Transisi halus untuk teks */
-  #quote-text, #quote-source-container { transition: opacity 0.5s ease-in-out; }
-  
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  #quote-text,
+  #quote-source-container {
+    transition: opacity 0.5s ease-in-out;
+  }
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
