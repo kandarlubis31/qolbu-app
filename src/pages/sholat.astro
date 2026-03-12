@@ -12,10 +12,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     
     <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-      <span id="location-text" class="text-xs font-bold text-slate-600 dark:text-slate-300 truncate max-w-[100px]">Mencari...</span>
+      <span id="location-text" class="text-xs font-bold text-slate-600 dark:text-slate-300 truncate max-w-[120px]">Mencari...</span>
     </div>
     
-    <button id="settings-btn" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+    <button id="settings-btn" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   </div>
@@ -48,7 +48,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
            <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Arah Kiblat</h3>
            <p class="text-[10px] text-slate-500">Akurasi bergantung sensor HP</p>
         </div>
-        <button id="qibla-compass-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors">
+        <button id="qibla-compass-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors active:scale-95">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.4 2.4"/><path d="m14.1 11.9-2.1 2.1"/><path d="m11 15-3 3"/></svg>
           Buka Kompas
         </button>
@@ -57,7 +57,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="flex items-center gap-4">
         <div class="relative w-12 h-12 flex-shrink-0">
           <div class="absolute inset-0 rounded-full border-2 border-slate-200 dark:border-slate-600"></div>
-          <div id="qibla-preview-needle" class="absolute inset-0 flex items-center justify-center transition-transform duration-700">
+          <div id="qibla-preview-needle" class="absolute inset-0 flex items-center justify-center transition-transform duration-[800ms] ease-out">
              <div class="w-1 h-8 bg-emerald-500 rounded-full relative">
                 <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-500 rotate-45"></div>
              </div>
@@ -67,6 +67,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
            <p class="text-xs text-slate-500 dark:text-slate-400">Sudut dari Utara:</p>
            <p id="qibla-direction-text" class="text-xl font-bold text-slate-800 dark:text-white">...</p>
         </div>
+      </div>
+    </div>
+
+    <div id="imsak-container" class="hidden mb-3">
+      <div class="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 border-dashed">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span class="font-bold text-sm text-slate-600 dark:text-slate-300">Imsak</span>
+        </div>
+        <span id="imsak-time" class="font-mono font-bold text-sm text-slate-600 dark:text-slate-300">--:--</span>
       </div>
     </div>
 
@@ -87,7 +97,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <div class="mt-4 text-center">
       <button id="refresh-loc-btn" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-95 border border-slate-100 dark:border-slate-700">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        <svg id="refresh-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
         <span>Update Lokasi GPS</span>
       </button>
     </div>
@@ -99,7 +109,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-bold text-slate-800 dark:text-white">Pengaturan Sholat</h3>
-        <button id="close-settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500">
+        <button id="close-settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500 transition-colors hover:text-slate-800 dark:hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
@@ -109,12 +119,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
             <h4 class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">Koreksi Waktu (Ihtiyat)</h4>
             <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">
-                Tambahkan menit agar sesuai jadwal masjid/Kemenag. Default aman: <strong>+2 Menit</strong>.
+                Tambahkan menit agar sesuai jadwal resmi masjid. Default aman: <strong>+2 Menit</strong>.
             </p>
             <div class="flex items-center gap-3">
-                <button id="btn-minus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50">-</button>
+                <button id="btn-minus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">-</button>
                 <div class="flex-1 text-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 h-10 rounded-lg flex items-center justify-center font-mono font-bold" id="input-correction">2</div>
-                <button id="btn-plus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50">+</button>
+                <button id="btn-plus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">+</button>
             </div>
         </div>
 
@@ -186,7 +196,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p class="text-[10px] text-amber-500 mt-2 italic">*Izin notifikasi akan diminta saat disimpan.</p>
         </div>
         
-        <button id="save-settings-btn" class="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/30">
+        <button id="save-settings-btn" class="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/30 active:scale-95">
           Simpan Perubahan
         </button>
       </div>
@@ -195,7 +205,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <div id="qibla-modal" class="fixed inset-0 z-[100] bg-slate-900 hidden text-white">
     <div class="absolute top-4 right-4 z-20">
-       <button id="close-qibla-btn" class="p-2 bg-slate-800 rounded-full text-slate-300 hover:bg-slate-700">
+       <button id="close-qibla-btn" class="p-2 bg-slate-800 rounded-full text-slate-300 hover:bg-slate-700 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
        </button>
     </div>
@@ -208,14 +218,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
           <div id="qibla-compass-disc" class="absolute inset-0 will-change-transform">
              <div class="w-full h-full rounded-full border border-slate-700/50 bg-slate-800/50 relative">
-                 <div class="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-red-500"></div> <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-slate-600"></div>
+                 <div class="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-red-500"></div> 
+                 <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-slate-600"></div>
                  <div class="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-1 bg-slate-600"></div>
                  <div class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-1 bg-slate-600"></div>
              </div>
           </div>
           
           <div id="qibla-arrow-container" class="absolute inset-0 flex items-center justify-center z-10">
-             <div class="relative w-16 h-16">
+             <div class="relative w-16 h-16 animate-pulse-slow">
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]">🕋</div>
              </div>
              <div class="absolute w-1 h-32 bg-transparent -top-10">
@@ -229,41 +240,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <p class="text-slate-400 text-sm max-w-xs mx-auto">
              Putar HP Anda mendatar sampai ikon Ka'bah lurus dengan panah hijau.
           </p>
-          <div class="mt-4 p-3 bg-slate-800 rounded-lg inline-block">
-             <p class="text-xs text-slate-400">Arah Kiblat</p>
+          <div class="mt-4 p-3 bg-slate-800 rounded-xl border border-slate-700 inline-block">
+             <p class="text-xs text-slate-400">Derajat Kiblat</p>
              <p id="qibla-degree-modal" class="text-xl font-bold text-emerald-400">...°</p>
           </div>
        </div>
        
-       <button id="ios-permission-btn" class="hidden mt-6 px-6 py-3 bg-emerald-600 rounded-full font-bold shadow-lg">
+       <button id="ios-permission-btn" class="hidden mt-6 px-6 py-3 bg-emerald-600 rounded-full font-bold shadow-lg transition-colors hover:bg-emerald-700 active:scale-95">
           Izinkan Akses Kompas
        </button>
     </div>
   </div>
 
+  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 text-center"></div>
+
 </BaseLayout>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM ELEMENTS ---
     const els = {
       locText: document.getElementById('location-text'),
       list: document.getElementById('prayer-list'),
+      imsakCont: document.getElementById('imsak-container'),
+      imsakTime: document.getElementById('imsak-time'),
       nextName: document.getElementById('next-prayer-name'),
       count: document.getElementById('countdown'),
       hijri: document.getElementById('hijri-date'),
       gregorian: document.getElementById('gregorian-date'),
       refresh: document.getElementById('refresh-loc-btn'),
+      refreshIcon: document.getElementById('refresh-icon'),
       corDisplay: document.getElementById('correction-display'),
       
-      // Settings
       settingsBtn: document.getElementById('settings-btn'),
       settingsModal: document.getElementById('settings-modal'),
       closeSet: document.getElementById('close-settings-btn'),
       saveSet: document.getElementById('save-settings-btn'),
       settingsOverlay: document.getElementById('settings-overlay'),
       
-      // Inputs
       useGPS: document.getElementById('use-current-location'),
       manualBox: document.getElementById('manual-location'),
       latIn: document.getElementById('lat-input'),
@@ -273,12 +286,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       adhan: document.getElementById('adhan-notification'),
       remind: document.getElementById('reminder-notification'),
       
-      // Correction Inputs
       btnMinus: document.getElementById('btn-minus-cor'),
       btnPlus: document.getElementById('btn-plus-cor'),
       inputCor: document.getElementById('input-correction'),
 
-      // Qibla
       qiblaBtn: document.getElementById('qibla-compass-btn'),
       qiblaModal: document.getElementById('qibla-modal'),
       closeQibla: document.getElementById('close-qibla-btn'),
@@ -287,12 +298,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       qiblaText: document.getElementById('qibla-direction-text'),
       qiblaDegModal: document.getElementById('qibla-degree-modal'),
       previewNeedle: document.getElementById('qibla-preview-needle'),
-      iosBtn: document.getElementById('ios-permission-btn')
+      iosBtn: document.getElementById('ios-permission-btn'),
+      
+      toast: document.getElementById('toast')
     };
 
-    // --- STATE ---
     let state = {
-      lat: -6.2088, // Default JKT
+      lat: -6.2088, 
       lng: 106.8456,
       city: 'Jakarta',
       method: 20,
@@ -300,12 +312,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       adhan: false,
       remind: false,
       qiblaAngle: 0,
-      correction: 2 // Default +2 Minutes (Ihtiyat)
+      correction: 2 
     };
     
     let countdownInterval = null;
+    let lastNotifiedAdhan = null;
+    let lastNotifiedRemind = null;
 
-    // --- INITIALIZATION ---
+    const showToast = (msg) => {
+        els.toast.innerText = msg;
+        els.toast.classList.remove('opacity-0', 'translate-y-10');
+        setTimeout(() => els.toast.classList.add('opacity-0', 'translate-y-10'), 2500);
+    };
+
     const init = () => {
       loadSettings();
       if (state.useGPS) {
@@ -316,7 +335,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     };
 
-    // --- HELPERS ---
     const addMinutes = (timeStr, minutesToAdd) => {
         const [h, m] = timeStr.split(':').map(Number);
         const date = new Date();
@@ -331,7 +349,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return d;
     };
 
-    // --- CORE FUNCTIONS ---
     const fetchPrayer = async (lat, lng) => {
       try {
         calcQibla(lat, lng);
@@ -362,10 +379,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         } else {
           els.locText.innerText = "Error API";
+          showToast("Gagal mengambil data sholat.");
         }
       } catch (e) {
         console.error(e);
-        els.locText.innerText = "Offline / Error";
+        els.locText.innerText = "Offline";
+        showToast("Anda sedang offline atau koneksi terputus.");
       }
     };
 
@@ -379,8 +398,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       els.gregorian.innerText = `${dayName}, ${greg.day} ${greg.month.en} ${greg.year}`;
 
       const timings = data.timings;
-      const names = { Imsak:'Imsak', Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
       
+      // Render Imsak
+      if(timings.Imsak) {
+          els.imsakCont.classList.remove('hidden');
+          els.imsakTime.innerText = timings.Imsak;
+      }
+
+      const names = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
       const now = new Date();
       let nextKey = null;
       let minDiff = Infinity;
@@ -427,16 +452,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     const startTimer = (timings) => {
       if (countdownInterval) clearInterval(countdownInterval);
+      const names = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
       
       const update = () => {
         const now = new Date();
         const ordered = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
         let target = null;
+        let targetKey = null;
 
         for(let k of ordered) {
           const t = getPDate(timings[k]);
           if (t > now) {
             target = t;
+            targetKey = k;
             break;
           }
         }
@@ -446,6 +474,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           target = new Date();
           target.setDate(target.getDate() + 1);
           target.setHours(t.getHours(), t.getMinutes(), 0);
+          targetKey = 'Fajr';
         }
 
         const diff = target - now;
@@ -455,8 +484,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         els.count.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         
-        if (state.adhan && diff < 1000 && diff > 0) notify(`Waktu sholat telah tiba!`, 'Adzan');
-        if (state.remind && diff < 600000 && diff > 599000) notify(`10 Menit menuju waktu sholat`, 'Pengingat');
+        // DEBOUNCED NOTIFICATIONS
+        if (diff < 1000 && diff > 0 && state.adhan && lastNotifiedAdhan !== targetKey) {
+            notify(`Waktu sholat ${names[targetKey]} telah tiba!`, 'Adzan');
+            lastNotifiedAdhan = targetKey;
+        }
+        
+        if (diff <= 600000 && diff > 599000 && state.remind && lastNotifiedRemind !== targetKey) {
+            notify(`10 Menit menuju waktu sholat ${names[targetKey]}`, 'Pengingat');
+            lastNotifiedRemind = targetKey;
+        }
       };
       
       update();
@@ -464,26 +501,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     };
 
     const getGPS = () => {
-      els.locText.innerText = "Mencari...";
+      els.locText.innerText = "Melacak...";
+      els.refreshIcon.classList.add('animate-spin');
+
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           state.lat = pos.coords.latitude;
           state.lng = pos.coords.longitude;
-          state.city = "GPS Akurat";
-          els.locText.innerText = state.city;
-          els.latIn.value = state.lat;
-          els.lngIn.value = state.lng;
-          fetchPrayer(state.lat, state.lng);
+          
+          // Reverse Geocoding to get City Name
+          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${state.lat}&lon=${state.lng}&format=json`)
+            .then(r => r.json())
+            .then(data => {
+              const city = data.address.city || data.address.town || data.address.county || "GPS Akurat";
+              state.city = city;
+              els.locText.innerText = city;
+              els.latIn.value = state.lat.toFixed(5);
+              els.lngIn.value = state.lng.toFixed(5);
+              fetchPrayer(state.lat, state.lng);
+              els.refreshIcon.classList.remove('animate-spin');
+            }).catch(() => {
+              state.city = "Sesuai GPS";
+              els.locText.innerText = state.city;
+              fetchPrayer(state.lat, state.lng);
+              els.refreshIcon.classList.remove('animate-spin');
+            });
         },
         (err) => {
-          alert("Gagal ambil GPS. Pastikan izin lokasi aktif.");
-          els.locText.innerText = "GPS Error";
+          showToast("Gagal ambil GPS. Memakai lokasi terakhir.");
+          els.locText.innerText = state.city;
           fetchPrayer(state.lat, state.lng);
-        }
+          els.refreshIcon.classList.remove('animate-spin');
+        },
+        { timeout: 10000 }
       );
     };
 
-    // --- QIBLA LOGIC (FIXED) ---
     const calcQibla = (lat, lng) => {
       const kaabaLat = 21.4225;
       const kaabaLng = 39.8262;
@@ -504,20 +557,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       els.previewNeedle.style.transform = `rotate(${state.qiblaAngle}deg)`;
     };
 
-    // FIXED COMPASS LOGIC
     const handleCompass = (e) => {
       let compass;
-
       if (e.webkitCompassHeading !== undefined && e.webkitCompassHeading !== null) {
-          // iOS Devices
           compass = e.webkitCompassHeading;
       } else if (e.alpha !== null) {
-          // Android Devices (Convert counter-clockwise alpha to clockwise bearing)
           compass = 360 - e.alpha;
       } else {
-          return; // No compass sensor data
+          return;
       }
-
       els.disc.style.transform = `rotate(${-compass}deg)`;
       els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
     };
@@ -532,14 +580,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 els.iosBtn.classList.add('hidden');
                 window.addEventListener('deviceorientation', handleCompass, true);
               } else {
-                alert("Izin kompas ditolak.");
+                showToast("Izin kompas ditolak.");
               }
             })
             .catch(console.error);
         };
       } else {
-        // ANDROID: FIXED LISTENER ATTACHMENT
-        // Gunakan IF/ELSE agar tidak bentrok antara absolute dan relative
         if ('ondeviceorientationabsolute' in window) {
             window.addEventListener('deviceorientationabsolute', handleCompass, true);
         } else {
@@ -553,10 +599,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
        window.removeEventListener('deviceorientationabsolute', handleCompass, true);
     };
 
-    // --- NOTIFICATIONS API ---
     const notify = (msg, tag) => {
       if (Notification.permission === 'granted') {
-        new Notification("Qolbu App", { body: msg, tag: tag, icon: '/favicon.svg' });
+        new Notification("Qolbu App", { body: msg, tag: tag, icon: '/logo.png' });
       }
     };
 
@@ -566,7 +611,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     };
 
-    // --- SETTINGS HANDLING ---
     const loadSettings = () => {
       const s = JSON.parse(localStorage.getItem('sholat-settings') || '{}');
       if (s.lat) {
@@ -601,11 +645,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       localStorage.removeItem('sholat-data'); 
       
       if (state.adhan || state.remind) reqNotify();
-
+      showToast("Pengaturan disimpan.");
       init();
     };
 
-    // --- EVENT LISTENERS ---
     els.refresh.addEventListener('click', () => {
       localStorage.removeItem('sholat-data');
       getGPS();
@@ -625,7 +668,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
        els.settingsModal.classList.add('hidden');
     });
 
-    // Correction Logic
     els.btnMinus.addEventListener('click', () => {
         let val = parseInt(els.inputCor.innerText);
         els.inputCor.innerText = val - 1;
@@ -644,7 +686,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
        stopCompass();
     });
 
-    // START
     init();
   });
 </script>
@@ -655,4 +696,5 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     to { transform: translateY(0); }
   }
   .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+  .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 </style>
