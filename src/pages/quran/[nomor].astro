@@ -16,18 +16,30 @@ const { nomor } = Astro.params;
 const resDetail = await fetch(`https://equran.id/api/v2/surat/${nomor}`);
 const jsonDetail = await resDetail.json();
 const suratData = jsonDetail.data;
+
+const toArabic = (num) => {
+  const arabicMap = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
+  return num.toString().split('').map(c => arabicMap[c] || c).join('');
+};
 ---
 
 <BaseLayout pageTitle={`Surat ${suratData.namaLatin}`}>
 
-  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-6 flex items-center justify-between shadow-sm">
+  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm">
     <a href="/quran" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       <span class="font-medium text-sm">Daftar Surat</span>
     </a>
-    <button id="settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/30">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
+    
+    <div class="flex items-center gap-2">
+      <div class="flex bg-slate-100 dark:bg-slate-800 rounded-full p-1 border border-slate-200 dark:border-slate-700">
+        <button id="btn-terjemah" class="px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-slate-700 text-emerald-600 shadow-sm transition-all">Per Ayat</button>
+        <button id="btn-mushaf" class="px-3 py-1 rounded-full text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all">Mushaf</button>
+      </div>
+      <button id="settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/30">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
   </div>
 
   <div class="pb-24 px-4 w-full max-w-md mx-auto">
@@ -41,9 +53,9 @@ const suratData = jsonDetail.data;
       <p class="text-sm text-emerald-100 mt-1 relative z-10">{suratData.arti} • {suratData.jumlahAyat} Ayat</p>
     </div>
 
-    <div class="space-y-6">
+    <div id="view-terjemah" class="space-y-6">
       {suratData.ayat.map((ayat) => (
-        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:shadow-md">
+        <div id={`ayat-${ayat.nomorAyat}`} class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:shadow-md scroll-mt-24">
           <div class="flex justify-between items-center mb-4 border-b border-slate-50 dark:border-slate-800/50 pb-3">
             <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
               {ayat.nomorAyat}
@@ -74,6 +86,17 @@ const suratData = jsonDetail.data;
           </div>
         </div>
       ))}
+    </div>
+
+    <div id="view-mushaf" class="hidden bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm leading-[3]">
+      <p class="text-arab-mushaf font-amiri text-[2.2rem] text-justify text-slate-800 dark:text-slate-100" dir="rtl">
+        {suratData.ayat.map((ayat) => (
+          <span>
+            {ayat.teksArab} 
+            <span class="inline-flex items-center justify-center text-emerald-600 mx-1 text-2xl select-none">﴿{toArabic(ayat.nomorAyat)}﴾</span>
+          </span>
+        ))}
+      </p>
     </div>
 
   </div>
@@ -119,6 +142,28 @@ const suratData = jsonDetail.data;
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
+    
+    // TAB LOGIC (TERJEMAH VS MUSHAF)
+    const btnTerjemah = document.getElementById('btn-terjemah');
+    const btnMushaf = document.getElementById('btn-mushaf');
+    const viewTerjemah = document.getElementById('view-terjemah');
+    const viewMushaf = document.getElementById('view-mushaf');
+
+    btnTerjemah.addEventListener('click', () => {
+      btnTerjemah.className = "px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-slate-700 text-emerald-600 shadow-sm transition-all";
+      btnMushaf.className = "px-3 py-1 rounded-full text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all";
+      viewTerjemah.classList.remove('hidden');
+      viewMushaf.classList.add('hidden');
+    });
+
+    btnMushaf.addEventListener('click', () => {
+      btnMushaf.className = "px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-slate-700 text-emerald-600 shadow-sm transition-all";
+      btnTerjemah.className = "px-3 py-1 rounded-full text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all";
+      viewMushaf.classList.remove('hidden');
+      viewTerjemah.classList.add('hidden');
+    });
+
+    // AUDIO LOGIC
     const audioBtns = document.querySelectorAll('.btn-audio');
     let currentAudio = null;
     let currentBtn = null;
@@ -164,6 +209,7 @@ const suratData = jsonDetail.data;
       });
     });
 
+    // SETTINGS LOGIC
     const settingsBtn = document.getElementById('settings-btn');
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
@@ -172,45 +218,61 @@ const suratData = jsonDetail.data;
     const toggleLatin = document.getElementById('toggle-latin');
     const toggleArti = document.getElementById('toggle-arti');
 
-    const showModal = () => settingsModal?.classList.remove('hidden');
-    const hideModal = () => settingsModal?.classList.add('hidden');
+    const showModal = () => settingsModal.classList.remove('hidden');
+    const hideModal = () => settingsModal.classList.add('hidden');
 
-    settingsBtn?.addEventListener('click', showModal);
-    closeSettings?.addEventListener('click', hideModal);
-    overlay?.addEventListener('click', hideModal);
+    settingsBtn.addEventListener('click', showModal);
+    closeSettings.addEventListener('click', hideModal);
+    overlay.addEventListener('click', hideModal);
 
     const applySettings = () => {
-      if(!fontSizeRange) return;
       const size = parseInt(fontSizeRange.value);
       const showLatin = toggleLatin.checked;
       const showArti = toggleArti.checked;
+      
       const sizeClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
+      const mushafClasses = ['text-2xl', 'text-3xl', 'text-4xl', 'text-5xl', 'text-6xl'];
       
       document.querySelectorAll('.text-arab').forEach(el => {
         el.classList.remove(...sizeClasses);
         el.classList.add(sizeClasses[size - 1]);
       });
+
+      document.querySelectorAll('.text-arab-mushaf').forEach(el => {
+        el.classList.remove(...mushafClasses);
+        el.classList.add(mushafClasses[size - 1]);
+      });
+
       document.querySelectorAll('.text-latin').forEach(el => {
         el.style.display = showLatin ? 'block' : 'none';
       });
       document.querySelectorAll('.text-arti').forEach(el => {
         el.style.display = showArti ? 'block' : 'none';
       });
+
       localStorage.setItem('quran-settings', JSON.stringify({ size, showLatin, showArti }));
     };
 
-    fontSizeRange?.addEventListener('input', applySettings);
-    toggleLatin?.addEventListener('change', applySettings);
-    toggleArti?.addEventListener('change', applySettings);
+    fontSizeRange.addEventListener('input', applySettings);
+    toggleLatin.addEventListener('change', applySettings);
+    toggleArti.addEventListener('change', applySettings);
 
     const saved = localStorage.getItem('quran-settings');
     if (saved) {
       const { size, showLatin, showArti } = JSON.parse(saved);
-      if(fontSizeRange) fontSizeRange.value = size;
-      if(toggleLatin) toggleLatin.checked = showLatin;
-      if(toggleArti) toggleArti.checked = showArti;
+      fontSizeRange.value = size;
+      toggleLatin.checked = showLatin;
+      toggleArti.checked = showArti;
     }
     applySettings();
+
+    // SMOOTH SCROLLING JUZ (If arriving with hash)
+    if (window.location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(window.location.hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 500);
+    }
   });
 </script>
 

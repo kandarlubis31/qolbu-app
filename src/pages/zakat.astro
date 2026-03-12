@@ -34,24 +34,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">Harga Emas Saat Ini (per gram)</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Rp</span>
-          <input type="number" id="gold-price" value="1200000" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all" />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
+          <input type="text" inputmode="numeric" id="gold-price" value="1.200.000" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
         </div>
       </div>
 
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">Total Harta (Tabungan/Emas/Aset)</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Rp</span>
-          <input type="number" id="total-wealth" placeholder="0" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all" />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
+          <input type="text" inputmode="numeric" id="total-wealth" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
         </div>
       </div>
 
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">Hutang Jatuh Tempo (Pengurang)</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Rp</span>
-          <input type="number" id="total-debt" placeholder="0" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all" />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
+          <input type="text" inputmode="numeric" id="total-debt" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
         </div>
       </div>
     </div>
@@ -59,23 +59,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div id="form-income" class="space-y-4 hidden animate-fade-in">
       <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-4">
         <p class="text-xs text-blue-800 dark:text-blue-200 leading-relaxed">
-          💡 <strong>Zakat Penghasilan</strong> dikeluarkan setiap menerima gaji jika totalnya setara dengan 520kg beras (approx. Rp 6-7 Juta).
+          💡 <strong>Zakat Penghasilan</strong> dikeluarkan setiap menerima gaji. Nisab per bulan setara dengan 85 gram emas dibagi 12 (atau dikiaskan 520kg beras).
         </p>
       </div>
 
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">Penghasilan Per Bulan</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Rp</span>
-          <input type="number" id="monthly-income" placeholder="0" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all" />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
+          <input type="text" inputmode="numeric" id="monthly-income" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
         </div>
       </div>
       
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">Bonus / THR (Opsional)</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">Rp</span>
-          <input type="number" id="other-income" placeholder="0" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all" />
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
+          <input type="text" inputmode="numeric" id="other-income" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="relative z-10 text-center">
         <p class="text-slate-400 text-xs font-medium uppercase tracking-widest mb-1">Wajib Zakat (2.5%)</p>
         <h2 id="zakat-amount" class="text-3xl font-black text-emerald-400 my-3">Rp 0</h2>
-        <p id="nishab-status" class="text-xs text-slate-300 bg-slate-800 inline-block px-3 py-1 rounded-full">
+        <p id="nishab-status" class="text-xs text-slate-300 bg-slate-800 inline-block px-3 py-1.5 rounded-full mt-1">
           Menunggu perhitungan...
         </p>
       </div>
@@ -104,11 +104,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    // Tabs
+    // --- TABS LOGIC ---
     const tabMaal = document.getElementById('tab-maal');
     const tabIncome = document.getElementById('tab-income');
     const formMaal = document.getElementById('form-maal');
     const formIncome = document.getElementById('form-income');
+    const resultCard = document.getElementById('result-card');
     
     let activeTab = 'maal'; // maal | income
 
@@ -125,73 +126,98 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         formIncome.classList.remove('hidden');
         formMaal.classList.add('hidden');
       }
-      document.getElementById('result-card').classList.add('hidden');
+      resultCard.classList.add('hidden');
     };
 
     tabMaal.addEventListener('click', () => switchTab('maal'));
     tabIncome.addEventListener('click', () => switchTab('income'));
 
-    // Calculation Logic
+    // --- RUPIAH FORMATTER ---
+    const inputs = document.querySelectorAll('.input-rupiah');
+
+    // Fungsi untuk mengubah angka biasa jadi format ribuan (1.000.000)
+    const formatRupiah = (angka) => {
+      let number_string = angka.replace(/[^,\d]/g, '').toString();
+      let split = number_string.split(',');
+      let sisa = split[0].length % 3;
+      let rupiah = split[0].substr(0, sisa);
+      let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+      if (ribuan) {
+        let separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+      }
+
+      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+      return rupiah;
+    };
+
+    // Fungsi untuk mengambil angka asli (int) dari format ribuan
+    const getInt = (str) => {
+      if (!str) return 0;
+      return parseInt(str.replace(/\./g, '')) || 0;
+    };
+
+    inputs.forEach(input => {
+      input.addEventListener('input', function(e) {
+        this.value = formatRupiah(this.value);
+      });
+    });
+
+    // --- CALCULATION LOGIC ---
     const btnCalc = document.getElementById('btn-calculate');
-    const resultCard = document.getElementById('result-card');
     const zakatAmount = document.getElementById('zakat-amount');
     const nishabStatus = document.getElementById('nishab-status');
 
     btnCalc.addEventListener('click', () => {
       let total = 0;
-      let threshold = 0; // Nishab
-      let isWajib = false;
+      let threshold = 0; 
       const formatRp = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
 
+      // Ambil harga emas dari inputan Maal (dipakai juga untuk patokan penghasilan)
+      const goldPrice = getInt(document.getElementById('gold-price').value) || 1200000;
+
       if (activeTab === 'maal') {
-        const goldPrice = parseFloat(document.getElementById('gold-price').value) || 0;
-        const wealth = parseFloat(document.getElementById('total-wealth').value) || 0;
-        const debt = parseFloat(document.getElementById('total-debt').value) || 0;
+        const wealth = getInt(document.getElementById('total-wealth').value);
+        const debt = getInt(document.getElementById('total-debt').value);
         
         total = wealth - debt;
-        threshold = 85 * goldPrice; // Nishab 85 gram emas
+        threshold = 85 * goldPrice; // Nishab: 85 gram emas
         
         if (total >= threshold) {
-          isWajib = true;
           const zakat = total * 0.025;
           zakatAmount.innerText = formatRp(zakat);
           nishabStatus.innerText = "✅ Wajib Zakat (Mencapai Nishab)";
-          nishabStatus.className = "text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1 rounded-full font-bold";
+          nishabStatus.className = "text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
         } else {
           zakatAmount.innerText = "Rp 0";
           nishabStatus.innerText = `❌ Belum Wajib (Nishab: ${formatRp(threshold)})`;
-          nishabStatus.className = "text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1 rounded-full font-bold";
+          nishabStatus.className = "text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
         }
 
       } else {
-        // Income (Qiyas ke Emas atau Pertanian). Kemenag: 520kg Beras. Kita pakai asumsi umum Rp 7.000.000 aman-nya, atau pakai Emas 85gr/tahun dibagi 12.
-        // Kita pakai pendekatan umum: Jika > kebutuhan pokok (sulit diukur), pakai batas minimal misal 6 juta.
-        // Atau hitung saja 2.5% langsung untuk kehati-hatian.
-        
-        const income = parseFloat(document.getElementById('monthly-income').value) || 0;
-        const bonus = parseFloat(document.getElementById('other-income').value) || 0;
+        const income = getInt(document.getElementById('monthly-income').value);
+        const bonus = getInt(document.getElementById('other-income').value);
         
         total = income + bonus;
         
-        // Nishab Perbulan (Analogi 85gr Emas / 12 bulan) -> Rp 1.2jt * 85 / 12 = ~8.5 Juta
-        const goldPrice = parseFloat(document.getElementById('gold-price').value) || 1200000;
+        // Nishab Perbulan (85gr Emas / 12 bulan)
         threshold = (85 * goldPrice) / 12;
 
         if (total >= threshold) {
-           isWajib = true;
            const zakat = total * 0.025;
            zakatAmount.innerText = formatRp(zakat);
-           nishabStatus.innerText = "✅ Wajib Zakat";
-           nishabStatus.className = "text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1 rounded-full font-bold";
+           nishabStatus.innerText = "✅ Wajib Zakat Penghasilan";
+           nishabStatus.className = "text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
         } else {
            zakatAmount.innerText = "Rp 0";
-           nishabStatus.innerText = `❌ Belum Wajib (Min: ${formatRp(threshold)})`;
-           nishabStatus.className = "text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1 rounded-full font-bold";
+           nishabStatus.innerText = `❌ Belum Wajib (Min: ${formatRp(threshold)}/bln)`;
+           nishabStatus.className = "text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
         }
       }
 
       resultCard.classList.remove('hidden');
-      resultCard.scrollIntoView({ behavior: 'smooth' });
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
     });
   });
 </script>

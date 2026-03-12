@@ -1,6 +1,57 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import tahlilData from '../data/tahlil.json';
+
+const tahlilData = [
+  {
+    "id": 1,
+    "judul": "Pengantar Al-Fatihah",
+    "arab": "إِلَى حَضْرَةِ النَّبِيِّ الْمُصْطَفَى صَلَّى اللهُ عَلَيهِ وَسَلَّمَ وَآلِهِ وَصَحْبِهِ وَأَزْوَاجِهِ وَذُرِّيَّاتِهِ وَأَهْلِ بَيْتِهِ الْكِرَامِ، شَيْءٌ لِلهِ لَهُمُ الْفَاتِحَةُ",
+    "latin": "Ila hadrotin-nabiyyil musthofaa shollallahu 'alaihi wa sallama, wa aalihi wa shohbihi wa azwaajihi wa dzurriyyatihi wa ahli baitihil kirom, syai-u lillahi lahumul faatihah.",
+    "arti": "Ke hadirat Nabi pilihan Muhammad SAW, keluarganya, sahabatnya, istri-istrinya, keturunannya, dan ahli baitnya yang mulia, semoga Allah melimpahkan sesuatu untuk mereka, Al-Fatihah."
+  },
+  {
+    "id": 2,
+    "judul": "Surat Al-Ikhlas (3x)",
+    "arab": "قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
+    "latin": "Qul huwallāhu aḥad. Allāhuṣ-ṣamad. Lam yalid wa lam yūlad. Wa lam yakun lahū kufuwan aḥad.",
+    "arti": "Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia."
+  },
+  {
+    "id": 3,
+    "judul": "Surat Al-Falaq",
+    "arab": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِنْ شَرِّ مَا خَلَقَ ۞ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+    "latin": "Qul a‘ūżu birabbil-falaq. Min syarri mā khalaq. Wa min syarri gāsiqin iżā waqab. Wa min syarrin-naffāṡāti fil-‘uqad. Wa min syarri ḥāsidin iżā ḥasad.",
+    "arti": "Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (perempuan-perempuan) penyihir yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki."
+  },
+  {
+    "id": 4,
+    "judul": "Surat An-Nas",
+    "arab": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ",
+    "latin": "Qul a‘ūżu birabbin-nās. Malikin-nās. Ilāhin-nās. Min syarril-waswāsil-khannās. Allażī yuwaswisu fī ṣudūrin-nās. Minal-jinnati wan-nās.",
+    "arti": "Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia."
+  },
+  {
+    "id": 5,
+    "judul": "Tahlil & Takbir",
+    "arab": "لاَ إِلهَ إِلاَّ اللهُ وَاللهُ أَكْبَرُ وَلِلهِ الْحَمْدُ",
+    "latin": "Laa ilaaha illallahu wallahu akbar wa lillahil hamd.",
+    "arti": "Tiada Tuhan selain Allah, Allah Maha Besar, dan bagi Allah segala puji."
+  },
+  {
+    "id": 6,
+    "judul": "Kalimat Toyyibah (33x)",
+    "arab": "لاَ إِلهَ إِلاَّ اللهُ",
+    "latin": "Laa ilaaha illallah",
+    "arti": "Tiada Tuhan selain Allah."
+  },
+  {
+    "id": 7,
+    "judul": "Doa Penutup Singkat",
+    "arab": "اَللَّهُمَّ اغْفِرْ لَهُمْ وَارْحَمْهُمْ وَعَافِهِمْ وَاعْفُ عَنْهُمْ",
+    "latin": "Allahummaghfir lahum warhamhum wa 'aafihim wa'fu 'anhum.",
+    "arti": "Ya Allah, ampunilah mereka, sayangilah mereka, selamatkanlah mereka, dan maafkanlah mereka."
+  }
+];
 ---
 
 <BaseLayout pageTitle="Tahlil & Doa">
@@ -12,7 +63,7 @@ import tahlilData from '../data/tahlil.json';
     </a>
     
     <button id="settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 hover:text-emerald-600 transition-colors cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   </div>
 
@@ -21,7 +72,7 @@ import tahlilData from '../data/tahlil.json';
     <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">Bacaan tahlil lengkap untuk mendoakan keluarga yang telah mendahului kita.</p>
   </div>
 
-  <div class="space-y-6 pb-32">
+  <div class="space-y-6 pb-32 px-4 max-w-md mx-auto">
     {tahlilData.map((item, index) => (
       <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
         
@@ -52,7 +103,7 @@ import tahlilData from '../data/tahlil.json';
       </div>
     ))}
 
-    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl shadow-lg text-white text-center">
+    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl shadow-lg text-white text-center mt-8">
       <h3 class="font-bold text-lg mb-2">Selesai</h3>
       <p class="text-sm opacity-90 mb-4">Semoga doa-doa yang dipanjatkan sampai kepada ahli kubur dan diterima oleh Allah SWT.</p>
       <a href="/" class="inline-block bg-white text-emerald-600 px-6 py-2 rounded-full font-bold text-sm hover:bg-emerald-50 transition-colors">
@@ -64,14 +115,14 @@ import tahlilData from '../data/tahlil.json';
   <div id="settings-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="overlay"></div>
     <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up ring-1 ring-white/10">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-6 max-w-md mx-auto w-full">
         <h3 class="font-bold text-lg text-slate-800 dark:text-white">Pengaturan Tampilan</h3>
         <button id="close-settings" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
       
-      <div class="space-y-6">
+      <div class="space-y-6 max-w-md mx-auto w-full">
         <div>
           <label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Ukuran Font Arab</label>
           <input type="range" id="font-size-range" min="1" max="5" step="1" value="3" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
@@ -107,7 +158,6 @@ import tahlilData from '../data/tahlil.json';
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    // Elements
     const settingsBtn = document.getElementById('settings-btn');
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
@@ -117,7 +167,6 @@ import tahlilData from '../data/tahlil.json';
     const toggleLatin = document.getElementById('toggle-latin');
     const toggleArti = document.getElementById('toggle-arti');
 
-    // Modal Logic
     const showModal = () => settingsModal?.classList.remove('hidden');
     const hideModal = () => settingsModal?.classList.add('hidden');
 
@@ -125,7 +174,6 @@ import tahlilData from '../data/tahlil.json';
     closeSettings?.addEventListener('click', hideModal);
     overlay?.addEventListener('click', hideModal);
 
-    // Settings Logic (Mirip Yasin tapi tanpa audio)
     const applySettings = () => {
       if(!fontSizeRange) return;
 
@@ -135,30 +183,26 @@ import tahlilData from '../data/tahlil.json';
 
       const sizeClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
       
-      // Update Arab Size
       document.querySelectorAll('.text-arab').forEach(el => {
         el.classList.remove(...sizeClasses);
         el.classList.add(sizeClasses[size - 1]);
       });
 
-      // Toggle Visibility
       document.querySelectorAll('.text-latin').forEach(el => {
         el.style.display = showLatin ? 'block' : 'none';
       });
+      
       document.querySelectorAll('.text-arti').forEach(el => {
         el.style.display = showArti ? 'block' : 'none';
       });
 
-      // Save State
       localStorage.setItem('tahlil-settings', JSON.stringify({ size, showLatin, showArti }));
     };
 
-    // Listeners
     fontSizeRange?.addEventListener('input', applySettings);
     toggleLatin?.addEventListener('change', applySettings);
     toggleArti?.addEventListener('change', applySettings);
 
-    // Load Saved State
     try {
       const saved = localStorage.getItem('tahlil-settings');
       if (saved) {
@@ -167,9 +211,8 @@ import tahlilData from '../data/tahlil.json';
         if(toggleLatin) toggleLatin.checked = showLatin;
         if(toggleArti) toggleArti.checked = showArti;
       }
-    } catch (e) { console.error("Setting load error"); }
+    } catch (e) {}
     
-    // Apply on load
     applySettings();
   });
 </script>

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// DATA PANDUAN SHOLAT LENGKAP (Sesuai Materi User)
+// DATA PANDUAN SHOLAT LENGKAP
 const guides = [
   // --- BAGIAN 1: PERSIAPAN ---
   {
@@ -12,7 +12,9 @@ const guides = [
     latin: "Ushalli fardhu dhuhri arba'a raka'aatim mustaqbilal qiblati adaa-an lillaahi ta'aala.",
     arti: "Aku berniat shalat fardhu Dhuhur empat rakaat menghadap kiblat karena Allah Ta'ala.",
     desc: "Niat dilakukan di dalam hati berbarengan dengan Takbiratul Ihram. Pastikan suci dari hadats, menutup aurat, dan menghadap kiblat.",
-    audio: null
+    audio: null,
+    // Ilustrasi orang berdiri niat (Placeholder)
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 4v7"/><path d="M8 8l4-2 4 2"/><path d="M12 11v11"/><path d="M8 22l4-11 4 11"/></svg>`
   },
   
   // --- BAGIAN 2: RAKAAT PERTAMA ---
@@ -24,7 +26,8 @@ const guides = [
     latin: "Allāhu Akbar",
     arti: "Allah Maha Besar",
     desc: "Angkat kedua tangan sejajar telinga (laki-laki) atau bahu (perempuan). Pandangan lurus ke tempat sujud.",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 4v18"/><path d="M8 22h8"/><path d="M7 6c1.5 2 3.5 2 5 2s3.5 0 5-2"/></svg>`
   },
   {
     id: "iftitah",
@@ -34,7 +37,8 @@ const guides = [
     latin: "Allaahumma baa'id bainii wa bayana khathaayaaya kamaa baa'adta bainal masyriqi wal maghribi...",
     arti: "Ya Allah, jauhkan antara aku dan kesalahanku sebagaimana Engkau jauhkan antara timur dan barat...",
     desc: "Sunnah dibaca pada rakaat pertama saja setelah Takbiratul Ihram.",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M12 4v18"/><path d="M8 22h8"/><path d="M10 10l2-2 2 2"/></svg>`
   },
   {
     id: "fatihah",
@@ -44,7 +48,8 @@ const guides = [
     latin: "Bismillahir rahmaanir rahiim. Alhamdu lillaahi rabbil 'aalamiin...",
     arti: "Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang. Segala puji bagi Allah, Tuhan semesta alam...",
     desc: "Wajib dibaca pada setiap rakaat. Jika tidak dibaca, sholat tidak sah.",
-    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3"
+    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3",
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><path d="M4 10h16"/><path d="M12 10v10"/></svg>`
   },
   {
     id: "surat_pendek",
@@ -54,7 +59,8 @@ const guides = [
     latin: "Qul huwallaahu ahad. Allaahus shomad. Lam yalid wa lam yuulad...",
     arti: "Katakanlah: Dialah Allah, Yang Maha Esa. Allah adalah Tuhan yang bergantung kepada-Nya segala sesuatu...",
     desc: "Sunnah dibaca pada rakaat pertama dan kedua setelah Al-Fatihah.",
-    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/112001.mp3"
+    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/112001.mp3",
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`
   },
   {
     id: "ruku",
@@ -64,7 +70,8 @@ const guides = [
     latin: "Subhaana rabbiyal 'adhiim (3x)",
     arti: "Maha Suci Tuhanku yang Maha Agung.",
     desc: "Membungkuk dengan punggung rata, tangan memegang lutut. Tumakninah (diam sejenak).",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="6" r="2"/><path d="M16 8l-6 2-4 8"/><path d="M10 10v12"/><path d="M10 22h4"/></svg>`
   },
   {
     id: "itidal",
@@ -74,7 +81,8 @@ const guides = [
     latin: "Sami'allahu liman hamidah. Rabbanaa lakal hamdu...",
     arti: "Allah mendengar orang yang memuji-Nya. Ya Tuhan kami, bagi-Mu segala puji.",
     desc: "Bangkit berdiri tegak kembali. Boleh ditambah doa: Mil'us samaawaati wa mil'ul ardh...",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M12 10l-4-4"/><path d="M12 10l4-4"/></svg>`
   },
   {
     id: "sujud",
@@ -84,7 +92,8 @@ const guides = [
     latin: "Subhaana rabbiyal a'laa (3x)",
     arti: "Maha Suci Tuhanku yang Maha Tinggi.",
     desc: "Pastikan 7 anggota badan menempel lantai: Dahi, kedua telapak tangan, kedua lutut, dan ujung kaki.",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="18" r="2"/><path d="M8 18h14"/><path d="M12 18l4-8-4-4"/></svg>`
   },
   {
     id: "duduk",
@@ -94,7 +103,8 @@ const guides = [
     latin: "Rabbighfirlii warhamnii wajburnii warfa'nii warzuqnii wahdinii wa 'aafinii wa'fu 'annii.",
     arti: "Ya Tuhan, ampunilah aku, rahmatilah aku, cukupkanlah aku, angkatlah derajatku, berilah rezeki...",
     desc: "Duduk iftirasy (menduduki kaki kiri, kaki kanan tegak).",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="2"/><path d="M12 10v8"/><path d="M8 22h8"/><path d="M12 18H8"/></svg>`
   },
   
   // --- BAGIAN 3: TAHIYAT ---
@@ -106,7 +116,8 @@ const guides = [
     latin: "Attahiyyaatu lillaahi wash shalawaatu wath thoyyibaat...",
     arti: "Segala penghormatan, doa, dan kebaikan hanya untuk Allah...",
     desc: "Dilakukan pada rakaat kedua. Baca syahadat: Asyhadu an laa ilaaha illallaah...",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`
   },
   {
     id: "tasyahud_akhir",
@@ -116,7 +127,8 @@ const guides = [
     latin: "Allaahumma sholli 'alaa muhammadin wa 'alaa aali muhammad...",
     arti: "Ya Allah, limpahkanlah rahmat kepada Nabi Muhammad dan keluarganya...",
     desc: "Duduk tawarruk (kaki kiri masuk ke bawah kaki kanan). Bacaan sama dengan awal ditambah Shalawat Nabi.",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`
   },
   
   // --- BAGIAN 4: PENUTUP ---
@@ -128,7 +140,8 @@ const guides = [
     latin: "Assalaamu'alaikum wa rahmatullaah",
     arti: "Semoga keselamatan dan rahmat Allah tercurah kepadamu.",
     desc: "Menoleh ke kanan sampai pipi terlihat, lalu ke kiri.",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
   },
   {
     id: "dzikir",
@@ -138,12 +151,13 @@ const guides = [
     latin: "Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x)",
     arti: "Maha Suci Allah, Segala Puji bagi Allah, Allah Maha Besar.",
     desc: "Disunnahkan membaca Istighfar 3x sebelum memulai dzikir ini.",
-    audio: null
+    audio: null,
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 12v.01"/><path d="M12 16v.01"/></svg>`
   }
 ];
 ---
 
-<BaseLayout pageTitle="Panduan Sholat">
+<BaseLayout pageTitle="Panduan Sholat Lengkap">
   
   <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm">
     <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
@@ -151,88 +165,94 @@ const guides = [
       <span class="font-medium text-sm">Kembali</span>
     </a>
     <h1 class="font-bold text-slate-800 dark:text-white text-sm">Panduan Sholat</h1>
-    <button id="view-bookmarks" class="flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -mr-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
+    <button id="view-bookmarks" class="flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -mr-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800 relative">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <span id="bookmark-badge" class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full hidden"></span>
     </button>
   </div>
 
   <div class="pb-24 px-4 w-full max-w-md mx-auto">
     
-    <div class="relative mb-4">
-      <input type="text" id="search-input" placeholder="Cari bacaan (misal: Iftitah, Ruku)..." class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400">
+    <div class="relative mb-6">
+      <input type="text" id="search-input" placeholder="Cari bacaan (misal: Iftitah, Ruku)..." class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400 shadow-sm transition-all">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     </div>
 
-    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm mb-6 sticky top-32 z-30">
-      <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm mb-6 sticky top-32 z-30 transition-all">
+      <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 font-bold uppercase tracking-wider">
         <span>Progress Belajar</span>
-        <span><span id="current-step-text">0</span> / {guides.length}</span>
+        <span><span id="current-step-text" class="text-emerald-600 dark:text-emerald-400">0</span> / {guides.length}</span>
       </div>
       <div class="bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
-        <div id="progress-bar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+        <div id="progress-bar" class="bg-emerald-500 h-full transition-all duration-500 ease-out" style="width: 0%"></div>
       </div>
       <div class="flex gap-2">
-        <button id="practice-btn" class="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-500/20 active:scale-95">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span>Mulai Praktik</span>
+        <button id="practice-btn" class="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-500/20 active:scale-95">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="play-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span class="btn-text">Mulai Praktik</span>
         </button>
-        <button id="reset-progress" class="py-2.5 px-3 rounded-xl text-sm font-bold transition-all bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95" title="Reset Progress">
+        <button id="reset-progress" class="py-2.5 px-3.5 rounded-xl text-sm font-bold transition-all bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95" title="Reset Progress">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         </button>
       </div>
-      <p class="text-[10px] text-center text-slate-400 mt-2 italic">Mode Praktik otomatis pindah tiap 15 detik.</p>
+      <p id="practice-hint" class="text-[10px] text-center text-slate-400 mt-2 italic">Mode Praktik memutar bacaan berurutan tiap 15 detik.</p>
     </div>
 
     <div class="space-y-4" id="guide-container">
       {guides.map((item, index) => (
-        <details class="group border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 open:shadow-md open:border-emerald-500/50" data-index={index} data-id={item.id}>
+        <details class="group border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 open:shadow-lg open:border-emerald-500/50" data-index={index} data-id={item.id}>
           
-          <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none bg-slate-50/50 dark:bg-slate-800/50 group-open:bg-white dark:group-open:bg-slate-900 transition-colors">
+          <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none bg-slate-50/50 dark:bg-slate-800/50 group-open:bg-emerald-50 dark:group-open:bg-emerald-900/10 transition-colors">
             <div class="flex items-center gap-3">
-              <span class="step-badge w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs font-bold group-open:bg-emerald-500 group-open:text-white transition-colors">
+              <span class="step-badge w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-sm font-bold group-open:bg-emerald-500 group-open:text-white transition-colors flex-shrink-0">
                 {index + 1}
               </span>
               <div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold block mb-0.5">{item.category}</span>
-                <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm group-open:text-emerald-600 dark:group-open:text-emerald-400 transition-colors">
+                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-0.5">{item.category}</span>
+                <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm group-open:text-emerald-700 dark:group-open:text-emerald-400 transition-colors line-clamp-1">
                   {item.title.split('. ')[1]}
                 </h3>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-               <button class="bookmark-btn p-1.5 text-slate-300 hover:text-rose-500 transition-colors z-20" data-id={item.id} title="Simpan">
+            <div class="flex items-center gap-1">
+               <button class="bookmark-btn p-2 text-slate-300 hover:text-rose-500 transition-colors z-20 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" data-id={item.id} title="Simpan Bookmark">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                </button>
-               <span class="transform group-open:rotate-180 transition-transform text-slate-400">
+               <span class="transform group-open:rotate-180 transition-transform text-slate-400 p-1">
                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                </span>
             </div>
           </summary>
 
-          <div class="px-5 pb-6 pt-2 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
-            <p class="text-xs text-slate-600 dark:text-slate-300 mb-4 italic bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded-lg border border-emerald-100 dark:border-emerald-800/30 leading-relaxed">
-              💡 {item.desc}
-            </p>
+          <div class="px-5 pb-6 pt-3 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
             
-            <div class="text-right mb-4 relative bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl">
+            <div class="flex gap-4 mb-5 items-start">
+              <div class="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700" set:html={item.icon}></div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 italic leading-relaxed flex-1 pt-1">
+                {item.desc}
+              </p>
+            </div>
+            
+            <div class="text-right mb-4 relative bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50">
                <p class="font-amiri text-3xl text-slate-800 dark:text-slate-100 leading-[2.2]" dir="rtl">{item.arab}</p>
             </div>
 
-            <div class="space-y-2 mb-4 px-1">
+            <div class="space-y-1.5 mb-5 px-1">
               <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 leading-relaxed">{item.latin}</p>
               <p class="text-xs text-slate-500 dark:text-slate-400">"{item.arti}"</p>
             </div>
 
-            <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
                <button 
-                 class="audio-btn flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                 class="audio-btn flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                  data-audio={item.audio}
                  disabled={!item.audio}
                >
                  {item.audio ? (
                    <>
-                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                     <span class="btn-text">Putar Audio</span>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ic-play"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ic-pause hidden"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                     <span class="btn-text">Dengarkan</span>
                    </>
                  ) : (
                    <>
@@ -242,8 +262,9 @@ const guides = [
                  )}
                </button>
                
-               <button class="mark-complete-btn px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700" data-id={item.id}>
-                 Tandai Selesai
+               <button class="mark-complete-btn px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700 flex items-center gap-1.5" data-id={item.id}>
+                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic-check hidden"><path d="M20 6 9 17l-5-5"/></svg>
+                 <span class="btn-text">Tandai Selesai</span>
                </button>
             </div>
           </div>
@@ -251,18 +272,29 @@ const guides = [
       ))}
     </div>
 
+    <div id="empty-state" class="hidden text-center py-12">
+      <div class="inline-block p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="m9 9 4 4"/><path d="m9 13 4-4"/></svg>
+      </div>
+      <p class="text-slate-500 dark:text-slate-400 text-sm">Langkah tidak ditemukan.</p>
+    </div>
+
     <div id="bookmarks-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 relative shadow-2xl animate-fade-in">
-        <button id="close-bookmarks" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+      <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 relative shadow-2xl animate-slide-up">
+        <button id="close-bookmarks" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
-        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-5 flex items-center gap-2">
            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-rose-500"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
            Langkah Disimpan
         </h2>
-        <div id="bookmarks-list" class="space-y-2 max-h-[60vh] overflow-y-auto">
+        <div id="bookmarks-list" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1">
           </div>
       </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10">
+      <span id="toast-msg">Berhasil disimpan!</span>
     </div>
 
   </div>
@@ -271,27 +303,44 @@ const guides = [
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    // --- ELEMENTS ---
+    // --- DOM ELEMENTS ---
     const allDetails = document.querySelectorAll('details');
     const progressBar = document.getElementById('progress-bar');
     const stepText = document.getElementById('current-step-text');
+    
     const practiceBtn = document.getElementById('practice-btn');
     const resetBtn = document.getElementById('reset-progress');
+    const practiceHint = document.getElementById('practice-hint');
+    
     const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
     const audioBtns = document.querySelectorAll('.audio-btn');
     const markCompleteBtns = document.querySelectorAll('.mark-complete-btn');
     const searchInput = document.getElementById('search-input');
+    
     const bookmarksModal = document.getElementById('bookmarks-modal');
     const viewBookmarksBtn = document.getElementById('view-bookmarks');
     const closeBookmarksBtn = document.getElementById('close-bookmarks');
     const bookmarksList = document.getElementById('bookmarks-list');
+    const bookmarkBadge = document.getElementById('bookmark-badge');
+    const emptyState = document.getElementById('empty-state');
+    
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toast-msg');
     
     // --- STATE ---
     let practiceMode = false;
     let practiceTimer = null;
     let currentStep = 0;
     let currentAudio = null;
+    let currentAudioBtn = null;
     let completedSteps = JSON.parse(localStorage.getItem('sholat-completed') || '[]');
+
+    // --- UTILS ---
+    const showToast = (msg) => {
+      toastMsg.innerText = msg;
+      toast.classList.remove('opacity-0', 'translate-y-10');
+      setTimeout(() => toast.classList.add('opacity-0', 'translate-y-10'), 2000);
+    };
 
     // --- 1. PROGRESS LOGIC ---
     const updateProgress = () => {
@@ -307,31 +356,33 @@ const guides = [
         const markBtn = el.querySelector('.mark-complete-btn');
 
         if (completedSteps.includes(id)) {
-          badge.innerHTML = '✓';
+          // Completed UI
+          badge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
           badge.classList.add('bg-emerald-500', 'text-white');
           badge.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
           if(markBtn) {
-            markBtn.textContent = 'Selesai';
-            markBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400');
-            markBtn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400');
+            markBtn.querySelector('.btn-text').textContent = 'Selesai';
+            markBtn.querySelector('.ic-check').classList.remove('hidden');
+            markBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400', 'border-emerald-200', 'dark:border-emerald-800');
+            markBtn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400', 'border-slate-200', 'dark:border-slate-700');
           }
         } else {
+          // Default UI
           const idx = parseInt(el.getAttribute('data-index')) + 1;
           badge.innerHTML = idx;
           badge.classList.remove('bg-emerald-500', 'text-white');
           badge.classList.add('bg-slate-200', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
           if(markBtn) {
-            markBtn.textContent = 'Tandai Selesai';
-            markBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400');
-            markBtn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400');
+            markBtn.querySelector('.btn-text').textContent = 'Tandai Selesai';
+            markBtn.querySelector('.ic-check').classList.add('hidden');
+            markBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400', 'border-emerald-200', 'dark:border-emerald-800');
+            markBtn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400', 'border-slate-200', 'dark:border-slate-700');
           }
         }
       });
     };
 
-    updateProgress();
-
-    // Toggle logic
+    // Accordion Auto-close behavior
     allDetails.forEach(el => {
       el.addEventListener('toggle', () => {
         if (el.open && !practiceMode) {
@@ -346,37 +397,57 @@ const guides = [
     const stopPractice = () => {
       practiceMode = false;
       clearInterval(practiceTimer);
-      practiceBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span>Mulai Praktik</span>`;
+      if(currentAudio) currentAudio.pause();
+      
+      const btnIcon = practiceBtn.querySelector('.play-icon');
+      const btnText = practiceBtn.querySelector('.btn-text');
+      
+      btnIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+      btnText.textContent = "Mulai Praktik";
       practiceBtn.classList.remove('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
       practiceBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
+      practiceHint.textContent = "Mode Praktik memutar bacaan berurutan tiap 15 detik.";
     };
 
     const startPractice = () => {
       practiceMode = true;
       currentStep = 0;
-      practiceBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> <span>Stop Praktik</span>`;
+      
+      const btnIcon = practiceBtn.querySelector('.play-icon');
+      const btnText = practiceBtn.querySelector('.btn-text');
+
+      btnIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      btnText.textContent = "Hentikan Praktik";
       practiceBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
       practiceBtn.classList.add('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+      practiceHint.textContent = "Sedang berjalan... Klik tombol di atas untuk berhenti.";
 
       allDetails.forEach(el => el.open = false);
 
       const runStep = () => {
         if (currentStep >= allDetails.length) {
           stopPractice();
-          alert("Alhamdulillah, praktik sholat selesai!");
+          showToast("Alhamdulillah, praktik selesai!");
           return;
         }
+        
         if(currentStep > 0) allDetails[currentStep - 1].open = false;
         
         const target = allDetails[currentStep];
         target.open = true;
         target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
+        // Auto play audio if available
+        const audioBtn = target.querySelector('.audio-btn');
+        if(audioBtn && !audioBtn.disabled) {
+           audioBtn.click();
+        }
+
         currentStep++;
       };
 
       runStep(); 
-      practiceTimer = setInterval(runStep, 15000); // 15 Detik per gerakan (Waktu bacaan)
+      practiceTimer = setInterval(runStep, 15000); 
     };
 
     practiceBtn.addEventListener('click', () => {
@@ -386,16 +457,22 @@ const guides = [
 
     // --- 3. RESET ---
     resetBtn.addEventListener('click', () => {
-      if (confirm('Reset semua progress?')) {
+      if (confirm('Reset semua progress belajar Anda?')) {
         completedSteps = [];
         localStorage.setItem('sholat-completed', '[]');
         updateProgress();
+        showToast("Progress direset");
       }
     });
 
     // --- 4. BOOKMARKS ---
     const loadBookmarks = () => {
         const saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
+        
+        // Update notification badge
+        if(saved.length > 0) bookmarkBadge.classList.remove('hidden');
+        else bookmarkBadge.classList.add('hidden');
+
         bookmarkBtns.forEach(btn => {
             const id = btn.getAttribute('data-id');
             const svg = btn.querySelector('svg');
@@ -403,6 +480,10 @@ const guides = [
                 svg.setAttribute('fill', 'currentColor');
                 btn.classList.add('text-rose-500');
                 btn.classList.remove('text-slate-300');
+            } else {
+                svg.setAttribute('fill', 'none');
+                btn.classList.remove('text-rose-500');
+                btn.classList.add('text-slate-300');
             }
         });
         return saved;
@@ -411,24 +492,31 @@ const guides = [
     const renderBookmarksList = () => {
         const saved = loadBookmarks();
         bookmarksList.innerHTML = '';
+        
         if(saved.length === 0) {
-            bookmarksList.innerHTML = '<p class="text-center text-sm text-slate-400 py-4">Belum ada langkah disimpan.</p>';
+            bookmarksList.innerHTML = '<p class="text-center text-sm text-slate-400 py-6">Belum ada langkah yang disimpan.</p>';
             return;
         }
+
         saved.forEach(id => {
             const el = document.querySelector(`details[data-id="${id}"]`);
             if(el) {
                 const title = el.querySelector('h3').innerText;
+                const cat = el.querySelector('span.uppercase').innerText;
+                
                 const item = document.createElement('div');
-                item.className = 'p-3 bg-slate-50 dark:bg-slate-800 rounded-lg flex justify-between items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer';
+                item.className = 'p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex justify-between items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer border border-slate-100 dark:border-slate-700';
                 item.innerHTML = `
-                    <span class="text-sm font-bold text-slate-700 dark:text-slate-200">${title}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <div>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">${cat}</p>
+                        <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 line-clamp-1">${title}</h4>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="text-emerald-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 `;
                 item.onclick = () => {
                     bookmarksModal.classList.add('hidden');
                     el.open = true;
-                    el.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    setTimeout(() => el.scrollIntoView({behavior: 'smooth', block: 'center'}), 100);
                 };
                 bookmarksList.appendChild(item);
             }
@@ -441,20 +529,16 @@ const guides = [
             e.stopPropagation();
             const id = btn.getAttribute('data-id');
             let saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
-            const svg = btn.querySelector('svg');
 
             if(saved.includes(id)) {
                 saved = saved.filter(s => s !== id);
-                svg.setAttribute('fill', 'none');
-                btn.classList.remove('text-rose-500');
-                btn.classList.add('text-slate-300');
+                showToast("Dihapus dari tersimpan");
             } else {
                 saved.push(id);
-                svg.setAttribute('fill', 'currentColor');
-                btn.classList.add('text-rose-500');
-                btn.classList.remove('text-slate-300');
+                showToast("Langkah disimpan");
             }
             localStorage.setItem('sholat-bookmarks', JSON.stringify(saved));
+            loadBookmarks();
         });
     });
 
@@ -462,73 +546,132 @@ const guides = [
         renderBookmarksList();
         bookmarksModal.classList.remove('hidden');
     });
+    
     closeBookmarksBtn.addEventListener('click', () => bookmarksModal.classList.add('hidden'));
+    
+    bookmarksModal.addEventListener('click', (e) => {
+      if(e.target === bookmarksModal) bookmarksModal.classList.add('hidden');
+    });
 
-    // --- 5. AUDIO & COMPLETE ---
+    // --- 5. AUDIO LOGIC ---
+    const resetAllAudioBtns = () => {
+      document.querySelectorAll('.audio-btn').forEach(b => {
+          b.classList.remove('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
+          b.classList.add('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
+          
+          const icPlay = b.querySelector('.ic-play');
+          const icPause = b.querySelector('.ic-pause');
+          const t = b.querySelector('.btn-text');
+          
+          if(icPlay) icPlay.classList.remove('hidden');
+          if(icPause) icPause.classList.add('hidden');
+          if(t) t.innerText = "Dengarkan";
+      });
+    };
+
     audioBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const src = btn.getAttribute('data-audio');
-            const txt = btn.querySelector('.btn-text');
             if(!src) return;
 
-            if (currentAudio && currentAudio.src === src && !currentAudio.paused) {
-                currentAudio.pause();
-                btn.classList.remove('animate-pulse', 'bg-rose-100', 'text-rose-600');
-                btn.classList.add('bg-emerald-50', 'text-emerald-600');
-                if(txt) txt.innerText = "Putar Audio";
+            const icPlay = btn.querySelector('.ic-play');
+            const icPause = btn.querySelector('.ic-pause');
+            const txt = btn.querySelector('.btn-text');
+
+            // 1. If clicking the SAME button that is currently playing
+            if (currentAudioBtn === btn && currentAudio) {
+                if (!currentAudio.paused) {
+                    currentAudio.pause();
+                    btn.classList.remove('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
+                    btn.classList.add('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
+                    icPlay.classList.remove('hidden');
+                    icPause.classList.add('hidden');
+                    if(txt) txt.innerText = "Dengarkan";
+                } else {
+                    currentAudio.play();
+                    btn.classList.add('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
+                    btn.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
+                    icPlay.classList.add('hidden');
+                    icPause.classList.remove('hidden');
+                    if(txt) txt.innerText = "Jeda";
+                }
                 return;
             }
 
+            // 2. If clicking a DIFFERENT button while another is playing
             if (currentAudio) {
                 currentAudio.pause();
-                document.querySelectorAll('.audio-btn').forEach(b => {
-                    b.classList.remove('animate-pulse', 'bg-rose-100', 'text-rose-600');
-                    b.classList.add('bg-emerald-50', 'text-emerald-600');
-                    const t = b.querySelector('.btn-text');
-                    if(t) t.innerText = "Putar Audio";
-                });
+                resetAllAudioBtns();
             }
 
-            const audio = new Audio(src);
-            currentAudio = audio;
-            audio.play();
+            // 3. Play new audio
+            currentAudio = new Audio(src);
+            currentAudioBtn = btn;
             
-            btn.classList.remove('bg-emerald-50', 'text-emerald-600');
-            btn.classList.add('animate-pulse', 'bg-rose-100', 'text-rose-600');
-            if(txt) txt.innerText = "Jeda";
+            // Set UI to loading/playing state immediately
+            btn.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
+            btn.classList.add('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
+            icPlay.classList.add('hidden');
+            icPause.classList.remove('hidden');
+            if(txt) txt.innerText = "Memuat...";
+
+            currentAudio.play().then(() => {
+                if(txt) txt.innerText = "Jeda";
+            }).catch(() => {
+                showToast("Gagal memutar audio. Cek koneksi.");
+                resetAllAudioBtns();
+                currentAudio = null;
+                currentAudioBtn = null;
+            });
             
-            audio.onended = () => {
-                btn.classList.remove('animate-pulse', 'bg-rose-100', 'text-rose-600');
-                btn.classList.add('bg-emerald-50', 'text-emerald-600');
-                if(txt) txt.innerText = "Putar Audio";
+            // 4. On end, reset UI
+            currentAudio.onended = () => {
+                resetAllAudioBtns();
+                currentAudio = null;
+                currentAudioBtn = null;
             };
         });
     });
 
+    // --- 6. MARK COMPLETE ---
     markCompleteBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const id = btn.getAttribute('data-id');
         if (completedSteps.includes(id)) {
           completedSteps = completedSteps.filter(s => s !== id);
+          showToast("Dibatalkan");
         } else {
           completedSteps.push(id);
+          showToast("Ditandai Selesai");
         }
         localStorage.setItem('sholat-completed', JSON.stringify(completedSteps));
         updateProgress();
       });
     });
 
-    // --- 6. SEARCH ---
+    // --- 7. SEARCH ---
     searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
+        let hasVisible = false;
+
         allDetails.forEach(el => {
             const text = el.innerText.toLowerCase();
-            el.style.display = text.includes(term) ? 'block' : 'none';
+            if (text.includes(term)) {
+               el.style.display = 'block';
+               hasVisible = true;
+            } else {
+               el.style.display = 'none';
+            }
         });
+
+        if (hasVisible) emptyState.classList.add('hidden');
+        else emptyState.classList.remove('hidden');
     });
 
+    // Init
+    updateProgress();
     loadBookmarks();
   });
 </script>
@@ -536,4 +679,7 @@ const guides = [
 <style>
   .animate-fade-in { animation: fadeIn 0.4s ease-out; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 </style>
