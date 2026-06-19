@@ -97,7 +97,7 @@ import tahlilData from '../data/tahlil.json';
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initTahlil = () => {
     const settingsBtn = document.getElementById('settings-btn');
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
@@ -154,7 +154,10 @@ import tahlilData from '../data/tahlil.json';
     } catch (e) {}
     
     applySettings();
-  });
+  };
+
+  document.addEventListener('DOMContentLoaded', initTahlil);
+  document.addEventListener('astro:after-swap', initTahlil);
 </script>
 
 <style>

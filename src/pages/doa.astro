@@ -45,7 +45,7 @@ import Toast from '../components/Toast.astro';
 <script is:inline>
 import doaData from '../data/doa.json';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const initDoa = () => {
     const container = document.getElementById('doa-container');
     const searchInput = document.getElementById('search-input');
     const statusMsg = document.getElementById('empty-state');
@@ -136,7 +136,10 @@ import doaData from '../data/doa.json';
     };
 
     renderDoa();
-  });
+  };
+
+  document.addEventListener('DOMContentLoaded', initDoa);
+  document.addEventListener('astro:after-swap', initDoa);
 </script>
 
 <style>

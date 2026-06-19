@@ -136,6 +136,7 @@ import HeaderBack from '../components/HeaderBack.astro';
 </BaseLayout>
 
 <script is:inline>
+  const initTasbih = () => {
   // DOM Elements
   const countDisplay = document.getElementById('count-display');
   const counterBtn = document.getElementById('counter-btn');
@@ -441,13 +442,17 @@ import HeaderBack from '../components/HeaderBack.astro';
 
   counterBtn.addEventListener('click', increment);
 
-  // Support Keyboard (Spasi / Enter)
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' || e.code === 'Enter') {
-      e.preventDefault(); // Biar gak scroll halaman
-      increment();
-    }
-  });
+  // Support Keyboard (Spasi / Enter) — pakai flag biar gak numpuk
+  if (!window._tasbihKeydownRegistered) {
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault(); // Biar gak scroll halaman
+        const btn = document.getElementById('counter-btn');
+        if (btn) btn.click(); // dispatch click pake listener terbaru
+      }
+    });
+    window._tasbihKeydownRegistered = true;
+  }
 
   resetBtn.addEventListener('click', reset);
 
@@ -509,8 +514,9 @@ import HeaderBack from '../components/HeaderBack.astro';
     }
   });
 
-  // Check if date changed and update stats
-  setInterval(() => {
+  // Check if date changed and update stats — clear previous interval dulu
+  if (window._tasbihStatsInterval) clearInterval(window._tasbihStatsInterval);
+  window._tasbihStatsInterval = setInterval(() => {
     const newDate = new Date().toDateString();
     if (newDate !== todayDate) {
       todayDate = newDate;
@@ -524,4 +530,8 @@ import HeaderBack from '../components/HeaderBack.astro';
       updateStatistics();
     }
   }, 60000); // Check every minute
+  };
+
+  document.addEventListener('DOMContentLoaded', initTasbih);
+  document.addEventListener('astro:after-swap', initTasbih);
 </script>

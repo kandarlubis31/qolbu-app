@@ -97,7 +97,7 @@ import HeaderBack from '../components/HeaderBack.astro';
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initZakat = () => {
     // --- TABS LOGIC ---
     const tabMaal = document.getElementById('tab-maal');
     const tabIncome = document.getElementById('tab-income');
@@ -213,7 +213,10 @@ import HeaderBack from '../components/HeaderBack.astro';
       resultCard.classList.remove('hidden');
       resultCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
     });
-  });
+  };
+
+  document.addEventListener('DOMContentLoaded', initZakat);
+  document.addEventListener('astro:after-swap', initZakat);
 </script>
 
 <style>

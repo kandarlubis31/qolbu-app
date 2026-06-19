@@ -55,6 +55,12 @@ const fullTitle = `${pageTitle} | Qolbu by PakLubis`;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Preconnect API domains -->
+    <link rel="preconnect" href="https://api.aladhan.com">
+    <link rel="preconnect" href="https://equran.id">
+    <link rel="preconnect" href="https://equran.nos.wjv-1.neo.id">
+    <link rel="preconnect" href="https://nominatim.openstreetmap.org">
+
     <script is:inline>
       const getTheme = () => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -97,6 +103,14 @@ const fullTitle = `${pageTitle} | Qolbu by PakLubis`;
       </div>
     </header>
 
+    <!-- OFFLINE BANNER -->
+    <div id="offline-banner" class="fixed top-16 left-0 right-0 z-[60] bg-amber-500 text-amber-900 text-center py-1.5 text-xs font-bold tracking-wide transition-all duration-300 -translate-y-full shadow-lg">
+      <div class="max-w-md mx-auto px-4 flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l22 22"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.56 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" x2="12.01" y1="20" y2="20"/></svg>
+        <span>Mode Offline — Data mungkin tidak lengkap</span>
+      </div>
+    </div>
+
     <main class="flex-1 w-full max-w-md mx-auto flex flex-col relative">
       <slot />
     </main>
@@ -130,6 +144,29 @@ const fullTitle = `${pageTitle} | Qolbu by PakLubis`;
 
       document.addEventListener('DOMContentLoaded', setupThemeToggle);
       document.addEventListener('astro:after-swap', setupThemeToggle);
+
+      // ===== OFFLINE INDICATOR =====
+      const initOfflineIndicator = () => {
+        const banner = document.getElementById('offline-banner');
+        if (!banner) return;
+
+        const toggleBanner = (offline) => {
+          banner.style.transform = offline ? 'translateY(0)' : 'translateY(-100%)';
+        };
+
+        // Initial state
+        toggleBanner(!navigator.onLine);
+
+        // Listen for changes (only once to avoid accumulation)
+        if (!window._offlineListenersRegistered) {
+          window._offlineListenersRegistered = true;
+          window.addEventListener('online', () => toggleBanner(false));
+          window.addEventListener('offline', () => toggleBanner(true));
+        }
+      };
+
+      document.addEventListener('DOMContentLoaded', initOfflineIndicator);
+      document.addEventListener('astro:after-swap', initOfflineIndicator);
 
       // Register Service Worker
       if ('serviceWorker' in navigator) {

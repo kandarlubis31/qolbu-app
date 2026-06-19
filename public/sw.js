@@ -1,8 +1,9 @@
-const CACHE_NAME = "qolbu-cache-v1";
+const CACHE_NAME = "qolbu-cache-v2";
 const ASSETS = [
   "/",
   "/sholat",
   "/quran",
+  "/quran/yasin",
   "/doa",
   "/sholat-guide",
   "/tahlil",
@@ -35,8 +36,22 @@ self.addEventListener("activate", (e) => {
   self.clients.claim();
 });
 
-// Fetch: network-first, fallback to cache
-self.addEventListener("fetch", (e) => {
+// Helper: cache-first strategy
+const cacheFirst = (e) => {
+  e.respondWith(
+    caches.match(e.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(e.request).then((res) => {
+        const clone = res.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+        return res;
+      });
+    }).catch(() => caches.match(e.request))
+  );
+};
+
+// Helper: network-first strategy
+const networkFirst = (e) => {
   e.respondWith(
     fetch(e.request)
       .then((res) => {
@@ -46,4 +61,17 @@ self.addEventListener("fetch", (e) => {
       })
       .catch(() => caches.match(e.request))
   );
+};
+
+// Fetch: route-based strategy
+self.addEventListener("fetch", (e) => {
+  const url = e.request.url;
+
+  // Audio CDN: cache-first (once downloaded, play from cache)
+  if (url.includes("equran.nos.wjv-1.neo.id") || url.includes("everyayah.com") || url.includes("download.quranicaudio.com") || url.includes("audio") && url.endsWith(".mp3")) {
+    return cacheFirst(e);
+  }
+
+  // Everything else: network-first with cache fallback
+  return networkFirst(e);
 });

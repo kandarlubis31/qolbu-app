@@ -553,7 +553,7 @@ const guides = [
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initSholatGuide = () => {
     const allDetails = document.querySelectorAll('details');
     const progressBar = document.getElementById('progress-bar');
     const stepText = document.getElementById('current-step-text');
@@ -777,7 +777,10 @@ const guides = [
 
     updateProgress();
     loadBookmarks();
-  });
+  };
+
+  document.addEventListener('DOMContentLoaded', initSholatGuide);
+  document.addEventListener('astro:after-swap', initSholatGuide);
 </script>
 
 <style>

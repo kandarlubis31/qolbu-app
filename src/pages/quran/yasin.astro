@@ -135,7 +135,7 @@ const toArabic = (num) => {
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initYasin = () => {
     const audioBtns = Array.from(document.querySelectorAll('.btn-audio'));
     let currentAudio = null;
     let currentBtn = null;
@@ -192,8 +192,25 @@ const toArabic = (num) => {
       };
     };
 
+    // ===== AUDIO PREFETCH =====
+    const prefetchAudio = (url) => {
+      if (!url) return;
+      try { fetch(url, { mode: 'no-cors', cache: 'force-cache' }).catch(() => {}); } catch {}
+    };
+
+    const prefetchNextAyats = (fromIndex, count = 3) => {
+      for (let i = 1; i <= count; i++) {
+        const nextBtn = audioBtns[fromIndex + i];
+        if (nextBtn) prefetchAudio(nextBtn.getAttribute('data-audio'));
+      }
+    };
+
     audioBtns.forEach((btn, index) => {
-      btn.addEventListener('click', () => { playAllActive = false; playSingle(btn, index); });
+      btn.addEventListener('click', () => {
+        playAllActive = false;
+        prefetchNextAyats(index);
+        playSingle(btn, index);
+      });
     });
 
     const playAllBtn = document.getElementById('play-all-btn');
@@ -301,7 +318,10 @@ const toArabic = (num) => {
         }, 600);
       }
     } catch (e) {}
-  });
+  };
+
+  document.addEventListener('DOMContentLoaded', initYasin);
+  document.addEventListener('astro:after-swap', initYasin);
 </script>
 
 <style>

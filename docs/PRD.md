@@ -1,7 +1,7 @@
 # PRD: Qolbu by PakLubis — Aplikasi Ibadah Harian
 
 > **Product Requirements Document**
-> Version: 1.0 | Last Updated: June 19, 2026
+> Version: 2.0 | Last Updated: June 20, 2026
 > Tech Stack: **Astro 5 + Tailwind CSS 4 + TypeScript** (zero client-side framework)
 
 ---
@@ -90,12 +90,18 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 ### 3.1 Dashboard (`/`)
 **Route:** `src/pages/index.astro`
 
-**Purpose:** Landing page with menu grid + daily Islamic quote.
+**Purpose:** Landing page with prayer widget, menu grid + daily Islamic quote.
 
 **Components Used:** None (inline everything)
 
 **Features:**
-- **7 Menu Grid** (2 columns):
+- **Prayer Widget** — live countdown to next prayer + 5 waktu kompak + arah kiblat
+  - Reads from `sholat-cache-*` localStorage (shared with `/sholat`)
+  - Auto-countdown per detik, cleanup on page swap
+  - Qibla formula spherical trigonometry (identik dengan `/sholat`)
+  - Hidden when no cached data available
+- **Quran Offline Badge** — compact badge showing cached surah count (replaces old ring)
+- **8 Menu Grid** (2 columns):
   1. Jadwal Sholat (featured — full-width gradient card)
   2. Al-Qur'an
   3. Doa Harian
@@ -103,6 +109,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
   5. Panduan Sholat
   6. Tahlil & Doa
   7. Tasbih Digital
+  8. Asmaul Husna
 - **Quote of the Day:** Rotasi random tiap 10 detik dari 100+ quotes (Al-Qur'an, Hadits, Ulama)
 - **Date display** in Indonesian locale
 - **Fade-in animation** on page load
@@ -191,6 +198,12 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - Surat card: nomor, arabic name, latin name, revelation type, ayat count
 - **Surat Yasin** featured card (gradient)
 - Juz list with starting surah & ayat
+- **Offline Cache Section** — cache all 114 surah with progress bar
+  - Checkbox to include audio files (~500MB-2GB total)
+  - Batch download (5 concurrent), 2 phases: surah data → audio files
+  - Green check badges on cached surah cards
+  - Cache count display (X/114)
+- **Bookmark Section** — list of bookmarked surah/ayat from localStorage
 
 **Detail Page (`/quran/[nomor]`):**
 - SSG via `getStaticPaths()` — 114 pre-rendered pages
@@ -199,6 +212,9 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - **Mushaf Mode** toggle — continuous arabic text with surah markers
 - **Audio per-ayat** — play, pause, auto-play next
 - **Audio auto-sequence** — after one ayat finishes, play next ayat automatically
+- **Audio prefecth** — prefecth next 3 ayat audio URLs (HTTP cache warming)
+- **Bookmark button** — save/remove surah bookmark (localStorage `quran-bookmarks`)
+- **Auto-cache on visit** — automatically cache current surah to IndexedDB (background)
 - **Last Read position** — saved on scroll (debounced 1.5s) + audio click
 - **Scroll-to-hash** on page load (e.g., `#ayat-10`)
 - Highlight on target ayat with ring + shadow (2s fade)
@@ -209,6 +225,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - Same layout as surat detail page
 - **Play All** button — plays entire surah sequentially with progress bar
 - Stop button
+- **Audio prefecth** — prefecth next 3 ayat audio
 - Last Read position persisted to `quran-last-read` (shared with other surat)
 
 **Interactions:**
@@ -218,10 +235,16 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - Click "Lanjut Baca" → scroll to last read ayat
 - Settings: slider for arabic font size, toggles for latin/translation
 
+**IndexedDB:**
+- **Database:** `qolbu-quran-cache` (v1)
+- **Store:** `surah-cache` with keyPath `nomor`
+- **Data:** Full surah data (ayat, audio URLs) cached offline
+
 **localStorage Keys:**
 - `quran-settings` — { size, showLatin, showArti }
 - `yasin-settings` — { size, showLatin, showArti }
 - `quran-last-read` — { surah, ayat, surahName, timestamp }
+- `quran-bookmarks` — [{ surah, surahName, ayat, timestamp }]
 
 ### 3.4 Doa Harian (`/doa`)
 **Route:** `src/pages/doa.astro`
@@ -511,13 +534,13 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `src/data/doa.json` | JSON array | 42 doa with cat, title, arab, latin, arti, source | `/doa` |
 | `src/data/tahlil.json` | JSON array | 7 tahlil items with judul, arab, latin, arti | `/tahlil` |
 | `src/data/yasin.json` | JSON array | 83 ayat with nomor, arab, latin, arti, audio | `/quran/yasin` |
-
+| `src/data/asmaul-husna.json` | JSON array | 99 Asmaul Husna with index, latin, arabic, meaning | `/asmaul-husna` |
 ### 6.2 localStorage Keys Registry
 | Key | Type | Format | Used By | Purpose |
 |-----|------|--------|---------|---------|
 | `theme` | string | `"dark"\|"light"` | BaseLayout | Theme persistence |
 | `sholat-settings` | JSON | object | `/sholat` | All prayer settings |
-| `sholat-cache-*` | JSON | object | `/sholat` | Cached prayer times |
+| `sholat-cache-*` | JSON | object | `/sholat`, `/` | Cached prayer times (shared with home widget) |
 | `sholat-notified-adhan` | JSON | object | `/sholat` | Adzan notification dedup |
 | `sholat-notified-remind` | JSON | object | `/sholat` | Reminder notification dedup |
 | `quran-settings` | JSON | object | `/quran/[nomor]` | Font size, latin, arti toggles |
@@ -525,6 +548,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `tahlil-settings` | JSON | object | `/tahlil` | Font size, latin, arti toggles |
 | `sholat-completed` | JSON | string[] | `/sholat-guide` | Completed step IDs |
 | `sholat-bookmarks` | JSON | string[] | `/sholat-guide` | Bookmarked step IDs |
+| `quran-bookmarks` | JSON | array | `/quran/*` | Bookmarked surah list |
 | `tasbih-count` | number | plain | `/tasbih` | Current count |
 | `tasbih-target` | number | plain | `/tasbih` | Target count |
 | `tasbih-dhikr` | string | plain | `/tasbih` | Selected dhikr |
@@ -533,6 +557,10 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `tasbih-autocycle` | boolean | plain | `/tasbih` | Auto-cycle toggle |
 | `tasbih-stats` | JSON | object | `/tasbih` | Daily statistics |
 | `quran-last-read` | JSON | object | `/quran/*` | Last read position |
+| `quran-bookmarks` | JSON | array | `/quran/*` | Bookmarked surah list |
+| `sholat-settings` | JSON | object | `/sholat` | All prayer settings |
+| `sholat-cache-*` | JSON | object | `/sholat`, `/` | Cached prayer times (shared with home widget) |
+| `quran-bookmarks` | JSON | array | `/quran/*` | Bookmarked surah list |
 
 ### 6.3 External APIs
 | API | Endpoint | Purpose | Used By |
@@ -550,13 +578,20 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 ### 7.1 Service Worker
 **File:** `public/sw.js`
 
-**Strategy:** Network-first with cache fallback
+**Strategy:** Network-first with cache fallback, audio cache-first
 - **Install:** Cache shell (all route pages + logo)
-- **Fetch:** Try network → cache on success → fallback to cache on failure
+- **Fetch (pages):** Network-first — try network → cache on success → fallback to cache on failure
+- **Fetch (audio):** Cache-first — serve from cache if available, fetch otherwise (for Quran audio CDN)
 - **Activate:** Clean old caches, claim clients
 
+**Audio CDN Routes (cache-first):**
+- `equran.nos.wjv-1.neo.id` (Quran audio partial)
+- `everyayah.com` (Quran audio fallback)
+- `download.quranicaudio.com` (Quran audio)
+- Any URL containing `audio` and ending in `.mp3`
+
 **Cached Assets:**
-- `/`, `/sholat`, `/quran`, `/doa`, `/sholat-guide`, `/tahlil`, `/tasbih`, `/zakat`, `/logo.png`
+- `/`, `/sholat`, `/quran`, `/quran/yasin`, `/doa`, `/sholat-guide`, `/tahlil`, `/tasbih`, `/zakat`, `/logo.png`
 
 ### 7.2 Manifest
 **File:** `public/manifest.json`
@@ -575,7 +610,8 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - **Theme toggle persistence** via `transition:persist`
 
 ### 7.4 Performance Considerations
-- **Static Site Generation** — 123 pages pre-rendered at build
+- **Static Site Generation** — 124 pages pre-rendered at build
+- **Ponytail Philosophy** — minimal code, reuse stdlib/native features, no unrequested abstractions
 - **Stale-while-revalidate** — prayer data cached + background refresh
 - **Mobile-first** — max-w-md layout, touch-optimized
 - **Inline scripts** only — no hydration overhead
@@ -641,6 +677,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `/tahlil` | tahlil.astro | ✅ | Tahlil & Doa |
 | `/tasbih` | tasbih.astro | ✅ | Tasbih Digital |
 | `/zakat` | zakat.astro | ✅ | Kalkulator Zakat |
+| `/asmaul-husna` | asmaul-husna.astro | ✅ | Asmaul Husna |
 
 ### 10.2 localStorage Schema Details
 ```typescript

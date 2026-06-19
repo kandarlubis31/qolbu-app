@@ -301,7 +301,10 @@ import Toast from '../components/Toast.astro';
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', initSholat);
+  document.addEventListener('astro:after-swap', initSholat);
+
+  function initSholat() {
     const els = {
       locText: document.getElementById('location-text'),
       list: document.getElementById('prayer-list'),
@@ -557,7 +560,12 @@ import Toast from '../components/Toast.astro';
         const dateStr = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
         const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lng}&method=${state.method}`;
 
-        const res = await fetch(url);
+        // Timeout guard: abort if API takes >8s
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
         const json = await res.json();
 
         if (json.code === 200) {
@@ -739,43 +747,48 @@ import Toast from '../components/Toast.astro';
     };
 
     // ------ GPS ------
-    const getGPS = (retries = 2) => {
+    const getGPS = (retries = 1) => {
       els.locText.innerText = "Melacak...";
       els.refreshIcon.classList.add('animate-spin');
+
+      // Fire prayer API with default coords IMMEDIATELY, update when GPS arrives
+      fetchPrayer(state.lat, state.lng);
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           state.lat = pos.coords.latitude;
           state.lng = pos.coords.longitude;
+          els.latIn.value = state.lat.toFixed(5);
+          els.lngIn.value = state.lng.toFixed(5);
 
+          // Update prayer times with GPS coords
+          fetchPrayer(state.lat, state.lng);
+
+          // Fire & forget: Nominatim reverse geocode (don't block anything)
           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${state.lat}&lon=${state.lng}&format=json`)
             .then(r => r.json())
             .then(data => {
               const city = data.address.city || data.address.town || data.address.county || "GPS Akurat";
               state.city = city;
               els.locText.innerText = city;
-              els.latIn.value = state.lat.toFixed(5);
-              els.lngIn.value = state.lng.toFixed(5);
-              fetchPrayer(state.lat, state.lng);
-              els.refreshIcon.classList.remove('animate-spin');
-            }).catch(() => {
-              state.city = "Sesuai GPS";
-              els.locText.innerText = state.city;
-              fetchPrayer(state.lat, state.lng);
-              els.refreshIcon.classList.remove('animate-spin');
+            })
+            .catch(() => {
+              els.locText.innerText = "Sesuai GPS";
             });
+
+          els.refreshIcon.classList.remove('animate-spin');
         },
         (err) => {
           if (retries > 0) {
             setTimeout(() => getGPS(retries - 1), 2000);
           } else {
-            showToast("Gagal ambil GPS. Memakai lokasi terakhir.");
+            showToast("Gagal ambil GPS. Memakai lokasi default.");
             els.locText.innerText = state.city;
-            fetchPrayer(state.lat, state.lng);
             els.refreshIcon.classList.remove('animate-spin');
+            // fetchPrayer already fired above with default coords
           }
         },
-        { timeout: 10000, enableHighAccuracy: true }
+        { timeout: 5000, enableHighAccuracy: false }
       );
     };
 
@@ -903,8 +916,22 @@ import Toast from '../components/Toast.astro';
       init();
     };
 
+    const tryLoadCacheImmediately = () => {
+      // Show cached data RIGHT NOW, before any GPS/API calls
+      const cacheKey = getCacheKey(state.lat, state.lng);
+      const cached = loadCachedData(cacheKey);
+      if (cached) {
+        renderWithTimings(cached.data.timings, cached.data);
+        return true;
+      }
+      return false;
+    };
+
     const init = () => {
       loadSettings();
+      // Show cached data instantly if available
+      tryLoadCacheImmediately();
+
       if (state.useGPS) {
         getGPS();
       } else {
@@ -963,7 +990,7 @@ import Toast from '../components/Toast.astro';
     });
 
     init();
-  });
+  }
 </script>
 
 <style>

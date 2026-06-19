@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeaderBack from '../components/HeaderBack.astro';
+import asmaulHusna from '../data/asmaul-husna.json';
+---
+
+<BaseLayout pageTitle="Asmaul Husna">
+  <HeaderBack href="/" label="Kembali" title="Asmaul Husna" />
+
+  <div class="pb-24 px-4 w-full max-w-md mx-auto">
+    <div class="relative mb-6">
+      <input type="text" id="search-asma" placeholder="Cari nama..." class="w-full py-3.5 pl-12 pr-4 text-sm rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400 shadow-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+
+    <div class="text-center mb-6 p-4 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-2xl text-white shadow-lg shadow-emerald-500/20">
+      <p class="text-2xl font-amiri mb-1" dir="rtl">ٱلْأَسْمَاءُ ٱلْحُسْنَىٰ</p>
+      <p class="font-bold text-lg">Asmaul Husna</p>
+      <p class="text-xs text-emerald-100">99 Nama Allah Yang Maha Indah</p>
+    </div>
+
+    <div id="asma-list" class="grid gap-2">
+      {asmaulHusna.map((item) => (
+        <div class="asma-item flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-xs font-bold text-emerald-600 dark:text-emerald-400">
+              {item.index}
+            </div>
+            <div>
+              <p class="font-bold text-sm text-slate-800 dark:text-white">{item.latin}</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">{item.meaning}</p>
+            </div>
+          </div>
+          <p class="font-amiri text-xl text-slate-800 dark:text-white" dir="rtl">{item.arabic}</p>
+        </div>
+      ))}
+    </div>
+
+    <div id="empty-state" class="hidden text-center py-12">
+      <p class="text-slate-500 dark:text-slate-400 text-sm">Nama tidak ditemukan.</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  const initAsma = () => {
+    const search = document.getElementById('search-asma');
+    const items = document.querySelectorAll('.asma-item');
+    const empty = document.getElementById('empty-state');
+
+    search.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      let visible = 0;
+      items.forEach(el => {
+        const latin = el.querySelector('.font-bold').textContent.toLowerCase();
+        const arabic = el.querySelector('.font-amiri').textContent;
+        if (latin.includes(term) || arabic.includes(term)) {
+          el.style.display = 'flex';
+          visible++;
+        } else {
+          el.style.display = 'none';
+        }
+      });
+      empty.classList.toggle('hidden', visible > 0);
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initAsma);
+  document.addEventListener('astro:after-swap', initAsma);
+</script>
