@@ -35,24 +35,29 @@
 │   │   ├── SettingsModal.astro
 │   │   └── Toast.astro
 │   ├── data/               # Data JSON statis
-│   │   ├── yasin.json      # Ayat Surat Yasin
+│   │   ├── doa.json        # 40+ Doa Harian
+│   │   ├── dzikir.json     # 22 Dzikir Pagi & Petang
+│   │   ├── events-hijri.json # 12 Event Islam (Hijriah)
+│   │   ├── asmaul-husna.json # 99 Asmaul Husna
 │   │   ├── tahlil.json     # Bacaan Tahlil
-│   │   └── doa.json        # 40+ Doa Harian
+│   │   └── yasin.json      # Ayat Surat Yasin
 │   ├── docs/
 │   │   └── PRD.md          # Canonical PRD (Product Requirements Document)
 │   ├── layouts/
 │   │   └── BaseLayout.astro # Layout utama (header, footer, theme, SEO, PWA)
 │   ├── pages/
-│   │   ├── index.astro      # Dashboard (menu grid + quote of the day)
+│   │   ├── index.astro      # Dashboard (prayer card, hijri events, menu grid, quote)
+│   │   ├── asmaul-husna.astro # 99 Nama Allah (searchable)
 │   │   ├── doa.astro        # Ensiklopedia Doa Harian
+│   │   ├── dzikir.astro     # Dzikir Pagi & Petang (tab filter)
 │   │   ├── sholat.astro     # Jadwal Sholat + Arah Kiblat
 │   │   ├── sholat-guide.astro # Panduan Sholat Lengkap
 │   │   ├── tahlil.astro     # Tahlil & Doa Arwah
 │   │   ├── tasbih.astro     # Tasbih Digital
 │   │   ├── zakat.astro      # Kalkulator Zakat
 │   │   └── quran/
-│   │       ├── index.astro  # Daftar Surat & Juz
-│   │       ├── [nomor].astro # Detail Surat (dengan audio)
+│   │       ├── index.astro  # Daftar Surat & Juz (cache, bookmark)
+│   │       ├── [nomor].astro # Detail Surat (audio, bookmark, auto-cache)
 │   │       └── yasin.astro  # Surat Yasin Lengkap
 │   └── styles/
 │       └── global.css       # Global styles + Tailwind directives
@@ -131,7 +136,10 @@ Notifikasi snackbar bawah.
 ## 📄 Halaman & Fitur
 
 ### 1. Dashboard (`/`)
-- Menu grid 2 kolom (7 menu utama):
+- **Prayer Card** — live countdown to next prayer + 5 waktu + arah kiblat (reads from sholat-cache localStorage)
+- **Hijri Event Bar** — bar amber: event Islam terdekat (baca dari sholat-cache, reuse data Aladhan)
+- **Quran Offline Badge** — compact badge jumlah surah tersimpan di IndexedDB
+- Menu grid 2 kolom (9 menu utama):
   - Jadwal Sholat (featured — full-width gradient card)
   - Al-Qur'an
   - Doa Harian
@@ -139,8 +147,10 @@ Notifikasi snackbar bawah.
   - Panduan Sholat
   - Tahlil & Doa
   - Tasbih Digital
-- **Quote of the Day** — random dari 100+ quotes (Al-Qur'an, Hadits, Ulama)
-- Animasi fade-in, auto-rotasi tiap 10 detik
+  - Asmaul Husna
+  - Dzikir Pagi & Petang
+- **Quote of the Day** — random dari 100+ quotes (Al-Qur'an, Hadits, Ulama), auto-rotasi 10 detik
+- Animasi fade-in
 
 ### 2. Jadwal Sholat (`/sholat`)
 - **API:** aladhan.com/v1/timings
@@ -159,18 +169,38 @@ Notifikasi snackbar bawah.
 - **API:** equran.id/api/v2/surat
 - Tab view: Daftar Surat (searchable) & Daftar Juz
 - **Static paths:** getStaticPaths() — build-time pre-render semua 114 surat
+- **Offline Cache:** IndexedDB (`qolbu-quran-cache`, store `surah-cache`) — cache semua 114 surat (batch 5, progress bar)
+- **Audio Cache:** Opsional — download audio files (~500MB-2GB, cache-first via SW)
+- **Lanjut Baca** banner — dari localStorage `quran-last-read`
+- **Bookmark Surah** — localStorage `quran-bookmarks` dengan list di index
 - Tampilan Per Ayat (arab + latin + terjemah) dan Mushaf Mode
 - **Audio:** Misyari Rasyid Al-Afasi (equran.nos.wjv-1.neo.id)
-- Auto-play ayat berurutan
+- Auto-play ayat berurutan, prefetch 3 ayat berikutnya
 - **Pengaturan:** ukuran font arab (range slider), toggle latin & terjemah
 
-### 4. Doa Harian (`/doa`)
+### 4. Asmaul Husna (`/asmaul-husna`)
+- **Data:** `src/data/asmaul-husna.json` (99 nama)
+- Search filter by latin name & arabic text
+- Tampilan: nomor + latin + meaning + arabic
+- Layout sederhana, gradient header
+
+### 5. Dzikir Pagi & Petang (`/dzikir`)
+- **Data:** `src/data/dzikir.json` (22 dzikir dengan arab, latin, arti, sumber, jumlah)
+- **Tab filter:** Pagi, Petang, Keduanya
+  - Tab Pagi: dzikir waktu pagi + keduanya
+  - Tab Petang: dzikir waktu petang + keduanya
+  - Tab Keduanya: semua dzikir
+- **Info badge:** jumlah pengulangan ("33x", "100x")
+- **Copy to clipboard** — formatted latin + arti
+- Amber theme
+
+### 6. Doa Harian (`/doa`)
 - **Inline data:** 40+ doa dalam berbagai kategori
 - **Kategori filter:** Semua, Sehari-hari, Al-Qur'an, Sholat, Rizki, Keluarga, Sakit, Perjalanan, Taubat
 - Search (by title, latin, arti)
 - Copy-to-clipboard dengan format rapi
 
-### 5. Panduan Sholat (`/sholat-guide`)
+### 7. Panduan Sholat (`/sholat-guide`)
 - **Inline data:** 28 langkah (syarat sah → niat → gerakan → dzikir)
 - Accordion UI (hanya 1 terbuka dalam satu waktu)
 - **Progress tracker** — localStorage('sholat-completed')
@@ -179,12 +209,12 @@ Notifikasi snackbar bawah.
 - **Audio** — untuk bacaan Al-Fatihah & Surat Pendek
 - Search langkah
 
-### 6. Tahlil (`/tahlil`)
+### 8. Tahlil (`/tahlil`)
 - Data dari tahlil.json (7 item)
 - Pengaturan ukuran font arab & toggle latin/terjemah
 - Layout sederhana step-by-step
 
-### 7. Tasbih Digital (`/tasbih`)
+### 9. Tasbih Digital (`/tasbih`)
 - Counter lingkaran besar dengan feedback:
   - **Haptic:** navigator.vibrate() (15ms per hitung)
   - **Audio:** Web Audio API (oscillator sine wave)
@@ -195,7 +225,7 @@ Notifikasi snackbar bawah.
 - Statistik harian: total hitungan, sesi, streak
 - Pemilihan dzikir: Subhanallah, Alhamdulillah, Allahu Akbar, Laa ilaaha illallah
 
-### 8. Kalkulator Zakat (`/zakat`)
+### 10. Kalkulator Zakat (`/zakat`)
 - Dua mode: **Zakat Maal** (haul 1 tahun, nishab 85gr emas) & **Zakat Penghasilan**
 - Input dengan format Rupiah (otomatis ribuan)
 - Harga emas: default Rp1.200.000/gram (bisa diubah)
@@ -237,6 +267,8 @@ Notifikasi snackbar bawah.
 | `tasbih-vibrate` | boolean | Getar ON/OFF |
 | `tasbih-sound` | boolean | Suara ON/OFF |
 | `tasbih-stats` | JSON | Statistik harian |
+| `quran-bookmarks` | JSON | Bookmark surah & ayat |
+| `quran-settings` | JSON | Ukuran font, toggle latin/terjemah |
 
 ---
 
@@ -255,7 +287,7 @@ Notifikasi snackbar bawah.
 ## ⚡ Performance
 
 - **Cache Stale-While-Revalidate** — jadwal sholat di-cache ke localStorage + background refresh
-- **Static Site Generation** — semua halaman di-pre-render saat build (123 pages)
+- **Static Site Generation** — semua halaman di-pre-render saat build (125 pages)
 - **Mobile-first** — layout max-w-md, optimasi touch interactions
 - **View Transitions** — navigasi SPA-like dengan animasi slide, <html> persist, header morphing
 

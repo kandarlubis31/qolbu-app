@@ -50,14 +50,19 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 │   │   ├── SettingsModal.astro
 │   │   └── Toast.astro
 │   ├── data/                  # Static JSON data
-│   │   ├── yasin.json         # 83 ayat Surat Yasin
+│   │   ├── doa.json           # 40+ doa harian (9 kategori)
+│   │   ├── dzikir.json        # 22 dzikir pagi & petang
+│   │   ├── events-hijri.json  # 12 event Islam (Hijriah)
+│   │   ├── asmaul-husna.json  # 99 Asmaul Husna
 │   │   ├── tahlil.json        # 7 bacaan tahlil
-│   │   └── doa.json           # 40+ doa harian (9 kategori)
+│   │   └── yasin.json         # 83 ayat Surat Yasin
 │   ├── layouts/
 │   │   └── BaseLayout.astro   # Global layout: header, footer, SEO, PWA, theme
 │   ├── pages/
-│   │   ├── index.astro        # Dashboard + quote of the day
+│   │   ├── index.astro        # Dashboard (prayer card, hijri events, menu, quote)
+│   │   ├── asmaul-husna.astro # 99 Nama Allah (searchable)
 │   │   ├── doa.astro          # Doa harian encyclopedia
+│   │   ├── dzikir.astro       # Dzikir pagi & petang (tab filter)
 │   │   ├── sholat.astro       # Prayer times + qibla compass
 │   │   ├── sholat-guide.astro # Complete prayer guide (28 steps)
 │   │   ├── tahlil.astro       # Tahlil & arwah prayers
@@ -81,7 +86,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - **Build:** `npm run build` → static output to `dist/`
 - **Dev:** `npm run dev` → localhost:4321
 - **Routes:** All Astro pages are pre-rendered at build time
-- **SSG:** 123 pages total (index + 7 subpages + 114 surat + 1 yasin)
+- **SSG:** 125 pages total (index + 9 subpages + 114 surat + 1 yasin)
 
 ---
 
@@ -101,7 +106,8 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
   - Qibla formula spherical trigonometry (identik dengan `/sholat`)
   - Hidden when no cached data available
 - **Quran Offline Badge** — compact badge showing cached surah count (replaces old ring)
-- **8 Menu Grid** (2 columns):
+- **Hijri Event Bar** — bar amber: event Islam terdekat (baca dari sholat-cache localStorage, reuse data Aladhan)
+- **9 Menu Grid** (2 columns):
   1. Jadwal Sholat (featured — full-width gradient card)
   2. Al-Qur'an
   3. Doa Harian
@@ -110,6 +116,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
   6. Tahlil & Doa
   7. Tasbih Digital
   8. Asmaul Husna
+  9. Dzikir Pagi & Petang
 - **Quote of the Day:** Rotasi random tiap 10 detik dari 100+ quotes (Al-Qur'an, Hadits, Ulama)
 - **Date display** in Indonesian locale
 - **Fade-in animation** on page load
@@ -375,7 +382,39 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - `tasbih-autocycle` — boolean
 - `tasbih-stats` — JSON object with daily data
 
-### 3.8 Kalkulator Zakat (`/zakat`)
+### 3.8 Asmaul Husna (`/asmaul-husna`)
+**Route:** `src/pages/asmaul-husna.astro`
+
+**Purpose:** 99 Names of Allah with search.
+
+**Components Used:** `HeaderBack`
+
+**Data:** `src/data/asmaul-husna.json` — 99 names
+
+**Features:**
+- Search filter by latin name & arabic text
+- Tampilan: nomor (1-99) + latin + meaning + arabic
+- Gradient header with arabic title
+
+### 3.9 Dzikir Pagi & Petang (`/dzikir`)
+**Route:** `src/pages/dzikir.astro`
+
+**Purpose:** Morning & evening adhkar from Qur'an & Sunnah.
+
+**Components Used:** `HeaderBack`, `Toast`
+
+**Data:** `src/data/dzikir.json` — 22 dzikir items
+
+**Features:**
+- **Tab filter:** Pagi, Petang, Keduanya
+  - Tab Pagi: dzikir waktu pagi + keduanya
+  - Tab Petang: dzikir waktu petang + keduanya
+  - Tab Keduanya: semua dzikir
+- **Info badge:** jumlah pengulangan ("33x", "100x")
+- **Copy to clipboard** — formatted latin + arti
+- Amber theme
+
+### 3.10 Kalkulator Zakat (`/zakat`)
 **Route:** `src/pages/zakat.astro`
 
 **Purpose:** Zakat calculator for Maal (wealth) and income.
@@ -535,6 +574,8 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `src/data/tahlil.json` | JSON array | 7 tahlil items with judul, arab, latin, arti | `/tahlil` |
 | `src/data/yasin.json` | JSON array | 83 ayat with nomor, arab, latin, arti, audio | `/quran/yasin` |
 | `src/data/asmaul-husna.json` | JSON array | 99 Asmaul Husna with index, latin, arabic, meaning | `/asmaul-husna` |
+| `src/data/dzikir.json` | JSON array | 22 dzikir with waktu, arab, latin, arti, jumlah, sumber | `/dzikir` |
+| `src/data/events-hijri.json` | JSON array | 12 Islamic events with month, day, name, icon | `/` (home widget) |
 ### 6.2 localStorage Keys Registry
 | Key | Type | Format | Used By | Purpose |
 |-----|------|--------|---------|---------|
@@ -548,7 +589,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `tahlil-settings` | JSON | object | `/tahlil` | Font size, latin, arti toggles |
 | `sholat-completed` | JSON | string[] | `/sholat-guide` | Completed step IDs |
 | `sholat-bookmarks` | JSON | string[] | `/sholat-guide` | Bookmarked step IDs |
-| `quran-bookmarks` | JSON | array | `/quran/*` | Bookmarked surah list |
+| `quran-last-read` | JSON | object | `/quran/*` | Last read position (surah, ayat, timestamp) |
 | `tasbih-count` | number | plain | `/tasbih` | Current count |
 | `tasbih-target` | number | plain | `/tasbih` | Target count |
 | `tasbih-dhikr` | string | plain | `/tasbih` | Selected dhikr |
@@ -556,11 +597,6 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `tasbih-sound` | boolean | plain | `/tasbih` | Sound toggle |
 | `tasbih-autocycle` | boolean | plain | `/tasbih` | Auto-cycle toggle |
 | `tasbih-stats` | JSON | object | `/tasbih` | Daily statistics |
-| `quran-last-read` | JSON | object | `/quran/*` | Last read position |
-| `quran-bookmarks` | JSON | array | `/quran/*` | Bookmarked surah list |
-| `sholat-settings` | JSON | object | `/sholat` | All prayer settings |
-| `sholat-cache-*` | JSON | object | `/sholat`, `/` | Cached prayer times (shared with home widget) |
-| `quran-bookmarks` | JSON | array | `/quran/*` | Bookmarked surah list |
 
 ### 6.3 External APIs
 | API | Endpoint | Purpose | Used By |
@@ -610,7 +646,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 - **Theme toggle persistence** via `transition:persist`
 
 ### 7.4 Performance Considerations
-- **Static Site Generation** — 124 pages pre-rendered at build
+- **Static Site Generation** — 125 pages pre-rendered at build
 - **Ponytail Philosophy** — minimal code, reuse stdlib/native features, no unrequested abstractions
 - **Stale-while-revalidate** — prayer data cached + background refresh
 - **Mobile-first** — max-w-md layout, touch-optimized
@@ -652,8 +688,8 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 ## 9. Future Roadmap (Suggestions)
 
 1. **Push notifications** for adzan times via Service Worker
-2. **Offline Quran reading** — cache surah data in IndexedDB
-3. **Jadwal sholat bulanan** — calendar view for monthly schedule
+2. **Jadwal sholat bulanan** — calendar view for monthly schedule
+3. **Niat Sholat Popup** — overlay pas waktu sholat tiba
 4. **Multiple language support** — English/Arabic locale
 5. **Audio streaming** for full murottal (not just per-ayat)
 6. **Community doa requests** — user-submitted prayers
@@ -678,6 +714,7 @@ Aplikasi web ibadah harian terlengkap berbasis PWA yang mobile-first, dapat diin
 | `/tasbih` | tasbih.astro | ✅ | Tasbih Digital |
 | `/zakat` | zakat.astro | ✅ | Kalkulator Zakat |
 | `/asmaul-husna` | asmaul-husna.astro | ✅ | Asmaul Husna |
+| `/dzikir` | dzikir.astro | ✅ | Dzikir Pagi & Petang |
 
 ### 10.2 localStorage Schema Details
 ```typescript
