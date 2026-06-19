@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Toast from '../components/Toast.astro';
 
 // DATA PANDUAN SHOLAT LENGKAP - SUNNI (MAZHAB SYAFI'I)
 const guides = [
@@ -90,7 +91,14 @@ const guides = [
     arti: "Allah Maha Besar.",
     desc: "RUKUN sholat. Angkat kedua tangan: laki-laki sejajar telinga (ibu jari menyentuh daun telinga), perempuan sejajar bahu. Jari-jari rapat, telapak menghadap kiblat. Niat dibarengi tepat saat mengucap takbir. Tangan bersedekap: kanan di atas kiri, diletakkan di antara dada dan pusar.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M6 8c2 2 4 2 6 2s4 0 6-2"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="10" r="6"/>
+      <line x1="30" y1="16" x2="30" y2="44"/>
+      <line x1="30" y1="22" x2="10" y2="8"/>
+      <line x1="30" y1="22" x2="50" y2="8"/>
+      <line x1="30" y1="44" x2="18" y2="76"/>
+      <line x1="30" y1="44" x2="42" y2="76"/>
+    </svg>`
   },
   {
     id: "iftitah",
@@ -145,7 +153,14 @@ const guides = [
     arti: "Maha Suci Tuhanku Yang Maha Agung dan dengan memuji-Nya.",
     desc: "RUKUN. Posisi: membungkuk, punggung lurus sejajar lantai, tangan memegang lutut dengan jari-jari terbuka. Pandangan ke tempat sujud. TUMAKNINAH wajib (diam sejenak minimal satu kali tasbih). Dibaca minimal 1x, sunnah 3x. Ada juga tambahan: 'Subbuuhun Qudduusun Rabbul Malaa-ikati war Ruuh.'",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="2"/><path d="M16 7l-6 2-4 8"/><path d="M10 9v13"/><path d="M10 22h4"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="10" r="6"/>
+      <line x1="30" y1="16" x2="30" y2="44"/>
+      <line x1="30" y1="24" x2="14" y2="36"/>
+      <line x1="30" y1="24" x2="46" y2="36"/>
+      <line x1="30" y1="44" x2="18" y2="76"/>
+      <line x1="30" y1="44" x2="42" y2="76"/>
+    </svg>`
   },
   {
     id: "itidal",
@@ -156,7 +171,14 @@ const guides = [
     arti: "Allah mendengar orang yang memuji-Nya.",
     desc: "RUKUN. Bacaan 'Sami'allaahu liman hamidah' dibaca saat BANGKIT dari ruku'. Setelah berdiri tegak, baca: 'Rabbanaa lakal hamdu mil'us samaawaati wa mil'ul ardhi wa mil'a maa syi'ta min syai-in ba'du.' TUMAKNINAH wajib dalam posisi berdiri tegak.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M12 10l-4-3"/><path d="M12 10l4-3"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="10" r="6"/>
+      <line x1="30" y1="16" x2="30" y2="44"/>
+      <line x1="30" y1="24" x2="12" y2="30"/>
+      <line x1="30" y1="24" x2="48" y2="30"/>
+      <line x1="30" y1="44" x2="18" y2="76"/>
+      <line x1="30" y1="44" x2="42" y2="76"/>
+    </svg>`
   },
   {
     id: "itidal_doa",
@@ -178,7 +200,14 @@ const guides = [
     arti: "Maha Suci Tuhanku Yang Maha Tinggi dan dengan memuji-Nya.",
     desc: "RUKUN. 7 anggota badan wajib menempel: dahi (beserta hidung — wajib menurut Syafi'i), kedua telapak tangan, kedua lutut, ujung jari kedua kaki. Perut tidak menempel paha. TUMAKNINAH wajib. Dibaca minimal 1x, sunnah 3x. Doa tambahan sunnah: 'Subbuuhun Qudduusun Rabbul Malaa-ikati war Ruuh.'",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="18" r="2"/><path d="M7 18h14"/><path d="M11 18l4-8-2-4"/><circle cx="15" cy="6" r="2"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" y1="68" x2="56" y2="68" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"/>
+      <circle cx="22" cy="60" r="5"/>
+      <path d="M22 65 Q28 40 36 44"/>
+      <line x1="36" y1="44" x2="46" y2="62"/>
+      <line x1="46" y1="62" x2="50" y2="65"/>
+      <line x1="22" y1="62" x2="8" y2="62"/>
+    </svg>`
   },
   {
     id: "duduk_dua_sujud",
@@ -189,7 +218,16 @@ const guides = [
     arti: "Ya Tuhanku, ampunilah aku, rahmatilah aku, cukupkanlah aku, angkatlah derajatku, berilah aku rezeki, tunjukilah aku, sehatkanlah aku, dan maafkanlah aku.",
     desc: "RUKUN. Posisi duduk iftirasy: duduk di atas kaki kiri yang terlipat, kaki kanan ditegakkan. TUMAKNINAH wajib. Jari tangan diletakkan di atas paha. Setelah ini, sujud kedua dilakukan dengan bacaan yang sama seperti sujud pertama.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v8"/><path d="M8 22h8"/><path d="M12 15H8l-2 7"/><path d="M12 15h4l2 7"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="42" r="6"/>
+      <line x1="30" y1="48" x2="28" y2="66"/>
+      <line x1="28" y1="54" x2="14" y2="44"/>
+      <line x1="28" y1="54" x2="42" y2="44"/>
+      <line x1="28" y1="66" x2="18" y2="76"/>
+      <line x1="28" y1="66" x2="38" y2="78"/>
+      <circle cx="22" cy="10" r="6" stroke-dasharray="2 2"/>
+      <path d="M22 16 L20 24 L24 24" stroke-dasharray="2 2"/>
+    </svg>`
   },
   {
     id: "qunut",
@@ -215,7 +253,15 @@ const guides = [
     arti: "Segala penghormatan, keberkahan, shalawat, dan kebaikan hanya milik Allah. Semoga keselamatan, rahmat, dan berkah Allah tercurah kepadamu wahai Nabi. Semoga keselamatan terlimpah kepada kami dan kepada hamba-hamba Allah yang saleh. Aku bersaksi bahwa tidak ada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah.",
     desc: "RUKUN. Dilakukan pada rakaat ke-2 sholat Dhuhur, Ashar, Maghrib, dan Isya. Posisi duduk IFTIRASY (kaki kiri diduduki, kaki kanan ditegakkan). Jari telunjuk kanan diangkat saat mengucap 'illallaah'. Setelah tasyahud awal, TIDAK membaca shalawat (cukup sampai 'Rasuulullaah'), langsung berdiri untuk rakaat berikutnya.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="42" r="6"/>
+      <line x1="30" y1="48" x2="28" y2="66"/>
+      <line x1="28" y1="54" x2="14" y2="44"/>
+      <line x1="28" y1="54" x2="42" y2="44"/>
+      <path d="M28 66 Q22 74 14 74 M28 66 Q34 74 42 74" />
+      <circle cx="22" cy="10" r="6" stroke-dasharray="2 2"/>
+      <path d="M22 16 L20 24 L24 24" stroke-dasharray="2 2"/>
+    </svg>`
   },
   {
     id: "tasyahud_akhir",
@@ -226,7 +272,16 @@ const guides = [
     arti: "Bacaan sama dengan Tasyahud Awal.",
     desc: "RUKUN. Dilakukan pada rakaat terakhir semua sholat fardhu. Posisi duduk TAWARRUK: kaki kiri dimasukkan ke bawah kaki kanan dari arah kanan, pantat menempel lantai, kaki kanan ditegakkan. Setelah tasyahud, lanjutkan membaca Shalawat Ibrahimiyyah.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="42" r="6"/>
+      <line x1="30" y1="48" x2="28" y2="66"/>
+      <line x1="28" y1="54" x2="14" y2="44"/>
+      <line x1="28" y1="54" x2="42" y2="44"/>
+      <line x1="28" y1="66" x2="18" y2="74"/>
+      <line x1="28" y1="66" x2="42" y2="74"/>
+      <circle cx="22" cy="10" r="6" stroke-dasharray="2 2"/>
+      <path d="M22 16 L20 24 L24 24" stroke-dasharray="2 2"/>
+    </svg>`
   },
   {
     id: "shalawat_ibrahim",
@@ -263,7 +318,15 @@ const guides = [
     arti: "Semoga keselamatan dan rahmat Allah tercurah kepada kalian.",
     desc: "RUKUN. Menoleh ke kanan hingga pipi kanan terlihat dari belakang, lalu ke kiri. Menurut mazhab Syafi'i, salam WAJIB dua kali (kanan dan kiri). Salam pertama (ke kanan) wajib, salam kedua (ke kiri) sunnah menurut satu pendapat. Namun lebih afdhal dan merupakan jumhur ulama Syafi'i bahwa keduanya wajib.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`
+    diagram: `<svg viewBox="0 0 60 80" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="30" cy="10" r="6"/>
+      <line x1="30" y1="16" x2="30" y2="44"/>
+      <line x1="30" y1="22" x2="12" y2="16"/>
+      <line x1="30" y1="22" x2="48" y2="16"/>
+      <line x1="30" y1="44" x2="18" y2="76"/>
+      <line x1="30" y1="44" x2="42" y2="76"/>
+      <path d="M30 30 Q38 30 40 36" stroke="currentColor" fill="none" stroke-dasharray="1 1"/>
+    </svg>`
   },
 
   // ============================================================
@@ -412,7 +475,9 @@ const guides = [
           <div class="px-5 pb-6 pt-3 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
             
             <div class="flex gap-4 mb-5 items-start">
-              <div class="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700" set:html={item.icon}></div>
+              <div class="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 text-emerald-500 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700 overflow-hidden">
+                {item.diagram ? <span set:html={item.diagram} /> : <span set:html={item.icon} />}
+              </div>
               <p class="text-xs text-slate-600 dark:text-slate-300 italic leading-relaxed flex-1 pt-1">
                 {item.desc}
               </p>
@@ -481,9 +546,7 @@ const guides = [
       </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10">
-      <span id="toast-msg">Berhasil disimpan!</span>
-    </div>
+    <Toast msgId="toast-msg" />
 
   </div>
 

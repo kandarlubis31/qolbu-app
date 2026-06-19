@@ -1,10 +1,22 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SettingsModal from '../../components/SettingsModal.astro';
 
 export async function getStaticPaths() {
+  let suratList = [];
+try {
   const res = await fetch('https://equran.id/api/v2/surat');
-  const json = await res.json();
-  const suratList = json.data;
+  if (res.ok) {
+    const json = await res.json();
+    suratList = json.data || [];
+  }
+} catch (e) {
+  console.error('Gagal fetch daftar surat:', e);
+}
+
+if (suratList.length === 0) {
+  return []; // fallback: no static paths generated
+}
 
   return suratList.map((surat) => ({
     params: { nomor: surat.nomor.toString() },
@@ -12,10 +24,22 @@ export async function getStaticPaths() {
 }
 
 const { nomor } = Astro.params;
+const suratNomor = nomor;
 
-const resDetail = await fetch(`https://equran.id/api/v2/surat/${nomor}`);
-const jsonDetail = await resDetail.json();
-const suratData = jsonDetail.data;
+let suratData = null;
+try {
+  const resDetail = await fetch(`https://equran.id/api/v2/surat/${nomor}`);
+  if (!resDetail.ok) throw new Error(`HTTP ${resDetail.status}`);
+  const jsonDetail = await resDetail.json();
+  suratData = jsonDetail.data;
+} catch (e) {
+  console.error('Gagal fetch detail surat:', e);
+  suratData = null;
+}
+
+if (!suratData) {
+  return Astro.redirect('/quran');
+}
 
 const toArabic = (num) => {
   const arabicMap = {'0':'٠','1':'١','2':'٢','3':'٣','4':'٤','5':'٥','6':'٦','7':'٧','8':'٨','9':'٩'};
@@ -101,42 +125,32 @@ const toArabic = (num) => {
 
   </div>
 
-  <div id="settings-modal" class="fixed inset-0 z-[100] hidden">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="overlay"></div>
-    <div class="absolute bottom-0 left-0 w-full max-w-md mx-auto bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up" style="left: 50%; transform: translateX(-50%);">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Tampilan Bacaan</h3>
-        <button id="close-settings" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
+  <SettingsModal title="Tampilan Bacaan">
+    <div class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Ukuran Font Arab</label>
+        <input type="range" id="font-size-range" min="1" max="5" step="1" value="3" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+        <div class="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+          <span>Kecil</span><span>Normal</span><span>Besar</span>
+        </div>
       </div>
-      
-      <div class="space-y-6">
-        <div>
-          <label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Ukuran Font Arab</label>
-          <input type="range" id="font-size-range" min="1" max="5" step="1" value="3" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-          <div class="flex justify-between text-xs text-slate-400 mt-2 font-medium">
-            <span>Kecil</span><span>Normal</span><span>Besar</span>
-          </div>
-        </div>
-        <hr class="border-slate-100 dark:border-slate-800" />
-        <div class="flex items-center justify-between">
-          <span class="text-slate-700 dark:text-slate-200 font-medium text-sm">Tampilkan Teks Latin</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="toggle-latin" class="sr-only peer" checked>
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-          </label>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-slate-700 dark:text-slate-200 font-medium text-sm">Tampilkan Terjemahan</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="toggle-arti" class="sr-only peer" checked>
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-          </label>
-        </div>
+      <hr class="border-slate-100 dark:border-slate-800" />
+      <div class="flex items-center justify-between">
+        <span class="text-slate-700 dark:text-slate-200 font-medium text-sm">Tampilkan Teks Latin</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggle-latin" class="sr-only peer" checked>
+          <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+        </label>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-slate-700 dark:text-slate-200 font-medium text-sm">Tampilkan Terjemahan</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggle-arti" class="sr-only peer" checked>
+          <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+        </label>
       </div>
     </div>
-  </div>
+  </SettingsModal>
 
 </BaseLayout>
 
@@ -274,10 +288,53 @@ const toArabic = (num) => {
     }
     applySettings();
 
+    // ------ LANJUT BACA: save last read position ------
+    const SAVE_DELAY = 1500;
+    let scrollTimer = null;
+
+    const saveLastRead = (ayatNum) => {
+      const data = {
+        surah: '${suratNomor}',
+        ayat: ayatNum,
+        surahName: '${suratData.namaLatin}',
+        timestamp: Date.now()
+      };
+      localStorage.setItem('quran-last-read', JSON.stringify(data));
+    };
+
+    // Save on audio button click
+    audioBtnsArr.forEach((btn) => {
+      const ayatNum = btn.closest('.ayat-card')?.id?.replace('ayat-', '');
+      if (ayatNum) {
+        btn.addEventListener('click', () => saveLastRead(parseInt(ayatNum)));
+      }
+    });
+
+    // Save on scroll (debounced) — listen on window, detect visible ayat
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const cards = document.querySelectorAll('.ayat-card');
+        let visibleAyat = null;
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          if (rect.top < window.innerHeight / 2 && rect.bottom > 0) {
+            visibleAyat = card.id.replace('ayat-', '');
+          }
+        });
+        if (visibleAyat) saveLastRead(parseInt(visibleAyat));
+      }, SAVE_DELAY);
+    });
+
+    // Scroll to hash on load
     if (window.location.hash) {
       setTimeout(() => {
         const el = document.querySelector(window.location.hash);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          el.classList.add('ring-2', 'ring-emerald-500', 'shadow-lg');
+          setTimeout(() => el.classList.remove('ring-2', 'ring-emerald-500', 'shadow-lg'), 2000);
+        }
       }, 500);
     }
   });

@@ -1,0 +1,15 @@
+---
+interface Props {
+  id?: string;
+  msgId?: string;
+}
+
+const { id = "toast", msgId = "toast-msg" } = Astro.props;
+---
+
+<div
+  id={id}
+  class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10"
+>
+  <span id={msgId}>Berhasil!</span>
+</div>

@@ -1,14 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeaderBack from '../components/HeaderBack.astro';
 ---
 
 <BaseLayout pageTitle="Tasbih Digital">
   
-  <div class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md p-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800">
-    <a href="/" class="flex items-center gap-2 text-slate-500 hover:text-emerald-600 transition-colors">
+  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 flex items-center justify-between shadow-sm">
+    <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       <span class="font-medium text-sm">Dashboard</span>
     </a>
+    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Tasbih Digital</h1>
     <div class="flex gap-2">
       <select id="target-select" class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs rounded-lg px-2 py-1 outline-none border-none cursor-pointer">
         <option value="33">Target: 33</option>
@@ -34,6 +36,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       <div class="text-center">
         <p id="current-dhikr" class="text-lg font-medium text-slate-700 dark:text-slate-300">Subhanallah</p>
+        <p id="sequence-indicator" class="text-[10px] text-emerald-500 font-bold mt-1 uppercase tracking-wider hidden">
+          <span id="seq-current">1</span> / <span id="seq-total">4</span>
+        </p>
       </div>
     </div>
     
@@ -83,6 +88,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
           Suara: ON
         </button>
+        <button id="toggle-autocycle" class="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-medium transition-colors border border-emerald-200 dark:border-emerald-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Auto-Cycle
+        </button>
       </div>
       
       <!-- Statistics -->
@@ -115,6 +124,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Target Tercapai!</h3>
         <p class="text-slate-600 dark:text-slate-300 mb-4">Anda telah menyelesaikan <span id="completed-dhikr">Subhanallah</span> sebanyak <span id="completed-count">33</span> kali.</p>
+        <p id="completion-badge" class="text-[10px] font-bold text-emerald-500 mb-3 hidden">✨ Semua selesai! Kembali ke awal.</p>
         <div class="flex gap-2 justify-center">
           <button id="continue-btn" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">Lanjut</button>
           <button id="reset-modal-btn" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">Reset</button>
@@ -146,17 +156,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const currentDhikrDisplay = document.getElementById('current-dhikr');
   const dhikrBtns = document.querySelectorAll('.dhikr-btn');
   
+  // Sequence Elements
+  const sequenceIndicator = document.getElementById('sequence-indicator');
+  const seqCurrent = document.getElementById('seq-current');
+  const seqTotal = document.getElementById('seq-total');
+  const toggleAutoCycle = document.getElementById('toggle-autocycle');
+  const completionBadge = document.getElementById('completion-badge');
+
   // Statistics Elements
   const todayTotal = document.getElementById('today-total');
   const todaySessions = document.getElementById('today-sessions');
   const todayStreak = document.getElementById('today-streak');
+
+  // Multi-dhikr sequence
+  const DHIKR_SEQUENCE = ['Subhanallah', 'Alhamdulillah', 'Allahu Akbar', 'Laa ilaaha illallah'];
 
   // State
   let count = parseInt(localStorage.getItem('tasbih-count') || '0');
   let target = parseInt(localStorage.getItem('tasbih-target') || '33');
   let vibrateEnabled = localStorage.getItem('tasbih-vibrate') !== 'false'; // Default ON
   let soundEnabled = localStorage.getItem('tasbih-sound') !== 'false'; // Default ON
+  let autoCycle = localStorage.getItem('tasbih-autocycle') === 'true'; // Default OFF
   let currentDhikr = localStorage.getItem('tasbih-dhikr') || 'Subhanallah';
+  let dhikrIndex = DHIKR_SEQUENCE.indexOf(currentDhikr);
+  if (dhikrIndex === -1) dhikrIndex = 0;
   
   // Statistics State
   let todayDate = new Date().toDateString();
@@ -180,9 +203,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   currentDhikrDisplay.innerText = currentDhikr;
   updateVibrateUI();
   updateSoundUI();
+  updateAutoCycleUI();
   updateProgressBar();
   updateStatistics();
   updateDhikrButtons();
+  updateSequenceUI();
 
   // --- Logic Functions ---
 
@@ -231,29 +256,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
+  function updateSequenceUI() {
+    if (autoCycle && target > 0) {
+      sequenceIndicator.classList.remove('hidden');
+      seqCurrent.textContent = dhikrIndex + 1;
+      seqTotal.textContent = DHIKR_SEQUENCE.length;
+    } else {
+      sequenceIndicator.classList.add('hidden');
+    }
+  }
+
+  function updateAutoCycleUI() {
+    if (autoCycle) {
+      toggleAutoCycle.classList.add('bg-emerald-50', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400', 'border-emerald-200', 'dark:border-emerald-800');
+      toggleAutoCycle.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+      toggleAutoCycle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Auto-Cycle: ON`;
+      updateSequenceUI();
+    } else {
+      toggleAutoCycle.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400', 'border-emerald-200', 'dark:border-emerald-800');
+      toggleAutoCycle.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+      toggleAutoCycle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Auto-Cycle`;
+      updateSequenceUI();
+    }
+  }
+
   function updateStatistics() {
     // Update today's stats
     todayTotal.textContent = stats[todayDate].total;
     todaySessions.textContent = stats[todayDate].sessions;
     
-    // Calculate streak
+    // Calculate streak: hanya hitung jika hari ini completed
     let streak = 0;
-    let currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() - 1); // Start from yesterday
     
-    while (true) {
-      const dateStr = currentDate.toDateString();
-      if (stats[dateStr] && stats[dateStr].completed) {
-        streak++;
-        currentDate.setDate(currentDate.getDate() - 1);
-      } else {
-        break;
+    if (stats[todayDate] && stats[todayDate].completed) {
+      streak = 1; // Today counts
+      let currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() - 1);
+      
+      while (true) {
+        const dateStr = currentDate.toDateString();
+        if (stats[dateStr] && stats[dateStr].completed) {
+          streak++;
+          currentDate.setDate(currentDate.getDate() - 1);
+        } else {
+          break;
+        }
       }
-    }
-    
-    // If today is completed, add to streak
-    if (stats[todayDate].completed) {
-      streak++;
     }
     
     todayStreak.textContent = streak;
@@ -302,6 +350,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     updateProgressBar();
   }
 
+  function switchToNextDhikr() {
+    // Move to next dhikr in sequence
+    dhikrIndex = (dhikrIndex + 1) % DHIKR_SEQUENCE.length;
+    currentDhikr = DHIKR_SEQUENCE[dhikrIndex];
+    currentDhikrDisplay.innerText = currentDhikr;
+    localStorage.setItem('tasbih-dhikr', currentDhikr);
+    updateDhikrButtons();
+    updateSequenceUI();
+
+    // Reset count untuk mulai menghitung dhikr baru dari 0
+    count = 0;
+    countDisplay.innerText = count;
+    localStorage.setItem('tasbih-count', count);
+    updateProgressBar();
+    targetDisplay.classList.add('opacity-0');
+
+    // Check if we wrapped around to the start (all done)
+    if (dhikrIndex === 0) {
+      completionBadge.classList.remove('hidden');
+      setTimeout(() => completionBadge.classList.add('hidden'), 3000);
+    }
+  }
+
   function checkTarget() {
     if (target > 0 && count % target === 0 && count !== 0) {
       // Getar panjang dikit kalau target tercapai
@@ -344,14 +415,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     checkTarget();
   }
 
-  function reset() {
-    if(confirm('Reset hitungan ke 0?')) {
-      count = 0;
-      countDisplay.innerText = count;
-      localStorage.setItem('tasbih-count', count);
-      updateProgressBar();
-      if (vibrateEnabled && navigator.vibrate) navigator.vibrate(50);
-    }
+  function reset(silent = false) {
+    if (!silent && !confirm('Reset hitungan ke 0?')) return;
+    count = 0;
+    countDisplay.innerText = count;
+    localStorage.setItem('tasbih-count', count);
+    updateProgressBar();
+    if (vibrateEnabled && navigator.vibrate) navigator.vibrate(50);
   }
 
   function closeModal() {
@@ -401,13 +471,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     if(soundEnabled) playSound(1000, 100);
   });
 
+  toggleAutoCycle.addEventListener('click', () => {
+    autoCycle = !autoCycle;
+    localStorage.setItem('tasbih-autocycle', autoCycle);
+    updateAutoCycleUI();
+    if (vibrateEnabled && navigator.vibrate) navigator.vibrate(20);
+  });
+
   // Dhikr selection
   dhikrBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       currentDhikr = btn.dataset.dhikr;
+      dhikrIndex = DHIKR_SEQUENCE.indexOf(currentDhikr);
+      if (dhikrIndex === -1) dhikrIndex = 0;
       currentDhikrDisplay.innerText = currentDhikr;
       localStorage.setItem('tasbih-dhikr', currentDhikr);
       updateDhikrButtons();
+      updateSequenceUI();
       if (vibrateEnabled && navigator.vibrate) navigator.vibrate(20);
     });
   });
@@ -415,12 +495,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   // Modal buttons
   continueBtn.addEventListener('click', () => {
     closeModal();
-    // Continue counting without resetting
+    if (autoCycle) {
+      switchToNextDhikr();
+    }
   });
 
   resetModalBtn.addEventListener('click', () => {
     closeModal();
-    reset();
+    if (autoCycle) {
+      switchToNextDhikr();
+    } else {
+      reset(true); // silent reset
+    }
   });
 
   // Check if date changed and update stats

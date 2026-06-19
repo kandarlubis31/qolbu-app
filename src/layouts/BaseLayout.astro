@@ -1,23 +1,54 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   pageTitle?: string;
+  description?: string;
+  image?: string;
 }
 
-const { pageTitle = "Dashboard" } = Astro.props;
+const {
+  pageTitle = "Dashboard",
+  description = "Aplikasi Ibadah Harian Terlengkap: Jadwal Sholat, Al-Qur'an, Doa Harian, Panduan Sholat & Tasbih Digital.",
+  image = "/logo.png",
+} = Astro.props;
+
+const fullTitle = `${pageTitle} | Qolbu by PakLubis`;
 ---
 
 <!doctype html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth" transition:animate="slide">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
     <link rel="icon" type="image/png" href="/logo.png" />
     
-    <title>{pageTitle} | Qolbu by PakLubis</title>
-    <meta name="description" content="Aplikasi Ibadah Harian Terlengkap: Jadwal Sholat, Al-Qur'an, Doa Harian, Panduan Sholat & Tasbih Digital." />
+    <ClientRouter />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Qolbu" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+
+    <!-- SEO: Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- SEO: Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
     <meta name="theme-color" content="#10b981" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +79,7 @@ const { pageTitle = "Dashboard" } = Astro.props;
   
   <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300 selection:bg-emerald-500 selection:text-white overflow-x-hidden">
     
-    <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300">
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors duration-300" transition:name="site-header">
       <div class="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
         <a href="/" class="flex items-center gap-2.5 group">
           
@@ -59,7 +90,7 @@ const { pageTitle = "Dashboard" } = Astro.props;
           <span class="font-extrabold text-xl tracking-tight text-slate-800 dark:text-white">Qolbu</span>
         </a>
         
-        <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400 active:scale-95" aria-label="Ganti Tema">
+        <button id="theme-toggle" transition:persist class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400 active:scale-95" aria-label="Ganti Tema">
            <svg class="w-5 h-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
            <svg class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         </button>
@@ -99,6 +130,13 @@ const { pageTitle = "Dashboard" } = Astro.props;
 
       document.addEventListener('DOMContentLoaded', setupThemeToggle);
       document.addEventListener('astro:after-swap', setupThemeToggle);
+
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
     </script>
   </body>
 </html>

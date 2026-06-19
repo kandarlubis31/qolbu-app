@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SettingsModal from '../components/SettingsModal.astro';
+import Toast from '../components/Toast.astro';
 ---
 
 <BaseLayout pageTitle="Jadwal Sholat & Kiblat">
@@ -28,11 +30,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
 
       <div class="relative z-10 text-center">
-        <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mb-1">Menuju Waktu</p>
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <span id="countdown-status" class="text-emerald-100 text-xs font-medium uppercase tracking-widest">Menuju Waktu</span>
+          <span id="besok-badge" class="hidden text-[10px] font-bold bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full">Besok</span>
+        </div>
         <h2 id="next-prayer-name" class="text-2xl font-bold mb-2">Memuat...</h2>
         
-        <div class="bg-white/20 backdrop-blur-md rounded-xl p-3 inline-block min-w-[140px] border border-white/10 shadow-inner">
+        <div class="bg-white/20 backdrop-blur-md rounded-xl p-3 inline-block min-w-[140px] border border-white/10 shadow-inner relative">
           <h1 id="countdown" class="text-4xl font-black tabular-nums tracking-tight">--:--:--</h1>
+          <div id="countdown-label" class="text-[10px] text-emerald-200 mt-0.5">Tersisa</div>
+        </div>
+
+        <!-- Progress bar -->
+        <div id="progress-container" class="hidden mt-3 mx-auto max-w-[200px]">
+          <div class="flex justify-between text-[9px] text-emerald-200 mb-1">
+            <span id="progress-label">Waktu berjalan</span>
+            <span id="progress-pct">0%</span>
+          </div>
+          <div class="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-white/60 rounded-full transition-all duration-1000 ease-linear" style="width: 0%"></div>
+          </div>
         </div>
         
         <div class="mt-4 flex flex-col gap-0.5">
@@ -80,7 +97,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
 
-    <div id="prayer-list" class="space-y-3">
+    <div id="sunrise-container" class="hidden mb-2">
+      <div class="flex items-center justify-between p-3 rounded-xl bg-amber-50/60 dark:bg-amber-900/10 border border-amber-100/50 dark:border-amber-800/30">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <span class="text-xs font-bold text-amber-600 dark:text-amber-400">Syuruq (Terbit)</span>
+        </div>
+        <span id="sunrise-time" class="font-mono font-bold text-sm text-amber-600 dark:text-amber-400">--:--</span>
+      </div>
+    </div>
+
+    <div id="dhuha-container" class="hidden mb-3">
+      <div class="flex items-center justify-between p-3 rounded-xl bg-yellow-50/60 dark:bg-yellow-900/10 border border-yellow-100/50 dark:border-yellow-800/30">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-500"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <span class="text-xs font-bold text-yellow-600 dark:text-yellow-400">Dhuha</span>
+        </div>
+        <span id="dhuha-time" class="font-mono font-bold text-sm text-yellow-600 dark:text-yellow-400">--:--</span>
+      </div>
+    </div>
+
+    <div id="prayer-list" class="space-y-2">
       {[1,2,3,4,5].map(() => (
         <div class="animate-pulse flex items-center justify-between p-4 rounded-2xl bg-slate-100 dark:bg-slate-800">
           <div class="h-4 w-24 bg-slate-200 dark:bg-slate-700 rounded"></div>
@@ -103,105 +140,112 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </div>
 
-  <div id="settings-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="settings-overlay"></div>
-    <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto">
+  <SettingsModal overlayId="settings-overlay" closeId="close-settings-btn" title="Pengaturan Sholat">
+    <div class="space-y-6">
       
-      <div class="flex items-center justify-between mb-6">
-        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Pengaturan Sholat</h3>
-        <button id="close-settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500 transition-colors hover:text-slate-800 dark:hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        </button>
+      <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">Koreksi Waktu (Ihtiyat)</h4>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">
+              Tambahkan menit agar sesuai jadwal resmi masjid. Default aman: <strong>+2 Menit</strong>.
+          </p>
+          <div class="flex items-center gap-3">
+              <button id="btn-minus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">-</button>
+              <div class="flex-1 text-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 h-10 rounded-lg flex items-center justify-center font-mono font-bold" id="input-correction">2</div>
+              <button id="btn-plus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">+</button>
+          </div>
       </div>
-      
-      <div class="space-y-6">
-        
-        <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-800">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">Koreksi Waktu (Ihtiyat)</h4>
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">
-                Tambahkan menit agar sesuai jadwal resmi masjid. Default aman: <strong>+2 Menit</strong>.
-            </p>
-            <div class="flex items-center gap-3">
-                <button id="btn-minus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">-</button>
-                <div class="flex-1 text-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 h-10 rounded-lg flex items-center justify-center font-mono font-bold" id="input-correction">2</div>
-                <button id="btn-plus-cor" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-lg font-bold hover:bg-slate-50 active:scale-95 transition-all">+</button>
-            </div>
-        </div>
 
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Lokasi</h4>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Gunakan GPS Otomatis</span>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="use-current-location" class="sr-only peer" checked>
-                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-              </label>
-            </div>
-            
-            <div id="manual-location" class="hidden space-y-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
-              <p class="text-xs text-slate-500">Masukkan koordinat manual:</p>
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="text-[10px] text-slate-400">Latitude</label>
-                    <input type="number" id="lat-input" placeholder="-6.2000" step="any" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-slate-400">Longitude</label>
-                    <input type="number" id="lng-input" placeholder="106.8000" step="any" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
-                </div>
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Lokasi</h4>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Gunakan GPS Otomatis</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="use-current-location" class="sr-only peer" checked>
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+            </label>
+          </div>
+          
+          <div id="manual-location" class="hidden space-y-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700">
+            <p class="text-xs text-slate-500">Masukkan koordinat manual:</p>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                  <label class="text-[10px] text-slate-400">Latitude</label>
+                  <input type="number" id="lat-input" placeholder="-6.2000" step="any" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
               </div>
               <div>
-                 <label class="text-[10px] text-slate-400">Nama Kota (Opsional)</label>
-                 <input type="text" id="city-input" placeholder="Contoh: Jakarta" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
+                  <label class="text-[10px] text-slate-400">Longitude</label>
+                  <input type="number" id="lng-input" placeholder="106.8000" step="any" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
               </div>
             </div>
-          </div>
-        </div>
-        
-        <hr class="border-slate-100 dark:border-slate-800"/>
-
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Metode Perhitungan</h4>
-          <select id="calc-method" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500/20">
-            <option value="20">Kemenag RI (Indonesia)</option>
-            <option value="11">MUIS (Singapura)</option>
-            <option value="3">Muslim World League</option>
-            <option value="2">ISNA (North America)</option>
-            <option value="4">Umm Al-Qura (Makkah)</option>
-            <option value="5">Egyptian General Authority</option>
-          </select>
-        </div>
-
-        <hr class="border-slate-100 dark:border-slate-800"/>
-        
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Notifikasi</h4>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Suara Adzan</span>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="adhan-notification" class="sr-only peer">
-                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-              </label>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Pengingat (10 Menit Sebelum)</span>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="reminder-notification" class="sr-only peer">
-                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-              </label>
+            <div>
+               <label class="text-[10px] text-slate-400">Nama Kota (Opsional)</label>
+               <input type="text" id="city-input" placeholder="Contoh: Jakarta" class="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-lg text-sm outline-none focus:border-emerald-500">
             </div>
           </div>
-          <p class="text-[10px] text-amber-500 mt-2 italic">*Izin notifikasi akan diminta saat disimpan.</p>
         </div>
-        
-        <button id="save-settings-btn" class="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/30 active:scale-95">
-          Simpan Perubahan
-        </button>
       </div>
+      
+      <hr class="border-slate-100 dark:border-slate-800"/>
+
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Metode Perhitungan</h4>
+        <select id="calc-method" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-emerald-500/20">
+          <option value="20">Kemenag RI (Indonesia)</option>
+          <option value="11">MUIS (Singapura)</option>
+          <option value="3">Muslim World League</option>
+          <option value="2">ISNA (North America)</option>
+          <option value="4">Umm Al-Qura (Makkah)</option>
+          <option value="5">Egyptian General Authority</option>
+        </select>
+      </div>
+
+      <hr class="border-slate-100 dark:border-slate-800"/>
+      
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Notifikasi & Suara</h4>
+        
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Suara Adzan</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="adhan-notification" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+            </label>
+          </div>
+
+          <!-- Volume slider -->
+          <div id="volume-container" class="flex items-center gap-3 px-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 flex-shrink-0"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>
+            <input type="range" id="adhan-volume" min="0" max="100" value="70" class="flex-1 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full appearance-none cursor-pointer accent-emerald-500">
+            <span id="adhan-volume-value" class="text-xs font-mono font-bold text-slate-500 w-8 text-right">70%</span>
+          </div>
+
+          <button id="test-adhan-btn" class="w-full py-2.5 rounded-xl font-bold text-xs transition-all bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 active:scale-95">
+            <span class="flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Test Suara Adzan
+            </span>
+          </button>
+
+          <hr class="border-slate-100 dark:border-slate-800"/>
+
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Pengingat (10 Menit Sebelum)</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="reminder-notification" class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+            </label>
+          </div>
+        </div>
+        <p class="text-[10px] text-amber-500 mt-2 italic">*Izin notifikasi browser & interaksi pengguna diperlukan untuk suara adzan.</p>
+      </div>
+      
+      <button id="save-settings-btn" class="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/30 active:scale-95">
+        Simpan Perubahan
+      </button>
     </div>
-  </div>
+  </SettingsModal>
 
   <div id="qibla-modal" class="fixed inset-0 z-[100] bg-slate-900 hidden text-white">
     <div class="absolute top-4 right-4 z-20">
@@ -252,7 +296,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </div>
 
-  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 text-center"></div>
+  <Toast />
 
 </BaseLayout>
 
@@ -265,18 +309,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       imsakTime: document.getElementById('imsak-time'),
       nextName: document.getElementById('next-prayer-name'),
       count: document.getElementById('countdown'),
+      countLabel: document.getElementById('countdown-label'),
+      countStatus: document.getElementById('countdown-status'),
+      besokBadge: document.getElementById('besok-badge'),
       hijri: document.getElementById('hijri-date'),
       gregorian: document.getElementById('gregorian-date'),
       refresh: document.getElementById('refresh-loc-btn'),
       refreshIcon: document.getElementById('refresh-icon'),
       corDisplay: document.getElementById('correction-display'),
-      
+      progressCont: document.getElementById('progress-container'),
+      progressBar: document.getElementById('progress-bar'),
+      progressPct: document.getElementById('progress-pct'),
+      progressLabel: document.getElementById('progress-label'),
+      sunriseCont: document.getElementById('sunrise-container'),
+      sunriseTime: document.getElementById('sunrise-time'),
+      dhuhaCont: document.getElementById('dhuha-container'),
+      dhuhaTime: document.getElementById('dhuha-time'),
+
       settingsBtn: document.getElementById('settings-btn'),
       settingsModal: document.getElementById('settings-modal'),
       closeSet: document.getElementById('close-settings-btn'),
       saveSet: document.getElementById('save-settings-btn'),
       settingsOverlay: document.getElementById('settings-overlay'),
-      
+
       useGPS: document.getElementById('use-current-location'),
       manualBox: document.getElementById('manual-location'),
       latIn: document.getElementById('lat-input'),
@@ -285,7 +340,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       method: document.getElementById('calc-method'),
       adhan: document.getElementById('adhan-notification'),
       remind: document.getElementById('reminder-notification'),
-      
+      volumeSlider: document.getElementById('adhan-volume'),
+      volumeValue: document.getElementById('adhan-volume-value'),
+      testAdhanBtn: document.getElementById('test-adhan-btn'),
+
       btnMinus: document.getElementById('btn-minus-cor'),
       btnPlus: document.getElementById('btn-plus-cor'),
       inputCor: document.getElementById('input-correction'),
@@ -299,208 +357,389 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       qiblaDegModal: document.getElementById('qibla-degree-modal'),
       previewNeedle: document.getElementById('qibla-preview-needle'),
       iosBtn: document.getElementById('ios-permission-btn'),
-      
+
       toast: document.getElementById('toast')
     };
 
+    const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    const PRAYER_NAMES = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
+    const BULAN_INDO = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    const HARI_INDO = ['Ahad','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+
     let state = {
-      lat: -6.2088, 
+      lat: -6.2088,
       lng: 106.8456,
       city: 'Jakarta',
       method: 20,
       useGPS: true,
       adhan: false,
       remind: false,
+      adhanVolume: 70,
       qiblaAngle: 0,
-      correction: 2 
+      correction: 2
     };
-    
+
     let countdownInterval = null;
-    let lastNotifiedAdhan = null;
-    let lastNotifiedRemind = null;
+    let adzanAudioCtx = null;
+    let isAdzanPlaying = false;
+
+    // ------ WEB AUDIO API ADZAN PLAYER ------
+    const getAudioCtx = () => {
+      if (!adzanAudioCtx) {
+        adzanAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (adzanAudioCtx.state === 'suspended') {
+        adzanAudioCtx.resume();
+      }
+      return adzanAudioCtx;
+    };
+
+    /**
+     * Memainkan suara adzan menggunakan Web Audio API.
+     * Menghasilkan melodi "Allahu Akbar" 4 nada naik, diulang 2x.
+     */
+    const playAdzan = (volume = 0.7) => {
+      if (isAdzanPlaying) return;
+      isAdzanPlaying = true;
+
+      try {
+        const ctx = getAudioCtx();
+        const now = ctx.currentTime;
+        const vol = Math.min(Math.max(volume, 0), 1);
+        const totalDuration = 2 * (4 * (0.35 + 0.05) + 0.4); // ~3.6s
+
+        // "Allahu Akbar" melodic pattern (2 repetitions)
+        // 4 ascending notes: C4 -> E4 -> G4 -> C5
+        const notes = [261.63, 329.63, 392.00, 523.25];
+        const noteDuration = 0.35;
+        const gap = 0.05;
+        const phraseGap = 0.4;
+        const repetitions = 2;
+
+        for (let rep = 0; rep < repetitions; rep++) {
+          const phraseStart = now + rep * (notes.length * (noteDuration + gap) + phraseGap);
+
+          notes.forEach((freq, i) => {
+            const start = phraseStart + i * (noteDuration + gap);
+            const end = start + noteDuration;
+
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, start);
+
+            gain.gain.setValueAtTime(0, start);
+            gain.gain.linearRampToValueAtTime(vol * 0.3, start + 0.02);
+            gain.gain.setValueAtTime(vol * 0.3, end - 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, end);
+
+            osc.connect(gain).connect(ctx.destination);
+            osc.start(start);
+            osc.stop(end);
+          });
+        }
+
+        // Reset guard after playback finishes
+        setTimeout(() => { isAdzanPlaying = false; }, (totalDuration + 0.5) * 1000);
+      } catch (e) {
+        isAdzanPlaying = false;
+        console.warn('Adzan audio failed:', e);
+      }
+    };
 
     const showToast = (msg) => {
-        els.toast.innerText = msg;
-        els.toast.classList.remove('opacity-0', 'translate-y-10');
-        setTimeout(() => els.toast.classList.add('opacity-0', 'translate-y-10'), 2500);
-    };
-
-    const init = () => {
-      loadSettings();
-      if (state.useGPS) {
-        getGPS();
-      } else {
-        els.locText.innerText = state.city || "Manual";
-        fetchPrayer(state.lat, state.lng);
-      }
+      els.toast.innerText = msg;
+      els.toast.classList.remove('opacity-0', 'translate-y-10');
+      setTimeout(() => els.toast.classList.add('opacity-0', 'translate-y-10'), 2500);
     };
 
     const addMinutes = (timeStr, minutesToAdd) => {
-        const [h, m] = timeStr.split(':').map(Number);
-        const date = new Date();
-        date.setHours(h, m + minutesToAdd, 0); 
-        return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+      const [h, m] = timeStr.split(':').map(Number);
+      const date = new Date();
+      date.setHours(h, m + minutesToAdd, 0);
+      return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    };
+
+    const addMinutesToStr = (timeStr, mins) => {
+      const [h, m] = timeStr.split(':').map(Number);
+      let total = h * 60 + m + mins;
+      const nh = ((total % 1440) + 1440) % 1440;
+      return `${Math.floor(nh / 60).toString().padStart(2, '0')}:${(nh % 60).toString().padStart(2, '0')}`;
     };
 
     const getPDate = (timeStr) => {
-        const [h, m] = timeStr.split(':').map(Number);
-        const d = new Date();
-        d.setHours(h, m, 0);
-        return d;
+      const [h, m] = timeStr.split(':').map(Number);
+      const d = new Date();
+      d.setHours(h, m, 0, 0);
+      return d;
     };
 
-    const fetchPrayer = async (lat, lng) => {
-      try {
-        calcQibla(lat, lng);
+    const getCacheKey = (lat, lng) => {
+      const d = new Date();
+      const dateStr = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+      return `sholat-cache-${dateStr}-${lat.toFixed(4)}-${lng.toFixed(4)}-${state.method}-${state.correction}`;
+    };
 
+    const loadCachedData = (cacheKey) => {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed.date === new Date().toDateString()) {
+            return parsed;
+          }
+        }
+      } catch (e) { /* ignore corrupt cache */ }
+      return null;
+    };
+
+    const saveToCache = (cacheKey, data) => {
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({
+          date: new Date().toDateString(),
+          timestamp: Date.now(),
+          data: data
+        }));
+      } catch (e) { /* quota exceeded */ }
+    };
+
+    // ------ FIND NEXT & CURRENT PRAYER ------
+    const findNextPrayer = (timings) => {
+      const now = new Date();
+      for (let k of PRAYER_ORDER) {
+        const t = getPDate(timings[k]);
+        if (t > now) return { key: k, time: t, isTomorrow: false };
+      }
+      // All passed → next is Fajr tomorrow
+      const t = getPDate(timings['Fajr']);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(t.getHours(), t.getMinutes(), 0, 0);
+      return { key: 'Fajr', time: tomorrow, isTomorrow: true };
+    };
+
+    const findCurrentPrayer = (timings) => {
+      const now = new Date();
+      for (let i = PRAYER_ORDER.length - 1; i >= 0; i--) {
+        const k = PRAYER_ORDER[i];
+        const t = getPDate(timings[k]);
+        if (now >= t) return k;
+      }
+      return PRAYER_ORDER[PRAYER_ORDER.length - 1]; // Isya (last night's)
+    };
+
+    const getNextPrayerTime = (timings, key) => {
+      const idx = PRAYER_ORDER.indexOf(key);
+      if (idx < PRAYER_ORDER.length - 1) {
+        return getPDate(timings[PRAYER_ORDER[idx + 1]]);
+      }
+      // After Isya → next is Fajr tomorrow
+      const t = getPDate(timings['Fajr']);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(t.getHours(), t.getMinutes(), 0, 0);
+      return tomorrow;
+    };
+
+    // ------ FETCH PRAYER DATA ------
+    const fetchPrayer = async (lat, lng) => {
+      try { calcQibla(lat, lng); } catch (e) { /* silent */ }
+
+      const cacheKey = getCacheKey(lat, lng);
+      const cached = loadCachedData(cacheKey);
+      if (cached) {
+        renderWithTimings(cached.data.timings, cached.data);
+      }
+
+      try {
         const d = new Date();
         const dateStr = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
         const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lng}&method=${state.method}`;
-        
+
         const res = await fetch(url);
         const json = await res.json();
-        
+
         if (json.code === 200) {
           const rawTimings = json.data.timings;
           const correctedTimings = {};
-          
-          Object.keys(rawTimings).forEach(key => {
-             if(['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Imsak', 'Sunrise'].includes(key)){
-                 correctedTimings[key] = addMinutes(rawTimings[key], state.correction);
-             } else {
-                 correctedTimings[key] = rawTimings[key];
-             }
-          });
-          
-          json.data.timings = correctedTimings;
-          render(json.data);
-          startTimer(correctedTimings);
-          els.corDisplay.innerText = state.correction > 0 ? `+${state.correction}` : state.correction;
 
+          Object.keys(rawTimings).forEach(key => {
+            if (['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Imsak', 'Sunrise'].includes(key)) {
+              correctedTimings[key] = addMinutes(rawTimings[key], state.correction);
+            } else {
+              correctedTimings[key] = rawTimings[key];
+            }
+          });
+
+          const sunrise = correctedTimings.Sunrise;
+          correctedTimings.Dhuha = addMinutesToStr(sunrise, 20);
+
+          json.data.timings = correctedTimings;
+          saveToCache(cacheKey, { ...json.data, timings: correctedTimings });
+
+          renderWithTimings(correctedTimings, json.data);
+          els.corDisplay.innerText = state.correction > 0 ? `+${state.correction}` : state.correction;
+          els.locText.innerText = state.city || "Online";
         } else {
-          els.locText.innerText = "Error API";
-          showToast("Gagal mengambil data sholat.");
+          if (!cached) {
+            els.locText.innerText = "Error API";
+            showToast("Gagal mengambil data sholat.");
+          }
         }
       } catch (e) {
         console.error(e);
-        els.locText.innerText = "Offline";
-        showToast("Anda sedang offline atau koneksi terputus.");
+        if (!cached) {
+          els.locText.innerText = "Offline";
+          showToast("Anda sedang offline. Menampilkan data terakhir.");
+        }
       }
     };
 
-    const render = (data) => {
-      const hijri = data.date.hijri;
-      els.hijri.innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
-      
-      const greg = data.date.gregorian;
-      const days = ['Ahad','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-      const dayName = days[new Date().getDay()];
-      els.gregorian.innerText = `${dayName}, ${greg.day} ${greg.month.en} ${greg.year}`;
+    // ------ RENDER ------
+    const renderWithTimings = (timings, data) => {
+      if (!timings) return;
 
-      const timings = data.timings;
-      
-      // Render Imsak
-      if(timings.Imsak) {
-          els.imsakCont.classList.remove('hidden');
-          els.imsakTime.innerText = timings.Imsak;
+      // Date info
+      if (data && data.date) {
+        const hijri = data.date.hijri;
+        els.hijri.innerText = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
+
+        const greg = data.date.gregorian;
+        const d = new Date();
+        const dayName = HARI_INDO[d.getDay()];
+        const monthName = BULAN_INDO[d.getMonth()];
+        els.gregorian.innerText = `${dayName}, ${d.getDate()} ${monthName} ${d.getFullYear()}`;
       }
 
-      const names = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
-      const now = new Date();
-      let nextKey = null;
-      let minDiff = Infinity;
-      
-      Object.keys(names).forEach(k => {
-        let pTime = getPDate(timings[k]);
-        if (pTime > now) {
-          const diff = pTime - now;
-          if (diff < minDiff) {
-            minDiff = diff;
-            nextKey = k;
-          }
-        }
-      });
-
-      let isTomorrow = false;
-      if (!nextKey) {
-        nextKey = 'Fajr';
-        isTomorrow = true;
+      // Imsak
+      if (timings.Imsak) {
+        els.imsakCont.classList.remove('hidden');
+        els.imsakTime.innerText = timings.Imsak;
       }
 
-      els.nextName.innerText = names[nextKey];
+      // Sunrise & Dhuha
+      if (timings.Sunrise) {
+        els.sunriseCont.classList.remove('hidden');
+        els.sunriseTime.innerText = timings.Sunrise;
+      }
+      if (timings.Dhuha) {
+        els.dhuhaCont.classList.remove('hidden');
+        els.dhuhaTime.innerText = timings.Dhuha;
+      }
 
+      const next = findNextPrayer(timings);
+      const currentKey = findCurrentPrayer(timings);
+
+      els.nextName.innerText = PRAYER_NAMES[next.key];
+
+      // Besok badge
+      if (next.isTomorrow) {
+        els.besokBadge.classList.remove('hidden');
+      } else {
+        els.besokBadge.classList.add('hidden');
+      }
+
+      // Render list
       let html = '';
-      Object.keys(names).forEach(k => {
-        const isActive = (k === nextKey && !isTomorrow) || (k === nextKey && isTomorrow && k === 'Fajr'); 
-        
+      PRAYER_ORDER.forEach(k => {
+        const isActive = k === next.key && !next.isTomorrow;
         html += `
-          <div class="flex items-center justify-between p-4 rounded-2xl transition-all border ${
-            isActive 
-              ? 'bg-emerald-500 text-white shadow-lg border-emerald-500 scale-[1.02]' 
-              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-100 dark:border-slate-700'
+          <div class="flex items-center justify-between p-4 rounded-2xl transition-all duration-300 border ${
+            isActive
+              ? 'bg-emerald-500 text-white shadow-lg border-emerald-500 scale-[1.02]'
+              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-100 dark:border-slate-700 hover:border-emerald-200 dark:hover:border-emerald-700 hover:shadow-sm'
           }">
             <div class="flex items-center gap-3">
               <div class="w-2 h-2 rounded-full ${isActive ? 'bg-white animate-pulse' : 'bg-emerald-500'}"></div>
-              <span class="font-bold text-sm">${names[k]}</span>
+              <span class="font-bold text-sm">${PRAYER_NAMES[k]}</span>
             </div>
             <span class="font-mono font-bold text-lg">${timings[k]}</span>
           </div>
         `;
       });
       els.list.innerHTML = html;
+
+      startTimer(timings);
     };
 
+    // ------ COUNTDOWN TIMER + PROGRESS ------
     const startTimer = (timings) => {
       if (countdownInterval) clearInterval(countdownInterval);
-      const names = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
-      
+
       const update = () => {
         const now = new Date();
-        const ordered = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-        let target = null;
-        let targetKey = null;
+        const next = findNextPrayer(timings);
+        const diff = next.time - now;
 
-        for(let k of ordered) {
-          const t = getPDate(timings[k]);
-          if (t > now) {
-            target = t;
-            targetKey = k;
-            break;
-          }
+        if (diff <= 0) {
+          els.count.innerText = '00:00:00';
+          els.countLabel.innerText = 'Sekarang!';
+          return;
         }
 
-        if(!target) {
-          const t = getPDate(timings['Fajr']);
-          target = new Date();
-          target.setDate(target.getDate() + 1);
-          target.setHours(t.getHours(), t.getMinutes(), 0);
-          targetKey = 'Fajr';
-        }
-
-        const diff = target - now;
         const h = Math.floor(diff / 3600000);
         const m = Math.floor((diff % 3600000) / 60000);
         const s = Math.floor((diff % 60000) / 1000);
+        els.count.innerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        els.countLabel.innerText = 'Tersisa';
 
-        els.count.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-        
-        // DEBOUNCED NOTIFICATIONS
-        if (diff < 1000 && diff > 0 && state.adhan && lastNotifiedAdhan !== targetKey) {
-            notify(`Waktu sholat ${names[targetKey]} telah tiba!`, 'Adzan');
-            lastNotifiedAdhan = targetKey;
+        // Progress bar: elapsed time in current prayer window
+        // Only show when next prayer is today (not in nighttime gap)
+        if (!next.isTomorrow) {
+          const currentKey = findCurrentPrayer(timings);
+          const prayerStart = getPDate(timings[currentKey]);
+          const prayerEnd = getNextPrayerTime(timings, currentKey);
+          const totalDur = prayerEnd - prayerStart;
+          const elapsed = now - prayerStart;
+
+          if (totalDur > 0 && elapsed > 0 && elapsed < totalDur) {
+            const pct = Math.min((elapsed / totalDur) * 100, 100);
+            els.progressCont.classList.remove('hidden');
+            els.progressBar.style.width = `${pct}%`;
+            els.progressPct.innerText = `${Math.round(pct)}%`;
+            els.progressLabel.innerText = `Waktu ${PRAYER_NAMES[currentKey]}`;
+          } else {
+            els.progressCont.classList.add('hidden');
+          }
+        } else {
+          els.progressCont.classList.add('hidden');
         }
-        
-        if (diff <= 600000 && diff > 599000 && state.remind && lastNotifiedRemind !== targetKey) {
-            notify(`10 Menit menuju waktu sholat ${names[targetKey]}`, 'Pengingat');
-            lastNotifiedRemind = targetKey;
+
+        // Notifications (persisted via localStorage to survive refresh)
+        const today = new Date().toDateString();
+        const notifiedKey = `${today}-${next.key}`;
+
+        if (diff < 1000 && state.adhan) {
+          try {
+            const done = JSON.parse(localStorage.getItem('sholat-notified-adhan') || '{}');
+            if (!done[notifiedKey]) {
+              notify(`Waktu sholat ${PRAYER_NAMES[next.key]} telah tiba!`, 'Adzan');
+              playAdzan(state.adhanVolume / 100);
+              done[notifiedKey] = true;
+              localStorage.setItem('sholat-notified-adhan', JSON.stringify(done));
+            }
+          } catch (e) {}
+        }
+
+        if (diff <= 600000 && diff > 595000 && state.remind) {
+          try {
+            const done = JSON.parse(localStorage.getItem('sholat-notified-remind') || '{}');
+            if (!done[notifiedKey]) {
+              notify(`10 Menit menuju waktu sholat ${PRAYER_NAMES[next.key]}`, 'Pengingat');
+              done[notifiedKey] = true;
+              localStorage.setItem('sholat-notified-remind', JSON.stringify(done));
+            }
+          } catch (e) {}
         }
       };
-      
+
       update();
       countdownInterval = setInterval(update, 1000);
     };
 
-    const getGPS = () => {
+    // ------ GPS ------
+    const getGPS = (retries = 2) => {
       els.locText.innerText = "Melacak...";
       els.refreshIcon.classList.add('animate-spin');
 
@@ -508,8 +747,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         (pos) => {
           state.lat = pos.coords.latitude;
           state.lng = pos.coords.longitude;
-          
-          // Reverse Geocoding to get City Name
+
           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${state.lat}&lon=${state.lng}&format=json`)
             .then(r => r.json())
             .then(data => {
@@ -528,43 +766,47 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
         },
         (err) => {
-          showToast("Gagal ambil GPS. Memakai lokasi terakhir.");
-          els.locText.innerText = state.city;
-          fetchPrayer(state.lat, state.lng);
-          els.refreshIcon.classList.remove('animate-spin');
+          if (retries > 0) {
+            setTimeout(() => getGPS(retries - 1), 2000);
+          } else {
+            showToast("Gagal ambil GPS. Memakai lokasi terakhir.");
+            els.locText.innerText = state.city;
+            fetchPrayer(state.lat, state.lng);
+            els.refreshIcon.classList.remove('animate-spin');
+          }
         },
-        { timeout: 10000 }
+        { timeout: 10000, enableHighAccuracy: true }
       );
     };
 
+    // ------ QIBLA ------
     const calcQibla = (lat, lng) => {
       const kaabaLat = 21.4225;
       const kaabaLng = 39.8262;
-      
+
       const φ1 = lat * Math.PI / 180;
       const φ2 = kaabaLat * Math.PI / 180;
       const Δλ = (kaabaLng - lng) * Math.PI / 180;
-      
+
       const x = Math.sin(Δλ) * Math.cos(φ2);
       const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
-      
+
       let q = Math.atan2(x, y) * 180 / Math.PI;
-      state.qiblaAngle = (q + 360) % 360; 
-      
+      state.qiblaAngle = (q + 360) % 360;
+
       els.qiblaText.innerText = `${state.qiblaAngle.toFixed(1)}°`;
       els.qiblaDegModal.innerText = `${state.qiblaAngle.toFixed(1)}°`;
-      
       els.previewNeedle.style.transform = `rotate(${state.qiblaAngle}deg)`;
     };
 
     const handleCompass = (e) => {
       let compass;
       if (e.webkitCompassHeading !== undefined && e.webkitCompassHeading !== null) {
-          compass = e.webkitCompassHeading;
+        compass = e.webkitCompassHeading;
       } else if (e.alpha !== null) {
-          compass = 360 - e.alpha;
+        compass = 360 - e.alpha;
       } else {
-          return;
+        return;
       }
       els.disc.style.transform = `rotate(${-compass}deg)`;
       els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
@@ -587,18 +829,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         };
       } else {
         if ('ondeviceorientationabsolute' in window) {
-            window.addEventListener('deviceorientationabsolute', handleCompass, true);
+          window.addEventListener('deviceorientationabsolute', handleCompass, true);
         } else {
-            window.addEventListener('deviceorientation', handleCompass, true);
+          window.addEventListener('deviceorientation', handleCompass, true);
         }
       }
     };
 
     const stopCompass = () => {
-       window.removeEventListener('deviceorientation', handleCompass, true);
-       window.removeEventListener('deviceorientationabsolute', handleCompass, true);
+      window.removeEventListener('deviceorientation', handleCompass, true);
+      window.removeEventListener('deviceorientationabsolute', handleCompass, true);
     };
 
+    // ------ NOTIFICATIONS ------
     const notify = (msg, tag) => {
       if (Notification.permission === 'granted') {
         new Notification("Qolbu App", { body: msg, tag: tag, icon: '/logo.png' });
@@ -611,6 +854,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     };
 
+    // ------ SETTINGS ------
     const loadSettings = () => {
       const s = JSON.parse(localStorage.getItem('sholat-settings') || '{}');
       if (s.lat) {
@@ -622,10 +866,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         els.method.value = state.method;
         els.adhan.checked = state.adhan;
         els.remind.checked = state.remind;
+        els.volumeSlider.value = state.adhanVolume;
+        els.volumeValue.innerText = `${state.adhanVolume}%`;
         els.inputCor.innerText = state.correction;
-        
-        if(!state.useGPS) els.manualBox.classList.remove('hidden');
+
+        if (!state.useGPS) els.manualBox.classList.remove('hidden');
       }
+    };
+
+    const clearPrayerCache = () => {
+      const keys = Object.keys(localStorage);
+      keys.forEach(k => {
+        if (k.startsWith('sholat-cache-')) localStorage.removeItem(k);
+      });
     };
 
     const saveSettings = () => {
@@ -633,22 +886,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       state.method = els.method.value;
       state.adhan = els.adhan.checked;
       state.remind = els.remind.checked;
+      state.adhanVolume = parseInt(els.volumeSlider.value);
       state.correction = parseInt(els.inputCor.innerText);
-      
+
       if (!state.useGPS) {
         state.lat = parseFloat(els.latIn.value) || -6.2;
         state.lng = parseFloat(els.lngIn.value) || 106.8;
         state.city = els.cityIn.value || 'Manual';
       }
-      
+
       localStorage.setItem('sholat-settings', JSON.stringify(state));
-      localStorage.removeItem('sholat-data'); 
-      
+      clearPrayerCache();
+
       if (state.adhan || state.remind) reqNotify();
       showToast("Pengaturan disimpan.");
       init();
     };
 
+    const init = () => {
+      loadSettings();
+      if (state.useGPS) {
+        getGPS();
+      } else {
+        els.locText.innerText = state.city || "Manual";
+        fetchPrayer(state.lat, state.lng);
+      }
+    };
+
+    // ------ EVENT LISTENERS ------
     els.refresh.addEventListener('click', () => {
       localStorage.removeItem('sholat-data');
       getGPS();
@@ -657,33 +922,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     els.settingsBtn.addEventListener('click', () => els.settingsModal.classList.remove('hidden'));
     els.closeSet.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
     els.settingsOverlay.addEventListener('click', () => els.settingsModal.classList.add('hidden'));
-    
+
     els.useGPS.addEventListener('change', (e) => {
-       if(e.target.checked) els.manualBox.classList.add('hidden');
-       else els.manualBox.classList.remove('hidden');
+      if (e.target.checked) els.manualBox.classList.add('hidden');
+      else els.manualBox.classList.remove('hidden');
     });
-    
+
     els.saveSet.addEventListener('click', () => {
-       saveSettings();
-       els.settingsModal.classList.add('hidden');
+      saveSettings();
+      els.settingsModal.classList.add('hidden');
+    });
+
+    // Test Adzan button
+    els.testAdhanBtn.addEventListener('click', () => {
+      const vol = parseInt(els.volumeSlider.value) / 100;
+      playAdzan(vol);
+    });
+
+    // Volume slider
+    els.volumeSlider.addEventListener('input', () => {
+      els.volumeValue.innerText = `${els.volumeSlider.value}%`;
     });
 
     els.btnMinus.addEventListener('click', () => {
-        let val = parseInt(els.inputCor.innerText);
-        els.inputCor.innerText = val - 1;
+      let val = parseInt(els.inputCor.innerText);
+      if (val > 0) els.inputCor.innerText = val - 1;
     });
     els.btnPlus.addEventListener('click', () => {
-        let val = parseInt(els.inputCor.innerText);
-        els.inputCor.innerText = val + 1;
+      let val = parseInt(els.inputCor.innerText);
+      els.inputCor.innerText = val + 1;
     });
 
     els.qiblaBtn.addEventListener('click', () => {
-       els.qiblaModal.classList.remove('hidden');
-       startCompass();
+      els.qiblaModal.classList.remove('hidden');
+      startCompass();
     });
     els.closeQibla.addEventListener('click', () => {
-       els.qiblaModal.classList.add('hidden');
-       stopCompass();
+      els.qiblaModal.classList.add('hidden');
+      stopCompass();
     });
 
     init();
