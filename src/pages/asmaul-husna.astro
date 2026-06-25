@@ -44,6 +44,8 @@ import asmaulHusna from '../data/asmaul-husna.json';
 
 <script is:inline>
   const initAsma = () => {
+    if (window._asmaInitialized) return;
+    window._asmaInitialized = true;
     const search = document.getElementById('search-asma');
     const items = document.querySelectorAll('.asma-item');
     const empty = document.getElementById('empty-state');
@@ -67,4 +69,5 @@ import asmaulHusna from '../data/asmaul-husna.json';
 
   document.addEventListener('DOMContentLoaded', initAsma);
   document.addEventListener('astro:after-swap', initAsma);
+  document.addEventListener('astro:before-swap', () => { window._asmaInitialized = false; });
 </script>

@@ -149,7 +149,7 @@ import HeaderBack from '../components/HeaderBack.astro';
   const progressText = document.getElementById('progress-text');
   const percentageText = document.getElementById('percentage-text');
   const successModal = document.getElementById('success-modal');
-  const modalContent = successModal.querySelector('div');
+  const modalContent = successModal ? successModal.querySelector('div') : null;
   const continueBtn = document.getElementById('continue-btn');
   const resetModalBtn = document.getElementById('reset-modal-btn');
   const completedDhikr = document.getElementById('completed-dhikr');
@@ -375,7 +375,10 @@ import HeaderBack from '../components/HeaderBack.astro';
   }
 
   function checkTarget() {
-    if (target > 0 && count % target === 0 && count !== 0) {
+    if (target > 0 && count > 0 && count % target === 0) {
+      // Prevent double-trigger: only fire once per target milestone
+      if (window._tasbihLastTriggered === count) return;
+      window._tasbihLastTriggered = count;
       // Getar panjang dikit kalau target tercapai
       if (vibrateEnabled && navigator.vibrate) navigator.vibrate([50, 50, 50]);
       
@@ -426,6 +429,7 @@ import HeaderBack from '../components/HeaderBack.astro';
   }
 
   function closeModal() {
+    if (!modalContent) return;
     modalContent.classList.remove('scale-100', 'opacity-100');
     modalContent.classList.add('scale-95', 'opacity-0');
     setTimeout(() => {
@@ -534,4 +538,9 @@ import HeaderBack from '../components/HeaderBack.astro';
 
   document.addEventListener('DOMContentLoaded', initTasbih);
   document.addEventListener('astro:after-swap', initTasbih);
+  document.addEventListener('astro:before-swap', () => {
+    if (window._tasbihStatsInterval) { clearInterval(window._tasbihStatsInterval); delete window._tasbihStatsInterval; }
+    if (window._tasbihKeydownRegistered) { delete window._tasbihKeydownRegistered; }
+    if (window._tasbihLastTriggered) { delete window._tasbihLastTriggered; }
+  });
 </script>

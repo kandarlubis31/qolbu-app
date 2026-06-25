@@ -289,7 +289,7 @@ const toArabic = (num) => {
     });
 
     // Save on scroll (debounced) — listen on window, detect visible ayat
-    window.addEventListener('scroll', () => {
+    const debouncedSaveLastRead = () => {
       clearTimeout(scrollTimer);
       scrollTimer = setTimeout(() => {
         const cards = document.querySelectorAll('.ayat-card');
@@ -302,7 +302,9 @@ const toArabic = (num) => {
         });
         if (visibleAyat) saveLastRead(parseInt(visibleAyat));
       }, SAVE_DELAY);
-    });
+    };
+    window.addEventListener('scroll', debouncedSaveLastRead);
+    window._yasinScrollHandler = debouncedSaveLastRead;
 
     // Check for saved position on load
     try {
@@ -322,9 +324,11 @@ const toArabic = (num) => {
 
   document.addEventListener('DOMContentLoaded', initYasin);
   document.addEventListener('astro:after-swap', initYasin);
+  document.addEventListener('astro:before-swap', () => {
+    if (window._yasinScrollHandler) {
+      window.removeEventListener('scroll', window._yasinScrollHandler);
+      delete window._yasinScrollHandler;
+    }
+  });
 </script>
 
-<style>
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-</style>

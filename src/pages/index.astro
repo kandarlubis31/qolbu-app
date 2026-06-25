@@ -967,30 +967,16 @@ const quotesData = [
   document.addEventListener("DOMContentLoaded", initHijriEvent);
   document.addEventListener("astro:after-swap", initHijriEvent);
 
-  // Clean up interval on page unload (prevents memory leaks)
+  // Clean up intervals on page unload (prevents memory leaks)
   document.addEventListener('astro:before-swap', () => {
     if (prayerInterval) clearInterval(prayerInterval);
+    if (quoteInterval) clearInterval(quoteInterval);
   });
 </script>
 
 <style>
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-  }
-
   #quote-text,
   #quote-source-container {
     transition: opacity 0.5s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(15px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 </style>

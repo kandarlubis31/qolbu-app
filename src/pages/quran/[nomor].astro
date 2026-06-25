@@ -213,7 +213,9 @@ const toArabic = (num) => {
   const SURAH_NAMA = '${suratData.namaLatin}';
 
   const initQuranDetail = () => {
-    
+    if (window._quranDetailInitialized) return;
+    window._quranDetailInitialized = true;
+
     const btnTerjemah = document.getElementById('btn-terjemah');
     const btnMushaf = document.getElementById('btn-mushaf');
     const viewTerjemah = document.getElementById('view-terjemah');
@@ -391,7 +393,7 @@ const toArabic = (num) => {
     });
 
     // Save on scroll (debounced) — listen on window, detect visible ayat
-    window.addEventListener('scroll', () => {
+    const debouncedSaveLastRead = () => {
       clearTimeout(scrollTimer);
       scrollTimer = setTimeout(() => {
         const cards = document.querySelectorAll('.ayat-card');
@@ -404,7 +406,9 @@ const toArabic = (num) => {
         });
         if (visibleAyat) saveLastRead(parseInt(visibleAyat));
       }, SAVE_DELAY);
-    });
+    };
+    window.addEventListener('scroll', debouncedSaveLastRead);
+    window._quranScrollHandler = debouncedSaveLastRead;
 
     // ------ BOOKMARKS ------
     const bookmarkBtn = document.getElementById('bookmark-btn');
@@ -462,15 +466,7 @@ const toArabic = (num) => {
       }, 500);
     }
 
-    const showToast = (msg) => {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-msg');
-      if (toast && toastMsg) {
-        toastMsg.innerText = msg;
-        toast.classList.remove('opacity-0', 'translate-y-10');
-        setTimeout(() => toast.classList.add('opacity-0', 'translate-y-10'), 2000);
-      }
-    };
+    const showToast = (msg) => window.showToast?.(msg, 2000);
 
     // ===== AUTO-CACHE SURAH ON VISIT (background) =====
     isSurahCached().then(cached => {
@@ -490,12 +486,11 @@ const toArabic = (num) => {
 
   document.addEventListener('DOMContentLoaded', initQuranDetail);
   document.addEventListener('astro:after-swap', initQuranDetail);
+  document.addEventListener('astro:before-swap', () => {
+    if (window._quranScrollHandler) {
+      window.removeEventListener('scroll', window._quranScrollHandler);
+      delete window._quranScrollHandler;
+    }
+    window._quranDetailInitialized = false;
+  });
 </script>
-
-<style>
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-</style>

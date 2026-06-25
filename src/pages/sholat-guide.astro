@@ -580,11 +580,7 @@ const guides = [
     let currentAudioBtn = null;
     let completedSteps = JSON.parse(localStorage.getItem('sholat-completed') || '[]');
 
-    const showToast = (msg) => {
-      toastMsg.innerText = msg;
-      toast.classList.remove('opacity-0', 'translate-y-10');
-      setTimeout(() => toast.classList.add('opacity-0', 'translate-y-10'), 2000);
-    };
+    const showToast = (msg) => window.showToast?.(msg, 2000);
 
     const updateProgress = () => {
       const val = completedSteps.length;
@@ -664,6 +660,7 @@ const guides = [
 
       runStep();
       practiceTimer = setInterval(runStep, 15000);
+      window._guidePracticeTimer = practiceTimer;
     };
 
     practiceBtn.addEventListener('click', () => { if (practiceMode) stopPractice(); else startPractice(); });
@@ -731,6 +728,7 @@ const guides = [
         const icPlay = b.querySelector('.ic-play'); const icPause = b.querySelector('.ic-pause'); const t = b.querySelector('.btn-text');
         if(icPlay) icPlay.classList.remove('hidden'); if(icPause) icPause.classList.add('hidden'); if(t) t.innerText = "Dengarkan";
       });
+      delete window._guideCurrentAudio;
     };
 
     audioBtns.forEach(btn => {
@@ -746,11 +744,12 @@ const guides = [
         }
         if (currentAudio) { currentAudio.pause(); resetAllAudioBtns(); }
         currentAudio = new Audio(src); currentAudioBtn = btn;
+        window._guideCurrentAudio = currentAudio;
         btn.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
         btn.classList.add('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
         icPlay.classList.add('hidden'); icPause.classList.remove('hidden'); if(txt) txt.innerText = "Memuat...";
-        currentAudio.play().then(() => { if(txt) txt.innerText = "Jeda"; }).catch(() => { showToast("Gagal memutar audio. Cek koneksi."); resetAllAudioBtns(); currentAudio = null; currentAudioBtn = null; });
-        currentAudio.onended = () => { resetAllAudioBtns(); currentAudio = null; currentAudioBtn = null; };
+        currentAudio.play().then(() => { if(txt) txt.innerText = "Jeda"; }).catch(() => { showToast("Gagal memutar audio. Cek koneksi."); resetAllAudioBtns(); currentAudio = null; currentAudioBtn = null; delete window._guideCurrentAudio; });
+        currentAudio.onended = () => { resetAllAudioBtns(); currentAudio = null; currentAudioBtn = null; delete window._guideCurrentAudio; };
       });
     });
 
@@ -781,11 +780,8 @@ const guides = [
 
   document.addEventListener('DOMContentLoaded', initSholatGuide);
   document.addEventListener('astro:after-swap', initSholatGuide);
+  document.addEventListener('astro:before-swap', () => {
+    if (window._guidePracticeTimer) { clearInterval(window._guidePracticeTimer); delete window._guidePracticeTimer; }
+    if (window._guideCurrentAudio) { window._guideCurrentAudio.pause(); delete window._guideCurrentAudio; }
+  });
 </script>
-
-<style>
-  .animate-fade-in { animation: fadeIn 0.4s ease-out; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-</style>

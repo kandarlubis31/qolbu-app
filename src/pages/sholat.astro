@@ -303,6 +303,12 @@ import Toast from '../components/Toast.astro';
 <script is:inline>
   document.addEventListener('DOMContentLoaded', initSholat);
   document.addEventListener('astro:after-swap', initSholat);
+  document.addEventListener('astro:before-swap', () => {
+    // Cleanup: stop timers, compass, audio context on page navigation
+    if (window._sholatCountdownInterval) { clearInterval(window._sholatCountdownInterval); delete window._sholatCountdownInterval; }
+    if (window._sholatCompassActive) { window.removeEventListener('deviceorientation', window._sholatCompassHandler, true); window.removeEventListener('deviceorientationabsolute', window._sholatCompassHandler, true); delete window._sholatCompassActive; delete window._sholatCompassHandler; }
+    if (window._sholatAudioCtx) { window._sholatAudioCtx.close(); delete window._sholatAudioCtx; }
+  });
 
   function initSholat() {
     const els = {
@@ -385,11 +391,13 @@ import Toast from '../components/Toast.astro';
     let countdownInterval = null;
     let adzanAudioCtx = null;
     let isAdzanPlaying = false;
+    let fetchInFlight = null; // deduplicate concurrent fetchPrayer calls
 
     // ------ WEB AUDIO API ADZAN PLAYER ------
     const getAudioCtx = () => {
       if (!adzanAudioCtx) {
         adzanAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        window._sholatAudioCtx = adzanAudioCtx;
       }
       if (adzanAudioCtx.state === 'suspended') {
         adzanAudioCtx.resume();
@@ -451,17 +459,13 @@ import Toast from '../components/Toast.astro';
       }
     };
 
-    const showToast = (msg) => {
-      els.toast.innerText = msg;
-      els.toast.classList.remove('opacity-0', 'translate-y-10');
-      setTimeout(() => els.toast.classList.add('opacity-0', 'translate-y-10'), 2500);
-    };
+    const showToast = (msg) => window.showToast?.(msg, 2500);
 
     const addMinutes = (timeStr, minutesToAdd) => {
       const [h, m] = timeStr.split(':').map(Number);
-      const date = new Date();
-      date.setHours(h, m + minutesToAdd, 0);
-      return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+      let total = h * 60 + m + minutesToAdd;
+      const nh = ((total % 1440) + 1440) % 1440;
+      return `${Math.floor(nh / 60).toString().padStart(2, '0')}:${(nh % 60).toString().padStart(2, '0')}`;
     };
 
     const addMinutesToStr = (timeStr, mins) => {
@@ -537,11 +541,15 @@ import Toast from '../components/Toast.astro';
       if (idx < PRAYER_ORDER.length - 1) {
         return getPDate(timings[PRAYER_ORDER[idx + 1]]);
       }
-      // After Isya → next is Fajr tomorrow
-      const t = getPDate(timings['Fajr']);
+      // After Isya → next is Fajr. Check if today's Fajr is still ahead.
+      const fajrToday = getPDate(timings['Fajr']);
+      const now = new Date();
+      if (now < fajrToday) {
+        return fajrToday; // past midnight, Fajr is still today
+      }
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(t.getHours(), t.getMinutes(), 0, 0);
+      tomorrow.setHours(fajrToday.getHours(), fajrToday.getMinutes(), 0, 0);
       return tomorrow;
     };
 
@@ -573,7 +581,7 @@ import Toast from '../components/Toast.astro';
           const correctedTimings = {};
 
           Object.keys(rawTimings).forEach(key => {
-            if (['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Imsak', 'Sunrise'].includes(key)) {
+            if (['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Imsak'].includes(key)) {
               correctedTimings[key] = addMinutes(rawTimings[key], state.correction);
             } else {
               correctedTimings[key] = rawTimings[key];
@@ -744,6 +752,7 @@ import Toast from '../components/Toast.astro';
 
       update();
       countdownInterval = setInterval(update, 1000);
+      window._sholatCountdownInterval = countdownInterval;
     };
 
     // ------ GPS ------
@@ -752,7 +761,14 @@ import Toast from '../components/Toast.astro';
       els.refreshIcon.classList.add('animate-spin');
 
       // Fire prayer API with default coords IMMEDIATELY, update when GPS arrives
-      fetchPrayer(state.lat, state.lng);
+      // Use fetchInFlight to deduplicate concurrent calls (prevents double API hit)
+      const cacheKey = getCacheKey(state.lat, state.lng);
+      if (!fetchInFlight) fetchInFlight = {};
+      if (!fetchInFlight[cacheKey]) {
+        fetchInFlight[cacheKey] = fetchPrayer(state.lat, state.lng).finally(() => {
+          delete fetchInFlight[cacheKey];
+        });
+      }
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -761,8 +777,14 @@ import Toast from '../components/Toast.astro';
           els.latIn.value = state.lat.toFixed(5);
           els.lngIn.value = state.lng.toFixed(5);
 
-          // Update prayer times with GPS coords
-          fetchPrayer(state.lat, state.lng);
+          // Update prayer times with GPS coords (only if not already in flight for this key)
+          const gpsCacheKey = getCacheKey(state.lat, state.lng);
+          if (!fetchInFlight) fetchInFlight = {};
+          if (!fetchInFlight[gpsCacheKey]) {
+            fetchInFlight[gpsCacheKey] = fetchPrayer(state.lat, state.lng).finally(() => {
+              delete fetchInFlight[gpsCacheKey];
+            });
+          }
 
           // Fire & forget: Nominatim reverse geocode (don't block anything)
           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${state.lat}&lon=${state.lng}&format=json`)
@@ -824,8 +846,10 @@ import Toast from '../components/Toast.astro';
       els.disc.style.transform = `rotate(${-compass}deg)`;
       els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
     };
+    window._sholatCompassHandler = handleCompass;
 
     const startCompass = () => {
+      window._sholatCompassActive = true;
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         els.iosBtn.classList.remove('hidden');
         els.iosBtn.onclick = () => {
@@ -852,6 +876,7 @@ import Toast from '../components/Toast.astro';
     const stopCompass = () => {
       window.removeEventListener('deviceorientation', handleCompass, true);
       window.removeEventListener('deviceorientationabsolute', handleCompass, true);
+      window._sholatCompassActive = false;
     };
 
     // ------ NOTIFICATIONS ------
@@ -992,12 +1017,3 @@ import Toast from '../components/Toast.astro';
     init();
   }
 </script>
-
-<style>
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-  .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-</style>

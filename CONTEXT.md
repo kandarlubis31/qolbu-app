@@ -25,7 +25,9 @@
 ```
 /
 ├── public/                  # Static assets
-│   ├── logo.png            # Logo aplikasi
+│   ├── logo.png            # Logo aplikasi (2000x2000, fallback)
+│   ├── logo-192.png        # Logo 192x192 (PWA icon)
+│   ├── logo-512.png        # Logo 512x512 (PWA icon)
 │   ├── manifest.json       # PWA manifest
 │   └── sw.js               # Service Worker (offline cache)
 ├── src/
@@ -55,6 +57,7 @@
 │   │   ├── tahlil.astro     # Tahlil & Doa Arwah
 │   │   ├── tasbih.astro     # Tasbih Digital
 │   │   ├── zakat.astro      # Kalkulator Zakat
+│   │   ├── offline.astro    # Offline fallback page
 │   │   └── quran/
 │   │       ├── index.astro  # Daftar Surat & Juz (cache, bookmark)
 │   │       ├── [nomor].astro # Detail Surat (audio, bookmark, auto-cache)
@@ -110,7 +113,7 @@ Input pencarian dengan icon search.
 **Dipakai di:** doa
 
 ### `SettingsModal.astro`
-Bottom sheet modal reusable — menyediakan overlay backdrop, tombol close, animasi slide-up.
+Bottom sheet modal reusable — menyediakan overlay backdrop, tombol close, animasi slide-up. **Fully self-contained UX:** Escape key close, focus trapping (Tab cycle), backdrop click to close, autofocus on close button.
 
 | Prop | Default | Deskripsi |
 |------|---------|-----------|
@@ -122,14 +125,14 @@ Bottom sheet modal reusable — menyediakan overlay backdrop, tombol close, anim
 **Dipakai di:** sholat, tahlil, quran/[nomor]
 
 ### `Toast.astro`
-Notifikasi snackbar bawah.
+Notifikasi snackbar bawah dengan **global debounced `window.showToast(msg, duration)`** — semua halaman mendelegasikan ke fungsi ini, timeout otomatis di-clear sebelum toast baru (mencegah rapid-toast bug).
 
 | Prop | Default | Deskripsi |
 |------|---------|-----------|
 | `id` | `"toast"` | ID container |
 | `msgId` | `"toast-msg"` | ID span pesan |
 
-**Dipakai di:** sholat
+**Dipakai di:** sholat, sholat-guide, doa, dzikir, quran/[nomor]
 
 ---
 
@@ -239,7 +242,7 @@ Notifikasi snackbar bawah.
 - **Palette:** Emerald sebagai primary, slate/neutral untuk teks & background
 - **Font:** Inter (body) + Amiri (Arabic)
 - **Layout:** Mobile-first (max-w-md: 448px), border-radius ekstra (`rounded-2xl`, `rounded-[2rem]`)
-- **Animasi:** Tailwind transitions + CSS `@keyframes` (fadeIn, slideUp)
+- **Animasi:** Tailwind transitions + CSS `@keyframes` (fadeIn, slideUp) — **semua animasi keyframe didefinisikan terpusat di `global.css`**, halaman hanya menggunakan class utility `.animate-fade-in` / `.animate-slide-up`
 - **Selection:** `selection:bg-emerald-500 selection:text-white`
 
 ---
@@ -287,7 +290,7 @@ Notifikasi snackbar bawah.
 ## ⚡ Performance
 
 - **Cache Stale-While-Revalidate** — jadwal sholat di-cache ke localStorage + background refresh
-- **Static Site Generation** — semua halaman di-pre-render saat build (125 pages)
+- **Static Site Generation** — semua halaman di-pre-render saat build (126 pages)
 - **Mobile-first** — layout max-w-md, optimasi touch interactions
 - **View Transitions** — navigasi SPA-like dengan animasi slide, <html> persist, header morphing
 
@@ -304,3 +307,53 @@ Notifikasi snackbar bawah.
 - **PWA** sudah aktif dengan manifest + service worker
 - **yasin.json** sudah digunakan di halaman `/quran/yasin`
 - **File `databasequotes`** sudah dihapus (duplikat dari index.astro)
+
+---
+
+## 🛡 Code Quality Patterns
+
+Semua halaman mengikuti pola standar untuk mencegah bug umum:
+
+### Guard Flag (Duplicate Listener Prevention)
+Setiap halaman dengan `DOMContentLoaded` + `astro:after-swap` menggunakan flag `window._xxxInitialized` untuk mencegah registrasi listener ganda:
+```js
+const initPage = () => {
+  if (window._pageInitialized) return;
+  window._pageInitialized = true;
+  // ... register event listeners
+};
+document.addEventListener('DOMContentLoaded', initPage);
+document.addEventListener('astro:after-swap', initPage);
+document.addEventListener('astro:before-swap', () => { window._pageInitialized = false; });
+```
+**Diterapkan di:** asmaul-husna, tahlil, zakat, quran/index, quran/[nomor], dzikir, tasbih
+
+### Memory Leak Cleanup (astro:before-swap)
+Halaman dengan timer/interval/audio/scroll listeners membersihkan resource saat navigasi keluar:
+```js
+document.addEventListener('astro:before-swap', () => {
+  if (window._timer) { clearInterval(window._timer); delete window._timer; }
+  if (window._audio) { window._audio.pause(); delete window._audio; }
+});
+```
+**Diterapkan di:** sholat, sholat-guide, yasin, quran/[nomor], index, dzikir
+
+### XSS Prevention
+- **onclick attributes:** Semua interpolasi string ke `onclick` di-escape dari single quote (`'` → `\'`)
+- **innerHTML:** Data dari localStorage/user di-escape menggunakan helper `textContent`-based escaping:
+  ```js
+  const htmlEscape = (() => { const el = document.createElement('div'); return (s) => { el.textContent = String(s); return el.innerHTML; }; })();
+  ```
+- **innerText / textContent diprioritaskan** untuk data user (hindari innerHTML jika tidak perlu)
+**Diterapkan di:** doa, dzikir, quran/index
+
+### CSS DRY (Single Source)
+- Semua `@keyframes` didefinisikan satu kali di `global.css`
+- Halaman hanya menggunakan class utility (`.animate-fade-in`, `.animate-slide-up`)
+- Tidak ada duplikasi `<style>` block antar halaman
+
+### Sholat Time Math
+- `addMinutes` menggunakan modulo 1440 arithmetic (mencegah midnight wrap: 23:59 + 2 = 00:01)
+- `getNextPrayerTime` menangani post-midnight scenario (00:00–Fajr mengembalikan Fajr hari ini, bukan besok)
+- Koreksi ihtiyat hanya diterapkan ke 5 waktu sholat + Imsak (Sunrise tidak dikoreksi — aman untuk Fajr timing)
+- GPS fetch deduplication via `fetchInFlight` map (mencegah double API call saat GPS retry)

@@ -10,6 +10,24 @@ const { id = "toast", msgId = "toast-msg" } = Astro.props;
 <div
   id={id}
   class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10"
+  role="status" aria-live="polite"
 >
   <span id={msgId}>Berhasil!</span>
 </div>
+
+<script is:inline>
+  // Global debounced toast — shared across all pages
+  // Global debounced toast — survives SPA re-renders via window scope
+  window.showToast = (msg, duration = 2000) => {
+    const el = document.getElementById('{id}');
+    const msgEl = document.getElementById('{msgId}');
+    if (!el || !msgEl) return;
+    if (window._toastTimer) clearTimeout(window._toastTimer);
+    msgEl.innerText = msg;
+    el.classList.remove('opacity-0', 'translate-y-10');
+    window._toastTimer = setTimeout(() => {
+      el.classList.add('opacity-0', 'translate-y-10');
+      delete window._toastTimer;
+    }, duration);
+  };
+</script>
