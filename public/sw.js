@@ -1,5 +1,5 @@
 // Qolbu App Service Worker
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `qolbu-cache-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline';
 
@@ -69,6 +69,9 @@ self.addEventListener('fetch', (event) => {
 
   // Jangan cache request dari extension atau non-http
   if (!url.protocol.startsWith('http')) return;
+
+  // Hanya cache GET requests (Cache API tidak support POST/PUT/DELETE)
+  if (request.method !== 'GET') return;
 
   // Skip Google Fonts & external CDN — biarkan network handle
   if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com')) return;

@@ -182,6 +182,8 @@ const asmaulHusna = [
 (() => {
   const initAsmaul = () => {
     if (window._asmaulInitialized) return;
+    const cards = document.querySelectorAll('.asmaul-card');
+    if (!cards.length) return;
     window._asmaulInitialized = true;
     const LOCAL_KEY = 'qolbu-asmaul-counts';
     

@@ -159,9 +159,10 @@ const tahlilData = [
 (() => {
   const initTahlil = () => {
     if (window._tahlilInitialized) return;
-    window._tahlilInitialized = true;
     const settingsBtn = document.getElementById('settings-btn');
     const settingsModal = document.getElementById('settings-modal');
+    if (!settingsBtn || !settingsModal) return;
+    window._tahlilInitialized = true;
     const closeSettings = document.getElementById('close-settings');
     const overlay = document.getElementById('overlay');
     

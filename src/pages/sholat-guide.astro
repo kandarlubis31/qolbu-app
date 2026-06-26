@@ -488,12 +488,13 @@ const enrichedGuides = guides.map(g => ({ ...g, displayTitle: g.title.replace(/^
 (() => {
   const initGuide = () => {
     if (window._guideInitialized) return;
-    window._guideInitialized = true;
     const allDetails = document.querySelectorAll('details');
     const progressBar = document.getElementById('progress-bar');
     const stepText = document.getElementById('current-step-text');
     const practiceBtn = document.getElementById('practice-btn');
     const resetBtn = document.getElementById('reset-progress');
+    if (!allDetails.length || !stepText) return;
+    window._guideInitialized = true;
     const practiceHint = document.getElementById('practice-hint');
     const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
     const audioBtns = document.querySelectorAll('.audio-btn');

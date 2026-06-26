@@ -100,10 +100,11 @@ import HeaderBack from '../components/HeaderBack.astro';
 (() => {
   const initZakat = () => {
     if (window._zakatInitialized) return;
-    window._zakatInitialized = true;
     // --- TABS LOGIC ---
     const tabMaal = document.getElementById('tab-maal');
     const tabIncome = document.getElementById('tab-income');
+    if (!tabMaal || !tabIncome) return;
+    window._zakatInitialized = true;
     const formMaal = document.getElementById('form-maal');
     const formIncome = document.getElementById('form-income');
     const resultCard = document.getElementById('result-card');

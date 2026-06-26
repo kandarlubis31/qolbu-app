@@ -97,9 +97,10 @@ import Toast from '../components/Toast.astro';
 
   const renderDzikir = () => {
     if (window._dzikirInitialized) return;
-    window._dzikirInitialized = true;
     const container = document.getElementById('dzikir-container');
     const searchInput = document.getElementById('search-input');
+    if (!container || !searchInput) return;
+    window._dzikirInitialized = true;
     const emptyState = document.getElementById('empty-state');
     const catBtns = document.querySelectorAll('.cat-btn');
 

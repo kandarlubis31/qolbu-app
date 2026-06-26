@@ -97,8 +97,9 @@ try {
 (() => {
   const initYasin = () => {
     if (window._yasinInitialized) return;
-    window._yasinInitialized = true;
     const audioBtnsArr = Array.from(document.querySelectorAll('.btn-audio'));
+    if (!audioBtnsArr.length && !document.getElementById('settings-btn')) return;
+    window._yasinInitialized = true;
     let currentAudio = null;
     let currentBtn = null;
     const toast = document.getElementById('toast');

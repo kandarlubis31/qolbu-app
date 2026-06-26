@@ -261,7 +261,6 @@ import Toast from '../components/Toast.astro';
 (() => {
   const initSholat = () => {
     if (window._sholatInitialized) return;
-    window._sholatInitialized = true;
     const els = {
       locText: document.getElementById('location-text'),
       list: document.getElementById('prayer-list'),
@@ -306,6 +305,9 @@ import Toast from '../components/Toast.astro';
       
       toast: document.getElementById('toast')
     };
+
+    if (!els.locText || !els.list || !els.refresh) return;
+    window._sholatInitialized = true;
 
     let state = {
       lat: -6.2088, 

@@ -104,9 +104,10 @@ const daftarJuz = [
 (() => {
   const initQuranIndex = () => {
     if (window._quranIndexInitialized) return;
-    window._quranIndexInitialized = true;
     const searchInput = document.getElementById('search-surat');
     const suratCards = document.querySelectorAll('.surat-card');
+    if (!searchInput || !suratCards.length) return;
+    window._quranIndexInitialized = true;
     const emptyState = document.getElementById('empty-state');
     
     const tabSurat = document.getElementById('tab-surat');

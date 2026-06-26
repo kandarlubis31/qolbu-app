@@ -139,10 +139,11 @@ import HeaderBack from '../components/HeaderBack.astro';
 (() => {
   const initTasbih = () => {
     if (window._tasbihInitialized) return;
-    window._tasbihInitialized = true;
   // DOM Elements
   const countDisplay = document.getElementById('count-display');
   const counterBtn = document.getElementById('counter-btn');
+  if (!countDisplay || !counterBtn) return;
+  window._tasbihInitialized = true;
   const resetBtn = document.getElementById('reset-btn');
   const targetSelect = document.getElementById('target-select');
   const targetDisplay = document.getElementById('target-display');

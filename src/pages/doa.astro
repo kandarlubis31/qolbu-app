@@ -103,14 +103,12 @@ import Toast from '../components/Toast.astro';
   const initDoa = () => {
     if (window._doaInitialized) return;
     const container = document.getElementById('doa-container');
-
-    if (!container || !searchInput) return;
-    window._doaInitialized = true;
     const searchInput = document.getElementById('search-input');
     const statusMsg = document.getElementById('empty-state');
     const catBtns = document.querySelectorAll('.cat-btn');
 
     if (!container || !searchInput) return;
+    window._doaInitialized = true;
 
     let currentCategory = 'all';
     let searchTerm = '';

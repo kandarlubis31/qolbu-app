@@ -740,10 +740,10 @@ const quotesData = [
 
   const initCacheBadge = async () => {
     if (window._cacheBadgeInitialized) return;
-    window._cacheBadgeInitialized = true;
     const badge = document.getElementById('cache-badge');
     const text = document.getElementById('cache-badge-text');
     if (!badge || !text) return;
+    window._cacheBadgeInitialized = true;
     const count = await getCachedCountFromDB();
     if (count === 0) { badge.classList.add('hidden'); return; }
     badge.classList.remove('hidden');
@@ -777,9 +777,9 @@ const quotesData = [
 
   const initPrayerCard = () => {
     if (window._prayerCardInitialized) return;
-    window._prayerCardInitialized = true;
     const card = document.getElementById('prayer-card');
     if (!card) return;
+    window._prayerCardInitialized = true;
 
     // Read settings to build cache key
     let settings = {};
@@ -899,12 +899,12 @@ const quotesData = [
 
   const initHijriEvent = () => {
     if (window._hijriEventInitialized) return;
-    window._hijriEventInitialized = true;
     const bar = document.getElementById('hijri-event');
     const icon = document.getElementById('hijri-event-icon');
     const text = document.getElementById('hijri-event-text');
     const daysEl = document.getElementById('hijri-event-days');
     if (!bar || !icon || !text || !daysEl) return;
+    window._hijriEventInitialized = true;
 
     // Try to read today's Hijri date from sholat cache
     let settings = {};
