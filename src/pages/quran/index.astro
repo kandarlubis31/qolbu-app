@@ -101,6 +101,7 @@ const daftarJuz = [
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initQuranIndex = () => {
     if (window._quranIndexInitialized) return;
     window._quranIndexInitialized = true;
@@ -153,4 +154,5 @@ const daftarJuz = [
   document.addEventListener('astro:before-swap', () => {
     window._quranIndexInitialized = false;
   });
+})();
 </script>

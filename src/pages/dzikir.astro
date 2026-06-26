@@ -48,6 +48,7 @@ import Toast from '../components/Toast.astro';
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const dzikirData = [
     { id: "pagi-1", cat: "pagi", title: "1. Ta'awudz & Basmalah", arab: "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ • بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ", latin: "A'uudzu billaahi minasy syaithaanir rajiim • Bismillaahir rahmaanir rahiim", arti: "Aku berlindung kepada Allah dari godaan setan yang terkutuk. Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.", source: "Al-Qur'an & Sunnah" },
     { id: "pagi-2", cat: "pagi", title: "2. Ayat Kursi (1x)", arab: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", latin: "Allaahu laa ilaaha illaa huwal hayyul qayyuum... (QS. Al-Baqarah: 255)", arti: "Allah, tidak ada Tuhan selain Dia Yang Maha Hidup lagi Berdiri Sendiri... Barangsiapa membacanya pagi hari, dilindungi dari gangguan setan hingga petang.", source: "QS. Al-Baqarah: 255 — HR. Al-Hakim" },
@@ -179,6 +180,7 @@ import Toast from '../components/Toast.astro';
   document.addEventListener('astro:before-swap', () => {
     window._dzikirInitialized = false;
   });
+})();
 </script>
 
 <style>

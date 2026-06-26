@@ -94,18 +94,17 @@ try {
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+(() => {
+  const initYasin = () => {
+    if (window._yasinInitialized) return;
+    window._yasinInitialized = true;
     const audioBtnsArr = Array.from(document.querySelectorAll('.btn-audio'));
     let currentAudio = null;
     let currentBtn = null;
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toast-msg');
 
-    const showToast = (msg) => {
-      window.showToast(msg);
-    };
-
-    audioBtnsArr.forEach((btn, index) => {
+audioBtnsArr.forEach((btn, index) => {
       btn.addEventListener('click', function() {
         const url = this.getAttribute('data-audio');
         const iconPlay = this.querySelector('.icon-play');
@@ -130,7 +129,7 @@ try {
           document.querySelectorAll('.icon-play').forEach(el => el.classList.remove('hidden'));
         }
 
-        currentAudio = new Audio(url);
+        currentAudio = new Audio(url); window._yasinAudio = currentAudio;
         currentBtn = this;
         currentAudio.play();
         iconPlay.classList.add('hidden');
@@ -145,7 +144,7 @@ try {
             const nextCard = nextBtn.closest('.ayat-card');
             nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
           } else {
-            currentAudio = null;
+            currentAudio = null; window._yasinAudio = null;
             currentBtn = null;
           }
         };
@@ -227,13 +226,15 @@ try {
         apply();
       });
     }
+  };
+
+  document.addEventListener('astro:page-load', initYasin);
+  document.addEventListener('astro:before-swap', () => {
+    window._yasinInitialized = false;
+    if (window._yasinAudio) { window._yasinAudio.pause(); window._yasinAudio = null; }
   });
+})();
 </script>
 
 <style>
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 </style>

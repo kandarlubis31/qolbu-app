@@ -10,6 +10,7 @@
 </div>
 
 <script is:inline>
+(() => {
   const toastEl = document.getElementById('toast');
   const toastMsgEl = document.getElementById('toast-msg');
   
@@ -21,4 +22,5 @@
       toastEl.classList.add('opacity-0', 'translate-y-10');
     }, 2500);
   };
+})();
 </script>

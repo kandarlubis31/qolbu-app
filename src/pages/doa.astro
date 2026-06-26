@@ -42,6 +42,7 @@ import Toast from '../components/Toast.astro';
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const doaData = [
     { cat: "harian", title: "Doa Bangun Tidur", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur", arti: "Segala puji bagi Allah yang menghidupkan kami kembali setelah mematikan kami dan kepada-Nya tempat kembali.", source: "HR. Bukhari" },
     { cat: "harian", title: "Doa Sebelum Tidur", arab: "بِسْمِكَ اللّهُمَّ أَحْيَا وَبِسْمِكَ أَمُوتُ", latin: "Bismika Allahumma ahya wa bismika amut", arti: "Dengan nama-Mu ya Allah aku hidup, dan dengan nama-Mu aku mati.", source: "HR. Bukhari" },
@@ -99,13 +100,17 @@ import Toast from '../components/Toast.astro';
     { cat: "taubat", title: "Doa Penghapus Dosa Majelis", arab: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَن لاَ إِلَهَ إِلاَّ أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", latin: "Subhanakallahumma wa bihamdika, asyhadu alla ilaha illa anta, astaghfiruka wa atubu ilaik", arti: "Maha Suci Engkau Ya Allah dan segala puji bagi-Mu, aku bersaksi bahwa tidak ada Tuhan selain Engkau, aku memohon ampun kepada-Mu dan bertaubat kepada-Mu.", source: "HR. Tirmidzi" }
   ];
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const initDoa = () => {
+    if (window._doaInitialized) return;
     const container = document.getElementById('doa-container');
+
+    if (!container || !searchInput) return;
+    window._doaInitialized = true;
     const searchInput = document.getElementById('search-input');
     const statusMsg = document.getElementById('empty-state');
     const catBtns = document.querySelectorAll('.cat-btn');
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toast-msg');
+
+    if (!container || !searchInput) return;
 
     let currentCategory = 'all';
     let searchTerm = '';
@@ -172,25 +177,27 @@ import Toast from '../components/Toast.astro';
       });
     });
 
-    const showToast = (msg) => {
-      window.showToast(msg);
-    };
-
-    // Event delegation untuk copy button (ganti inline onclick)
+// Event delegation untuk copy button (ganti inline onclick)
     container.addEventListener('click', (e) => {
       const btn = e.target.closest('.copy-btn');
       if (!btn) return;
       const { title, arab, latin, arti } = btn.dataset;
       const text = `*${title}*\n\n${arab}\n\n${latin}\n\n"${arti}"\n\n_Sent via Qolbu App_`;
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => showToast("Teks berhasil disalin!")).catch(() => showToast("Gagal menyalin."));
+        navigator.clipboard.writeText(text).then(() => window.showToast("Teks berhasil disalin!")).catch(() => window.showToast("Gagal menyalin."));
       } else {
-        showToast("Browser tidak mendukung salin otomatis");
+        window.showToast("Browser tidak mendukung salin otomatis");
       }
     });
 
     renderDoa();
+  };
+
+  document.addEventListener('astro:page-load', initDoa);
+  document.addEventListener('astro:before-swap', () => {
+    window._doaInitialized = false;
   });
+})();
 </script>
 
 <style>

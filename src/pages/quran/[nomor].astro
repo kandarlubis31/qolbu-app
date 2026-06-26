@@ -142,14 +142,17 @@ const toArabic = (num) => {
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initQuranDetail = () => {
     if (window._quranDetailInitialized) return;
-    window._quranDetailInitialized = true;
     
     const btnTerjemah = document.getElementById('btn-terjemah');
     const btnMushaf = document.getElementById('btn-mushaf');
     const viewTerjemah = document.getElementById('view-terjemah');
     const viewMushaf = document.getElementById('view-mushaf');
+
+    if (!btnTerjemah || !btnMushaf || !viewTerjemah || !viewMushaf) return;
+    window._quranDetailInitialized = true;
 
     btnTerjemah.addEventListener('click', () => {
       btnTerjemah.className = "px-3 py-1 rounded-full text-xs font-bold bg-white dark:bg-slate-700 text-emerald-600 shadow-sm transition-all";
@@ -290,4 +293,5 @@ const toArabic = (num) => {
     window._quranDetailInitialized = false;
     if (window._quranDetailAudio) { window._quranDetailAudio.pause(); window._quranDetailAudio = null; }
   });
+})();
 </script>

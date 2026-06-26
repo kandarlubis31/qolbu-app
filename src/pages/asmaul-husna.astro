@@ -179,6 +179,7 @@ const asmaulHusna = [
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initAsmaul = () => {
     if (window._asmaulInitialized) return;
     window._asmaulInitialized = true;
@@ -282,4 +283,5 @@ const asmaulHusna = [
   document.addEventListener('astro:before-swap', () => {
     window._asmaulInitialized = false;
   });
+})();
 </script>

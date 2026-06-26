@@ -156,6 +156,7 @@ const tahlilData = [
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initTahlil = () => {
     if (window._tahlilInitialized) return;
     window._tahlilInitialized = true;
@@ -221,4 +222,5 @@ const tahlilData = [
   document.addEventListener('astro:before-swap', () => {
     window._tahlilInitialized = false;
   });
+})();
 </script>

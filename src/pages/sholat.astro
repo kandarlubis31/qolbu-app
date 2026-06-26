@@ -258,6 +258,7 @@ import Toast from '../components/Toast.astro';
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initSholat = () => {
     if (window._sholatInitialized) return;
     window._sholatInitialized = true;
@@ -699,6 +700,7 @@ import Toast from '../components/Toast.astro';
       window._sholatCompass = null;
     }
   });
+})();
 </script>
 
 <style>

@@ -136,6 +136,7 @@ import HeaderBack from '../components/HeaderBack.astro';
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initTasbih = () => {
     if (window._tasbihInitialized) return;
     window._tasbihInitialized = true;
@@ -545,4 +546,5 @@ import HeaderBack from '../components/HeaderBack.astro';
     if (window._tasbihKeydownRegistered) { delete window._tasbihKeydownRegistered; }
     if (window._tasbihLastTriggered) { delete window._tasbihLastTriggered; }
   });
+})();
 </script>

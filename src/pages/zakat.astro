@@ -97,6 +97,7 @@ import HeaderBack from '../components/HeaderBack.astro';
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initZakat = () => {
     if (window._zakatInitialized) return;
     window._zakatInitialized = true;
@@ -221,4 +222,5 @@ import HeaderBack from '../components/HeaderBack.astro';
   document.addEventListener('astro:before-swap', () => {
     window._zakatInitialized = false;
   });
+})();
 </script>

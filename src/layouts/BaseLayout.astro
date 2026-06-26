@@ -27,6 +27,7 @@ const { pageTitle = "Dashboard" } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script is:inline>
+      (() => {
       const getTheme = () => {
         if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
           return localStorage.getItem('theme');
@@ -45,6 +46,7 @@ const { pageTitle = "Dashboard" } = Astro.props;
         doc.classList.remove('dark');
         doc.style.colorScheme = 'light';
       }
+    })();
     </script>
   </head>
   
@@ -81,14 +83,17 @@ const { pageTitle = "Dashboard" } = Astro.props;
     </footer>
 
     <script is:inline>
+      (() => {
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js').catch(() => {});
         });
       }
+    })();
     </script>
 
     <script is:inline>
+      (() => {
       const setupThemeToggle = () => {
         const toggleBtn = document.getElementById('theme-toggle');
         
@@ -107,8 +112,8 @@ const { pageTitle = "Dashboard" } = Astro.props;
         }
       };
 
-      document.addEventListener('DOMContentLoaded', setupThemeToggle);
-      document.addEventListener('astro:after-swap', setupThemeToggle);
+      document.addEventListener('astro:page-load', setupThemeToggle);
+    })();
     </script>
   </body>
 </html>

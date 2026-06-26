@@ -485,6 +485,7 @@ const enrichedGuides = guides.map(g => ({ ...g, displayTitle: g.title.replace(/^
 </BaseLayout>
 
 <script is:inline>
+(() => {
   const initGuide = () => {
     if (window._guideInitialized) return;
     window._guideInitialized = true;
@@ -719,4 +720,5 @@ const enrichedGuides = guides.map(g => ({ ...g, displayTitle: g.title.replace(/^
     if (window._guideTimer) { clearInterval(window._guideTimer); window._guideTimer = null; }
     if (window._guideAudio) { window._guideAudio.pause(); window._guideAudio = null; }
   });
+})();
 </script>
