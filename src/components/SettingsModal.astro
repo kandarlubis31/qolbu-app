@@ -1,0 +1,80 @@
+---
+interface Props {
+  modalId?: string;
+  overlayId?: string;
+  closeId?: string;
+  title?: string;
+}
+
+const {
+  modalId = "settings-modal",
+  overlayId = "overlay",
+  closeId = "close-settings",
+  title = "Pengaturan Tampilan",
+} = Astro.props;
+---
+
+<div id={modalId} class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id={overlayId}></div>
+  <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto" style="left: 50%; transform: translateX(-50%); max-width: 448px;">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="font-bold text-lg text-slate-800 dark:text-white">{title}</h3>
+      <button id={closeId} autofocus class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <slot />
+  </div>
+</div>
+
+<script is:inline>
+  const closeModal = () => {
+    const modal = document.getElementById('{modalId}');
+    if (modal && !modal.classList.contains('hidden')) {
+      modal.classList.add('hidden');
+    }
+  };
+
+  // Backdrop click closes modal — guard scoped per modalId
+  if (!window['_modalOverlayClick_{modalId}']) {
+    window['_modalOverlayClick_{modalId}'] = true;
+    document.getElementById('{overlayId}')?.addEventListener('click', closeModal);
+  }
+
+  // Escape key + focus trapping — guard scoped per modalId
+  if (!window['_modalKeyTrap_{modalId}']) {
+    window['_modalKeyTrap_{modalId}'] = true;
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('{modalId}');
+      if (!modal || modal.classList.contains('hidden')) return;
+
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+
+      // Focus trapping: cycle Tab within modal
+      if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === first || document.activeElement === modal) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    });
+  }
+</script>
+

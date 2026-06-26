@@ -55,11 +55,18 @@ const menus = [
     path: "M10.29 2.227l1.378 1.379a7.653 7.653 0 0 1 1.777 8.35l-.42.923a1.5 1.5 0 0 1-2.73-.733l.42-.924a4.653 4.653 0 0 0-1.08-5.077L8.257 4.77a.75.75 0 0 0-1.06 1.06l1.378 1.379a7.653 7.653 0 0 1 0 10.828l-1.92 1.92a2.025 2.025 0 0 1-2.864 0l-1.92-1.92a7.653 7.653 0 0 1 0-10.828l3.197-3.197a3 3 0 0 1 4.242 0z",
   },
   {
-    title: "Tasbih Digital",
-    desc: "Hitung Dzikir",
-    href: "/tasbih",
-    color: "bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400",
-    path: "M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z M12 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",
+    title: "Asmaul Husna",
+    desc: "99 Nama Allah",
+    href: "/asmaul-husna",
+    color: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400",
+    path: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+  },
+  {
+    title: "Dzikir Pagi & Petang",
+    desc: "Bacaan Pagi & Petang",
+    href: "/dzikir",
+    color: "bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
+    path: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3",
   },
   {
     title: "Dzikir Harian",
@@ -120,7 +127,45 @@ const menus = [
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4 mb-10 px-1">
+  <!-- HIJRI EVENT BAR -->
+  <div id="hijri-event" class="hidden mb-3 mx-1 px-3 py-2 bg-amber-50 dark:bg-amber-900/15 border border-amber-200 dark:border-amber-800/40 rounded-xl flex items-center gap-2 text-xs">
+    <span id="hijri-event-icon" class="text-base"></span>
+    <span id="hijri-event-text" class="font-medium text-amber-800 dark:text-amber-300"></span>
+    <span id="hijri-event-days" class="ml-auto text-[10px] text-amber-600 dark:text-amber-400 whitespace-nowrap font-bold"></span>
+  </div>
+
+  <!-- OFFLINE QURAN CACHE BADGE -->
+  <a href="/quran" id="cache-badge" class="hidden mb-3 mx-1 px-3 py-1.5 bg-slate-900 dark:bg-black rounded-full border border-slate-700 inline-flex items-center gap-1.5 self-start hover:border-emerald-700 transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-400"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M9 9h12"/><path d="M9 15h12"/></svg>
+    <span id="cache-badge-text" class="text-[10px] text-slate-300 font-medium">0 surah offline</span>
+  </a>
+
+  <!-- PRAYER CARD -->
+  <div id="prayer-card" class="hidden mb-4 mx-1 p-4 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-2xl text-white shadow-lg shadow-emerald-500/20 relative overflow-hidden">
+    <div class="absolute top-0 right-0 opacity-10">
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+    </div>
+    <div class="relative z-10">
+      <div class="flex items-center justify-between mb-2">
+        <span id="prayer-next-label" class="text-[10px] text-emerald-100 uppercase tracking-wider font-bold">Menuju <span id="prayer-next-name" class="text-white">--</span></span>
+        <span id="prayer-qibla" class="text-[10px] text-emerald-100">🕋 --°</span>
+      </div>
+      <div class="flex items-end gap-3 mb-3">
+        <span id="prayer-countdown" class="text-3xl font-black tabular-nums tracking-tight">--:--:--</span>
+        <span class="text-[10px] text-emerald-200 mb-1">tersisa</span>
+      </div>
+      <div id="prayer-times" class="grid grid-cols-5 gap-1 text-center">
+        <div><div class="text-[9px] text-emerald-200">Subuh</div><div class="text-xs font-bold" id="pt-Fajr">--:--</div></div>
+        <div><div class="text-[9px] text-emerald-200">Dzuhur</div><div class="text-xs font-bold" id="pt-Dhuhr">--:--</div></div>
+        <div><div class="text-[9px] text-emerald-200">Ashar</div><div class="text-xs font-bold" id="pt-Asr">--:--</div></div>
+        <div><div class="text-[9px] text-emerald-200">Maghrib</div><div class="text-xs font-bold" id="pt-Maghrib">--:--</div></div>
+        <div><div class="text-[9px] text-emerald-200">Isya</div><div class="text-xs font-bold" id="pt-Isha">--:--</div></div>
+      </div>
+      <a href="/sholat" class="mt-2 text-[10px] text-emerald-200 underline underline-offset-2 inline-block opacity-70 hover:opacity-100 transition-opacity">Lihat detail →</a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4 mb-6 px-1">
     {menus.map((item, index) => (
       <a
         href={item.href}
@@ -171,7 +216,7 @@ const menus = [
     ))}
   </div>
 
-  <div class="p-6 bg-slate-900 dark:bg-black rounded-[2rem] text-white shadow-2xl relative overflow-hidden group min-h-[180px] flex flex-col justify-center border border-slate-800 mx-1">
+  <div class="p-6 bg-slate-900 dark:bg-black rounded-[2rem] text-white shadow-2xl relative overflow-hidden group min-h-[160px] flex flex-col justify-center border border-slate-800 mx-1">
     <div class="absolute top-0 right-0 opacity-5 transform translate-x-8 -translate-y-8 group-hover:scale-110 transition-transform duration-700">
       <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
@@ -626,53 +671,340 @@ const quotesData = [
     },
   ];
   
-  document.addEventListener("DOMContentLoaded", () => {
+  let quoteInterval = null;
+
+  const initQuote = () => {
     const textEl = document.getElementById("quote-text");
     const sourceEl = document.getElementById("quote-source");
     const container = document.getElementById("quote-source-container");
+
+    if (!textEl || !sourceEl) return;
+
+    // Clear any existing interval from previous init
+    if (quoteInterval) clearInterval(quoteInterval);
+
+    const pickAndShow = (fadeIn = true) => {
+      const randomIndex = Math.floor(Math.random() * quotesData.length);
+      const selectedQuote = quotesData[randomIndex];
+
+      textEl.innerText = `"${selectedQuote.text}"`;
+      sourceEl.innerText = selectedQuote.source;
+
+      if (fadeIn) {
+        textEl.style.opacity = 1;
+        if (container) container.style.opacity = 1;
+      }
+    };
 
     const updateQuote = () => {
       // 1. Fade Out
       textEl.style.opacity = 0;
       if (container) container.style.opacity = 0;
 
-      // 2. Wait, change text
+      // 2. Wait, change text, then Fade In
       setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * quotesData.length);
-        const selectedQuote = quotesData[randomIndex];
-
-        textEl.innerText = `"${selectedQuote.text}"`;
-        sourceEl.innerText = selectedQuote.source;
-
-        // 3. Fade In
-        textEl.style.opacity = 1;
-        if (container) container.style.opacity = 1;
+        pickAndShow(true);
       }, 500);
     };
 
-    updateQuote();
-    setInterval(updateQuote, 10000);
+    // First show — skip the fade-out delay, show immediately
+    pickAndShow(true);
+
+    // Then auto-rotate every 10s with smooth fade
+    quoteInterval = setInterval(updateQuote, 10000);
+  };
+
+  // ===== OFFLINE QURAN CACHE BADGE =====
+  const DB_NAME = 'qolbu-quran-cache';
+  const DB_VERSION = 1;
+  const STORE_NAME = 'surah-cache';
+
+  function openDBCache() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) { reject('no indexeddb'); return; }
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME, { keyPath: 'nomor' });
+        }
+      };
+      req.onsuccess = (e) => resolve(e.target.result);
+      req.onerror = (e) => reject(e.target.error);
+    });
+  }
+
+  async function getCachedCountFromDB() {
+    try {
+      const db = await openDBCache();
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const req = tx.objectStore(STORE_NAME).count();
+        req.onsuccess = () => { db.close(); resolve(req.result); };
+        req.onerror = () => { db.close(); resolve(0); };
+      });
+    } catch { return 0; }
+  }
+
+  const initCacheBadge = async () => {
+    const badge = document.getElementById('cache-badge');
+    const text = document.getElementById('cache-badge-text');
+    if (!badge || !text) return;
+    const count = await getCachedCountFromDB();
+    if (count === 0) { badge.classList.add('hidden'); return; }
+    badge.classList.remove('hidden');
+    text.textContent = count + ' surah offline';
+  };
+
+  // ===== PRAYER CARD =====
+  const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  const PRAYER_NAMES = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
+  let prayerInterval = null;
+
+  function getPDate(timeStr) {
+    const [h, m] = timeStr.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    return d;
+  }
+
+  function findNextPrayer(timings) {
+    const now = new Date();
+    for (let k of PRAYER_ORDER) {
+      const t = getPDate(timings[k]);
+      if (t > now) return { key: k, time: t, isTomorrow: false };
+    }
+    const t = getPDate(timings['Fajr']);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(t.getHours(), t.getMinutes(), 0, 0);
+    return { key: 'Fajr', time: tomorrow, isTomorrow: true };
+  }
+
+  const initPrayerCard = () => {
+    const card = document.getElementById('prayer-card');
+    if (!card) return;
+
+    // Read settings to build cache key
+    let settings = {};
+    try { settings = JSON.parse(localStorage.getItem('sholat-settings') || '{}'); } catch {}
+    const lat = settings.lat || -6.2088;
+    const lng = settings.lng || 106.8456;
+    const method = settings.method || 20;
+    const correction = settings.correction || 2;
+
+    // Build cache key same as sholat.astro
+    const d = new Date();
+    const dateStr = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
+    const cacheKey = 'sholat-cache-' + dateStr + '-' + lat.toFixed(4) + '-' + lng.toFixed(4) + '-' + method + '-' + correction;
+
+    function loadCachedData() {
+      try {
+        const raw = localStorage.getItem(cacheKey);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (parsed.date === new Date().toDateString()) return parsed;
+      } catch {}
+      return null;
+    }
+
+    const cached = loadCachedData();
+    if (!cached || !cached.data || !cached.data.timings) {
+      // No cached prayer data yet, silently hide
+      return;
+    }
+
+    const timings = cached.data.timings;
+
+    // Show card
+    card.classList.remove('hidden');
+
+    // Fill 5 times
+    PRAYER_ORDER.forEach(k => {
+      const el = document.getElementById('pt-' + k);
+      if (el && timings[k]) el.innerText = timings[k];
+    });
+
+    // Qibla
+    const qibla = document.getElementById('prayer-qibla');
+    if (qibla) {
+      const kaabaLat = 21.4225, kaabaLng = 39.8262;
+      const φ1 = lat * Math.PI / 180, φ2 = kaabaLat * Math.PI / 180;
+      const Δλ = (kaabaLng - lng) * Math.PI / 180;
+      const x = Math.sin(Δλ) * Math.cos(φ2);
+      const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+      let q = Math.atan2(x, y) * 180 / Math.PI;
+      qibla.innerText = '🕋 ' + ((q + 360) % 360).toFixed(1) + '°';
+    }
+
+    // Countdown
+    function tick() {
+      const next = findNextPrayer(timings);
+      const now = new Date();
+      const diff = next.time - now;
+      if (diff <= 0) {
+        document.getElementById('prayer-countdown').innerText = '00:00:00';
+        return;
+      }
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('prayer-countdown').innerText =
+        h.toString().padStart(2,'0') + ':' + m.toString().padStart(2,'0') + ':' + s.toString().padStart(2,'0');
+      document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[next.key];
+    }
+
+    if (prayerInterval) clearInterval(prayerInterval);
+    tick();
+    prayerInterval = setInterval(tick, 1000);
+  };
+
+  // ===== HIJRI EVENTS =====
+  const HIJRI_EVENTS = [
+    {month:'Muharram',day:1,name:'Tahun Baru Islam 1448 H',icon:'🌙'},
+    {month:'Muharram',day:10,name:'Hari Asyura (Puasa Sunnah)',icon:'🤲'},
+    {month:"Rabi' al-Awwal",day:12,name:'Maulid Nabi Muhammad ﷺ',icon:'🕌'},
+    {month:'Rajab',day:27,name:"Isra' Mi'raj Nabi ﷺ",icon:'🕋'},
+    {month:'Sha'ban',day:15,name:'Nisfu Sya\'ban',icon:'🌙'},
+    {month:'Ramadan',day:1,name:'Awal Puasa Ramadhan',icon:'🌙'},
+    {month:'Ramadan',day:17,name:"Nuzulul Qur'an",icon:'📖'},
+    {month:'Ramadan',day:27,name:'Lailatul Qadr (malam ganjil)',icon:'✨'},
+    {month:'Shawwal',day:1,name:'Idul Fitri 1448 H',icon:'🎉'},
+    {month:'Shawwal',day:2,name:'Idul Fitri — Hari Kedua',icon:'🎉'},
+    {month:'Dhu al-Hijjah',day:9,name:'Hari Arafah (Puasa Sunnah)',icon:'🤲'},
+    {month:'Dhu al-Hijjah',day:10,name:'Idul Adha 1448 H',icon:'🐑'}
+  ];
+
+  const HIJRI_MONTHS = ['Muharram','Safar',"Rabi' al-Awwal","Rabi' al-Thani",'Jumada al-Awwal','Jumada al-Thani','Rajab','Sha'ban','Ramadan','Shawwal','Dhu al-Qi'dah','Dhu al-Hijjah'];
+
+  // Normalize Aladhan API month name variations to our standard format
+  const MONTH_ALIASES = {
+    'Jumada I': 'Jumada al-Awwal',
+    'Jumada al-Ula': 'Jumada al-Awwal',
+    'Jumada II': 'Jumada al-Thani',
+    'Jumada al-Akhirah': 'Jumada al-Thani',
+    "Rabi\u02bb I": "Rabi' al-Awwal",
+    "Rabi\u02bb II": "Rabi' al-Thani",
+    "Dhu\u02bbl-Qi\u02bbdah": "Dhu al-Qi'dah",
+    "Dhu\u02bbl-Hijjah": "Dhu al-Hijjah",
+  };
+
+  // Convert Hijri month name to index (0-based), handling aliases
+  function hijriMonthIndex(name) {
+    const normalized = MONTH_ALIASES[name] || name;
+    return HIJRI_MONTHS.indexOf(normalized);
+  }
+
+  // Check if event (m1,d1) is after or same as current (m2,d2)
+  function isAfterOrSame(m1, d1, m2, d2) {
+    return m1 > m2 || (m1 === m2 && d1 >= d2);
+  }
+
+  const initHijriEvent = () => {
+    const bar = document.getElementById('hijri-event');
+    const icon = document.getElementById('hijri-event-icon');
+    const text = document.getElementById('hijri-event-text');
+    const daysEl = document.getElementById('hijri-event-days');
+    if (!bar || !icon || !text || !daysEl) return;
+
+    // Try to read today's Hijri date from sholat cache
+    let settings = {};
+    try { settings = JSON.parse(localStorage.getItem('sholat-settings') || '{}'); } catch {}
+    const lat = settings.lat || -6.2088;
+    const lng = settings.lng || 106.8456;
+    const method = settings.method || 20;
+    const correction = settings.correction || 2;
+    const d = new Date();
+    const dateStr = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
+    const cacheKey = 'sholat-cache-' + dateStr + '-' + lat.toFixed(4) + '-' + lng.toFixed(4) + '-' + method + '-' + correction;
+
+    let hijriMonth, hijriDay;
+    try {
+      const raw = localStorage.getItem(cacheKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed.data && parsed.data.date && parsed.data.date.hijri) {
+          hijriMonth = parsed.data.date.hijri.month.en;
+          hijriDay = parseInt(parsed.data.date.hijri.day);
+        }
+      }
+    } catch {}
+
+    if (!hijriMonth || !hijriDay) {
+      bar.classList.add('hidden');
+      return;
+    }
+
+    const curIdx = hijriMonthIndex(hijriMonth);
+    if (curIdx === -1) { bar.classList.add('hidden'); return; }
+
+    // Find next event (wrap around year)
+    let nextEvent = null;
+    for (const ev of HIJRI_EVENTS) {
+      const evIdx = hijriMonthIndex(ev.month);
+      if (evIdx === -1) continue;
+      if (isAfterOrSame(evIdx, ev.day, curIdx, hijriDay)) {
+        nextEvent = ev;
+        break;
+      }
+    }
+    // If no event found this year, pick first event of the year (wrap)
+    if (!nextEvent) nextEvent = HIJRI_EVENTS[0];
+
+    // Calculate days until event (approximate: 29-30 days per month)
+    const evIdx = hijriMonthIndex(nextEvent.month);
+    let daysUntil = 0;
+    if (evIdx > curIdx || (evIdx === curIdx && nextEvent.day >= hijriDay)) {
+      // Same year, same month
+      if (evIdx === curIdx) {
+        daysUntil = nextEvent.day - hijriDay;
+      } else {
+        // Different month: remaining days in current month + days in-between + event day
+        daysUntil = (30 - hijriDay) + (evIdx - curIdx - 1) * 30 + nextEvent.day;
+      }
+    } else {
+      // Wrap to next year
+      daysUntil = (30 - hijriDay) + (11 - curIdx) * 30 + evIdx * 30 + nextEvent.day;
+    }
+
+    // If it's today or tomorrow, show nice label
+    let daysLabel = '';
+    if (daysUntil === 0) {
+      daysLabel = 'Hari ini!';
+    } else if (daysUntil === 1) {
+      daysLabel = 'Besok!';
+    } else {
+      daysLabel = daysUntil + ' hari lagi';
+    }
+
+    icon.textContent = nextEvent.icon;
+    text.textContent = nextEvent.name;
+    daysEl.textContent = daysLabel;
+    bar.classList.remove('hidden');
+  };
+
+  document.addEventListener("DOMContentLoaded", initQuote);
+  document.addEventListener("astro:after-swap", initQuote);
+
+  document.addEventListener("DOMContentLoaded", initCacheBadge);
+  document.addEventListener("astro:after-swap", initCacheBadge);
+
+  document.addEventListener("DOMContentLoaded", initPrayerCard);
+  document.addEventListener("astro:after-swap", initPrayerCard);
+
+  document.addEventListener("DOMContentLoaded", initHijriEvent);
+  document.addEventListener("astro:after-swap", initHijriEvent);
+
+  // Clean up intervals on page unload (prevents memory leaks)
+  document.addEventListener('astro:before-swap', () => {
+    if (prayerInterval) clearInterval(prayerInterval);
+    if (quoteInterval) clearInterval(quoteInterval);
   });
 </script>
 
 <style>
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-  }
-
   #quote-text,
   #quote-source-container {
     transition: opacity 0.5s ease-in-out;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(15px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 </style>
