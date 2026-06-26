@@ -662,12 +662,12 @@ const quotesData = [
 
   const initQuote = () => {
     if (window._quoteInitialized) return;
-    window._quoteInitialized = true;
     const textEl = document.getElementById("quote-text");
     const sourceEl = document.getElementById("quote-source");
     const container = document.getElementById("quote-source-container");
 
     if (!textEl || !sourceEl) return;
+    window._quoteInitialized = true;
 
     // Clear any existing interval from previous init
     if (quoteInterval) clearInterval(quoteInterval);
@@ -681,7 +681,7 @@ const quotesData = [
 
       if (fadeIn) {
         textEl.style.opacity = 1;
-        if (container) container.style.opacity = 1;
+        if (container) container.style.opacity = '0.8';
       }
     };
 
@@ -693,7 +693,7 @@ const quotesData = [
       // 2. Wait, change text, then Fade In
       setTimeout(() => {
         pickAndShow(true);
-      }, 500);
+      }, 550);
     };
 
     // First show — skip the fade-out delay, show immediately
@@ -701,7 +701,10 @@ const quotesData = [
 
     // Then auto-rotate every 10s with smooth fade
     quoteInterval = setInterval(updateQuote, 10000);
+    window._quoteInterval = quoteInterval;
   };
+
+  window._quoteInterval = null;
 
   // ===== OFFLINE QURAN CACHE BADGE =====
   const DB_NAME = 'qolbu-quran-cache';
@@ -850,6 +853,7 @@ const quotesData = [
     if (prayerInterval) clearInterval(prayerInterval);
     tick();
     prayerInterval = setInterval(tick, 1000);
+    window._prayerInterval = prayerInterval;
   };
 
   // ===== HIJRI EVENTS =====
@@ -978,17 +982,10 @@ const quotesData = [
     bar.classList.remove('hidden');
   };
 
-  document.addEventListener("DOMContentLoaded", initQuote);
-  document.addEventListener("astro:after-swap", initQuote);
-
-  document.addEventListener("DOMContentLoaded", initCacheBadge);
-  document.addEventListener("astro:after-swap", initCacheBadge);
-
-  document.addEventListener("DOMContentLoaded", initPrayerCard);
-  document.addEventListener("astro:after-swap", initPrayerCard);
-
-  document.addEventListener("DOMContentLoaded", initHijriEvent);
-  document.addEventListener("astro:after-swap", initHijriEvent);
+  document.addEventListener("astro:page-load", initQuote);
+  document.addEventListener("astro:page-load", initCacheBadge);
+  document.addEventListener("astro:page-load", initPrayerCard);
+  document.addEventListener("astro:page-load", initHijriEvent);
 
   // Clean up intervals on page unload (prevents memory leaks)
   document.addEventListener('astro:before-swap', () => {
@@ -996,8 +993,8 @@ const quotesData = [
     window._cacheBadgeInitialized = false;
     window._prayerCardInitialized = false;
     window._hijriEventInitialized = false;
-    if (prayerInterval) clearInterval(prayerInterval);
-    if (quoteInterval) clearInterval(quoteInterval);
+    if (window._quoteInterval) { clearInterval(window._quoteInterval); window._quoteInterval = null; }
+    if (window._prayerInterval) { clearInterval(window._prayerInterval); window._prayerInterval = null; }
   });
 })();
 </script>

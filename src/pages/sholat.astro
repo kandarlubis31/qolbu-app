@@ -689,8 +689,7 @@ import Toast from '../components/Toast.astro';
     init();
   };
 
-  document.addEventListener('DOMContentLoaded', initSholat);
-  document.addEventListener('astro:after-swap', initSholat);
+  document.addEventListener('astro:page-load', initSholat);
   document.addEventListener('astro:before-swap', () => {
     window._sholatInitialized = false;
     if (window._sholatInterval) { clearInterval(window._sholatInterval); window._sholatInterval = null; }

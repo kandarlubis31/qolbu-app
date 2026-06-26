@@ -149,8 +149,7 @@ const daftarJuz = [
     });
   };
 
-  document.addEventListener('DOMContentLoaded', initQuranIndex);
-  document.addEventListener('astro:after-swap', initQuranIndex);
+  document.addEventListener('astro:page-load', initQuranIndex);
   document.addEventListener('astro:before-swap', () => {
     window._quranIndexInitialized = false;
   });

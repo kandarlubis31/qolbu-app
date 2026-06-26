@@ -175,8 +175,7 @@ import Toast from '../components/Toast.astro';
     render();
   };
 
-  document.addEventListener('DOMContentLoaded', renderDzikir);
-  document.addEventListener('astro:after-swap', renderDzikir);
+  document.addEventListener('astro:page-load', renderDzikir);
   document.addEventListener('astro:before-swap', () => {
     window._dzikirInitialized = false;
   });

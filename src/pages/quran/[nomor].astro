@@ -285,8 +285,7 @@ const toArabic = (num) => {
     }
   };
 
-  document.addEventListener('DOMContentLoaded', initQuranDetail);
-  document.addEventListener('astro:after-swap', initQuranDetail);
+  document.addEventListener('astro:page-load', initQuranDetail);
   document.addEventListener('astro:before-swap', () => {
     window._quranDetailInitialized = false;
     if (window._quranDetailAudio) { window._quranDetailAudio.pause(); window._quranDetailAudio = null; }

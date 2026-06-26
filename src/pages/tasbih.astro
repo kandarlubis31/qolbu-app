@@ -538,8 +538,7 @@ import HeaderBack from '../components/HeaderBack.astro';
   }, 60000); // Check every minute
   };
 
-  document.addEventListener('DOMContentLoaded', initTasbih);
-  document.addEventListener('astro:after-swap', initTasbih);
+  document.addEventListener('astro:page-load', initTasbih);
   document.addEventListener('astro:before-swap', () => {
     window._tasbihInitialized = false;
     if (window._tasbihStatsInterval) { clearInterval(window._tasbihStatsInterval); delete window._tasbihStatsInterval; }

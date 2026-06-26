@@ -217,8 +217,7 @@ import HeaderBack from '../components/HeaderBack.astro';
     });
   };
 
-  document.addEventListener('DOMContentLoaded', initZakat);
-  document.addEventListener('astro:after-swap', initZakat);
+  document.addEventListener('astro:page-load', initZakat);
   document.addEventListener('astro:before-swap', () => {
     window._zakatInitialized = false;
   });

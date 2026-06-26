@@ -713,8 +713,7 @@ const enrichedGuides = guides.map(g => ({ ...g, displayTitle: g.title.replace(/^
     loadBookmarks();
   };
 
-  document.addEventListener('DOMContentLoaded', initGuide);
-  document.addEventListener('astro:after-swap', initGuide);
+  document.addEventListener('astro:page-load', initGuide);
   document.addEventListener('astro:before-swap', () => {
     window._guideInitialized = false;
     if (window._guideTimer) { clearInterval(window._guideTimer); window._guideTimer = null; }

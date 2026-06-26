@@ -278,8 +278,7 @@ const asmaulHusna = [
     }
   };
 
-  document.addEventListener('DOMContentLoaded', initAsmaul);
-  document.addEventListener('astro:after-swap', initAsmaul);
+  document.addEventListener('astro:page-load', initAsmaul);
   document.addEventListener('astro:before-swap', () => {
     window._asmaulInitialized = false;
   });
