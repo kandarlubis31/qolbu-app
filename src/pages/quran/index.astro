@@ -101,7 +101,9 @@ const daftarJuz = [
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initQuranIndex = () => {
+    if (window._quranIndexInitialized) return;
+    window._quranIndexInitialized = true;
     const searchInput = document.getElementById('search-surat');
     const suratCards = document.querySelectorAll('.surat-card');
     const emptyState = document.getElementById('empty-state');
@@ -132,10 +134,10 @@ const daftarJuz = [
       suratCards.forEach(card => {
         const nama = card.querySelector('.surat-nama').textContent.toLowerCase();
         if (nama.includes(term)) {
-          card.style.display = 'flex';
+          card.classList.remove('hidden');
           hasVisible = true;
         } else {
-          card.style.display = 'none';
+          card.classList.add('hidden');
         }
       });
 
@@ -145,5 +147,11 @@ const daftarJuz = [
         emptyState.classList.remove('hidden');
       }
     });
+  };
+
+  document.addEventListener('DOMContentLoaded', initQuranIndex);
+  document.addEventListener('astro:after-swap', initQuranIndex);
+  document.addEventListener('astro:before-swap', () => {
+    window._quranIndexInitialized = false;
   });
 </script>

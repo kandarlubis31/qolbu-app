@@ -94,7 +94,9 @@ import Toast from '../components/Toast.astro';
     { id: "umum-5", cat: "umum", title: "Doa Nabi Yunus", arab: "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ", latin: "Laa ilaaha illaa anta subhaanaka innii kuntu minazh zhaalimiin", arti: "Tidak ada muslim yang berdoa dengannya kecuali dikabulkan.", source: "QS. Al-Anbiya: 87 — HR. Tirmidzi" }
   ];
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const renderDzikir = () => {
+    if (window._dzikirInitialized) return;
+    window._dzikirInitialized = true;
     const container = document.getElementById('dzikir-container');
     const searchInput = document.getElementById('search-input');
     const emptyState = document.getElementById('empty-state');
@@ -171,6 +173,12 @@ import Toast from '../components/Toast.astro';
     });
 
     render();
+  };
+
+  document.addEventListener('DOMContentLoaded', renderDzikir);
+  document.addEventListener('astro:after-swap', renderDzikir);
+  document.addEventListener('astro:before-swap', () => {
+    window._dzikirInitialized = false;
   });
 </script>
 

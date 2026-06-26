@@ -343,6 +343,8 @@ const guides = [
     icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`
   }
 ];
+
+const enrichedGuides = guides.map(g => ({ ...g, displayTitle: g.title.replace(/^\d+\.\s*/, '') }));
 ---
 
 <BaseLayout pageTitle="Panduan Sholat Lengkap">
@@ -361,7 +363,7 @@ const guides = [
     <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm mb-6 sticky top-32 z-30 transition-all">
       <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 font-bold uppercase tracking-wider">
         <span>Progress Belajar</span>
-        <span><span id="current-step-text" class="text-emerald-600 dark:text-emerald-400">0</span> / {guides.length}</span>
+        <span><span id="current-step-text" class="text-emerald-600 dark:text-emerald-400">0</span> / {enrichedGuides.length}</span>
       </div>
       <div class="bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
         <div id="progress-bar" class="bg-emerald-500 h-full transition-all duration-500 ease-out" style="width: 0%"></div>
@@ -379,7 +381,7 @@ const guides = [
     </div>
 
     <div class="space-y-4" id="guide-container">
-      {guides.map((item, index) => (
+      {enrichedGuides.map((item, index) => (
         <details class="group border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 open:shadow-lg open:border-emerald-500/50" data-index={index} data-id={item.id}>
           
           <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none bg-slate-50/50 dark:bg-slate-800/50 group-open:bg-emerald-50 dark:group-open:bg-emerald-900/10 transition-colors">
@@ -390,7 +392,7 @@ const guides = [
               <div>
                 <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-0.5">{item.category}</span>
                 <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm group-open:text-emerald-700 dark:group-open:text-emerald-400 transition-colors line-clamp-1">
-                  {item.title.split('. ').slice(1).join('. ')}
+                  {item.displayTitle}
                 </h3>
               </div>
             </div>
@@ -483,7 +485,9 @@ const guides = [
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initGuide = () => {
+    if (window._guideInitialized) return;
+    window._guideInitialized = true;
     const allDetails = document.querySelectorAll('details');
     const progressBar = document.getElementById('progress-bar');
     const stepText = document.getElementById('current-step-text');
@@ -506,13 +510,12 @@ const guides = [
     let practiceMode = false;
     let practiceTimer = null;
     let currentStep = 0;
-    let currentAudio = null;
+    let currentAudio = null; window._guideAudio = null;
     let currentAudioBtn = null;
+    window._guideTimer = null;
+    window._guideAudio = null;
     let completedSteps = JSON.parse(localStorage.getItem('sholat-completed') || '[]');
 
-    const showToast = (msg) => {
-      window.showToast(msg);
-    };
 
     const updateProgress = () => {
       const val = completedSteps.length;
@@ -561,6 +564,8 @@ const guides = [
     const stopPractice = () => {
       practiceMode = false;
       clearInterval(practiceTimer);
+      practiceTimer = null;
+      window._guideTimer = null;
       if(currentAudio) currentAudio.pause();
       practiceBtn.querySelector('.play-icon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
       practiceBtn.querySelector('.btn-text').textContent = "Mulai Praktik";
@@ -580,7 +585,7 @@ const guides = [
       allDetails.forEach(el => el.open = false);
 
       const runStep = () => {
-        if (currentStep >= allDetails.length) { stopPractice(); showToast("Alhamdulillah, praktik selesai!"); return; }
+        if (currentStep >= allDetails.length) { stopPractice(); window.showToast("Alhamdulillah, praktik selesai!"); return; }
         if(currentStep > 0) allDetails[currentStep - 1].open = false;
         const target = allDetails[currentStep];
         target.open = true;
@@ -592,6 +597,7 @@ const guides = [
 
       runStep();
       practiceTimer = setInterval(runStep, 15000);
+      window._guideTimer = practiceTimer;
     };
 
     practiceBtn.addEventListener('click', () => { if (practiceMode) stopPractice(); else startPractice(); });
@@ -601,7 +607,7 @@ const guides = [
         completedSteps = [];
         localStorage.setItem('sholat-completed', '[]');
         updateProgress();
-        showToast("Progress direset");
+        window.showToast("Progress direset");
       }
     });
 
@@ -641,8 +647,8 @@ const guides = [
         e.preventDefault(); e.stopPropagation();
         const id = btn.getAttribute('data-id');
         let saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
-        if(saved.includes(id)) { saved = saved.filter(s => s !== id); showToast("Dihapus dari tersimpan"); }
-        else { saved.push(id); showToast("Langkah disimpan"); }
+        if(saved.includes(id)) { saved = saved.filter(s => s !== id); window.showToast("Dihapus dari tersimpan"); }
+        else { saved.push(id); window.showToast("Langkah disimpan"); }
         localStorage.setItem('sholat-bookmarks', JSON.stringify(saved));
         loadBookmarks();
       });
@@ -673,12 +679,12 @@ const guides = [
           return;
         }
         if (currentAudio) { currentAudio.pause(); resetAllAudioBtns(); }
-        currentAudio = new Audio(src); currentAudioBtn = btn;
+        currentAudio = new Audio(src); window._guideAudio = currentAudio; currentAudioBtn = btn;
         btn.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
         btn.classList.add('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
         icPlay.classList.add('hidden'); icPause.classList.remove('hidden'); if(txt) txt.innerText = "Memuat...";
-        currentAudio.play().then(() => { if(txt) txt.innerText = "Jeda"; }).catch(() => { showToast("Gagal memutar audio. Cek koneksi."); resetAllAudioBtns(); currentAudio = null; currentAudioBtn = null; });
-        currentAudio.onended = () => { resetAllAudioBtns(); currentAudio = null; currentAudioBtn = null; };
+        currentAudio.play().then(() => { if(txt) txt.innerText = "Jeda"; }).catch(() => { window.showToast("Gagal memutar audio. Cek koneksi."); resetAllAudioBtns(); currentAudio = null; window._guideAudio = null; currentAudioBtn = null; });
+        currentAudio.onended = () => { resetAllAudioBtns(); currentAudio = null; window._guideAudio = null; currentAudioBtn = null; };
       });
     });
 
@@ -686,8 +692,8 @@ const guides = [
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const id = btn.getAttribute('data-id');
-        if (completedSteps.includes(id)) { completedSteps = completedSteps.filter(s => s !== id); showToast("Dibatalkan"); }
-        else { completedSteps.push(id); showToast("Ditandai Selesai ✓"); }
+        if (completedSteps.includes(id)) { completedSteps = completedSteps.filter(s => s !== id); window.showToast("Dibatalkan"); }
+        else { completedSteps.push(id); window.showToast("Ditandai Selesai ✓"); }
         localStorage.setItem('sholat-completed', JSON.stringify(completedSteps));
         updateProgress();
       });
@@ -698,19 +704,20 @@ const guides = [
       let hasVisible = false;
       allDetails.forEach(el => {
         const text = el.innerText.toLowerCase();
-        if (text.includes(term)) { el.style.display = 'block'; hasVisible = true; } else { el.style.display = 'none'; }
+        if (text.includes(term)) { el.classList.remove('hidden'); hasVisible = true; } else { el.classList.add('hidden'); }
       });
       if (hasVisible) emptyState.classList.add('hidden'); else emptyState.classList.remove('hidden');
     });
 
     updateProgress();
     loadBookmarks();
+  };
+
+  document.addEventListener('DOMContentLoaded', initGuide);
+  document.addEventListener('astro:after-swap', initGuide);
+  document.addEventListener('astro:before-swap', () => {
+    window._guideInitialized = false;
+    if (window._guideTimer) { clearInterval(window._guideTimer); window._guideTimer = null; }
+    if (window._guideAudio) { window._guideAudio.pause(); window._guideAudio = null; }
   });
 </script>
-
-<style>
-  .animate-fade-in { animation: fadeIn 0.4s ease-out; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-</style>

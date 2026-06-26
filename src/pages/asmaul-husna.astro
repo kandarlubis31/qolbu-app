@@ -179,7 +179,9 @@ const asmaulHusna = [
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initAsmaul = () => {
+    if (window._asmaulInitialized) return;
+    window._asmaulInitialized = true;
     const LOCAL_KEY = 'qolbu-asmaul-counts';
     
     let counts = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}');
@@ -264,15 +266,21 @@ const asmaulHusna = [
           ].map(s => (s || '').toLowerCase()).join(' ');
 
           if (searchText.includes(term)) {
-            card.style.display = 'block';
+            card.classList.remove('hidden');
             hasVisible = true;
           } else {
-            card.style.display = 'none';
+            card.classList.add('hidden');
           }
         });
         
         if (emptyState) emptyState.classList.toggle('hidden', hasVisible);
       });
     }
+  };
+
+  document.addEventListener('DOMContentLoaded', initAsmaul);
+  document.addEventListener('astro:after-swap', initAsmaul);
+  document.addEventListener('astro:before-swap', () => {
+    window._asmaulInitialized = false;
   });
 </script>

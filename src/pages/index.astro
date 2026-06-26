@@ -69,20 +69,6 @@ const menus = [
     path: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3",
   },
   {
-    title: "Dzikir Harian",
-    desc: "Pagi, Petang & Sholat",
-    href: "/dzikir",
-    color: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400",
-    path: "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-13a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-3a1 1 0 1 1 0-2h2V8a1 1 0 0 1 1-1z",
-  },
-  {
-    title: "Asmaul Husna",
-    desc: "99 Nama Allah",
-    href: "/asmaul-husna",
-    color: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400",
-    path: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z",
-  },
-  {
     title: "Surat Yasin",
     desc: "Jantung Al-Qur'an",
     href: "/quran/yasin",
@@ -247,6 +233,7 @@ const menus = [
 </BaseLayout>
 
 <script is:inline>
+(() => {
 const quotesData = [
     {
       text: "Maka sesungguhnya bersama kesulitan ada kemudahan.",
@@ -674,6 +661,8 @@ const quotesData = [
   let quoteInterval = null;
 
   const initQuote = () => {
+    if (window._quoteInitialized) return;
+    window._quoteInitialized = true;
     const textEl = document.getElementById("quote-text");
     const sourceEl = document.getElementById("quote-source");
     const container = document.getElementById("quote-source-container");
@@ -747,6 +736,8 @@ const quotesData = [
   }
 
   const initCacheBadge = async () => {
+    if (window._cacheBadgeInitialized) return;
+    window._cacheBadgeInitialized = true;
     const badge = document.getElementById('cache-badge');
     const text = document.getElementById('cache-badge-text');
     if (!badge || !text) return;
@@ -782,6 +773,8 @@ const quotesData = [
   }
 
   const initPrayerCard = () => {
+    if (window._prayerCardInitialized) return;
+    window._prayerCardInitialized = true;
     const card = document.getElementById('prayer-card');
     if (!card) return;
 
@@ -901,6 +894,8 @@ const quotesData = [
   }
 
   const initHijriEvent = () => {
+    if (window._hijriEventInitialized) return;
+    window._hijriEventInitialized = true;
     const bar = document.getElementById('hijri-event');
     const icon = document.getElementById('hijri-event-icon');
     const text = document.getElementById('hijri-event-text');
@@ -997,9 +992,14 @@ const quotesData = [
 
   // Clean up intervals on page unload (prevents memory leaks)
   document.addEventListener('astro:before-swap', () => {
+    window._quoteInitialized = false;
+    window._cacheBadgeInitialized = false;
+    window._prayerCardInitialized = false;
+    window._hijriEventInitialized = false;
     if (prayerInterval) clearInterval(prayerInterval);
     if (quoteInterval) clearInterval(quoteInterval);
   });
+})();
 </script>
 
 <style>

@@ -142,7 +142,9 @@ const toArabic = (num) => {
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initQuranDetail = () => {
+    if (window._quranDetailInitialized) return;
+    window._quranDetailInitialized = true;
     
     const btnTerjemah = document.getElementById('btn-terjemah');
     const btnMushaf = document.getElementById('btn-mushaf');
@@ -193,7 +195,7 @@ const toArabic = (num) => {
           document.querySelectorAll('.ayat-card').forEach(el => el.classList.remove('ring-2', 'ring-emerald-500', 'shadow-md'));
         }
 
-        currentAudio = new Audio(url);
+        currentAudio = new Audio(url); window._quranDetailAudio = currentAudio;
         currentBtn = this;
         currentAudio.play();
         
@@ -214,7 +216,7 @@ const toArabic = (num) => {
             const nextCard = nextBtn.closest('.ayat-card');
             nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
           } else {
-             currentAudio = null;
+             currentAudio = null; window._quranDetailAudio = null;
              currentBtn = null;
           }
         };
@@ -281,13 +283,12 @@ const toArabic = (num) => {
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }, 500);
     }
+  };
+
+  document.addEventListener('DOMContentLoaded', initQuranDetail);
+  document.addEventListener('astro:after-swap', initQuranDetail);
+  document.addEventListener('astro:before-swap', () => {
+    window._quranDetailInitialized = false;
+    if (window._quranDetailAudio) { window._quranDetailAudio.pause(); window._quranDetailAudio = null; }
   });
 </script>
-
-<style>
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-</style>

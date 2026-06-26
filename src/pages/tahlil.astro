@@ -156,7 +156,9 @@ const tahlilData = [
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initTahlil = () => {
+    if (window._tahlilInitialized) return;
+    window._tahlilInitialized = true;
     const settingsBtn = document.getElementById('settings-btn');
     const settingsModal = document.getElementById('settings-modal');
     const closeSettings = document.getElementById('close-settings');
@@ -213,13 +215,11 @@ const tahlilData = [
     } catch (e) {}
     
     applySettings();
+  };
+
+  document.addEventListener('DOMContentLoaded', initTahlil);
+  document.addEventListener('astro:after-swap', initTahlil);
+  document.addEventListener('astro:before-swap', () => {
+    window._tahlilInitialized = false;
   });
 </script>
-
-<style>
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-</style>

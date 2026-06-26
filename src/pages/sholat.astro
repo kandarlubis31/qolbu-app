@@ -258,7 +258,9 @@ import Toast from '../components/Toast.astro';
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  const initSholat = () => {
+    if (window._sholatInitialized) return;
+    window._sholatInitialized = true;
     const els = {
       locText: document.getElementById('location-text'),
       list: document.getElementById('prayer-list'),
@@ -320,10 +322,6 @@ import Toast from '../components/Toast.astro';
     let lastNotifiedAdhan = null;
     let lastNotifiedRemind = null;
 
-    const showToast = (msg) => {
-      window.showToast(msg);
-    };
-
     const init = () => {
       loadSettings();
       if (state.useGPS) {
@@ -378,12 +376,12 @@ import Toast from '../components/Toast.astro';
 
         } else {
           els.locText.innerText = "Error API";
-          showToast("Gagal mengambil data sholat.");
+          window.showToast("Gagal mengambil data sholat.");
         }
       } catch (e) {
         console.error(e);
         els.locText.innerText = "Offline";
-        showToast("Anda sedang offline atau koneksi terputus.");
+        window.showToast("Anda sedang offline atau koneksi terputus.");
       }
     };
 
@@ -451,6 +449,7 @@ import Toast from '../components/Toast.astro';
 
     const startTimer = (timings) => {
       if (countdownInterval) clearInterval(countdownInterval);
+      window._sholatInterval = null;
       const names = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
       
       const update = () => {
@@ -497,6 +496,7 @@ import Toast from '../components/Toast.astro';
       
       update();
       countdownInterval = setInterval(update, 1000);
+      window._sholatInterval = countdownInterval;
     };
 
     const getGPS = () => {
@@ -527,7 +527,7 @@ import Toast from '../components/Toast.astro';
             });
         },
         (err) => {
-          showToast("Gagal ambil GPS. Memakai lokasi terakhir.");
+          window.showToast("Gagal ambil GPS. Memakai lokasi terakhir.");
           els.locText.innerText = state.city;
           fetchPrayer(state.lat, state.lng);
           els.refreshIcon.classList.remove('animate-spin');
@@ -568,6 +568,7 @@ import Toast from '../components/Toast.astro';
       els.disc.style.transform = `rotate(${-compass}deg)`;
       els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
     };
+    window._sholatCompass = handleCompass;
 
     const startCompass = () => {
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -579,7 +580,7 @@ import Toast from '../components/Toast.astro';
                 els.iosBtn.classList.add('hidden');
                 window.addEventListener('deviceorientation', handleCompass, true);
               } else {
-                showToast("Izin kompas ditolak.");
+                window.showToast("Izin kompas ditolak.");
               }
             })
             .catch(console.error);
@@ -644,7 +645,7 @@ import Toast from '../components/Toast.astro';
       localStorage.removeItem('sholat-data'); 
       
       if (state.adhan || state.remind) reqNotify();
-      showToast("Pengaturan disimpan.");
+      window.showToast("Pengaturan disimpan.");
       init();
     };
 
@@ -686,14 +687,21 @@ import Toast from '../components/Toast.astro';
     });
 
     init();
+  };
+
+  document.addEventListener('DOMContentLoaded', initSholat);
+  document.addEventListener('astro:after-swap', initSholat);
+  document.addEventListener('astro:before-swap', () => {
+    window._sholatInitialized = false;
+    if (window._sholatInterval) { clearInterval(window._sholatInterval); window._sholatInterval = null; }
+    if (window._sholatCompass) {
+      window.removeEventListener('deviceorientation', window._sholatCompass, true);
+      window.removeEventListener('deviceorientationabsolute', window._sholatCompass, true);
+      window._sholatCompass = null;
+    }
   });
 </script>
 
 <style>
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
   .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 </style>
