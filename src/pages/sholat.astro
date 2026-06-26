@@ -253,7 +253,7 @@ import Toast from '../components/Toast.astro';
     </div>
   </div>
 
-    <Toast />
+  <Toast />
 
 </BaseLayout>
 
@@ -302,8 +302,6 @@ import Toast from '../components/Toast.astro';
       qiblaDegModal: document.getElementById('qibla-degree-modal'),
       previewNeedle: document.getElementById('qibla-preview-needle'),
       iosBtn: document.getElementById('ios-permission-btn'),
-      
-      toast: document.getElementById('toast')
     };
 
     if (!els.locText || !els.list || !els.refresh) return;
@@ -321,7 +319,6 @@ import Toast from '../components/Toast.astro';
       correction: 2 
     };
     
-    let countdownInterval = null;
     let lastNotifiedAdhan = null;
     let lastNotifiedRemind = null;
 
@@ -335,24 +332,27 @@ import Toast from '../components/Toast.astro';
       }
     };
 
+    // MODULO AITHMETIC: Mencegah error perhitungan pergantian hari pada jam ekstrim (23:58 + 5 = 00:03)
     const addMinutes = (timeStr, minutesToAdd) => {
         const [h, m] = timeStr.split(':').map(Number);
-        const date = new Date();
-        date.setHours(h, m + minutesToAdd, 0); 
-        return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        let totalMinutes = (h * 60) + m + minutesToAdd;
+        totalMinutes = (totalMinutes % 1440 + 1440) % 1440; // Clamping modulo 24 jam
+        
+        const resH = Math.floor(totalMinutes / 60).toString().padStart(2, '0');
+        const resM = (totalMinutes % 60).toString().padStart(2, '0');
+        return `${resH}:${resM}`;
     };
 
-    const getPDate = (timeStr) => {
+    const getPDate = (timeStr, relativeDate = new Date()) => {
         const [h, m] = timeStr.split(':').map(Number);
-        const d = new Date();
-        d.setHours(h, m, 0);
+        const d = new Date(relativeDate);
+        d.setHours(h, m, 0, 0);
         return d;
     };
 
     const fetchPrayer = async (lat, lng) => {
       try {
         calcQibla(lat, lng);
-
         const d = new Date();
         const dateStr = `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
         const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lng}&method=${state.method}`;
@@ -376,7 +376,6 @@ import Toast from '../components/Toast.astro';
           render(json.data);
           startTimer(correctedTimings);
           els.corDisplay.innerText = state.correction > 0 ? `+${state.correction}` : state.correction;
-
         } else {
           els.locText.innerText = "Error API";
           window.showToast("Gagal mengambil data sholat.");
@@ -398,8 +397,6 @@ import Toast from '../components/Toast.astro';
       els.gregorian.innerText = `${dayName}, ${greg.day} ${greg.month.en} ${greg.year}`;
 
       const timings = data.timings;
-      
-      // Render Imsak
       if(timings.Imsak) {
           els.imsakCont.classList.remove('hidden');
           els.imsakTime.innerText = timings.Imsak;
@@ -410,8 +407,12 @@ import Toast from '../components/Toast.astro';
       let nextKey = null;
       let minDiff = Infinity;
       
+      // LOGIKA KOREKSI SCENARIO POST-MIDNIGHT (00:00 - SEBELUM SUBUH)
       Object.keys(names).forEach(k => {
         let pTime = getPDate(timings[k]);
+        if (pTime < now && k === 'Isha' && now.getHours() < 4) {
+          // Jika sekarang dini hari sebelum subuh, Isha hari sebelumnya diabaikan dari status "aktif"
+        }
         if (pTime > now) {
           const diff = pTime - now;
           if (diff < minDiff) {
@@ -431,7 +432,7 @@ import Toast from '../components/Toast.astro';
 
       let html = '';
       Object.keys(names).forEach(k => {
-        const isActive = (k === nextKey && !isTomorrow) || (k === nextKey && isTomorrow && k === 'Fajr'); 
+        const isActive = (k === nextKey && !isTomorrow);
         
         html += `
           <div class="flex items-center justify-between p-4 rounded-2xl transition-all border ${
@@ -451,8 +452,7 @@ import Toast from '../components/Toast.astro';
     };
 
     const startTimer = (timings) => {
-      if (countdownInterval) clearInterval(countdownInterval);
-      window._sholatInterval = null;
+      if (window._sholatInterval) clearInterval(window._sholatInterval);
       const names = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
       
       const update = () => {
@@ -470,11 +470,12 @@ import Toast from '../components/Toast.astro';
           }
         }
 
+        // PERBAIKAN POST-MIDNIGHT & WRAP: Jika lewat Isya malam ini, targetnya adalah Subuh esok pagi murni (+1 Hari dari data base)
         if(!target) {
           const t = getPDate(timings['Fajr']);
           target = new Date();
           target.setDate(target.getDate() + 1);
-          target.setHours(t.getHours(), t.getMinutes(), 0);
+          target.setHours(t.getHours(), t.getMinutes(), 0, 0);
           targetKey = 'Fajr';
         }
 
@@ -485,7 +486,6 @@ import Toast from '../components/Toast.astro';
 
         els.count.innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
         
-        // DEBOUNCED NOTIFICATIONS
         if (diff < 1000 && diff > 0 && state.adhan && lastNotifiedAdhan !== targetKey) {
             notify(`Waktu sholat ${names[targetKey]} telah tiba!`, 'Adzan');
             lastNotifiedAdhan = targetKey;
@@ -498,8 +498,7 @@ import Toast from '../components/Toast.astro';
       };
       
       update();
-      countdownInterval = setInterval(update, 1000);
-      window._sholatInterval = countdownInterval;
+      window._sholatInterval = setInterval(update, 1000);
     };
 
     const getGPS = () => {
@@ -511,7 +510,6 @@ import Toast from '../components/Toast.astro';
           state.lat = pos.coords.latitude;
           state.lng = pos.coords.longitude;
           
-          // Reverse Geocoding to get City Name
           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${state.lat}&lon=${state.lng}&format=json`)
             .then(r => r.json())
             .then(data => {
@@ -555,33 +553,35 @@ import Toast from '../components/Toast.astro';
       
       els.qiblaText.innerText = `${state.qiblaAngle.toFixed(1)}°`;
       els.qiblaDegModal.innerText = `${state.qiblaAngle.toFixed(1)}°`;
-      
       els.previewNeedle.style.transform = `rotate(${state.qiblaAngle}deg)`;
     };
 
     const handleCompass = (e) => {
-      let compass;
+      let compass = null;
       if (e.webkitCompassHeading !== undefined && e.webkitCompassHeading !== null) {
           compass = e.webkitCompassHeading;
       } else if (e.alpha !== null) {
           compass = 360 - e.alpha;
-      } else {
-          return;
       }
-      els.disc.style.transform = `rotate(${-compass}deg)`;
-      els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
+      
+      if (compass !== null) {
+        els.disc.style.transform = `rotate(${-compass}deg)`;
+        els.arrowCont.style.transform = `rotate(${-compass + state.qiblaAngle}deg)`;
+      }
     };
+    
+    // Simpan referensi fungsi ke global window agar bisa dibersihkan secara mutlak oleh Astro Life-cycle
     window._sholatCompass = handleCompass;
 
     const startCompass = () => {
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        els.iosBtn.classList.remove('hidden');
+        els.iosBtn.classList.remove('hidden'); // Munculkan tombol untuk memicu User Gesture Activation Apple
         els.iosBtn.onclick = () => {
           DeviceOrientationEvent.requestPermission()
             .then(resp => {
               if (resp === 'granted') {
                 els.iosBtn.classList.add('hidden');
-                window.addEventListener('deviceorientation', handleCompass, true);
+                window.addEventListener('deviceorientation', window._sholatCompass, true);
               } else {
                 window.showToast("Izin kompas ditolak.");
               }
@@ -590,16 +590,16 @@ import Toast from '../components/Toast.astro';
         };
       } else {
         if ('ondeviceorientationabsolute' in window) {
-            window.addEventListener('deviceorientationabsolute', handleCompass, true);
+            window.addEventListener('deviceorientationabsolute', window._sholatCompass, true);
         } else {
-            window.addEventListener('deviceorientation', handleCompass, true);
+            window.addEventListener('deviceorientation', window._sholatCompass, true);
         }
       }
     };
 
     const stopCompass = () => {
-       window.removeEventListener('deviceorientation', handleCompass, true);
-       window.removeEventListener('deviceorientationabsolute', handleCompass, true);
+       window.removeEventListener('deviceorientation', window._sholatCompass, true);
+       window.removeEventListener('deviceorientationabsolute', window._sholatCompass, true);
     };
 
     const notify = (msg, tag) => {
@@ -645,15 +645,11 @@ import Toast from '../components/Toast.astro';
       }
       
       localStorage.setItem('sholat-settings', JSON.stringify(state));
-      localStorage.removeItem('sholat-data'); 
-      
-      if (state.adhan || state.remind) reqNotify();
       window.showToast("Pengaturan disimpan.");
       init();
     };
 
     els.refresh.addEventListener('click', () => {
-      localStorage.removeItem('sholat-data');
       getGPS();
     });
 
@@ -672,12 +668,12 @@ import Toast from '../components/Toast.astro';
     });
 
     els.btnMinus.addEventListener('click', () => {
-        let val = parseInt(els.inputCor.innerText);
-        els.inputCor.innerText = val - 1;
+         let val = parseInt(els.inputCor.innerText);
+         els.inputCor.innerText = val - 1;
     });
     els.btnPlus.addEventListener('click', () => {
-        let val = parseInt(els.inputCor.innerText);
-        els.inputCor.innerText = val + 1;
+         let val = parseInt(els.inputCor.innerText);
+         els.inputCor.innerText = val + 1;
     });
 
     els.qiblaBtn.addEventListener('click', () => {
@@ -695,7 +691,10 @@ import Toast from '../components/Toast.astro';
   document.addEventListener('astro:page-load', initSholat);
   document.addEventListener('astro:before-swap', () => {
     window._sholatInitialized = false;
-    if (window._sholatInterval) { clearInterval(window._sholatInterval); window._sholatInterval = null; }
+    if (window._sholatInterval) { 
+      clearInterval(window._sholatInterval); 
+      window._sholatInterval = null; 
+    }
     if (window._sholatCompass) {
       window.removeEventListener('deviceorientation', window._sholatCompass, true);
       window.removeEventListener('deviceorientationabsolute', window._sholatCompass, true);
