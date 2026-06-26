@@ -1,0 +1,24 @@
+---
+// src/components/Toast.astro
+// Reusable toast notification — import and use <Toast /> in any page
+// Then call showToast("message") from your inline scripts
+---
+
+<div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Teks berhasil disalin!</span>
+</div>
+
+<script is:inline>
+  const toastEl = document.getElementById('toast');
+  const toastMsgEl = document.getElementById('toast-msg');
+  
+  window.showToast = function(msg) {
+    if (!toastEl || !toastMsgEl) return;
+    toastMsgEl.innerText = msg;
+    toastEl.classList.remove('opacity-0', 'translate-y-10');
+    setTimeout(function() {
+      toastEl.classList.add('opacity-0', 'translate-y-10');
+    }, 2500);
+  };
+</script>

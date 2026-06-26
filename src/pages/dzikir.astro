@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeaderBack from '../components/HeaderBack.astro';
+import SearchBar from '../components/SearchBar.astro';
+import Toast from '../components/Toast.astro';
+---
+
+<BaseLayout pageTitle="Dzikir Al-Ma'tsurat">
+  
+  <HeaderBack title="Dzikir Al-Ma'tsurat" />
+
+  <div class="pb-24 px-4 w-full max-w-md mx-auto">
+    
+    <div class="bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-5 text-white shadow-lg shadow-emerald-500/20 mb-6 relative overflow-hidden">
+      <div class="relative z-10">
+        <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mb-1">Al-Ma'tsurat</p>
+        <h2 class="text-xl font-bold mb-1">Dzikir Pagi & Petang</h2>
+        <p class="text-xs text-emerald-200">Kumpulan dzikir yang disusun oleh Imam Hasan Al-Banna berdasarkan hadits-hadits shahih</p>
+      </div>
+    </div>
+
+    <SearchBar id="search-input" placeholder="Cari dzikir..." />
+
+    <div class="flex gap-2 overflow-x-auto pb-4 mb-2 -mx-4 px-4 scrollbar-hide" id="category-container">
+      <button class="cat-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-500/20 flex-shrink-0" data-cat="all">Semua</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="pagi">☀️ Pagi</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="petang">🌙 Petang</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="subuh">🕌 Subuh</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="sesudah">🤲 Sholat</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="tidur">😴 Tidur</button>
+      <button class="cat-btn whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 flex-shrink-0" data-cat="umum">📿 Umum</button>
+    </div>
+
+    <div id="dzikir-container" class="space-y-4 min-h-[50vh]">
+    </div>
+
+    <div id="empty-state" class="hidden text-center py-12">
+      <div class="inline-block p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="m9 9 4 4"/><path d="m9 13 4-4"/></svg>
+      </div>
+      <p class="text-slate-500 dark:text-slate-400 text-sm">Dzikir tidak ditemukan.</p>
+    </div>
+
+    <Toast />
+
+  </div>
+
+</BaseLayout>
+
+<script is:inline>
+  const dzikirData = [
+    { id: "pagi-1", cat: "pagi", title: "1. Ta'awudz & Basmalah", arab: "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ • بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ", latin: "A'uudzu billaahi minasy syaithaanir rajiim • Bismillaahir rahmaanir rahiim", arti: "Aku berlindung kepada Allah dari godaan setan yang terkutuk. Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang.", source: "Al-Qur'an & Sunnah" },
+    { id: "pagi-2", cat: "pagi", title: "2. Ayat Kursi (1x)", arab: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", latin: "Allaahu laa ilaaha illaa huwal hayyul qayyuum... (QS. Al-Baqarah: 255)", arti: "Allah, tidak ada Tuhan selain Dia Yang Maha Hidup lagi Berdiri Sendiri... Barangsiapa membacanya pagi hari, dilindungi dari gangguan setan hingga petang.", source: "QS. Al-Baqarah: 255 — HR. Al-Hakim" },
+    { id: "pagi-3", cat: "pagi", title: "3. Al-Ikhlas (3x)", arab: "قُلْ هُوَ اللَّهُ أَحَدٌ...", latin: "Qul huwallaahu ahad... (3x)", arti: "Pahalanya setara membaca sepertiga Al-Qur'an.", source: "QS. Al-Ikhlas — HR. Bukhari" },
+    { id: "pagi-4", cat: "pagi", title: "4. Al-Falaq (3x)", arab: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ...", latin: "Qul a'uudzu birabbil falaq... (3x)", arti: "Perlindungan dari kejahatan makhluk, sihir, dan hasad.", source: "QS. Al-Falaq — HR. Abu Dawud" },
+    { id: "pagi-5", cat: "pagi", title: "5. An-Nas (3x)", arab: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ...", latin: "Qul a'uudzu birabbin naas... (3x)", arti: "Perlindungan dari bisikan setan jin dan manusia.", source: "QS. An-Nas — HR. Abu Dawud" },
+    { id: "pagi-6", cat: "pagi", title: "6. Doa Pagi (Ash-bahnaa)", arab: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ...", latin: "Ash-bahnaa wa ash-bahal mulku lillaah...", arti: "Kami memasuki pagi dan kerajaan hanya milik Allah. Mohon kebaikan hari ini dan perlindungan dari kejahatannya.", source: "HR. Muslim" },
+    { id: "pagi-7", cat: "pagi", title: "7. Sayyidul Istighfar", arab: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ...", latin: "Allahumma anta rabbi laa ilaaha illaa anta...", arti: "Penghulu istighfar — siapa membacanya pagi dengan yakin lalu meninggal, masuk surga.", source: "HR. Bukhari" },
+    { id: "pagi-8", cat: "pagi", title: "8. Doa Ilmu, Rezeki & Amal", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا...", latin: "Allahumma inni as-aluka 'ilman naafi'aa...", arti: "Ya Allah, aku memohon ilmu bermanfaat, rezeki baik, dan amal diterima.", source: "HR. Ibnu Majah" },
+    { id: "pagi-9", cat: "pagi", title: "9. Doa Perlindungan (3x)", arab: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ...", latin: "Bismillaahilladzii laa yadhurru ma'asmihii syai-un... (3x)", arti: "Dibaca 3x pagi & petang — dilindungi dari marabahaya.", source: "HR. Abu Dawud & Tirmidzi" },
+    { id: "pagi-10", cat: "pagi", title: "10. Ridha kepada Allah", arab: "رَضِيتُ بِاللَّهِ رَبًّا وَبِالْإِسْلَامِ دِينًا...", latin: "Radhiitu billaahi rabban wa bil islaami diinan... (3x)", arti: "Dibaca 3x — wajib bagi Allah meridhainya di hari kiamat.", source: "HR. Abu Dawud" },
+    { id: "pagi-11", cat: "pagi", title: "11. Doa Khusnul Khatimah", arab: "اللَّهُمَّ أَحْسِنْ عَاقِبَتَنَا فِي الْأُمُورِ كُلِّهَا...", latin: "Allahumma ahsin 'aaqibatanaa fil umuuri kullihaa...", arti: "Ya Allah, baguskanlah akhir segala urusan kami.", source: "HR. Ahmad" },
+    { id: "pagi-12", cat: "pagi", title: "12. Tahlil (100x)", arab: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ...", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah... (100x)", arti: "100x — pahala setara 10 budak, 100 kebaikan, 100 dosa dihapus, dilindungi setan.", source: "HR. Bukhari & Muslim" },
+    { id: "pagi-13", cat: "pagi", title: "13. Tasbih (100x)", arab: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdihi (100x)", arti: "Dihapuskan dosa-dosanya meskipun sebanyak buih lautan.", source: "HR. Muslim" },
+    { id: "pagi-14", cat: "pagi", title: "14. Istighfar (100x)", arab: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaaha wa atuubu ilaih (100x)", arti: "Rasulullah SAW beristighfar >100x sehari meskipun maksum.", source: "HR. Muslim" },
+    { id: "petang-1", cat: "petang", title: "1. Ta'awudz & Basmalah", arab: "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", latin: "A'uudzu billaahi minasy syaithaanir rajiim", arti: "Aku berlindung kepada Allah dari setan terkutuk.", source: "Al-Qur'an & Sunnah" },
+    { id: "petang-2", cat: "petang", title: "2. Ayat Kursi (1x)", arab: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", latin: "Allaahu laa ilaaha illaa huwal hayyul qayyuum...", arti: "Dibaca petang — dilindungi dari setan hingga pagi.", source: "QS. Al-Baqarah: 255" },
+    { id: "petang-3", cat: "petang", title: "3. Al-Mu'awwidzat (3x)", arab: "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ • قُلْ أَعُوذُ بِرَبِّ النَّاسِ", latin: "Al-Falaq & An-Nas (3x)", arti: "Cukuplah keduanya sebagai perlindungan bagimu.", source: "HR. Abu Dawud" },
+    { id: "petang-4", cat: "petang", title: "4. Doa Petang (Amsainaa)", arab: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ...", latin: "Amsainaa wa amsal mulku lillaah...", arti: "Kami memasuki petang dan kerajaan hanya milik Allah.", source: "HR. Muslim" },
+    { id: "petang-5", cat: "petang", title: "5. Sayyidul Istighfar", arab: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ...", latin: "Allahumma anta rabbi laa ilaaha illaa anta...", arti: "Dibaca petang dengan yakin lalu wafat, masuk surga.", source: "HR. Bukhari" },
+    { id: "petang-6", cat: "petang", title: "6. Doa Ditolak Kesusahan", arab: "اللَّهُمَّ رَحْمَتَكَ أَرْجُو...", latin: "Allahumma rahmataka arjuu...", arti: "Hanya rahmat-Mu kuharap. Jangan serahkan aku pada diriku.", source: "HR. Abu Dawud" },
+    { id: "petang-7", cat: "petang", title: "7. Perlindungan Makhluk (3x)", arab: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ...", latin: "A'uudzu bikalimaatillaahit taammaati... (3x)", arti: "Tidak akan terkena sengatan beracun.", source: "HR. Muslim" },
+    { id: "petang-8", cat: "petang", title: "8. Syahadat Tauhid (4x)", arab: "اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ...", latin: "Allahumma innii amsaitu usy-hiduka... (4x)", arti: "Dibaca 4x — dibebaskan dari api neraka.", source: "HR. Abu Dawud" },
+    { id: "petang-9", cat: "petang", title: "9. Tahlil (100x)", arab: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ...", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah... (100x)", arti: "Dilindungi dari setan hingga pagi.", source: "HR. Bukhari & Muslim" },
+    { id: "sesudah-1", cat: "sesudah", title: "Istighfar (3x)", arab: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ...", latin: "Astaghfirullaahal 'azhiim... (3x)", arti: "Istighfar setelah salam.", source: "HR. Abu Dawud" },
+    { id: "sesudah-2", cat: "sesudah", title: "Allahumma Antas Salaam", arab: "اللَّهُمَّ أَنْتَ السَّلَامُ...", latin: "Allahumma antas salaam...", arti: "Ya Allah, Engkau Maha Sejahtera.", source: "HR. Muslim" },
+    { id: "sesudah-3", cat: "sesudah", title: "Tasbih Tahmid Takbir (33x)", arab: "سُبْحَانَ اللَّهِ ×٣٣ • الْحَمْدُ لِلَّهِ ×٣٣ • اللَّهُ أَكْبَرُ ×٣٣", latin: "Subhanallah (33x) - Alhamdulillah (33x) - Allahu Akbar (33x)", arti: "Total 99, disempurnakan 100 dengan tahlil.", source: "HR. Muslim" },
+    { id: "sesudah-4", cat: "sesudah", title: "Ayat Kursi", arab: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", latin: "Allaahu laa ilaaha illaa huwal hayyul qayyuum...", arti: "Tak ada penghalang masuk surga kecuali kematian.", source: "HR. An-Nasa'i" },
+    { id: "sesudah-5", cat: "sesudah", title: "Al-Mu'awwidzat", arab: "Al-Ikhlas, Al-Falaq, An-Nas", latin: "Qul huwallaahu ahad... Qul a'uudzu birabbil falaq... Qul a'uudzu birabbin naas... (Setelah Maghrib/Subuh 3x, lainnya 1x)", arti: "Surat Al-Ikhlas, Al-Falaq, dan An-Nas setelah sholat.", source: "HR. Abu Dawud" },
+    { id: "sesudah-6", cat: "sesudah", title: "Doa Sesudah Sholat", arab: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ...", latin: "Allahumma a'innii 'alaa dzikrika wa syukrika...", arti: "Ya Allah, bantulah aku berdzikir, bersyukur, dan beribadah.", source: "HR. Abu Dawud" },
+    { id: "subuh-1", cat: "subuh", title: "Doa Subuh: Ilmu & Rezeki", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا...", latin: "Allahumma inni as-aluka 'ilman naafi'aa...", arti: "Khusus setelah sholat Subuh.", source: "HR. Ibnu Majah" },
+    { id: "subuh-2", cat: "subuh", title: "Pembebas Neraka (7x)", arab: "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ", latin: "Allahumma ajirnii minan naar (7x)", arti: "Dibaca 7x setelah Subuh & Maghrib — dilindungi dari neraka.", source: "HR. Abu Dawud" },
+    { id: "subuh-3", cat: "subuh", title: "Doa Rezeki Subuh", arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ رِزْقًا طَيِّبًا...", latin: "Allahumma inni as-aluka rizqan thayyiban...", arti: "Waktu Subuh mustajab untuk doa rezeki.", source: "HR. Ahmad" },
+    { id: "subuh-4", cat: "subuh", title: "Doa Qunut", arab: "اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ...", latin: "Allahummahdinii fiiman hadait...", arti: "Sunnah dalam sholat Subuh menurut mazhab Syafi'i.", source: "HR. Abu Dawud & Tirmidzi" },
+    { id: "tidur-1", cat: "tidur", title: "Doa Sebelum Tidur", arab: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismika allahumma amuutu wa ahyaa", arti: "Dengan nama-Mu ya Allah, aku mati dan hidup.", source: "HR. Bukhari" },
+    { id: "tidur-2", cat: "tidur", title: "Ayat Kursi Sebelum Tidur", arab: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...", latin: "Allaahu laa ilaaha illaa huwal hayyul qayyuum...", arti: "Allah utus malaikat menjaga, setan tak mendekat hingga pagi.", source: "HR. Bukhari" },
+    { id: "tidur-3", cat: "tidur", title: "Surat Al-Mulk", arab: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ...", latin: "Tabaarakalladzii biyadihil mulk...", arti: "Mencegah siksa kubur. Nabi SAW tidak tidur sebelum membacanya.", source: "HR. Tirmidzi & An-Nasa'i" },
+    { id: "tidur-4", cat: "tidur", title: "Tasbih Tahmid Takbir", arab: "سُبْحَانَ اللَّهِ ×٣٣ • الْحَمْدُ لِلَّهِ ×٣٣ • اللَّهُ أَكْبَرُ ×٣٤", latin: "Subhanallah (33x) - Alhamdulillah (33x) - Allahu Akbar (34x)", arti: "Lebih baik dari pembantu yang melayanimu.", source: "HR. Bukhari & Muslim" },
+    { id: "tidur-5", cat: "tidur", title: "Doa Bangun Tidur", arab: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا...", latin: "Alhamdulillaahilladzii ahyaanaa ba'da maa amaatanaa...", arti: "Segala puji bagi Allah yang menghidupkan kami kembali.", source: "HR. Bukhari" },
+    { id: "umum-1", cat: "umum", title: "Shalawat Ibrahimiyyah", arab: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ...", latin: "Allahumma shalli 'alaa Muhammad wa 'alaa aali Muhammad...", arti: "Shalawat paling sempurna.", source: "HR. Bukhari & Muslim" },
+    { id: "umum-2", cat: "umum", title: "Hauqalah", arab: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ", latin: "Laa haula wa laa quwwata illaa billaah", arti: "Simpanan dari perbendaharaan surga.", source: "HR. Bukhari & Muslim" },
+    { id: "umum-3", cat: "umum", title: "Hasbunallah", arab: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", latin: "Hasbunallaahu wa ni'mal wakiil", arti: "Cukuplah Allah penolong kami — doa Nabi Ibrahim di api.", source: "QS. Ali Imran: 173" },
+    { id: "umum-4", cat: "umum", title: "Kalimat Tayyibah", arab: "سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ", latin: "Subhaanallaahi wal hamdu lillaahi wa laa ilaaha illallaahu wallaahu akbar", arti: "Lebih dicintai Allah dari apa yang disinari matahari.", source: "HR. Muslim" },
+    { id: "umum-5", cat: "umum", title: "Doa Nabi Yunus", arab: "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ", latin: "Laa ilaaha illaa anta subhaanaka innii kuntu minazh zhaalimiin", arti: "Tidak ada muslim yang berdoa dengannya kecuali dikabulkan.", source: "QS. Al-Anbiya: 87 — HR. Tirmidzi" }
+  ];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('dzikir-container');
+    const searchInput = document.getElementById('search-input');
+    const emptyState = document.getElementById('empty-state');
+    const catBtns = document.querySelectorAll('.cat-btn');
+
+    let currentCat = 'all';
+    let searchTerm = '';
+
+    const render = () => {
+      const filtered = dzikirData.filter(item => {
+        const matchesCat = currentCat === 'all' || item.cat === currentCat;
+        const matchesSearch = item.title.toLowerCase().includes(searchTerm) || item.latin.toLowerCase().includes(searchTerm) || item.arti.toLowerCase().includes(searchTerm);
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      const catEmoji = { pagi: '☀️', petang: '🌙', subuh: '🕌', sesudah: '🤲', tidur: '😴', umum: '📿' };
+
+      container.innerHTML = filtered.map((item, i) => `
+        <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50 card-anim" style="animation-delay: ${Math.min(i * 35, 500)}ms">
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-bold text-slate-800 dark:text-white text-sm flex items-center gap-2">
+              <span class="text-xs">${catEmoji[item.cat] || '📿'}</span>
+              ${item.title}
+            </h3>
+            <button class="copy-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90" data-title="${item.title}" data-arab="${item.arab}" data-latin="${item.latin}" data-arti="${item.arti}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+          <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl mb-3 border border-slate-100 dark:border-slate-800/50">
+            <p class="font-amiri text-2xl text-right text-slate-800 dark:text-slate-100 leading-[2.4]" dir="rtl">${item.arab}</p>
+          </div>
+          <div class="space-y-1">
+            <p class="text-sm font-bold text-emerald-700 dark:text-emerald-400 italic leading-relaxed">"${item.latin}"</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${item.arti}</p>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2 uppercase tracking-wide font-medium">${item.source}</p>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    // Event delegation untuk copy button (ganti inline onclick)
+    container.addEventListener('click', (e) => {
+      const btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+      const { title, arab, latin, arti } = btn.dataset;
+      const text = `*${title}*\n\n${arab}\n\n${latin}\n\n"${arti}"\n\n_Sent via Qolbu App_`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => window.showToast("Dzikir berhasil disalin!")).catch(() => window.showToast("Gagal menyalin dzikir"));
+      } else {
+        window.showToast("Browser tidak mendukung salin otomatis");
+      }
+    });
+
+    searchInput.addEventListener('input', (e) => { searchTerm = e.target.value.toLowerCase(); render(); });
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCat = btn.dataset.cat;
+        catBtns.forEach(b => {
+          b.classList.remove('bg-emerald-600', 'text-white', 'shadow-md');
+          b.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'border');
+        });
+        btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300', 'border');
+        btn.classList.add('bg-emerald-600', 'text-white', 'shadow-md');
+        render();
+      });
+    });
+
+    render();
+  });
+</script>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-anim {
+    animation: cardIn 0.4s ease-out both;
+  }
+</style>

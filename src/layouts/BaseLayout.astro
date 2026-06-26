@@ -17,8 +17,10 @@ const { pageTitle = "Dashboard" } = Astro.props;
     <link rel="icon" type="image/png" href="/logo.png" />
     
     <title>{pageTitle} | Qolbu by PakLubis</title>
-    <meta name="description" content="Aplikasi Ibadah Harian Terlengkap: Jadwal Sholat, Al-Qur'an, Doa Harian, Panduan Sholat & Tasbih Digital." />
+    <meta name="description" content="Aplikasi Ibadah Harian Terlengkap: Jadwal Sholat, Al-Qur'an, Doa Harian, Panduan Sholat, Dzikir, Asmaul Husna & Tasbih Digital." />
     <meta name="theme-color" content="#10b981" />
+    
+    <link rel="manifest" href="/manifest.json" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,6 +79,14 @@ const { pageTitle = "Dashboard" } = Astro.props;
         <span class="opacity-60 font-normal">&copy; {new Date().getFullYear()} Qolbu App</span>
       </p>
     </footer>
+
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
 
     <script is:inline>
       const setupThemeToggle = () => {

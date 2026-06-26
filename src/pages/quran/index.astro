@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeaderBack from '../../components/HeaderBack.astro';
+import SearchBar from '../../components/SearchBar.astro';
 
 const res = await fetch('https://equran.id/api/v2/surat');
 const json = await res.json();
@@ -41,14 +43,7 @@ const daftarJuz = [
 
 <BaseLayout pageTitle="Al-Qur'an">
 
-  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-6 flex items-center justify-between shadow-sm">
-    <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      <span class="font-medium text-sm">Kembali</span>
-    </a>
-    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Al-Qur'an</h1>
-    <div class="w-8"></div>
-  </div>
+  <HeaderBack title="Al-Qur'an" href="/" />
 
   <div class="pb-24 px-4 w-full max-w-md mx-auto">
     
@@ -58,15 +53,7 @@ const daftarJuz = [
     </div>
 
     <div id="view-surat">
-      <div class="relative mb-6">
-        <input 
-          type="text" 
-          id="search-surat" 
-          placeholder="Cari surat..." 
-          class="w-full py-3.5 pl-12 pr-4 text-sm rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400 shadow-sm"
-        >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-4 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </div>
+      <SearchBar id="search-surat" placeholder="Cari surat..." />
 
       <div id="surat-list" class="grid gap-3">
         {daftarSurat.map((surat) => (

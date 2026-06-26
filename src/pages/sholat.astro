@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Toast from '../components/Toast.astro';
 ---
 
 <BaseLayout pageTitle="Jadwal Sholat & Kiblat">
@@ -252,7 +253,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </div>
 
-  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 text-center"></div>
+    <Toast />
 
 </BaseLayout>
 
@@ -320,9 +321,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     let lastNotifiedRemind = null;
 
     const showToast = (msg) => {
-        els.toast.innerText = msg;
-        els.toast.classList.remove('opacity-0', 'translate-y-10');
-        setTimeout(() => els.toast.classList.add('opacity-0', 'translate-y-10'), 2500);
+      window.showToast(msg);
     };
 
     const init = () => {

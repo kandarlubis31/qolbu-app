@@ -1,0 +1,37 @@
+[
+  {"bulan":"Muharram","events":[
+    {"tanggal":1,"judul":"Tahun Baru Islam 1447 H","desc":"Awal tahun Hijriyah. Disunnahkan berpuasa."},
+    {"tanggal":10,"judul":"Hari Asyura","desc":"Disunnahkan puasa Asyura. Hari diselamatkannya Nabi Musa AS."}
+  ]},
+  {"bulan":"Shafar","events":[]},
+  {"bulan":"Rabi'ul Awal","events":[
+    {"tanggal":12,"judul":"Maulid Nabi Muhammad SAW","desc":"Peringatan kelahiran Nabi Muhammad SAW."}
+  ]},
+  {"bulan":"Rabi'ul Akhir","events":[]},
+  {"bulan":"Jumadil Awal","events":[]},
+  {"bulan":"Jumadil Akhir","events":[]},
+  {"bulan":"Rajab","events":[
+    {"tanggal":1,"judul":"Awal Bulan Rajab","desc":"Salah satu bulan haram (suci)."},
+    {"tanggal":27,"judul":"Isra Mi'raj","desc":"Peringatan perjalanan Nabi Muhammad SAW ke Masjidil Aqsha dan Sidratul Muntaha."}
+  ]},
+  {"bulan":"Sya'ban","events":[
+    {"tanggal":15,"judul":"Nisfu Sya'ban","desc":"Malam pengampunan dosa. Disunnahkan memperbanyak ibadah."}
+  ]},
+  {"bulan":"Ramadhan","events":[
+    {"tanggal":1,"judul":"Awal Ramadhan","desc":"Bulan suci penuh berkah. Wajib berpuasa sebulan penuh."},
+    {"tanggal":17,"judul":"Nuzulul Qur'an","desc":"Peringatan turunnya Al-Qur'an pertama kali."},
+    {"tanggal":21,"judul":"Malam Lailatul Qadar (Ganjil)","desc":"Cari malam Lailatul Qadar di 10 malam terakhir."}
+  ]},
+  {"bulan":"Syawwal","events":[
+    {"tanggal":1,"judul":"Idul Fitri 1 Syawwal","desc":"Hari Raya setelah sebulan berpuasa. Disunnahkan puasa 6 hari Syawwal."}
+  ]},
+  {"bulan":"Dzulqa'dah","events":[]},
+  {"bulan":"Dzulhijjah","events":[
+    {"tanggal":1,"judul":"Awal Dzulhijjah","desc":"10 hari pertama bulan Dzulhijjah sangat utama untuk beramal."},
+    {"tanggal":9,"judul":"Hari Arafah","desc":"Disunnahkan puasa Arafah bagi yang tidak berhaji."},
+    {"tanggal":10,"judul":"Idul Adha","desc":"Hari Raya Qurban. Sholat Id dan penyembelihan hewan qurban."},
+    {"tanggal":11,"judul":"Hari Tasyriq (1)","desc":"Hari pertama tasyriq. Dilarang berpuasa."},
+    {"tanggal":12,"judul":"Hari Tasyriq (2)","desc":"Hari kedua tasyriq. Dilarang berpuasa."},
+    {"tanggal":13,"judul":"Hari Tasyriq (3)","desc":"Hari ketiga tasyriq. Dilarang berpuasa."}
+  ]}
+]

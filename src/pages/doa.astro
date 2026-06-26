@@ -1,29 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeaderBack from '../components/HeaderBack.astro';
+import SearchBar from '../components/SearchBar.astro';
+import Toast from '../components/Toast.astro';
 ---
 
 <BaseLayout pageTitle="Kumpulan Doa Mustajab">
   
-  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm">
-    <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      <span class="font-medium text-sm">Kembali</span>
-    </a>
-    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Ensiklopedia Doa</h1>
-    <div class="w-8"></div>
-  </div>
+  <HeaderBack title="Ensiklopedia Doa" />
 
   <div class="pb-24 px-4 w-full max-w-md mx-auto">
     
-    <div class="relative mb-4">
-      <input 
-        type="text" 
-        id="search-input" 
-        placeholder="Cari doa (misal: hutang, jodoh, ujian)..." 
-        class="w-full py-3 pl-10 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-800 dark:text-white placeholder-slate-400 shadow-sm"
-      >
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-3.5 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    </div>
+    <SearchBar id="search-input" placeholder="Cari doa (misal: hutang, jodoh, ujian)..." />
 
     <div class="flex gap-2 overflow-x-auto pb-4 mb-2 -mx-4 px-4 scrollbar-hide" id="category-container">
       <button class="cat-btn active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-500/20 flex-shrink-0" data-cat="all">Semua</button>
@@ -47,10 +35,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="text-slate-500 dark:text-slate-400 text-sm">Doa tidak ditemukan.</p>
     </div>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-800/90 backdrop-blur-md text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-bold opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2 translate-y-10">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><polyline points="20 6 9 17 4 12"/></svg>
-      <span id="toast-msg">Teks berhasil disalin!</span>
-    </div>
+    <Toast />
 
   </div>
 
@@ -142,14 +127,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
       statusMsg.classList.add('hidden');
 
-      const html = filtered.map(item => `
-        <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50">
+      const html = filtered.map((item, i) => `
+        <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50 card-anim" style="animation-delay: ${Math.min(i * 35, 500)}ms">
           <div class="flex justify-between items-start mb-3">
             <h3 class="font-bold text-slate-800 dark:text-white text-sm uppercase tracking-wide flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               ${item.title}
             </h3>
-            <button class="copy-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90" onclick="copyText('${item.title}', '${item.arab}', '${item.latin}', '${item.arti}')">
+            <button class="copy-btn text-slate-400 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90" data-title="${item.title}" data-arab="${item.arab}" data-latin="${item.latin}" data-arti="${item.arti}">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             </button>
           </div>
@@ -188,21 +173,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
 
     const showToast = (msg) => {
-      toastMsg.innerText = msg;
-      toast.classList.remove('opacity-0', 'translate-y-10');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-10');
-      }, 2000);
+      window.showToast(msg);
     };
 
-    window.copyText = (title, arab, latin, arti) => {
+    // Event delegation untuk copy button (ganti inline onclick)
+    container.addEventListener('click', (e) => {
+      const btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+      const { title, arab, latin, arti } = btn.dataset;
       const text = `*${title}*\n\n${arab}\n\n${latin}\n\n"${arti}"\n\n_Sent via Qolbu App_`;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast("Teks berhasil disalin!");
-      }).catch(() => {
-        showToast("Gagal menyalin.");
-      });
-    };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => showToast("Teks berhasil disalin!")).catch(() => showToast("Gagal menyalin."));
+      } else {
+        showToast("Browser tidak mendukung salin otomatis");
+      }
+    });
 
     renderDoa();
   });
@@ -211,4 +196,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <style>
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-anim {
+    animation: cardIn 0.4s ease-out both;
+  }
 </style>
