@@ -1,9 +1,8 @@
-// Qolbu App Service Worker
-const CACHE_VERSION = 'v3';
+// Qolbu App Service Worker - Perbaikan Validasi Cache & SPA-Routing Astro
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `qolbu-cache-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline';
 
-// Pre-cache semua halaman yang bisa diakses sepenuhnya offline
 const PRECACHE_URLS = [
   '/',
   '/offline',
@@ -11,7 +10,6 @@ const PRECACHE_URLS = [
   '/logo.png',
   '/favicon.ico',
   '/favicon.svg',
-  // Halaman konten — semua data inline, 100% offline
   '/dzikir',
   '/asmaul-husna',
   '/doa',
@@ -19,25 +17,18 @@ const PRECACHE_URLS = [
   '/tasbih',
   '/zakat',
   '/sholat-guide',
-  '/events-hijri',
-  // Quran
-  '/quran',
-  '/quran/yasin',
-  // Sholat (untuk UI + data terakhir yang tersimpan)
   '/sholat',
+  '/quran',
+  '/quran/yasin'
 ];
 
-// ─── INSTALL: Pre-cache halaman penting ───────────────────────────────
+// INSTALL & ACTIVATE Events tetap aman (Gunakan implementasi allSettled kamu yang sudah bagus)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Pre-caching', PRECACHE_URLS.length, 'pages...');
-      // Gunakan Promise.allSettled agar satu URL gagal tidak menggagalkan semua
       return Promise.allSettled(
         PRECACHE_URLS.map((url) =>
-          cache.add(url).catch((err) => {
-            console.warn('[SW] Failed to pre-cache:', url, err.message);
-          })
+          cache.add(url).catch((err) => console.warn('[SW] Pre-cache failed:', url, err.message))
         )
       );
     })
@@ -45,56 +36,43 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// ─── ACTIVATE: Bersihkan cache lama ──────────────────────────────────
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
           .filter((name) => name.startsWith('qolbu-cache-') && name !== CACHE_NAME)
-          .map((name) => {
-            console.log('[SW] Deleting old cache:', name);
-            return caches.delete(name);
-          })
+          .map((name) => caches.delete(name))
       );
     })
   );
   self.clients.claim();
 });
 
-// ─── FETCH ───────────────────────────────────────────────────────────
+// ─── FETCH STRATEGY UPDATE ───────────────────────────────────────────
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Jangan cache request dari extension atau non-http
-  if (!url.protocol.startsWith('http')) return;
+  if (!url.protocol.startsWith('http') || request.method !== 'GET') return;
 
-  // Hanya cache GET requests (Cache API tidak support POST/PUT/DELETE)
-  if (request.method !== 'GET') return;
+  // Bypass External APIs & CDN
+  if (
+    url.hostname.includes('googleapis.com') || 
+    url.hostname.includes('gstatic.com') ||
+    url.hostname.includes('nominatim.openstreetmap.org') ||
+    url.hostname.includes('equran.id') || 
+    url.hostname.includes('equran.nos')
+  ) return;
 
-  // Skip Google Fonts & external CDN — biarkan network handle
-  if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com')) return;
-  if (url.hostname.includes('nominatim.openstreetmap.org')) return;
-  if (url.hostname.includes('equran.id') || url.hostname.includes('equran.nos')) return;
+  // Deteksi Navigasi: Berlaku untuk request 'navigate' murni ATAU request halaman HTML via Astro Router
+  const isHtmlNavigation = request.mode === 'navigate' || 
+    (request.headers.get('accept') && request.headers.get('accept').includes('text/html'));
 
-  // ── Navigasi (HTML pages) → Cache-first ──────────────────────────
-  if (request.mode === 'navigate') {
+  if (isHtmlNavigation) {
     event.respondWith(
       caches.match(request).then((cached) => {
-        if (cached) {
-          // Update cache di background
-          fetch(request)
-            .then((response) => {
-              if (response.ok) {
-                caches.open(CACHE_NAME).then((cache) => cache.put(request, response));
-              }
-            })
-            .catch(() => {});
-          return cached;
-        }
-        // Belum di-cache, ambil dari network
-        return fetch(request)
+        const networkFetch = fetch(request)
           .then((response) => {
             if (response.ok) {
               const clone = response.clone();
@@ -102,13 +80,15 @@ self.addEventListener('fetch', (event) => {
             }
             return response;
           })
-          .catch(() => caches.match(OFFLINE_URL));
+          .catch(() => cached || caches.match(OFFLINE_URL));
+
+        return cached || networkFetch;
       })
     );
     return;
   }
 
-  // ── Assets (CSS, JS, images, fonts) → Stale-while-revalidate ─────
+  // Assets (CSS, JS, Images) -> Stale-While-Revalidate
   event.respondWith(
     caches.match(request).then((cached) => {
       const fetchPromise = fetch(request)
