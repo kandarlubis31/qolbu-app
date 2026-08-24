@@ -11,14 +11,9 @@ const today = new Date().toLocaleDateString('id-ID', {
 });
 
 // DATABASE MENU (Updated with New Tools)
+// Catatan: tile "Jadwal Sholat" dihapus — widget card live di atasnya sudah
+// menautkan /sholat (Lihat detail →), ditambah BottomNav. Duplikat visual hijau.
 const menus = [
-  {
-    title: 'Jadwal Sholat',
-    desc: 'Waktu Sholat & Imsak',
-    href: '/sholat',
-    color: 'bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400',
-    path: 'M3 21h18 M5 21v-7l8-4 8 4v7 M12 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
-  },
   {
     title: "Al-Qur'an",
     desc: 'Baca Yasin & 114 Surat',
@@ -337,7 +332,7 @@ const menus = [
   </div>
 
   <div
-    class="group relative mx-1 flex min-h-[160px] flex-col justify-center overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900 p-6 text-white shadow-2xl dark:bg-black"
+    class="group relative mx-1 flex min-h-[16rem] flex-col justify-center overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900 p-6 text-white shadow-2xl dark:bg-black"
   >
     <div
       class="absolute top-0 right-0 translate-x-8 -translate-y-8 transform opacity-5 transition-transform duration-700 md:group-hover:scale-110"
@@ -587,10 +582,6 @@ const menus = [
       {
         text: 'Sesungguhnya Allah itu indah dan menyukai keindahan.',
         source: 'HR. Muslim',
-      },
-      {
-        text: 'Barangsiapa tidak mensyukuri yang sedikit, tidak akan mampu mensyukuri yang banyak.',
-        source: 'HR. Ahmad',
       },
       {
         text: 'Allah mencintai jika salah seorang dari kalian bekerja, ia menyempurnakannya.',

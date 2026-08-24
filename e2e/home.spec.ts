@@ -48,12 +48,16 @@ test.describe('Home Page', () => {
     await expect(page.locator('text=Sobat Qolbu')).toBeVisible();
   });
 
-  test('should show menu grid with 10 items', async ({ page }) => {
+  test('should show menu grid with 9 items (Jadwal Sholat tile removed — widget card covers it)', async ({
+    page,
+  }) => {
     const menuCards = page.locator('[href^="/"]:has(svg)').filter({
       hasText:
-        /Jadwal Sholat|Al-Qur'an|Doa Harian|Kalkulator Zakat|Panduan Sholat|Tahlil|Tasbih|Asmaul Husna|Dzikir|Events/,
+        /Al-Qur'an|Doa Harian|Kalkulator Zakat|Panduan Sholat|Tahlil|Tasbih|Asmaul Husna|Dzikir|Events/,
     });
-    await expect(menuCards).toHaveCount(10);
+    await expect(menuCards).toHaveCount(9);
+    // Widget card tetap jadi satu-satunya kartu sholat hijau di atas grid
+    await expect(page.locator('#prayer-card')).toHaveCount(1);
   });
 
   test('should show quote of the day without placeholder', async ({ page }) => {

@@ -15,25 +15,25 @@
 
 ### Stack Inti
 
-| Teknologi    | Versi                 | Kegunaan                                                     |
-| ------------ | --------------------- | ------------------------------------------------------------ |
-| Astro        | ^5.17.1               | SSG (127 pages) + View Transitions                           |
-| Tailwind CSS | ^4.1.18               | Utility-first, @theme tokens                                 |
-| TypeScript   | via Astro `strict`    | Strict type checking (`astro check`)                         |
-| PWA          | Workbox vanilla       | `manifest.json` + `sw.js` v6                                 |
-| Fonts        | Self-host             | Inter Variable WOFF2 (23KB) + Amiri TTF, `font-display:swap` |
-| Testing      | Vitest 4 + Playwright | Unit 30, E2E 53, CI split jobs                               |
-| Lint/Format  | ESLint 9 + Prettier   | `eslint-plugin-astro/tailwindcss`, Husky + lint-staged       |
+| Teknologi    | Versi                 | Kegunaan                                                                                                      |
+| ------------ | --------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Astro        | ^5.17.1               | SSG (127 pages) + View Transitions                                                                            |
+| Tailwind CSS | ^4.1.18               | Utility-first, @theme tokens                                                                                  |
+| TypeScript   | via Astro `strict`    | Strict type checking (`astro check`)                                                                          |
+| PWA          | Workbox vanilla       | `manifest.json` + `sw.js` v7                                                                                  |
+| Fonts        | Self-host             | Plus Jakarta Sans Variable WOFF2 (27KB) + Amiri WOFF2 subset (arabic 204KB + latin 39KB), `font-display:swap` |
+| Testing      | Vitest 4 + Playwright | Unit 30, E2E 54, CI split jobs                                                                                |
+| Lint/Format  | ESLint 9 + Prettier   | `eslint-plugin-astro/tailwindcss`, Husky + lint-staged                                                        |
 
 ### Struktur Direktori
 
 ```
 /
 â”œâ”€â”€ public/
-â”‚   â”œâ”€â”€ fonts/               # Inter-VariableFont_wght.woff2 (23KB), Amiri-*.ttf
+â”‚   â”œâ”€â”€ fonts/               # PlusJakartaSans-Variable.woff2 (27KB), AmiriArabic/Latin-*.woff2
 â”‚   â”œâ”€â”€ logo.png / 192 / 512
 â”‚   â”œâ”€â”€ manifest.json
-â”‚   â””â”€â”€ sw.js                # v6: font precache, audio cache-first, HTML network-first
+â”‚   â””â”€â”€ sw.js                # v7: font precache, audio cache-first, HTML network-first
 â”œâ”€â”€ src/
 â”‚   â”œâ”€â”€ components/
 â”‚   â”‚   â”œâ”€â”€ HeaderSticky.astro  # Sticky top-16, truncate, leftSlot/rightSlot, history.back
@@ -74,7 +74,7 @@
 â”‚   â”‚       â””â”€â”€ yasin.astro
 â”‚   â”œâ”€â”€ styles/global.css       # @font-face variable, @theme tokens, scroll-padding, shimmer, content-visibility
 â”‚   â””â”€â”€ env.d.ts                # Window globals (_sholatInterval, _quranDetailInitialized, etc.)
-â”œâ”€â”€ e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih (53)
+â”œâ”€â”€ e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih (54)
 â”œâ”€â”€ .github/workflows/ci.yml    # jobs: test (typecheck+lint+unit+build) + e2e (chromium)
 â”œâ”€â”€ playwright.config.ts
 â”œâ”€â”€ vitest.config.mjs + vitest.setup.ts
@@ -96,7 +96,7 @@
 - **SEO:** OG + Twitter per `pageTitle`
 - **Theme inline:** `localStorage('theme')` â†’ `prefers-color-scheme`, re-apply `astro:after-swap`, `colorScheme` dark/light
 - **Viewport:** `width=device-width, initial-scale=1.0, maximum-scale=5.0` (A11y zoom)
-- **Fonts preload:** `Inter-VariableFont_wght.woff2` + `Amiri-Regular.ttf` `crossorigin`, `font-display:swap`
+- **Fonts preload:** `PlusJakartaSans-Variable.woff2` + `AmiriArabic-Regular.woff2` `crossorigin`, `font-display:swap`
 
 ---
 
@@ -175,7 +175,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 - **Prayer Card + Skeleton:** `prayer-card` hidden â†’ skeleton `prayer-card-skeleton` shimmer sampai `sholat-cache-*` ada; jika kosong tampil CTA `Aktifkan GPS â†’ /sholat`. âš ï¸ Lihat Known Issues: cache ini belum pernah ditulis siapa pun.
 - **Hijri Event Bar:** amber bar hidden sampai hijri dari cache terparse, `HIJRI_EVENTS` 12 item + `MONTH_ALIASES` normalization. Tergantung `sholat-cache-*` juga (dampak known issue yang sama).
 - **Cache Badge:** `qolbu-quran-cache` count via IndexedDB
-- **Grid 10 menu** (sebelumnya 9, tambah Events Hijri): Jadwal Sholat `col-span-2 gradient`, Al-Qur'an, Doa, Zakat, Panduan, Tahlil, Tasbih, Asmaul, Dzikir, **Surat Yasin + Events Hijri**
+- **Grid 9 menu** (tile "Jadwal Sholat" dihapus — widget card live + BottomNav sudah menautkan /sholat; menghilangkan duplikasi visual dua kartu hijau): **Al-Qur'an kini tile featured** `col-span-2 gradient`, Doa, Zakat, Panduan, Tahlil, Tasbih, Asmaul, Dzikir, Surat Yasin, Events Hijri
 - **Quote Of The Day** `quotesData` inline ~100 quotes. Quote pertama **dirender server-side tanpa opacity gate** (kartu tidak pernah kosong walau JS lambat/blokir); JS menimpa dengan quote harian deterministik (`Math.floor(Date.now()/864e5) % len`). Rotasi 10s fade dengan `setTimeout` terlacak (`window._quoteTimeout`), skip tick saat `document.hidden` (anti burst-flicker throttled timers), anti-repeat quote berurutan, hormati `prefers-reduced-motion`. Cleanup interval+timeout di `astro:before-swap`. Deklarasi global di `env.d.ts` (`_quoteInterval/_quoteTimeout/_prayerInterval`).
 
 ### 2. Jadwal Sholat `/sholat` `sholat.astro:1`
@@ -245,7 +245,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 
 - **Dark:** `class` on `<html>` `colorScheme` dark/light, `BaseLayout` inline script anti-FOIT + `astro:after-swap`
 - **Palette:** Emerald primary, slate/neutral, amber for hijri, slate-900/black for quote
-- **Fonts:** `Inter Variable WOFF2` (23KB, 100-900, `font-display:swap`) + `Amiri` TTF 400/700, preload `Inter-Variable + Amiri-Regular`, `@font-face` swap
+- **Fonts:** `Plus Jakarta Sans Variable WOFF2` (27KB, 200-800, `font-display:swap`) + `Amiri` WOFF2 subset arabic/latin 400+700 (bold tak diprecache — lazy), preload `PJS + AmiriArabic-Regular`, `@font-face` swap
 - **Tokens:** `@theme { --radius-card:1rem; --radius-sheet:1.5rem; --shadow-card }`, `scroll-padding-top:112px` (header+sticky), `content-visibility:auto` untuk `.surat-card/.asmaul-card`
 - **Anim:** `slideUp 0.3s cb(0.16,1,0.3,1)`, `fadeIn 0.4s`, `shimmer 1.5s` + `dark` variant, `animate-fade-in/slide-up/shimmer`, skeleton utilities
 - **Layout:** `max-w-md 448px` `flex-1 min-h-[50vh]` + `sr-only skip-link` `Lompat ke konten`
@@ -292,7 +292,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 ## âš¡ Performance & PWA
 
 - **SSG 127 pages** (10 top + 114 surat + yasin + offline) `dist/`, `getStaticPaths` build-time fetch equran.id
-- **SW v6** `public/sw.js`: precache `/` `/offline` `/fonts` `/*.png` `/dzikir/.../quran/yasin`, cleanup old `qolbu-cache-*`, **Audio cache-first** (equran.nos, everyayah, download.quranicaudio), **HTML network-first**, **Assets stale-while-revalidate** + `isFresh` 7 days, `message cleanup-cache`
+- **SW v7** `public/sw.js`: precache `/` `/offline` `/fonts` `/*.png` `/dzikir/.../quran/yasin`, cleanup old `qolbu-cache-*`, **Audio cache-first** (equran.nos, everyayah, download.quranicaudio), **HTML network-first**, **Assets stale-while-revalidate** + `isFresh` 7 days, `message cleanup-cache`
 - **Fonts:** Variable WOFF2 23KB + preload, `font-display:swap`, `content-visibility` untuk list 99/114
 - **View Transitions:** `ClientRouter` slide, `site-header` morph, `theme-toggle persist`
 - **Skeletons:** `Skeleton.astro` + shimmer, `prayer-card-skeleton` di dashboard, `Skeleton prayer` di sholat
@@ -317,7 +317,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 **Unit `src/lib/utils.ts:1` 30 tests `utils.test.ts`:**
 `addMinutes` modulo, `qibla`, `zakatMaal/Penghasilan`, `rupiah`, `hijriMonthIndex`, `daysUntil`. `vitest.setup.ts` mock localStorage, geolocation, Notification, AudioContext, vibrate.
 
-**E2E `e2e/` 53 tests** (chromium, mobile-chrome, mobile-safari/webkit): home 12 (incl. quote 3 + prayer pipeline 2), sholat 8, quran 7, quran-detail 9, doa 7, tasbih 10. Run via `webServer: npm run preview`. CI install browser: `chromium webkit`.
+**E2E `e2e/` 54 tests** (chromium, mobile-chrome, mobile-safari/webkit): home 12 (incl. quote 3 + prayer pipeline 2), sholat 9 (semua mocked, tanpa API live), quran 7, quran-detail 9, doa 7, tasbih 10. Run via `webServer: npm run preview`. CI install browser: `chromium webkit`.
 
 **CI `.github/workflows/ci.yml`:** jobs `test` (typecheck+lint+unit+build) + `e2e` needs test (install chromium+webkit, build, `test:e2e`, upload report).
 
@@ -372,7 +372,7 @@ if (window._timer) clearInterval(...); window._audio.pause();
 - Semua client script `is:inline` vanilla JS, no React/Vue. Data JSON import via frontmatter + `<script type="application/json" set:html>` untuk dzikir (bukan hidden div).
 - `HeaderSticky` (baru) ganti `HeaderBack` â€” dipakai semua halaman, truncate `max-w-[140px]` + `leftSlot/rightSlot` + `history.back` fallback.
 - `BottomNav` mobile only `md:hidden` auto-hide on scroll, skip-link, safe-area.
-- Fonts: Inter Variable WOFF2 23KB (sebelumnya 5Ã—TTF 1.6MB), Amiri TTF, `font-display:swap`, preload variable.
+- Fonts: Plus Jakarta Sans WOFF2 27KB (sebelumnya 5Ã—TTF 1.6MB), Amiri WOFF2 subset (dari TTF 737KB → 243KB, bold lazy-load), `font-display:swap`, preload variable.
 - `Skeleton` shimmer light/dark, `content-visibility:auto` untuk list 99/114.
 - SW v6 bump cache version, font precache, audio CDN cache-first, HTML network-first, cleanup 7d.
 - Zakat `getInt` preserve `selectionStart`, `btn-calculate disabled opacity-50` sampai input valid.

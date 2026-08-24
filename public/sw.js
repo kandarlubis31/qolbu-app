@@ -1,5 +1,5 @@
 // Qolbu App Service Worker - Enhanced caching strategy
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const CACHE_NAME = `qolbu-cache-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline';
 const MAX_CACHE_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -13,10 +13,11 @@ const PRECACHE_URLS = [
   '/logo-512.png',
   '/favicon.ico',
   '/favicon.svg',
-  // Fonts - variable WOFF2 23KB vs 1.6MB TTF
-  '/fonts/Inter-VariableFont_wght.woff2',
-  '/fonts/Amiri-Regular.ttf',
-  '/fonts/Amiri-Bold.ttf',
+  // Fonts - subset WOFF2 (PJS 27KB + Amiri arabic/latin regular 125KB).
+  // Amiri *Bold* sengaja TIDAK diprecache — tak ada konten bold-arab; lazy-load bila perlu.
+  '/fonts/PlusJakartaSans-Variable.woff2',
+  '/fonts/AmiriArabic-Regular.woff2',
+  '/fonts/AmiriLatin-Regular.woff2',
   // Pages
   '/dzikir',
   '/asmaul-husna',
