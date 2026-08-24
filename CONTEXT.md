@@ -74,7 +74,7 @@
 │   │       └── yasin.astro
 │   ├── styles/global.css       # @font-face variable, @theme tokens, scroll-padding, shimmer, content-visibility
 │   └── env.d.ts                # Window globals (_sholatInterval, _quranDetailInitialized, etc.)
-├── e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih (48)
+├── e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih (51)
 ├── .github/workflows/ci.yml    # jobs: test (typecheck+lint+unit+build) + e2e (chromium)
 ├── playwright.config.ts
 ├── vitest.config.mjs + vitest.setup.ts
@@ -172,11 +172,11 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 
 ### 1. Dashboard `/` `index.astro:1`
 
-- **Prayer Card + Skeleton:** `prayer-card` hidden → skeleton `prayer-card-skeleton` shimmer sampai `sholat-cache-*` ada; jika kosong tampil CTA `Aktifkan GPS → /sholat`
-- **Hijri Event Bar:** amber bar hidden sampai hijri dari cache terparse, `HIJRI_EVENTS` 12 item + `MONTH_ALIASES` normalization
+- **Prayer Card + Skeleton:** `prayer-card` hidden → skeleton `prayer-card-skeleton` shimmer sampai `sholat-cache-*` ada; jika kosong tampil CTA `Aktifkan GPS → /sholat`. ⚠️ Lihat Known Issues: cache ini belum pernah ditulis siapa pun.
+- **Hijri Event Bar:** amber bar hidden sampai hijri dari cache terparse, `HIJRI_EVENTS` 12 item + `MONTH_ALIASES` normalization. Tergantung `sholat-cache-*` juga (dampak known issue yang sama).
 - **Cache Badge:** `qolbu-quran-cache` count via IndexedDB
 - **Grid 10 menu** (sebelumnya 9, tambah Events Hijri): Jadwal Sholat `col-span-2 gradient`, Al-Qur'an, Doa, Zakat, Panduan, Tahlil, Tasbih, Asmaul, Dzikir, **Surat Yasin + Events Hijri**
-- **Quote Of The Day** `quotesData` inline ~100 quotes, `setInterval 10s` fade, cleanup `astro:before-swap`
+- **Quote Of The Day** `quotesData` inline ~100 quotes. Quote pertama **dirender server-side tanpa opacity gate** (kartu tidak pernah kosong walau JS lambat/blokir); JS menimpa dengan quote harian deterministik (`Math.floor(Date.now()/864e5) % len`). Rotasi 10s fade dengan `setTimeout` terlacak (`window._quoteTimeout`), skip tick saat `document.hidden` (anti burst-flicker throttled timers), anti-repeat quote berurutan, hormati `prefers-reduced-motion`. Cleanup interval+timeout di `astro:before-swap`. Deklarasi global di `env.d.ts` (`_quoteInterval/_quoteTimeout/_prayerInterval`).
 
 ### 2. Jadwal Sholat `/sholat` `sholat.astro:1`
 
@@ -186,7 +186,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 - Settings: ihtiyat ±, GPS toggle + manual lat/lng validated, method, adzan/remind + volume + test, **tabs tidak** — single modal
 - **Skeleton:** `Skeleton prayer` 5 items sebelum fetch
 - **A11y:** `aria-label` settings-btn, `type="search"` tidak ada (sholat tidak pakai SearchBar)
-- **Storage:** `sholat-settings`, `sholat-cache-*`, `sholat-notified-*`
+- **Storage:** `sholat-settings` (⚠️ lat/lng GPS sukses TIDAK dipersist — hanya mode manual yang menyimpan; lihat Known Issues). Notif dedup via in-memory `lastNotifiedAdhan/Remind`, bukan localStorage.
 
 ### 3. Al-Qur'an `/quran` `quran/index.astro:1`
 
@@ -250,24 +250,25 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 - **Anim:** `slideUp 0.3s cb(0.16,1,0.3,1)`, `fadeIn 0.4s`, `shimmer 1.5s` + `dark` variant, `animate-fade-in/slide-up/shimmer`, skeleton utilities
 - **Layout:** `max-w-md 448px` `flex-1 min-h-[50vh]` + `sr-only skip-link` `Lompat ke konten`
 - **Selection:** `selection:bg-emerald-500 selection:text-white`
+- **Glassmorphism desktop-only:** semua `backdrop-blur` wajib `md:` gate + bg solid di mobile (perf mobile: `backdrop-filter` mahal di GPU). Pola: `bg-white dark:bg-slate-900 md:bg-white/80 md:backdrop-blur-xl md:dark:bg-slate-900/80`. Komponen mobile-only (`BottomNav`) = solid tanpa blur sama sekali.
 
 ---
 
 ## 💾 Data & Storage
 
-| Key                                                     | Tipe                                               | Kegunaan                                                       |
-| ------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------------------- |
-| `theme`                                                 | `dark\|light`                                      | Theme                                                          |
-| `sholat-settings`                                       | JSON                                               | lat,lng,city,method,useGPS,adhan,remind,adhanVolume,correction |
-| `sholat-cache-*`                                        | JSON                                               | Timings per date/coords, juga dipakai dashboard prayer+ hijri  |
-| `sholat-notified-adhan/remind`                          | JSON                                               | Dedup notif                                                    |
-| `quran-settings` / `yasin-settings` / `tahlil-settings` | JSON                                               | size, showLatin, showArti                                      |
-| `quran-last-read`                                       | JSON                                               | surah, ayat, surahName, timestamp                              |
-| `quran-bookmarks`                                       | JSON                                               | [{surah,surahName,ayat}]                                       |
-| `sholat-completed` / `sholat-bookmarks`                 | `string[]`                                         | Panduan sholat                                                 |
-| `tasbih-*`                                              | `count/target/dhikr/vibrate/sound/autocycle/stats` | Tasbih                                                         |
-| `qolbu-asmaul-counts`                                   | JSON                                               | Counter per Asmaul                                             |
-| `qolbu-quran-cache`                                     | IndexedDB `surah-cache`                            | Offline 114 surat                                              |
+| Key                                                     | Tipe                                               | Kegunaan                                                                                       |
+| ------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `theme`                                                 | `dark\|light`                                      | Theme                                                                                          |
+| `sholat-settings`                                       | JSON                                               | lat,lng,city,method,useGPS,adhan,remind,adhanVolume,correction                                 |
+| `sholat-cache-*`                                        | JSON `{date, data}`                                | Timings per date/coords — dibaca dashboard prayer + hijri. ⚠️ **Belum ada writer** (known bug) |
+| ~~`sholat-notified-adhan/remind`~~                      | —                                                  | Tidak ada di kode: notif dedup pakai variabel in-memory                                        |
+| `quran-settings` / `yasin-settings` / `tahlil-settings` | JSON                                               | size, showLatin, showArti                                                                      |
+| `quran-last-read`                                       | JSON                                               | surah, ayat, surahName, timestamp                                                              |
+| `quran-bookmarks`                                       | JSON                                               | [{surah,surahName,ayat}]                                                                       |
+| `sholat-completed` / `sholat-bookmarks`                 | `string[]`                                         | Panduan sholat                                                                                 |
+| `tasbih-*`                                              | `count/target/dhikr/vibrate/sound/autocycle/stats` | Tasbih                                                                                         |
+| `qolbu-asmaul-counts`                                   | JSON                                               | Counter per Asmaul                                                                             |
+| `qolbu-quran-cache`                                     | IndexedDB `surah-cache`                            | Offline 114 surat                                                                              |
 
 **Static JSON:** `doa.json 47`, `dzikir.json 32`, `events-hijri.json 12 bulan detail`, `asmaul 99`, `tahlil 7`, `yasin 5` (page fetch 83).
 
@@ -313,11 +314,11 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 **Unit `src/lib/utils.ts:1` 30 tests `utils.test.ts`:**
 `addMinutes` modulo, `qibla`, `zakatMaal/Penghasilan`, `rupiah`, `hijriMonthIndex`, `daysUntil`. `vitest.setup.ts` mock localStorage, geolocation, Notification, AudioContext, vibrate.
 
-**E2E `e2e/` 48 tests** (chromium, mobile-chrome, mobile-safari): home 7, sholat 7, quran 6, quran-detail 8, doa 7, tasbih 6. Run via `webServer: npm run preview`.
+**E2E `e2e/` 51 tests** (chromium, mobile-chrome, mobile-safari): home 10 (incl. 3 quote), sholat 8, quran 7, quran-detail 9, doa 7, tasbih 10. Run via `webServer: npm run preview`.
 
 **CI `.github/workflows/ci.yml`:** jobs `test` (typecheck+lint+unit+build) + `e2e` needs test (install chromium, build, `test:e2e`, upload report).
 
-**Husky:** `pre-commit` `lint-staged` eslint --fix + prettier.
+**Husky:** `pre-commit` `lint-staged`: `eslint --fix --no-warn-ignored` + `prettier --write`. ⚠️ Gotcha lint-staged v17: task **harus bentuk string** (`"eslint --fix --no-warn-ignored"`) — array-form `["eslint","--fix"]` dieksekusi sebagai command terpisah per elemen. Prettier Tailwind v4 auto-detect — jangan set `tailwindConfig` di `.prettierrc` (harus string path; TW4 tidak pakai file config).
 
 ---
 
@@ -374,3 +375,10 @@ if (window._timer) clearInterval(...); window._audio.pause();
 - Zakat `getInt` preserve `selectionStart`, `btn-calculate disabled opacity-50` sampai input valid.
 - Share per ayat `quran/[nomor].astro:110` `share-btn` → `navigator.share` fallback `clipboard`.
 - Prayer skeleton + CTA `Aktifkan GPS → /sholat` di dashboard jika `sholat-cache` kosong.
+
+### 🐞 Known Issues
+
+1. **Dashboard "Belum ada jadwal sholat" meski GPS aktif** (audit 2026-08-24) — `initPrayerCard` & `initHijriEvent` di `index.astro` membaca `localStorage['sholat-cache-{D-M-YYYY}-{lat.toFixed(4)}-{lng.toFixed(4)}-{method}-{correction}']`, tapi **tidak ada satu pun kode yang menulis key tersebut**: `fetchPrayer()` di `sholat.astro` hanya render + startTimer, tidak pernah menyimpan cache. Ditambah lagi `getGPS()` sukses tidak mempersist koordinat ke `sholat-settings` (hanya mode manual yang menyimpan lat/lng via `saveSettings`). Jaringan dampak: prayer-card dashboard selalu fallback CTA, hijri bar selalu hidden — **di semua kondisi**, bukan sekadar saat offline.
+   **Fix plan:** (a) di akhir cabang sukses `fetchPrayer`: `localStorage.setItem(cacheKey, JSON.stringify({ date: new Date().toDateString(), data: json.data }))` dengan builder key identik dashboard (satu sumber format); (b) pada sukses `getGPS()`: merge `{ lat, lng, city }` terakhir ke `sholat-settings` tanpa menyentuh flag `useGPS`; (c) e2e regression: route-mock API Aladhan → buka `/sholat` → assert `sholat-cache-*` tertulis → buka `/` → assert `#prayer-card` tampil berisi waktu + `#hijri-event` muncul.
+
+2. **(Selesai 2026-08-24) Glassmorphism mobile-off** — seluruh `backdrop-blur` (14 titik, 11 file) digate `md:` + bg solid di mobile; terverifikasi computed style: mobile `backdrop-filter: none`, desktop tetap blur. Konvensi: efek morphism baru WAJIB pakai pola `md:` gate yang sama.

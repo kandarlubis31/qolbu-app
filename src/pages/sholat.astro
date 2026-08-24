@@ -6,7 +6,7 @@ import Skeleton from '../components/Skeleton.astro';
 
 <BaseLayout pageTitle="Jadwal Sholat & Kiblat">
   <div
-    class="sticky top-16 z-30 flex items-center justify-between border-b border-slate-100 bg-white/90 px-4 py-3 shadow-sm backdrop-blur-md transition-all dark:border-slate-800 dark:bg-slate-900/90"
+    class="sticky top-16 z-30 flex items-center justify-between border-b border-slate-100 bg-white px-4 py-3 shadow-sm transition-colors md:bg-white/90 md:backdrop-blur-md dark:border-slate-800 dark:bg-slate-900 md:dark:bg-slate-900/90"
   >
     <a
       href="/"
@@ -90,7 +90,7 @@ import Skeleton from '../components/Skeleton.astro';
         <h2 id="next-prayer-name" class="mb-2 text-2xl font-bold">Memuat...</h2>
 
         <div
-          class="inline-block min-w-[140px] rounded-xl border border-white/10 bg-white/20 p-3 shadow-inner backdrop-blur-md"
+          class="inline-block min-w-[140px] rounded-xl border border-white/10 bg-white/20 p-3 shadow-inner md:backdrop-blur-md"
         >
           <h1 id="countdown" class="text-4xl font-black tracking-tight tabular-nums">--:--:--</h1>
         </div>
@@ -227,7 +227,7 @@ import Skeleton from '../components/Skeleton.astro';
 
   <div id="settings-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
     <div
-      class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+      class="absolute inset-0 bg-black/60 transition-opacity md:backdrop-blur-sm"
       id="settings-overlay"
     >
     </div>
