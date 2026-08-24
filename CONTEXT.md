@@ -22,7 +22,7 @@
 | TypeScript   | via Astro `strict`    | Strict type checking (`astro check`)                                                                          |
 | PWA          | Workbox vanilla       | `manifest.json` + `sw.js` v7                                                                                  |
 | Fonts        | Self-host             | Plus Jakarta Sans Variable WOFF2 (27KB) + Amiri WOFF2 subset (arabic 204KB + latin 39KB), `font-display:swap` |
-| Testing      | Vitest 4 + Playwright | Unit 30, E2E 54, CI split jobs                                                                                |
+| Testing      | Vitest 4 + Playwright | Unit 30, E2E 66, CI split jobs                                                                                |
 | Lint/Format  | ESLint 9 + Prettier   | `eslint-plugin-astro/tailwindcss`, Husky + lint-staged                                                        |
 
 ### Struktur Direktori
@@ -47,7 +47,7 @@
 â”‚   â”œâ”€â”€ data/
 â”‚   â”‚   â”œâ”€â”€ doa.json            # 47 Doa (9 kategori)
 â”‚   â”‚   â”œâ”€â”€ dzikir.json         # 32 Dzikir (6 kategori: pagi/petang/subuh/sesudah/tidur/umum)
-â”‚   â”‚   â”œâ”€â”€ events-hijri.json   # 12 bulan, detail deskripsi (dipakai page + dashboard bar)
+â”‚   â”‚   â”œâ”€â”€ events-hijri.json   # 12 bulan Hijriah (page + dashboard bar)
 â”‚   â”‚   â”œâ”€â”€ asmaul-husna.json   # 99 Nama
 â”‚   â”‚   â”œâ”€â”€ tahlil.json         # 7 Bacaan
 â”‚   â”‚   â””â”€â”€ yasin.json          # 5 ayat sample (page yasin fetch 83 via API)
@@ -74,7 +74,7 @@
 â”‚   â”‚       â””â”€â”€ yasin.astro
 â”‚   â”œâ”€â”€ styles/global.css       # @font-face variable, @theme tokens, scroll-padding, shimmer, content-visibility
 â”‚   â””â”€â”€ env.d.ts                # Window globals (_sholatInterval, _quranDetailInitialized, etc.)
-â”œâ”€â”€ e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih (54)
+â”œâ”€â”€ e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih, events, guide \(66\)
 â”œâ”€â”€ .github/workflows/ci.yml    # jobs: test (typecheck+lint+unit+build) + e2e (chromium)
 â”œâ”€â”€ playwright.config.ts
 â”œâ”€â”€ vitest.config.mjs + vitest.setup.ts
@@ -218,11 +218,11 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 - `ScrollFade` kategori 7 pills `snap-start aria-pressed`, `SearchBar ariaLabel`
 - Render `dzikir-container` + `EmptyState` + `empty-count` live, copy via delegation `clipboard.writeText` + `window.showToast`
 
-### 7. Events Hijri `/events-hijri.astro:1`
+### 7. Events Kalender `/events-hijri.astro:1`
 
-- `import eventsHijri from '../data/events-hijri.json'` (sebelumnya inline 12 bulan)
-- `HeaderSticky` (sebelumnya custom sticky)
-- List per bulan badge, fallback `-`, disclaimer hisab/rukyat
+- **Tabs ARIA** `role=tablist` Hijriah 🌙 | Masehi 🇮🇩 — `aria-selected` + panel toggle via JS (guard `_eventsTabsInit` + reset before-swap), styling pakai variant `aria-selected:`
+- `import events-hijri.json` (12 bulan Hijriah) + `import events-masehi.json` (hari besar nasional & peringatan Indonesia, tanggal tetap; badge `Libur Nasional` vs `Peringatan`)
+- `HeaderSticky`, disclaimer hisab/rukyat (hijri) + disclaimer SKB tahunan (masehi, event variabel: Imlek/Nyepi/Wafat/Kenaikan/Waisak)
 
 ### 8. Doa Harian `/doa.astro:1`
 
@@ -231,7 +231,10 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 
 ### 9. Panduan Sholat `/sholat-guide.astro`
 
-- 28 langkah inline, accordion single open, progress `localStorage('sholat-completed')`, bookmark `sholat-bookmarks` + badge, praktik 15s, audio Fatihah, search, `HeaderSticky rightSlot` bookmark, sticky progress `top-32`
+- 28 langkah inline (mazhab Syafi'i), accordion single open (`<details>`), progress `localStorage('sholat-completed')`, bookmark `sholat-bookmarks` + badge, praktik 15s per langkah, search, `HeaderSticky rightSlot` bookmark, sticky progress `top-32`
+- **Audio full-surah**: Fatihah & Al-Ikhlas via `download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/00X.mp3` (SW cache-first → offline setelah play pertama); 26 langkah lain tanpa audio (disabled "Audio N/A")
+- **Robustness**: `safeParse()` membungkus semua `JSON.parse(localStorage)` — data korup tidak mematikan halaman/guard flag; `stopPractice()` reset state audio (`resetAllAudioBtns` + null kanan) supaya tombol tidak nyangkut "Jeda"
+- Konvensi: `transition-[colors,box-shadow]`/`[colors,transform]` (bukan transition-all), bookmark-btn ber-`aria-label` per langkah
 
 ### 10. Tahlil `/tahlil.astro` + 11. Tasbih `/tasbih.astro` + 12. Zakat `/zakat.astro`
 
@@ -273,7 +276,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 | `qolbu-asmaul-counts`                                   | JSON                                               | Counter per Asmaul                                                                                  |
 | `qolbu-quran-cache`                                     | IndexedDB `surah-cache`                            | Offline 114 surat                                                                                   |
 
-**Static JSON:** `doa.json 47`, `dzikir.json 32`, `events-hijri.json 12 bulan detail`, `asmaul 99`, `tahlil 7`, `yasin 5` (page fetch 83).
+**Static JSON:** `doa.json 47`, `dzikir.json 32`, `events-hijri.json 12 bulan + events-masehi.json hari besar nasional`, `asmaul 99`, `tahlil 7`, `yasin 5` (page fetch 83).
 
 ---
 
@@ -317,7 +320,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 **Unit `src/lib/utils.ts:1` 30 tests `utils.test.ts`:**
 `addMinutes` modulo, `qibla`, `zakatMaal/Penghasilan`, `rupiah`, `hijriMonthIndex`, `daysUntil`. `vitest.setup.ts` mock localStorage, geolocation, Notification, AudioContext, vibrate.
 
-**E2E `e2e/` 54 tests** (chromium, mobile-chrome, mobile-safari/webkit): home 12 (incl. quote 3 + prayer pipeline 2), sholat 9 (semua mocked, tanpa API live), quran 7, quran-detail 9, doa 7, tasbih 10. Run via `webServer: npm run preview`. CI install browser: `chromium webkit`.
+**E2E `e2e/` 66 tests** (chromium, mobile-chrome, mobile-safari/webkit): home 12 (incl. quote 3 + prayer pipeline 2), sholat 9 (semua mocked, tanpa API live), sholat-guide 7, quran 7, quran-detail 9, doa 7, tasbih 10, events 5. Run via `webServer: npm run preview`. CI install browser: `chromium webkit`.
 
 **CI `.github/workflows/ci.yml`:** jobs `test` (typecheck+lint+unit+build) + `e2e` needs test (install chromium+webkit, build, `test:e2e`, upload report).
 

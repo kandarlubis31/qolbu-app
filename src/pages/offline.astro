@@ -4,33 +4,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout pageTitle="Offline">
-  
-  <div class="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center">
-    <div class="mb-6 p-6 rounded-full bg-slate-100 dark:bg-slate-800">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-slate-400"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.33 9"></path><path d="M1.67 9a16 16 0 0 1 12.95-3.95"></path></svg>
+  <div class="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+    <div class="mb-6 rounded-full bg-slate-100 p-6 dark:bg-slate-800">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="64"
+        height="64"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        class="text-slate-400"
+        ><line x1="1" y1="1" x2="23" y2="23"></line><path
+          d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path
+          d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.33 9"
+        ></path><path d="M1.67 9a16 16 0 0 1 12.95-3.95"></path></svg
+      >
     </div>
-    
-    <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Anda Sedang Offline</h1>
-    <p class="text-slate-500 dark:text-slate-400 mb-8 max-w-xs">
+
+    <h1 class="mb-2 text-2xl font-bold text-slate-800 dark:text-white">Anda Sedang Offline</h1>
+    <p class="mb-8 max-w-xs text-slate-500 dark:text-slate-400">
       Tidak ada koneksi internet. Beberapa fitur mungkin tidak tersedia.
     </p>
-    
-    <div class="space-y-3 w-full max-w-xs">
-      <a href="/" class="block w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-500/20">
+
+    <div class="w-full max-w-xs space-y-3">
+      <a
+        href="/"
+        class="block w-full rounded-xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-700"
+      >
         Kembali ke Dashboard
       </a>
-      <button onclick="window.location.reload()" class="block w-full py-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+      <button
+        onclick="window.location.reload()"
+        class="block w-full rounded-xl bg-slate-100 py-3 text-sm font-bold text-slate-600 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+      >
         Coba Lagi
       </button>
     </div>
 
-    <div class="mt-12 p-5 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800 mx-auto max-w-xs">
-      <p class="text-xs text-emerald-800 dark:text-emerald-200 font-bold mb-2">📡 Tetap bisa dibuka tanpa internet:</p>
-      <ul class="text-xs text-emerald-700 dark:text-emerald-300 space-y-1">
+    <div
+      class="mx-auto mt-12 max-w-xs rounded-xl border border-emerald-100 bg-emerald-50 p-5 dark:border-emerald-800 dark:bg-emerald-900/20"
+    >
+      <p class="mb-2 text-xs font-bold text-emerald-800 dark:text-emerald-200">
+        📡 Tetap bisa dibuka tanpa internet:
+      </p>
+      <ul class="space-y-1 text-xs text-emerald-700 dark:text-emerald-300">
         <li>📖 Dzikir Al-Ma'tsurat</li>
         <li>🌸 Asmaul Husna (99 Nama)</li>
         <li>📜 Surat Yasin</li>
-        <li>📅 Kalender Events Hijri</li>
+        <li>📅 Kalender Events Hijriah & Masehi</li>
         <li>🤲 Doa Harian</li>
         <li>🕌 Panduan Sholat</li>
         <li>📿 Tahlil & Doa Arwah</li>
@@ -39,5 +61,4 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </ul>
     </div>
   </div>
-
 </BaseLayout>

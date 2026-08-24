@@ -40,6 +40,9 @@ declare global {
     _quoteTimeout: ReturnType<typeof setTimeout> | null;
     _prayerInterval: ReturnType<typeof setInterval> | null;
 
+    // Events page
+    _eventsTabsInit: boolean;
+
     // Global toast function
     showToast: (msg: string, duration?: number) => void;
 

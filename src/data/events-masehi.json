@@ -1,0 +1,140 @@
+[
+  {
+    "bulan": "Januari",
+    "events": [
+      {
+        "tanggal": 1,
+        "judul": "Tahun Baru Masehi",
+        "desc": "Hari pertama kalender Gregorian. Libur nasional di Indonesia.",
+        "libur": true
+      }
+    ]
+  },
+  { "bulan": "Februari", "events": [] },
+  { "bulan": "Maret", "events": [] },
+  {
+    "bulan": "April",
+    "events": [
+      {
+        "tanggal": 21,
+        "judul": "Hari Kartini",
+        "desc": "Peringatan R.A. Kartini, pelopor emansipasi dan hak perempuan Indonesia.",
+        "libur": false
+      }
+    ]
+  },
+  {
+    "bulan": "Mei",
+    "events": [
+      {
+        "tanggal": 1,
+        "judul": "Hari Buruh Internasional",
+        "desc": "Peringatan perjuangan buruh. Libur nasional di Indonesia.",
+        "libur": true
+      },
+      {
+        "tanggal": 2,
+        "judul": "Hari Pendidikan Nasional (Hardiknas)",
+        "desc": "Memperingati jasa Ki Hajar Dewantara, bapak pendidikan nasional.",
+        "libur": false
+      },
+      {
+        "tanggal": 20,
+        "judul": "Hari Kebangkitan Nasional",
+        "desc": "Peringatan berdirinya Budi Utomo, awal kebangkitan bangsa Indonesia.",
+        "libur": false
+      }
+    ]
+  },
+  {
+    "bulan": "Juni",
+    "events": [
+      {
+        "tanggal": 1,
+        "judul": "Hari Lahir Pancasila",
+        "desc": "Memperingati lahirnya dasar negara Indonesia. Libur nasional.",
+        "libur": true
+      }
+    ]
+  },
+  {
+    "bulan": "Juli",
+    "events": [
+      {
+        "tanggal": 23,
+        "judul": "Hari Anak Nasional",
+        "desc": "Peringatan untuk generasi penerus bangsa, amanah dan kebanggaan keluarga.",
+        "libur": false
+      }
+    ]
+  },
+  {
+    "bulan": "Agustus",
+    "events": [
+      {
+        "tanggal": 17,
+        "judul": "Hari Kemerdekaan Republik Indonesia",
+        "desc": "Proklamasi kemerdekaan 17 Agustus 1945. Libur nasional, berbagai upacara dan perlombaan.",
+        "libur": true
+      }
+    ]
+  },
+  { "bulan": "September", "events": [] },
+  {
+    "bulan": "Oktober",
+    "events": [
+      {
+        "tanggal": 1,
+        "judul": "Hari Kesaktian Pancasila",
+        "desc": "Peringatan perjuangan menegakkan ideologi Pancasila.",
+        "libur": false
+      },
+      {
+        "tanggal": 22,
+        "judul": "Hari Santri Nasional",
+        "desc": "Apresiasi peran santri dalam perjuangan dan pendidikan bangsa.",
+        "libur": false
+      },
+      {
+        "tanggal": 27,
+        "judul": "Hari Olahraga Nasional (Haornas)",
+        "desc": "Peringatan Kongres Olahraga Nasional pertama di Solo.",
+        "libur": false
+      },
+      {
+        "tanggal": 28,
+        "judul": "Hari Sumpah Pemuda",
+        "desc": "Peringatan Sumpah Pemuda 1928, satu nusa satu bangsa satu bahasa.",
+        "libur": false
+      }
+    ]
+  },
+  {
+    "bulan": "November",
+    "events": [
+      {
+        "tanggal": 10,
+        "judul": "Hari Pahlawan",
+        "desc": "Memperingati pertempuran 10 November 1945 di Surabaya.",
+        "libur": false
+      }
+    ]
+  },
+  {
+    "bulan": "Desember",
+    "events": [
+      {
+        "tanggal": 22,
+        "judul": "Hari Ibu",
+        "desc": "Penghormatan kepada ibu dan peran perempuan Indonesia.",
+        "libur": false
+      },
+      {
+        "tanggal": 25,
+        "judul": "Hari Raya Natal",
+        "desc": "Peringatan kelahiran Isa Almasih. Libur nasional di Indonesia.",
+        "libur": true
+      }
+    ]
+  }
+]
