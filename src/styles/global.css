@@ -37,6 +37,17 @@ html {
   scroll-padding-top: 112px;
 }
 
+/* Mobile responsiveness: hilangkan delay double-tap zoom & highlight kotak saat tap */
+a,
+button,
+[role='button'],
+input,
+select,
+label {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
 body {
   font-family: 'Inter', sans-serif;
 }

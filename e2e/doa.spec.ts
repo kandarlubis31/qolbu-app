@@ -51,8 +51,11 @@ test.describe('Doa Harian Page', () => {
   });
 
   test('should copy doa to clipboard', async ({ page }) => {
-    // Grant clipboard permission
-    await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+    // WebKit tidak mengenal permission 'clipboard-write' — lewati grant di sana;
+    // toast tetap muncul karena app fallback ke clipboard API tanpa permission.
+    if (page.context().browser()?.browserType().name() !== 'webkit') {
+      await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+    }
 
     const firstCopyBtn = page.locator('.copy-btn').first();
     await firstCopyBtn.click();

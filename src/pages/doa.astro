@@ -510,7 +510,7 @@ import ScrollFade from '../components/ScrollFade.astro';
         const html = filtered
           .map(
             (item, i) => `
-        <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50 card-anim" style="animation-delay: ${Math.min(i * 35, 500)}ms">
+        <div class="group bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm transition-[colors,box-shadow] md:hover:shadow-md md:hover:border-emerald-500/50 card-anim" style="animation-delay: ${Math.min(i * 25, 200)}ms">
           <div class="flex justify-between items-start mb-3">
             <h3 class="font-bold text-slate-800 dark:text-white text-sm uppercase tracking-wide flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>

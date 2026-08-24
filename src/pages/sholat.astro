@@ -614,6 +614,25 @@ import Skeleton from '../components/Skeleton.astro';
             startTimer(correctedTimings);
             els.corDisplay.innerText =
               state.correction > 0 ? `+${state.correction}` : state.correction;
+
+            // Cache untuk dashboard prayer-card & hijri bar — format key WAJIB identik index.astro
+            try {
+              const now = new Date();
+              const dateStr = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
+              localStorage.setItem(
+                'sholat-cache-' +
+                  dateStr +
+                  '-' +
+                  Number(lat).toFixed(4) +
+                  '-' +
+                  Number(lng).toFixed(4) +
+                  '-' +
+                  state.method +
+                  '-' +
+                  state.correction,
+                JSON.stringify({ date: now.toDateString(), data: json.data })
+              );
+            } catch {}
           } else {
             els.locText.innerText = 'Error API';
             window.showToast('Gagal mengambil data sholat.');
@@ -706,6 +725,8 @@ import Skeleton from '../components/Skeleton.astro';
         };
 
         const update = () => {
+          // Skip saat tab background — hemat battery, cegah burst timer saat balik fokus
+          if (document.hidden) return;
           const now = new Date();
           const ordered = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
           let target = null;
@@ -751,6 +772,18 @@ import Skeleton from '../components/Skeleton.astro';
         window._sholatInterval = setInterval(update, 1000);
       };
 
+      // Persist koordinat GPS terakhir agar dashboard bisa bangun cache key yang cocok.
+      // Merge — tidak menyentuh flag useGPS/pengaturan lain.
+      const persistLastLocation = () => {
+        try {
+          const prev = JSON.parse(localStorage.getItem('sholat-settings') || '{}');
+          localStorage.setItem(
+            'sholat-settings',
+            JSON.stringify({ ...prev, lat: state.lat, lng: state.lng, city: state.city })
+          );
+        } catch {}
+      };
+
       const getGPS = () => {
         els.locText.innerText = 'Melacak...';
         els.refreshIcon.classList.add('animate-spin');
@@ -771,12 +804,14 @@ import Skeleton from '../components/Skeleton.astro';
                 els.locText.innerText = city;
                 els.latIn.value = state.lat.toFixed(5);
                 els.lngIn.value = state.lng.toFixed(5);
+                persistLastLocation();
                 fetchPrayer(state.lat, state.lng);
                 els.refreshIcon.classList.remove('animate-spin');
               })
               .catch(() => {
                 state.city = 'Sesuai GPS';
                 els.locText.innerText = state.city;
+                persistLastLocation();
                 fetchPrayer(state.lat, state.lng);
                 els.refreshIcon.classList.remove('animate-spin');
               });

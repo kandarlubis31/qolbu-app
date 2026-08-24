@@ -262,15 +262,15 @@ const menus = [
       menus.map((item, index) => (
         <a
           href={item.href}
-          class={`group relative rounded-[2rem] border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+          class={`group relative rounded-[2rem] border p-5 transition-[colors,box-shadow,transform] duration-300 md:hover:-translate-y-1 md:hover:shadow-xl ${
             index === 0
               ? 'col-span-2 border-transparent bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-emerald-500/25'
-              : 'border-slate-100 bg-white shadow-sm hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none'
+              : 'border-slate-100 bg-white shadow-sm md:hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none'
           }`}
         >
           <div class="mb-4 flex items-start justify-between">
             <div
-              class={`flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 ${
+              class={`flex h-12 w-12 items-center justify-center rounded-2xl transition-transform md:group-hover:scale-110 ${
                 index === 0 ? 'bg-white/20 text-white md:backdrop-blur-sm' : item.color
               }`}
             >
@@ -293,7 +293,7 @@ const menus = [
               class={`transition-opacity duration-300 ${
                 index === 0
                   ? 'text-white/70 opacity-100'
-                  : 'text-slate-300 opacity-0 group-hover:opacity-100'
+                  : 'text-slate-300 opacity-0 md:group-hover:opacity-100'
               }`}
             >
               <svg
@@ -340,7 +340,7 @@ const menus = [
     class="group relative mx-1 flex min-h-[160px] flex-col justify-center overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900 p-6 text-white shadow-2xl dark:bg-black"
   >
     <div
-      class="absolute top-0 right-0 translate-x-8 -translate-y-8 transform opacity-5 transition-transform duration-700 group-hover:scale-110"
+      class="absolute top-0 right-0 translate-x-8 -translate-y-8 transform opacity-5 transition-transform duration-700 md:group-hover:scale-110"
     >
       <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
         <path
@@ -1016,67 +1016,133 @@ const menus = [
 
       const cached = loadCachedData();
       const skeleton = document.getElementById('prayer-card-skeleton');
-      if (!cached || !cached.data || !cached.data.timings) {
-        if (skeleton) skeleton.classList.add('hidden');
-        // Show CTA instead of card when no cache
+
+      const showCTA = () => {
         card.innerHTML =
           '<div class="text-center py-2"><p class="text-sm font-bold mb-2">Belum ada jadwal sholat</p><a href="/sholat" class="inline-flex items-center gap-1 px-4 py-2 bg-white text-emerald-600 rounded-full text-xs font-bold">Aktifkan GPS & Lihat Jadwal →</a></div>';
         card.classList.remove('hidden');
         if (skeleton) skeleton.classList.add('hidden');
+      };
+
+      const renderCard = (timings) => {
+        // Show card, hide skeleton
+        if (skeleton) skeleton.classList.add('hidden');
+        card.classList.remove('hidden');
+
+        // Fill 5 times
+        PRAYER_ORDER.forEach((k) => {
+          const el = document.getElementById('pt-' + k);
+          if (el && timings[k]) el.innerText = timings[k];
+        });
+
+        // Qibla
+        const qibla = document.getElementById('prayer-qibla');
+        if (qibla) {
+          const kaabaLat = 21.4225,
+            kaabaLng = 39.8262;
+          const φ1 = (lat * Math.PI) / 180,
+            φ2 = (kaabaLat * Math.PI) / 180;
+          const Δλ = ((kaabaLng - lng) * Math.PI) / 180;
+          const x = Math.sin(Δλ) * Math.cos(φ2);
+          const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+          let q = (Math.atan2(x, y) * 180) / Math.PI;
+          qibla.innerText = '🕋 ' + ((q + 360) % 360).toFixed(1) + '°';
+        }
+
+        function tick() {
+          if (document.hidden) return;
+          const next = findNextPrayer(timings);
+          const now = new Date();
+          const diff = next.time - now;
+          if (diff <= 0) {
+            document.getElementById('prayer-countdown').innerText = '00:00:00';
+            return;
+          }
+          const h = Math.floor(diff / 3600000);
+          const m = Math.floor((diff % 3600000) / 60000);
+          const s = Math.floor((diff % 60000) / 1000);
+          document.getElementById('prayer-countdown').innerText =
+            h.toString().padStart(2, '0') +
+            ':' +
+            m.toString().padStart(2, '0') +
+            ':' +
+            s.toString().padStart(2, '0');
+          document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[next.key];
+        }
+
+        if (prayerInterval) clearInterval(prayerInterval);
+        tick();
+        prayerInterval = setInterval(tick, 1000);
+        window._prayerInterval = prayerInterval;
+      };
+
+      // Ihtiyat sama dengan sholat.astro — dashboard fetch harus menghasilkan cache identik
+      const applyCorrection = (rawTimings) => {
+        const corrected = {};
+        Object.keys(rawTimings).forEach((key) => {
+          if (['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Imsak', 'Sunrise'].includes(key)) {
+            const [h, m] = rawTimings[key].split(':').map(Number);
+            let total = (((h * 60 + m + correction) % 1440) + 1440) % 1440;
+            corrected[key] =
+              String(Math.floor(total / 60)).padStart(2, '0') +
+              ':' +
+              String(total % 60).padStart(2, '0');
+          } else {
+            corrected[key] = rawTimings[key];
+          }
+        });
+        return corrected;
+      };
+
+      // Fetch mandiri: cache hari ini kosong TAPI koordinat tersimpan → ambil sendiri,
+      // tulis cache, render — tanpa perlu membuka /sholat.
+      const fetchDashboardPrayer = async () => {
+        if (window._dashPrayerFetching) return;
+        window._dashPrayerFetching = true;
+        try {
+          const url =
+            'https://api.aladhan.com/v1/timings/' +
+            dateStr +
+            '?latitude=' +
+            lat +
+            '&longitude=' +
+            lng +
+            '&method=' +
+            method;
+          const res = await fetch(url);
+          const json = await res.json();
+          if (json.code === 200) {
+            json.data.timings = applyCorrection(json.data.timings);
+            try {
+              localStorage.setItem(
+                cacheKey,
+                JSON.stringify({ date: new Date().toDateString(), data: json.data })
+              );
+            } catch {}
+            renderCard(json.data.timings);
+            updateHijriBar();
+          } else {
+            showCTA();
+          }
+        } catch {
+          showCTA();
+        } finally {
+          window._dashPrayerFetching = false;
+        }
+      };
+
+      if (!cached || !cached.data || !cached.data.timings) {
+        // Koordinat tersimpan dari GPS/manual sebelumnya → langsung ambil sendiri
+        if (settings.lat && settings.lng) {
+          fetchDashboardPrayer();
+        } else {
+          // Fresh install tanpa koordinat → minta user aktifkan via /sholat sekali saja
+          showCTA();
+        }
         return;
       }
 
-      const timings = cached.data.timings;
-
-      // Show card, hide skeleton
-      if (skeleton) skeleton.classList.add('hidden');
-      card.classList.remove('hidden');
-
-      // Fill 5 times
-      PRAYER_ORDER.forEach((k) => {
-        const el = document.getElementById('pt-' + k);
-        if (el && timings[k]) el.innerText = timings[k];
-      });
-
-      // Qibla
-      const qibla = document.getElementById('prayer-qibla');
-      if (qibla) {
-        const kaabaLat = 21.4225,
-          kaabaLng = 39.8262;
-        const φ1 = (lat * Math.PI) / 180,
-          φ2 = (kaabaLat * Math.PI) / 180;
-        const Δλ = ((kaabaLng - lng) * Math.PI) / 180;
-        const x = Math.sin(Δλ) * Math.cos(φ2);
-        const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
-        let q = (Math.atan2(x, y) * 180) / Math.PI;
-        qibla.innerText = '🕋 ' + ((q + 360) % 360).toFixed(1) + '°';
-      }
-
-      // Countdown
-      function tick() {
-        const next = findNextPrayer(timings);
-        const now = new Date();
-        const diff = next.time - now;
-        if (diff <= 0) {
-          document.getElementById('prayer-countdown').innerText = '00:00:00';
-          return;
-        }
-        const h = Math.floor(diff / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        document.getElementById('prayer-countdown').innerText =
-          h.toString().padStart(2, '0') +
-          ':' +
-          m.toString().padStart(2, '0') +
-          ':' +
-          s.toString().padStart(2, '0');
-        document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[next.key];
-      }
-
-      if (prayerInterval) clearInterval(prayerInterval);
-      tick();
-      prayerInterval = setInterval(tick, 1000);
-      window._prayerInterval = prayerInterval;
+      renderCard(cached.data.timings);
     };
 
     // ===== HIJRI EVENTS =====
@@ -1133,14 +1199,14 @@ const menus = [
       return m1 > m2 || (m1 === m2 && d1 >= d2);
     }
 
-    const initHijriEvent = () => {
-      if (window._hijriEventInitialized) return;
+    // Render hijri bar dari cache — dipanggil init HANYA sekali per visit,
+    // dan dipanggil ULANG oleh fetchDashboardPrayer setelah cache baru tertulis.
+    const updateHijriBar = () => {
       const bar = document.getElementById('hijri-event');
       const icon = document.getElementById('hijri-event-icon');
       const text = document.getElementById('hijri-event-text');
       const daysEl = document.getElementById('hijri-event-days');
       if (!bar || !icon || !text || !daysEl) return;
-      window._hijriEventInitialized = true;
 
       // Try to read today's Hijri date from sholat cache
       let settings = {};
@@ -1231,6 +1297,12 @@ const menus = [
       text.textContent = nextEvent.name;
       daysEl.textContent = daysLabel;
       bar.classList.remove('hidden');
+    };
+
+    const initHijriEvent = () => {
+      if (window._hijriEventInitialized) return;
+      window._hijriEventInitialized = true;
+      updateHijriBar();
     };
 
     document.addEventListener('astro:page-load', initQuote);
