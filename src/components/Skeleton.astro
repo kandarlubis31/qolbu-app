@@ -1,0 +1,62 @@
+---
+// src/components/Skeleton.astro
+interface Props {
+  variant?: 'text' | 'title' | 'card' | 'avatar' | 'circle' | 'prayer' | 'quran' | 'dzikir';
+  count?: number;
+  class?: string;
+}
+
+const { variant = 'text', count = 1, class: extraClass = '' } = Astro.props;
+---
+
+{
+  Array.from({ length: count }).map(() => (
+    <div class={`skeleton animate-shimmer ${extraClass}`}>
+      {variant === 'prayer' && (
+        <div class="flex items-center justify-between rounded-2xl p-4">
+          <div class="h-4 w-24 rounded" />
+          <div class="h-6 w-16 rounded" />
+        </div>
+      )}
+      {variant === 'quran' && (
+        <a class="surat-card group flex items-center justify-between p-4">
+          <div class="flex items-center gap-4">
+            <div class="h-10 w-10 rounded-xl" />
+            <div>
+              <div class="h-5 w-32 rounded" />
+              <div class="mt-1 h-3 w-24 rounded" />
+            </div>
+          </div>
+          <div class="h-8 w-12 rounded" />
+        </a>
+      )}
+      {variant === 'dzikir' && (
+        <div class="group rounded-2xl p-5">
+          <div class="mb-3 flex items-start justify-between">
+            <div class="h-5 w-24 rounded" />
+            <div class="h-5 w-5 rounded" />
+          </div>
+          <div class="mb-3 h-16 w-full rounded-xl" />
+          <div class="space-y-1">
+            <div class="h-4 w-3/4 rounded" />
+            <div class="h-3 w-full rounded" />
+            <div class="h-2 w-1/2 rounded" />
+          </div>
+        </div>
+      )}
+      {variant === 'card' && <div class="skeleton-card" />}
+      {variant === 'avatar' && <div class="skeleton-avatar" />}
+      {variant === 'circle' && <div class="skeleton-circle" />}
+      {variant === 'title' && <div class="skeleton-title" />}
+      {variant === 'text' && <div class="skeleton-text" />}
+    </div>
+  ))
+}
+
+<style>
+  /* Ensure shimmer works in both light and dark mode */
+  .dark .animate-shimmer {
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+    background-size: 200% 100%;
+  }
+</style>

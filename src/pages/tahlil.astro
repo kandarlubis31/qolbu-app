@@ -1,109 +1,141 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeaderBack from '../components/HeaderBack.astro';
+import HeaderSticky from '../components/HeaderSticky.astro';
 import Toast from '../components/Toast.astro';
 
 const tahlilData = [
   {
-    "id": 1,
-    "judul": "Pengantar Al-Fatihah",
-    "arab": "إِلَى حَضْرَةِ النَّبِيِّ الْمُصْطَفَى صَلَّى اللهُ عَلَيهِ وَسَلَّمَ وَآلِهِ وَصَحْبِهِ وَأَزْوَاجِهِ وَذُرِّيَّاتِهِ وَأَهْلِ بَيْتِهِ الْكِرَامِ، شَيْءٌ لِلهِ لَهُمُ الْفَاتِحَةُ",
-    "latin": "Ila hadrotin-nabiyyil musthofaa shollallahu 'alaihi wa sallama, wa aalihi wa shohbihi wa azwaajihi wa dzurriyyatihi wa ahli baitihil kirom, syai-u lillahi lahumul faatihah.",
-    "arti": "Ke hadirat Nabi pilihan Muhammad SAW, keluarganya, sahabatnya, istri-istrinya, keturunannya, dan ahli baitnya yang mulia, semoga Allah melimpahkan sesuatu untuk mereka, Al-Fatihah."
+    id: 1,
+    judul: 'Pengantar Al-Fatihah',
+    arab: 'إِلَى حَضْرَةِ النَّبِيِّ الْمُصْطَفَى صَلَّى اللهُ عَلَيهِ وَسَلَّمَ وَآلِهِ وَصَحْبِهِ وَأَزْوَاجِهِ وَذُرِّيَّاتِهِ وَأَهْلِ بَيْتِهِ الْكِرَامِ، شَيْءٌ لِلهِ لَهُمُ الْفَاتِحَةُ',
+    latin:
+      "Ila hadrotin-nabiyyil musthofaa shollallahu 'alaihi wa sallama, wa aalihi wa shohbihi wa azwaajihi wa dzurriyyatihi wa ahli baitihil kirom, syai-u lillahi lahumul faatihah.",
+    arti: 'Ke hadirat Nabi pilihan Muhammad SAW, keluarganya, sahabatnya, istri-istrinya, keturunannya, dan ahli baitnya yang mulia, semoga Allah melimpahkan sesuatu untuk mereka, Al-Fatihah.',
   },
   {
-    "id": 2,
-    "judul": "Surat Al-Ikhlas (3x)",
-    "arab": "قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
-    "latin": "Qul huwallāhu aḥad. Allāhuṣ-ṣamad. Lam yalid wa lam yūlad. Wa lam yakun lahū kufuwan aḥad.",
-    "arti": "Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia."
+    id: 2,
+    judul: 'Surat Al-Ikhlas (3x)',
+    arab: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ',
+    latin:
+      'Qul huwallāhu aḥad. Allāhuṣ-ṣamad. Lam yalid wa lam yūlad. Wa lam yakun lahū kufuwan aḥad.',
+    arti: 'Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia.',
   },
   {
-    "id": 3,
-    "judul": "Surat Al-Falaq",
-    "arab": "قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِنْ شَرِّ مَا خَلَقَ ۞ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
-    "latin": "Qul a‘ūżu birabbil-falaq. Min syarri mā khalaq. Wa min syarri gāsiqin iżā waqab. Wa min syarrin-naffāṡāti fil-‘uqad. Wa min syarri ḥāsidin iżā ḥasad.",
-    "arti": "Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (perempuan-perempuan) penyihir yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki."
+    id: 3,
+    judul: 'Surat Al-Falaq',
+    arab: 'قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِنْ شَرِّ مَا خَلَقَ ۞ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ',
+    latin:
+      'Qul a‘ūżu birabbil-falaq. Min syarri mā khalaq. Wa min syarri gāsiqin iżā waqab. Wa min syarrin-naffāṡāti fil-‘uqad. Wa min syarri ḥāsidin iżā ḥasad.',
+    arti: 'Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan (perempuan-perempuan) penyihir yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki.',
   },
   {
-    "id": 4,
-    "judul": "Surat An-Nas",
-    "arab": "قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ",
-    "latin": "Qul a‘ūżu birabbin-nās. Malikin-nās. Ilāhin-nās. Min syarril-waswāsil-khannās. Allażī yuwaswisu fī ṣudūrin-nās. Minal-jinnati wan-nās.",
-    "arti": "Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia."
+    id: 4,
+    judul: 'Surat An-Nas',
+    arab: 'قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ',
+    latin:
+      'Qul a‘ūżu birabbin-nās. Malikin-nās. Ilāhin-nās. Min syarril-waswāsil-khannās. Allażī yuwaswisu fī ṣudūrin-nās. Minal-jinnati wan-nās.',
+    arti: 'Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.',
   },
   {
-    "id": 5,
-    "judul": "Tahlil & Takbir",
-    "arab": "لاَ إِلهَ إِلاَّ اللهُ وَاللهُ أَكْبَرُ وَلِلهِ الْحَمْدُ",
-    "latin": "Laa ilaaha illallahu wallahu akbar wa lillahil hamd.",
-    "arti": "Tiada Tuhan selain Allah, Allah Maha Besar, dan bagi Allah segala puji."
+    id: 5,
+    judul: 'Tahlil & Takbir',
+    arab: 'لاَ إِلهَ إِلاَّ اللهُ وَاللهُ أَكْبَرُ وَلِلهِ الْحَمْدُ',
+    latin: 'Laa ilaaha illallahu wallahu akbar wa lillahil hamd.',
+    arti: 'Tiada Tuhan selain Allah, Allah Maha Besar, dan bagi Allah segala puji.',
   },
   {
-    "id": 6,
-    "judul": "Kalimat Toyyibah (33x)",
-    "arab": "لاَ إِلهَ إِلاَّ اللهُ",
-    "latin": "Laa ilaaha illallah",
-    "arti": "Tiada Tuhan selain Allah."
+    id: 6,
+    judul: 'Kalimat Toyyibah (33x)',
+    arab: 'لاَ إِلهَ إِلاَّ اللهُ',
+    latin: 'Laa ilaaha illallah',
+    arti: 'Tiada Tuhan selain Allah.',
   },
   {
-    "id": 7,
-    "judul": "Doa Penutup Singkat",
-    "arab": "اَللَّهُمَّ اغْفِرْ لَهُمْ وَارْحَمْهُمْ وَعَافِهِمْ وَاعْفُ عَنْهُمْ",
-    "latin": "Allahummaghfir lahum warhamhum wa 'aafihim wa'fu 'anhum.",
-    "arti": "Ya Allah, ampunilah mereka, sayangilah mereka, selamatkanlah mereka, dan maafkanlah mereka."
-  }
+    id: 7,
+    judul: 'Doa Penutup Singkat',
+    arab: 'اَللَّهُمَّ اغْفِرْ لَهُمْ وَارْحَمْهُمْ وَعَافِهِمْ وَاعْفُ عَنْهُمْ',
+    latin: "Allahummaghfir lahum warhamhum wa 'aafihim wa'fu 'anhum.",
+    arti: 'Ya Allah, ampunilah mereka, sayangilah mereka, selamatkanlah mereka, dan maafkanlah mereka.',
+  },
 ];
 ---
 
 <BaseLayout pageTitle="Tahlil & Doa">
-  
-  <HeaderBack title="Tahlil & Doa">
-    <button slot="right" id="settings-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 hover:text-emerald-600 transition-colors cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  <HeaderSticky title="Tahlil & Doa" rightSlot>
+    <button
+      slot="right"
+      id="settings-btn"
+      class="cursor-pointer rounded-full bg-slate-100 p-2 text-slate-600 transition-colors hover:bg-emerald-100 hover:text-emerald-600 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-emerald-900/30"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><circle cx="12" cy="12" r="3"></circle><path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+        ></path></svg
+      >
     </button>
-  </HeaderBack>
+  </HeaderSticky>
 
-  <div class="text-center mb-8 mt-4">
-    <h1 class="font-bold text-2xl text-slate-800 dark:text-white mb-2">Tahlil & Doa Arwah</h1>
-    <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">Bacaan tahlil lengkap untuk mendoakan keluarga yang telah mendahului kita.</p>
+  <div class="mt-4 mb-8 text-center">
+    <h1 class="mb-2 text-2xl font-bold text-slate-800 dark:text-white">Tahlil & Doa Arwah</h1>
+    <p class="mx-auto max-w-xs text-sm text-slate-500 dark:text-slate-400">
+      Bacaan tahlil lengkap untuk mendoakan keluarga yang telah mendahului kita.
+    </p>
   </div>
 
-  <div class="space-y-6 pb-32 px-4 max-w-md mx-auto">
-    {tahlilData.map((item, index) => (
-      <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
-        
-        <div class="flex items-center gap-3 mb-4 border-b border-slate-50 dark:border-slate-700 pb-3">
-          <span class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
-            {index + 1}
-          </span>
-          <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm uppercase tracking-wide">
-            {item.judul}
-          </h3>
+  <div class="mx-auto max-w-md space-y-6 px-4 pb-32">
+    {
+      tahlilData.map((item, index) => (
+        <div class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+          <div class="mb-4 flex items-center gap-3 border-b border-slate-50 pb-3 dark:border-slate-700">
+            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+              {index + 1}
+            </span>
+            <h3 class="text-sm font-bold tracking-wide text-slate-700 uppercase dark:text-slate-200">
+              {item.judul}
+            </h3>
+          </div>
+
+          <div class="mb-4 text-right">
+            <p
+              class="text-arab font-amiri text-3xl leading-[2.2] text-slate-800 dark:text-slate-100"
+              dir="rtl"
+            >
+              {item.arab}
+            </p>
+          </div>
+
+          <div class="space-y-2">
+            <p class="text-latin text-sm leading-relaxed font-medium text-emerald-600 italic dark:text-emerald-400">
+              {item.latin}
+            </p>
+            <p class="text-arti border-l-2 border-slate-200 pl-3 text-sm leading-relaxed text-slate-500 dark:border-slate-700 dark:text-slate-400">
+              {item.arti}
+            </p>
+          </div>
         </div>
+      ))
+    }
 
-        <div class="text-right mb-4">
-          <p class="text-arab font-amiri text-3xl leading-[2.2] text-slate-800 dark:text-slate-100" dir="rtl">
-            {item.arab}
-          </p>
-        </div>
-
-        <div class="space-y-2">
-          <p class="text-latin text-emerald-600 dark:text-emerald-400 font-medium italic text-sm leading-relaxed">
-            {item.latin}
-          </p>
-          <p class="text-arti text-slate-500 dark:text-slate-400 text-sm leading-relaxed border-l-2 border-slate-200 dark:border-slate-700 pl-3">
-            {item.arti}
-          </p>
-        </div>
-
-      </div>
-    ))}
-
-    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 p-6 rounded-2xl shadow-lg text-white text-center mt-8">
-      <h3 class="font-bold text-lg mb-2">Selesai</h3>
-      <p class="text-sm opacity-90 mb-4">Semoga doa-doa yang dipanjatkan sampai kepada ahli kubur dan diterima oleh Allah SWT.</p>
-      <a href="/" class="inline-block bg-white text-emerald-600 px-6 py-2 rounded-full font-bold text-sm hover:bg-emerald-50 transition-colors">
+    <div
+      class="mt-8 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 p-6 text-center text-white shadow-lg"
+    >
+      <h3 class="mb-2 text-lg font-bold">Selesai</h3>
+      <p class="mb-4 text-sm opacity-90">
+        Semoga doa-doa yang dipanjatkan sampai kepada ahli kubur dan diterima oleh Allah SWT.
+      </p>
+      <a
+        href="/"
+        class="inline-block rounded-full bg-white px-6 py-2 text-sm font-bold text-emerald-600 transition-colors hover:bg-emerald-50"
+      >
         Kembali ke Dashboard
       </a>
     </div>
@@ -112,20 +144,46 @@ const tahlilData = [
   </div>
 
   <div id="settings-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="overlay"></div>
-    <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up ring-1 ring-white/10">
-      <div class="flex justify-between items-center mb-6 max-w-md mx-auto w-full">
-        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Pengaturan Tampilan</h3>
-        <button id="close-settings" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="overlay">
+    </div>
+    <div
+      class="animate-slide-up absolute bottom-0 left-0 w-full rounded-t-3xl bg-white p-6 shadow-2xl ring-1 ring-white/10 dark:bg-slate-900"
+    >
+      <div class="mx-auto mb-6 flex w-full max-w-md items-center justify-between">
+        <h3 class="text-lg font-bold text-slate-800 dark:text-white">Pengaturan Tampilan</h3>
+        <button
+          id="close-settings"
+          class="rounded-full bg-slate-100 p-2 text-slate-500 dark:bg-slate-800"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg
+          >
         </button>
       </div>
-      
-      <div class="space-y-6 max-w-md mx-auto w-full">
+
+      <div class="mx-auto w-full max-w-md space-y-6">
         <div>
-          <label class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-3">Ukuran Font Arab</label>
-          <input type="range" id="font-size-range" min="1" max="5" step="1" value="3" class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-          <div class="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+          <label class="mb-3 block text-sm font-medium text-slate-600 dark:text-slate-400"
+            >Ukuran Font Arab</label
+          >
+          <input
+            type="range"
+            id="font-size-range"
+            min="1"
+            max="5"
+            step="1"
+            value="3"
+            class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-emerald-500 dark:bg-slate-700"
+          />
+          <div class="mt-2 flex justify-between text-xs font-medium text-slate-400">
             <span>Kecil</span>
             <span>Sedang</span>
             <span>Jumbo</span>
@@ -135,93 +193,98 @@ const tahlilData = [
         <hr class="border-slate-100 dark:border-slate-800" />
 
         <div class="flex items-center justify-between">
-          <span class="text-slate-700 dark:text-slate-200 font-medium">Teks Latin</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="toggle-latin" class="sr-only peer" checked>
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+          <span class="font-medium text-slate-700 dark:text-slate-200">Teks Latin</span>
+          <label class="relative inline-flex cursor-pointer items-center">
+            <input type="checkbox" id="toggle-latin" class="peer sr-only" checked />
+            <div
+              class="peer h-6 w-11 rounded-full bg-slate-200 peer-checked:bg-emerald-500 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-slate-700"
+            >
+            </div>
           </label>
         </div>
 
         <div class="flex items-center justify-between">
-          <span class="text-slate-700 dark:text-slate-200 font-medium">Terjemahan</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="toggle-arti" class="sr-only peer" checked>
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
+          <span class="font-medium text-slate-700 dark:text-slate-200">Terjemahan</span>
+          <label class="relative inline-flex cursor-pointer items-center">
+            <input type="checkbox" id="toggle-arti" class="peer sr-only" checked />
+            <div
+              class="peer h-6 w-11 rounded-full bg-slate-200 peer-checked:bg-emerald-500 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-slate-700"
+            >
+            </div>
           </label>
         </div>
       </div>
     </div>
   </div>
-
 </BaseLayout>
 
 <script is:inline>
-(() => {
-  const initTahlil = () => {
-    if (window._tahlilInitialized) return;
-    const settingsBtn = document.getElementById('settings-btn');
-    const settingsModal = document.getElementById('settings-modal');
-    if (!settingsBtn || !settingsModal) return;
-    window._tahlilInitialized = true;
-    const closeSettings = document.getElementById('close-settings');
-    const overlay = document.getElementById('overlay');
-    
-    const fontSizeRange = document.getElementById('font-size-range');
-    const toggleLatin = document.getElementById('toggle-latin');
-    const toggleArti = document.getElementById('toggle-arti');
+  (() => {
+    const initTahlil = () => {
+      if (window._tahlilInitialized) return;
+      const settingsBtn = document.getElementById('settings-btn');
+      const settingsModal = document.getElementById('settings-modal');
+      if (!settingsBtn || !settingsModal) return;
+      window._tahlilInitialized = true;
+      const closeSettings = document.getElementById('close-settings');
+      const overlay = document.getElementById('overlay');
 
-    const showModal = () => settingsModal?.classList.remove('hidden');
-    const hideModal = () => settingsModal?.classList.add('hidden');
+      const fontSizeRange = document.getElementById('font-size-range');
+      const toggleLatin = document.getElementById('toggle-latin');
+      const toggleArti = document.getElementById('toggle-arti');
 
-    settingsBtn?.addEventListener('click', showModal);
-    closeSettings?.addEventListener('click', hideModal);
-    overlay?.addEventListener('click', hideModal);
+      const showModal = () => settingsModal?.classList.remove('hidden');
+      const hideModal = () => settingsModal?.classList.add('hidden');
 
-    const applySettings = () => {
-      if(!fontSizeRange) return;
+      settingsBtn?.addEventListener('click', showModal);
+      closeSettings?.addEventListener('click', hideModal);
+      overlay?.addEventListener('click', hideModal);
 
-      const size = parseInt(fontSizeRange.value);
-      const showLatin = toggleLatin.checked;
-      const showArti = toggleArti.checked;
+      const applySettings = () => {
+        if (!fontSizeRange) return;
 
-      const sizeClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
-      
-      document.querySelectorAll('.text-arab').forEach(el => {
-        el.classList.remove(...sizeClasses);
-        el.classList.add(sizeClasses[size - 1]);
-      });
+        const size = parseInt(fontSizeRange.value);
+        const showLatin = toggleLatin.checked;
+        const showArti = toggleArti.checked;
 
-      document.querySelectorAll('.text-latin').forEach(el => {
-        el.style.display = showLatin ? 'block' : 'none';
-      });
-      
-      document.querySelectorAll('.text-arti').forEach(el => {
-        el.style.display = showArti ? 'block' : 'none';
-      });
+        const sizeClasses = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl'];
 
-      localStorage.setItem('tahlil-settings', JSON.stringify({ size, showLatin, showArti }));
+        document.querySelectorAll('.text-arab').forEach((el) => {
+          el.classList.remove(...sizeClasses);
+          el.classList.add(sizeClasses[size - 1]);
+        });
+
+        document.querySelectorAll('.text-latin').forEach((el) => {
+          el.style.display = showLatin ? 'block' : 'none';
+        });
+
+        document.querySelectorAll('.text-arti').forEach((el) => {
+          el.style.display = showArti ? 'block' : 'none';
+        });
+
+        localStorage.setItem('tahlil-settings', JSON.stringify({ size, showLatin, showArti }));
+      };
+
+      fontSizeRange?.addEventListener('input', applySettings);
+      toggleLatin?.addEventListener('change', applySettings);
+      toggleArti?.addEventListener('change', applySettings);
+
+      try {
+        const saved = localStorage.getItem('tahlil-settings');
+        if (saved) {
+          const { size, showLatin, showArti } = JSON.parse(saved);
+          if (fontSizeRange) fontSizeRange.value = size;
+          if (toggleLatin) toggleLatin.checked = showLatin;
+          if (toggleArti) toggleArti.checked = showArti;
+        }
+      } catch (e) {}
+
+      applySettings();
     };
 
-    fontSizeRange?.addEventListener('input', applySettings);
-    toggleLatin?.addEventListener('change', applySettings);
-    toggleArti?.addEventListener('change', applySettings);
-
-    try {
-      const saved = localStorage.getItem('tahlil-settings');
-      if (saved) {
-        const { size, showLatin, showArti } = JSON.parse(saved);
-        if(fontSizeRange) fontSizeRange.value = size;
-        if(toggleLatin) toggleLatin.checked = showLatin;
-        if(toggleArti) toggleArti.checked = showArti;
-      }
-    } catch (e) {}
-    
-    applySettings();
-  };
-
-  document.addEventListener('astro:page-load', initTahlil);
-  document.addEventListener('astro:before-swap', () => {
-    window._tahlilInitialized = false;
-  });
-})();
+    document.addEventListener('astro:page-load', initTahlil);
+    document.addEventListener('astro:before-swap', () => {
+      window._tahlilInitialized = false;
+    });
+  })();
 </script>

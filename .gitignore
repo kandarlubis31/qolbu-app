@@ -72,3 +72,18 @@ Desktop.ini
 # Uploaded Assets (if any)
 # ========================
 /public/uploads/
+
+# ========================
+# Test & Coverage
+# ========================
+coverage/
+playwright-report/
+test-results/
+playwright/.cache/
+
+# ========================
+# Temp debug
+# ========================
+*-woff2*.css
+amiri*.css
+inter*.css

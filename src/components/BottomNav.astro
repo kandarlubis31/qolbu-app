@@ -1,0 +1,90 @@
+---
+// src/components/BottomNav.astro — Mobile thumb-zone nav, auto-hide on scroll
+const nav = [
+  {
+    href: '/',
+    label: 'Home',
+    icon: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+    active: Astro.url.pathname === '/',
+  },
+  {
+    href: '/sholat',
+    label: 'Sholat',
+    icon: 'M12 2a10 10 0 0 0-9 14 10 10 0 0 0 9 4 10 10 0 0 0 9-4A10 10 0 0 0 12 2z',
+    active: Astro.url.pathname.startsWith('/sholat'),
+  },
+  {
+    href: '/quran',
+    label: "Qur'an",
+    icon: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z',
+    active: Astro.url.pathname.startsWith('/quran'),
+  },
+  {
+    href: '/doa',
+    label: 'Doa',
+    icon: 'M12 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M12 7V5 M12 15v2 M8.5 8.5l1.5 1.5 M15.5 15.5l-1.5-1.5 M8.5 15.5l1.5-1.5 M15.5 8.5l-1.5 1.5',
+    active: Astro.url.pathname.startsWith('/doa') || Astro.url.pathname.startsWith('/dzikir'),
+  },
+];
+---
+
+<nav
+  id="bottom-nav"
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl transition-transform duration-300 md:hidden dark:border-slate-800 dark:bg-slate-900/95"
+  aria-label="Navigasi utama"
+>
+  <div class="mx-auto flex h-16 max-w-md items-center justify-around px-2">
+    {
+      nav.map((item) => (
+        <a
+          href={item.href}
+          aria-current={item.active ? 'page' : undefined}
+          class={`flex min-w-[64px] flex-col items-center justify-center gap-1 rounded-xl px-3 py-1.5 transition-all ${item.active ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d={item.icon} />
+          </svg>
+          <span class="text-[10px] font-bold tracking-wide">{item.label}</span>
+        </a>
+      ))
+    }
+  </div>
+</nav>
+<div class="h-16 md:hidden" aria-hidden="true"></div>
+
+<script is:inline>
+  (() => {
+    let lastY = window.scrollY;
+    const nav = document.getElementById('bottom-nav');
+    if (!nav) return;
+    let ticking = false;
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          const diff = y - lastY;
+          if (y < 80) nav.style.transform = 'translateY(0)';
+          else if (diff > 8) nav.style.transform = 'translateY(100%)';
+          else if (diff < -8) nav.style.transform = 'translateY(0)';
+          lastY = y;
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+  })();
+</script>

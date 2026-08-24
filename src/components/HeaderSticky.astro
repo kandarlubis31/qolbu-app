@@ -1,0 +1,80 @@
+---
+// src/components/HeaderSticky.astro
+interface Props {
+  title: string;
+  href?: string;
+  backLabel?: string;
+  leftSlot?: boolean;
+  rightSlot?: boolean;
+  class?: string;
+}
+
+const {
+  title,
+  href = '/',
+  backLabel = 'Kembali',
+  leftSlot = false,
+  rightSlot = false,
+  class: extraClass = '',
+} = Astro.props;
+---
+
+<div
+  class={`sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm gap-2 ${extraClass}`}
+>
+  <div class="flex min-w-0 flex-1 items-center gap-2">
+    {
+      leftSlot ? (
+        <slot name="left" />
+      ) : (
+        <a
+          href={href}
+          id="header-back-btn"
+          class="-ml-2 flex shrink-0 items-center gap-2 rounded-lg p-2 text-slate-600 transition-colors hover:text-emerald-600 active:bg-slate-100 dark:text-slate-400 dark:active:bg-slate-800"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+          <span class="xs:inline hidden text-sm font-medium sm:inline">{backLabel}</span>
+        </a>
+      )
+    }
+    <h1
+      class="max-w-[140px] min-w-0 flex-1 truncate text-sm font-bold text-slate-800 sm:max-w-[180px] md:max-w-[220px] dark:text-white"
+      title={title}
+    >
+      {title}
+    </h1>
+  </div>
+  <div class="flex shrink-0 items-center gap-2">
+    {rightSlot ? <slot name="right" /> : <div class="w-8 shrink-0" />}
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const initBackBtn = () => {
+      const backBtn = document.getElementById('header-back-btn');
+      if (!backBtn) return;
+
+      backBtn.onclick = (e) => {
+        if (document.referrer && document.referrer.includes(window.location.host)) {
+          e.preventDefault();
+          window.history.back();
+        }
+      };
+    };
+    initBackBtn();
+    document.addEventListener('astro:page-load', initBackBtn);
+  })();
+</script>

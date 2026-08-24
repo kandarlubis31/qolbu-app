@@ -8,77 +8,108 @@ interface Props {
 }
 
 const {
-  modalId = "settings-modal",
-  overlayId = "overlay",
-  closeId = "close-settings",
-  title = "Pengaturan Tampilan",
+  modalId = 'settings-modal',
+  overlayId = 'overlay',
+  closeId = 'close-settings',
+  title = 'Pengaturan Tampilan',
 } = Astro.props;
 ---
 
-<div id={modalId} class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id={overlayId}></div>
-  <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto" style="left: 50%; transform: translateX(-50%); max-width: 448px;">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="font-bold text-lg text-slate-800 dark:text-white">{title}</h3>
-      <button id={closeId} class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors" aria-label="Tutup">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+<div
+  id={modalId}
+  class="fixed inset-0 z-[100] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id={overlayId}>
+  </div>
+  <div
+    class="animate-slide-up absolute bottom-0 left-0 max-h-[85vh] w-full overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl dark:bg-slate-900"
+    style="left: 50%; transform: translateX(-50%); max-width: 448px;"
+  >
+    <div class="mb-6 flex items-center justify-between">
+      <h3 class="text-lg font-bold text-slate-800 dark:text-white">{title}</h3>
+      <button
+        id={closeId}
+        class="rounded-full bg-slate-100 p-2 text-slate-500 transition-colors hover:text-slate-800 dark:bg-slate-800 dark:hover:text-white"
+        aria-label="Tutup"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"
+          ></line></svg
+        >
       </button>
     </div>
     <slot />
   </div>
 </div>
 
-<script is:inline define:vars={{ modalId, overlayId, closeId }}>
-(() => {
-  const setupModalHandlers = () => {
-    const modal = document.getElementById(modalId);
-    const overlay = document.getElementById(overlayId);
-    const closeBtn = document.getElementById(closeId);
-    
-    if (!modal) return;
+<script is:inline>
+  (() => {
+    const {
+      modalId = 'settings-modal',
+      overlayId = 'overlay',
+      closeId = 'close-settings',
+    } = Astro.props;
+    const setupModalHandlers = () => {
+      const modal = document.getElementById(modalId);
+      const overlay = document.getElementById(overlayId);
+      const closeBtn = document.getElementById(closeId);
 
-    const closeModal = () => modal.classList.add('hidden');
+      if (!modal) return;
 
-    if (overlay) overlay.onclick = closeModal;
-    if (closeBtn) closeBtn.onclick = closeModal;
+      const closeModal = () => modal.classList.add('hidden');
 
-    // Bersihkan keydown lama sebelum menimpa yang baru untuk mencegah memory leak
-    document.onkeydown = null;
-    document.onkeydown = (e) => {
-      if (modal.classList.contains('hidden')) return;
+      if (overlay) overlay.onclick = closeModal;
+      if (closeBtn) closeBtn.onclick = closeModal;
 
-      if (e.key === 'Escape') {
-        closeModal();
-        return;
-      }
+      // Bersihkan keydown lama sebelum menimpa yang baru untuk mencegah memory leak
+      document.onkeydown = null;
+      document.onkeydown = (e) => {
+        if (modal.classList.contains('hidden')) return;
 
-      if (e.key === 'Tab') {
-        const focusable = modal.querySelectorAll(
-          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
+        if (e.key === 'Escape') {
+          closeModal();
+          return;
+        }
 
-        if (e.shiftKey) {
-          if (document.activeElement === first || document.activeElement === modal) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
+        if (e.key === 'Tab') {
+          const focusable = modal.querySelectorAll(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusable.length === 0) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === first || document.activeElement === modal) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
           }
         }
-      }
+      };
     };
-  };
 
-  setupModalHandlers();
-  document.addEventListener('astro:page-load', setupModalHandlers);
-  document.addEventListener('astro:before-swap', () => {
-    document.onkeydown = null;
-  });
-})();
+    setupModalHandlers();
+    document.addEventListener('astro:page-load', setupModalHandlers);
+    document.addEventListener('astro:before-swap', () => {
+      document.onkeydown = null;
+    });
+  })();
 </script>

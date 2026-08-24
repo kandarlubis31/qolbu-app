@@ -1,0 +1,91 @@
+---
+interface Props {
+  icon?: string;
+  title?: string;
+  desc?: string;
+  actionLabel?: string;
+  actionId?: string;
+}
+const {
+  icon = 'search',
+  title = 'Tidak ditemukan',
+  desc = '',
+  actionLabel = '',
+  actionId = 'empty-action',
+} = Astro.props;
+---
+
+<div class="px-4 py-12 text-center">
+  <div class="mb-3 inline-flex rounded-full bg-slate-100 p-4 text-slate-400 dark:bg-slate-800">
+    {
+      icon === 'search' && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <>
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+            <path d="m9 9 4 4" />
+            <path d="m9 13 4-4" />
+          </>
+        </svg>
+      )
+    }
+    {
+      icon === 'book' && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <>
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </>
+        </svg>
+      )
+    }
+    {
+      icon === 'inbox' && (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <>
+            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+            <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+          </>
+        </svg>
+      )
+    }
+  </div>
+  <p class="mb-1 text-sm font-bold text-slate-800 dark:text-white">{title}</p>
+  {desc && <p class="mx-auto mb-4 max-w-xs text-xs text-slate-500 dark:text-slate-400">{desc}</p>}
+  {
+    actionLabel && (
+      <button
+        id={actionId}
+        class="rounded-full bg-emerald-600 px-5 py-2 text-xs font-bold text-white shadow-md transition-colors hover:bg-emerald-700"
+      >
+        {actionLabel}
+      </button>
+    )
+  }
+</div>

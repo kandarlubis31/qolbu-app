@@ -1,227 +1,348 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeaderBack from '../components/HeaderBack.astro';
+import HeaderSticky from '../components/HeaderSticky.astro';
 ---
 
 <BaseLayout pageTitle="Kalkulator Zakat">
-  
-  <HeaderBack title="Kalkulator Zakat" />
+  <HeaderSticky title="Kalkulator Zakat" />
 
-  <div class="pb-20 px-4 w-full max-w-md mx-auto">
-    
-    <div class="flex p-1 mb-6 bg-slate-100 dark:bg-slate-800 rounded-xl">
-      <button id="tab-maal" class="flex-1 py-2 px-4 rounded-lg text-sm font-bold text-emerald-600 bg-white dark:bg-slate-700 shadow-sm transition-all">
+  <div class="mx-auto w-full max-w-md px-4 pb-20">
+    <div
+      class="mb-6 flex rounded-xl bg-slate-100 p-1 dark:bg-slate-800"
+      role="tablist"
+      aria-label="Jenis Zakat"
+    >
+      <button
+        id="tab-maal"
+        role="tab"
+        aria-selected="true"
+        aria-controls="form-maal"
+        class="flex-1 rounded-lg bg-white px-4 py-2 text-sm font-bold text-emerald-600 shadow-sm transition-all dark:bg-slate-700"
+      >
         Zakat Maal
       </button>
-      <button id="tab-income" class="flex-1 py-2 px-4 rounded-lg text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all">
+      <button
+        id="tab-income"
+        role="tab"
+        aria-selected="false"
+        aria-controls="form-income"
+        class="flex-1 rounded-lg px-4 py-2 text-sm font-bold text-slate-500 transition-all hover:text-emerald-600 dark:text-slate-400"
+      >
         Penghasilan
       </button>
     </div>
 
-    <div id="form-maal" class="space-y-4 animate-fade-in">
-      <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-800 mb-4">
-        <p class="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
-          💡 <strong>Zakat Maal</strong> wajib dikeluarkan jika harta tersimpan sudah mencapai 1 tahun (Haul) dan setara 85gr Emas (Nishab).
+    <div
+      id="form-maal"
+      role="tabpanel"
+      aria-labelledby="tab-maal"
+      class="animate-fade-in space-y-4"
+    >
+      <div
+        class="mb-4 rounded-xl border border-amber-100 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20"
+      >
+        <p class="text-xs leading-relaxed text-amber-800 dark:text-amber-200">
+          💡 <strong>Zakat Maal</strong> wajib dikeluarkan jika harta tersimpan sudah mencapai 1 tahun
+          (Haul) dan setara 85gr Emas (Nishab).
         </p>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">Harga Emas Saat Ini (per gram)</label>
+        <label class="mb-1 block text-xs font-bold text-slate-500"
+          >Harga Emas Saat Ini (per gram)</label
+        >
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
-          <input type="text" inputmode="numeric" id="gold-price" value="1.200.000" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
+          <span class="absolute top-1/2 left-3 -translate-y-1/2 text-sm font-medium text-slate-400"
+            >Rp</span
+          >
+          <input
+            type="text"
+            inputmode="numeric"
+            id="gold-price"
+            value="1.200.000"
+            class="input-rupiah w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pr-4 pl-10 font-bold text-slate-800 transition-all outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+          />
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">Total Harta (Tabungan/Emas/Aset)</label>
+        <label class="mb-1 block text-xs font-bold text-slate-500"
+          >Total Harta (Tabungan/Emas/Aset)</label
+        >
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
-          <input type="text" inputmode="numeric" id="total-wealth" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
+          <span class="absolute top-1/2 left-3 -translate-y-1/2 text-sm font-medium text-slate-400"
+            >Rp</span
+          >
+          <input
+            type="text"
+            inputmode="numeric"
+            id="total-wealth"
+            placeholder="0"
+            class="input-rupiah w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pr-4 pl-10 font-bold text-slate-800 transition-all outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+          />
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">Hutang Jatuh Tempo (Pengurang)</label>
+        <label class="mb-1 block text-xs font-bold text-slate-500"
+          >Hutang Jatuh Tempo (Pengurang)</label
+        >
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
-          <input type="text" inputmode="numeric" id="total-debt" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
+          <span class="absolute top-1/2 left-3 -translate-y-1/2 text-sm font-medium text-slate-400"
+            >Rp</span
+          >
+          <input
+            type="text"
+            inputmode="numeric"
+            id="total-debt"
+            placeholder="0"
+            class="input-rupiah w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pr-4 pl-10 font-bold text-slate-800 transition-all outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+          />
         </div>
       </div>
     </div>
 
-    <div id="form-income" class="space-y-4 hidden animate-fade-in">
-      <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-4">
-        <p class="text-xs text-blue-800 dark:text-blue-200 leading-relaxed">
-          💡 <strong>Zakat Penghasilan</strong> dikeluarkan setiap menerima gaji. Nisab per bulan setara dengan 85 gram emas dibagi 12 (atau dikiaskan 520kg beras).
+    <div
+      id="form-income"
+      role="tabpanel"
+      aria-labelledby="tab-income"
+      class="animate-fade-in hidden space-y-4"
+    >
+      <div
+        class="mb-4 rounded-xl border border-blue-100 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20"
+      >
+        <p class="text-xs leading-relaxed text-blue-800 dark:text-blue-200">
+          💡 <strong>Zakat Penghasilan</strong> dikeluarkan setiap menerima gaji. Nisab per bulan setara
+          dengan 85 gram emas dibagi 12 (atau dikiaskan 520kg beras).
         </p>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">Penghasilan Per Bulan</label>
+        <label class="mb-1 block text-xs font-bold text-slate-500">Penghasilan Per Bulan</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
-          <input type="text" inputmode="numeric" id="monthly-income" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
+          <span class="absolute top-1/2 left-3 -translate-y-1/2 text-sm font-medium text-slate-400"
+            >Rp</span
+          >
+          <input
+            type="text"
+            inputmode="numeric"
+            id="monthly-income"
+            placeholder="0"
+            class="input-rupiah w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pr-4 pl-10 font-bold text-slate-800 transition-all outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+          />
         </div>
       </div>
-      
+
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">Bonus / THR (Opsional)</label>
+        <label class="mb-1 block text-xs font-bold text-slate-500">Bonus / THR (Opsional)</label>
         <div class="relative">
-          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">Rp</span>
-          <input type="text" inputmode="numeric" id="other-income" placeholder="0" class="input-rupiah w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 outline-none focus:ring-2 focus:ring-emerald-500 transition-all font-bold text-slate-800 dark:text-white" />
+          <span class="absolute top-1/2 left-3 -translate-y-1/2 text-sm font-medium text-slate-400"
+            >Rp</span
+          >
+          <input
+            type="text"
+            inputmode="numeric"
+            id="other-income"
+            placeholder="0"
+            class="input-rupiah w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pr-4 pl-10 font-bold text-slate-800 transition-all outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+          />
         </div>
       </div>
     </div>
 
-    <button id="btn-calculate" class="w-full mt-8 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-500/30 transition-all active:scale-95">
+    <button
+      id="btn-calculate"
+      disabled
+      class="mt-8 w-full rounded-xl bg-emerald-600 py-3.5 font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:bg-emerald-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+    >
       Hitung Zakat
     </button>
 
-    <div id="result-card" class="hidden mt-6 bg-slate-900 dark:bg-black p-6 rounded-2xl text-white shadow-xl relative overflow-hidden">
-      <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
-        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    <div
+      id="result-card"
+      class="relative mt-6 hidden overflow-hidden rounded-2xl bg-slate-900 p-6 text-white shadow-xl dark:bg-black"
+    >
+      <div class="absolute top-0 right-0 translate-x-4 -translate-y-4 transform opacity-10">
+        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"
+          ><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg
+        >
       </div>
-      
+
       <div class="relative z-10 text-center">
-        <p class="text-slate-400 text-xs font-medium uppercase tracking-widest mb-1">Wajib Zakat (2.5%)</p>
-        <h2 id="zakat-amount" class="text-3xl font-black text-emerald-400 my-3">Rp 0</h2>
-        <p id="nishab-status" class="text-xs text-slate-300 bg-slate-800 inline-block px-3 py-1.5 rounded-full mt-1">
+        <p class="mb-1 text-xs font-medium tracking-widest text-slate-400 uppercase">
+          Wajib Zakat (2.5%)
+        </p>
+        <h2 id="zakat-amount" class="my-3 text-3xl font-black text-emerald-400">Rp 0</h2>
+        <p
+          id="nishab-status"
+          class="mt-1 inline-block rounded-full bg-slate-800 px-3 py-1.5 text-xs text-slate-300"
+        >
           Menunggu perhitungan...
         </p>
       </div>
     </div>
-
   </div>
-
 </BaseLayout>
 
 <script is:inline>
-(() => {
-  const initZakat = () => {
-    if (window._zakatInitialized) return;
-    // --- TABS LOGIC ---
-    const tabMaal = document.getElementById('tab-maal');
-    const tabIncome = document.getElementById('tab-income');
-    if (!tabMaal || !tabIncome) return;
-    window._zakatInitialized = true;
-    const formMaal = document.getElementById('form-maal');
-    const formIncome = document.getElementById('form-income');
-    const resultCard = document.getElementById('result-card');
-    
-    let activeTab = 'maal'; // maal | income
+  (() => {
+    const initZakat = () => {
+      if (window._zakatInitialized) return;
+      // --- TABS LOGIC ---
+      const tabMaal = document.getElementById('tab-maal');
+      const tabIncome = document.getElementById('tab-income');
+      if (!tabMaal || !tabIncome) return;
+      window._zakatInitialized = true;
+      const formMaal = document.getElementById('form-maal');
+      const formIncome = document.getElementById('form-income');
+      const resultCard = document.getElementById('result-card');
 
-    const switchTab = (tab) => {
-      activeTab = tab;
-      if (tab === 'maal') {
-        tabMaal.className = "flex-1 py-2 px-4 rounded-lg text-sm font-bold text-emerald-600 bg-white dark:bg-slate-700 shadow-sm transition-all";
-        tabIncome.className = "flex-1 py-2 px-4 rounded-lg text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all";
-        formMaal.classList.remove('hidden');
-        formIncome.classList.add('hidden');
-      } else {
-        tabIncome.className = "flex-1 py-2 px-4 rounded-lg text-sm font-bold text-emerald-600 bg-white dark:bg-slate-700 shadow-sm transition-all";
-        tabMaal.className = "flex-1 py-2 px-4 rounded-lg text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all";
-        formIncome.classList.remove('hidden');
-        formMaal.classList.add('hidden');
-      }
-      resultCard.classList.add('hidden');
-    };
+      let activeTab = 'maal'; // maal | income
 
-    tabMaal.addEventListener('click', () => switchTab('maal'));
-    tabIncome.addEventListener('click', () => switchTab('income'));
+      const switchTab = (tab) => {
+        activeTab = tab;
+        if (tab === 'maal') {
+          tabMaal.className =
+            'flex-1 py-2 px-4 rounded-lg text-sm font-bold text-emerald-600 bg-white dark:bg-slate-700 shadow-sm transition-all';
+          tabMaal.setAttribute('aria-selected', 'true');
+          tabIncome.className =
+            'flex-1 py-2 px-4 rounded-lg text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all';
+          tabIncome.setAttribute('aria-selected', 'false');
+          formMaal.classList.remove('hidden');
+          formIncome.classList.add('hidden');
+        } else {
+          tabIncome.className =
+            'flex-1 py-2 px-4 rounded-lg text-sm font-bold text-emerald-600 bg-white dark:bg-slate-700 shadow-sm transition-all';
+          tabIncome.setAttribute('aria-selected', 'true');
+          tabMaal.className =
+            'flex-1 py-2 px-4 rounded-lg text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all';
+          tabMaal.setAttribute('aria-selected', 'false');
+          formIncome.classList.remove('hidden');
+          formMaal.classList.add('hidden');
+        }
+        resultCard.classList.add('hidden');
+      };
 
-    // --- RUPIAH FORMATTER ---
-    const inputs = document.querySelectorAll('.input-rupiah');
+      tabMaal.addEventListener('click', () => switchTab('maal'));
+      tabIncome.addEventListener('click', () => switchTab('income'));
 
-    // Fungsi untuk mengubah angka biasa jadi format ribuan (1.000.000)
-    const formatRupiah = (angka) => {
-      let number_string = angka.replace(/[^,\d]/g, '').toString();
-      let split = number_string.split(',');
-      let sisa = split[0].length % 3;
-      let rupiah = split[0].substr(0, sisa);
-      let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+      // --- RUPIAH FORMATTER ---
+      const inputs = document.querySelectorAll('.input-rupiah');
 
-      if (ribuan) {
-        let separator = sisa ? '.' : '';
-        rupiah += separator + ribuan.join('.');
-      }
+      // Fungsi untuk mengubah angka biasa jadi format ribuan (1.000.000)
+      const formatRupiah = (angka) => {
+        let number_string = angka.replace(/[^,\d]/g, '').toString();
+        let split = number_string.split(',');
+        let sisa = split[0].length % 3;
+        let rupiah = split[0].substr(0, sisa);
+        let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-      return rupiah;
-    };
+        if (ribuan) {
+          let separator = sisa ? '.' : '';
+          rupiah += separator + ribuan.join('.');
+        }
 
-    // Fungsi untuk mengambil angka asli (int) dari format ribuan
-    const getInt = (str) => {
-      if (!str) return 0;
-      return parseInt(str.replace(/\./g, '')) || 0;
-    };
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return rupiah;
+      };
 
-    inputs.forEach(input => {
-      input.addEventListener('input', function(e) {
-        this.value = formatRupiah(this.value);
+      // Fungsi untuk mengambil angka asli (int) dari format ribuan
+      const getInt = (str) => {
+        if (!str) return 0;
+        return parseInt(str.replace(/\./g, '')) || 0;
+      };
+
+      inputs.forEach((input) => {
+        input.addEventListener('input', function () {
+          const start = this.selectionStart;
+          const beforeLen = this.value.length;
+          this.value = formatRupiah(this.value);
+          const afterLen = this.value.length;
+          const diff = afterLen - beforeLen;
+          try {
+            this.setSelectionRange(start + diff, start + diff);
+          } catch {}
+          // Disable/enable calculate button based on input validity
+          const hasValue =
+            getInt(
+              document.getElementById('total-wealth')?.value ||
+                document.getElementById('monthly-income')?.value ||
+                '0'
+            ) > 0;
+          btnCalc.disabled = !hasValue;
+          btnCalc.classList.toggle('opacity-50', !hasValue);
+          btnCalc.classList.toggle('cursor-not-allowed', !hasValue);
+        });
       });
-    });
 
-    // --- CALCULATION LOGIC ---
-    const btnCalc = document.getElementById('btn-calculate');
-    const zakatAmount = document.getElementById('zakat-amount');
-    const nishabStatus = document.getElementById('nishab-status');
+      // --- CALCULATION LOGIC ---
+      const btnCalc = document.getElementById('btn-calculate');
+      const zakatAmount = document.getElementById('zakat-amount');
+      const nishabStatus = document.getElementById('nishab-status');
 
-    btnCalc.addEventListener('click', () => {
-      let total = 0;
-      let threshold = 0; 
-      const formatRp = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
+      btnCalc.addEventListener('click', () => {
+        let total = 0;
+        let threshold = 0;
+        const formatRp = (n) =>
+          new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            maximumFractionDigits: 0,
+          }).format(n);
 
-      // Ambil harga emas dari inputan Maal (dipakai juga untuk patokan penghasilan)
-      const goldPrice = getInt(document.getElementById('gold-price').value) || 1200000;
+        // Ambil harga emas dari inputan Maal (dipakai juga untuk patokan penghasilan)
+        const goldPrice = getInt(document.getElementById('gold-price').value) || 1200000;
 
-      if (activeTab === 'maal') {
-        const wealth = getInt(document.getElementById('total-wealth').value);
-        const debt = getInt(document.getElementById('total-debt').value);
-        
-        total = wealth - debt;
-        threshold = 85 * goldPrice; // Nishab: 85 gram emas
-        
-        if (total >= threshold) {
-          const zakat = total * 0.025;
-          zakatAmount.innerText = formatRp(zakat);
-          nishabStatus.innerText = "✅ Wajib Zakat (Mencapai Nishab)";
-          nishabStatus.className = "text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
+        if (activeTab === 'maal') {
+          const wealth = getInt(document.getElementById('total-wealth').value);
+          const debt = getInt(document.getElementById('total-debt').value);
+
+          total = wealth - debt;
+          threshold = 85 * goldPrice; // Nishab: 85 gram emas
+
+          if (total >= threshold) {
+            const zakat = total * 0.025;
+            zakatAmount.innerText = formatRp(zakat);
+            nishabStatus.innerText = '✅ Wajib Zakat (Mencapai Nishab)';
+            nishabStatus.className =
+              'text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1';
+          } else {
+            zakatAmount.innerText = 'Rp 0';
+            nishabStatus.innerText = `❌ Belum Wajib (Nishab: ${formatRp(threshold)})`;
+            nishabStatus.className =
+              'text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1';
+          }
         } else {
-          zakatAmount.innerText = "Rp 0";
-          nishabStatus.innerText = `❌ Belum Wajib (Nishab: ${formatRp(threshold)})`;
-          nishabStatus.className = "text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
+          const income = getInt(document.getElementById('monthly-income').value);
+          const bonus = getInt(document.getElementById('other-income').value);
+
+          total = income + bonus;
+
+          // Nishab Perbulan (85gr Emas / 12 bulan)
+          threshold = (85 * goldPrice) / 12;
+
+          if (total >= threshold) {
+            const zakat = total * 0.025;
+            zakatAmount.innerText = formatRp(zakat);
+            nishabStatus.innerText = '✅ Wajib Zakat Penghasilan';
+            nishabStatus.className =
+              'text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1';
+          } else {
+            zakatAmount.innerText = 'Rp 0';
+            nishabStatus.innerText = `❌ Belum Wajib (Min: ${formatRp(threshold)}/bln)`;
+            nishabStatus.className =
+              'text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1';
+          }
         }
 
-      } else {
-        const income = getInt(document.getElementById('monthly-income').value);
-        const bonus = getInt(document.getElementById('other-income').value);
-        
-        total = income + bonus;
-        
-        // Nishab Perbulan (85gr Emas / 12 bulan)
-        threshold = (85 * goldPrice) / 12;
+        resultCard.classList.remove('hidden');
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      });
+    };
 
-        if (total >= threshold) {
-           const zakat = total * 0.025;
-           zakatAmount.innerText = formatRp(zakat);
-           nishabStatus.innerText = "✅ Wajib Zakat Penghasilan";
-           nishabStatus.className = "text-xs text-emerald-100 bg-emerald-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
-        } else {
-           zakatAmount.innerText = "Rp 0";
-           nishabStatus.innerText = `❌ Belum Wajib (Min: ${formatRp(threshold)}/bln)`;
-           nishabStatus.className = "text-xs text-rose-100 bg-rose-600 inline-block px-3 py-1.5 rounded-full font-bold mt-1";
-        }
-      }
-
-      resultCard.classList.remove('hidden');
-      resultCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    document.addEventListener('astro:page-load', initZakat);
+    document.addEventListener('astro:before-swap', () => {
+      window._zakatInitialized = false;
     });
-  };
-
-  document.addEventListener('astro:page-load', initZakat);
-  document.addEventListener('astro:before-swap', () => {
-    window._zakatInitialized = false;
-  });
-})();
+  })();
 </script>

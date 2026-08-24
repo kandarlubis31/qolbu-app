@@ -1,113 +1,90 @@
 ---
-// src/pages/events-hijri.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const eventsHijri = [
-  {"bulan":"Muharram","events":[
-    {"tanggal":1,"judul":"Tahun Baru Islam","desc":"Awal tahun Hijriyah. Disunnahkan berpuasa."},
-    {"tanggal":10,"judul":"Hari Asyura","desc":"Disunnahkan puasa Asyura. Hari diselamatkannya Nabi Musa AS dan kaumnya dari Fir'aun."}
-  ]},
-  {"bulan":"Shafar","events":[]},
-  {"bulan":"Rabi'ul Awal","events":[
-    {"tanggal":12,"judul":"Maulid Nabi Muhammad SAW","desc":"Peringatan kelahiran Nabi Muhammad SAW, rahmat bagi seluruh alam."}
-  ]},
-  {"bulan":"Rabi'ul Akhir","events":[]},
-  {"bulan":"Jumadil Awal","events":[]},
-  {"bulan":"Jumadil Akhir","events":[]},
-  {"bulan":"Rajab","events":[
-    {"tanggal":1,"judul":"Awal Bulan Rajab","desc":"Salah satu dari empat bulan haram (suci). Saatnya memperbanyak ibadah."},
-    {"tanggal":27,"judul":"Isra Mi'raj Nabi Muhammad SAW","desc":"Peringatan perjalanan agung Nabi SAW dari Masjidil Haram ke Masjidil Aqsha lalu Sidratul Muntaha."}
-  ]},
-  {"bulan":"Sya'ban","events":[
-    {"tanggal":15,"judul":"Nisfu Sya'ban","desc":"Malam pengampunan dosa. Disunnahkan memperbanyak ibadah dan doa."}
-  ]},
-  {"bulan":"Ramadhan","events":[
-    {"tanggal":1,"judul":"Awal Ramadhan","desc":"Bulan suci penuh berkah, ampunan, dan pembebasan dari api neraka. Wajib berpuasa sebulan penuh."},
-    {"tanggal":17,"judul":"Nuzulul Qur'an","desc":"Peringatan turunnya Al-Qur'an pertama kali kepada Nabi Muhammad SAW."},
-    {"tanggal":21,"judul":"Lailatul Qadar (Malam Ganjil)","desc":"Cari malam Lailatul Qadar di 10 malam terakhir Ramadhan, lebih baik dari 1000 bulan."}
-  ]},
-  {"bulan":"Syawwal","events":[
-    {"tanggal":1,"judul":"Idul Fitri 1 Syawwal","desc":"Hari Raya setelah sebulan berpuasa. Disunnahkan puasa 6 hari di bulan Syawwal."}
-  ]},
-  {"bulan":"Dzulqa'dah","events":[
-    {"tanggal":1,"judul":"Awal Dzulqa'dah","desc":"Salah satu bulan haram (suci). Bulan istirahat setelah Ramadhan."}
-  ]},
-  {"bulan":"Dzulhijjah","events":[
-    {"tanggal":1,"judul":"Awal Dzulhijjah","desc":"10 hari pertama Dzulhijjah sangat utama untuk beramal shalih."},
-    {"tanggal":9,"judul":"Hari Arafah","desc":"Disunnahkan puasa Arafah bagi yang tidak berhaji — menghapus dosa setahun lalu dan setahun depan."},
-    {"tanggal":10,"judul":"Idul Adha","desc":"Hari Raya Qurban. Sholat Idul Adha dan penyembelihan hewan qurban."},
-    {"tanggal":11,"judul":"Hari Tasyriq ke-1","desc":"Hari pertama tasyriq, dilarang berpuasa."},
-    {"tanggal":12,"judul":"Hari Tasyriq ke-2","desc":"Hari kedua tasyriq, dilarang berpuasa."},
-    {"tanggal":13,"judul":"Hari Tasyriq ke-3","desc":"Hari ketiga tasyriq, dilarang berpuasa."}
-  ]}
-];
+import HeaderSticky from '../components/HeaderSticky.astro';
+import eventsHijri from '../data/events-hijri.json';
 ---
 
 <BaseLayout pageTitle="Kalender Hijri">
-  
-  <div class="sticky top-16 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 -mx-4 px-4 py-3 mb-4 flex items-center justify-between shadow-sm">
-    <a href="/" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -ml-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-      <span class="font-medium text-sm">Kembali</span>
-    </a>
-    <h1 class="font-bold text-slate-800 dark:text-white text-sm">Kalender Hijri</h1>
-    <div class="w-8"></div>
-  </div>
+  <HeaderSticky title="Kalender Hijri" href="/" backLabel="Kembali" />
 
-  <div class="pb-24 px-4 w-full max-w-md mx-auto">
-    
-    <div class="bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-5 text-white shadow-lg shadow-emerald-500/20 mb-6 relative overflow-hidden">
-      <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
-        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  <div class="mx-auto w-full max-w-md px-4 pb-24">
+    <div
+      class="relative mb-6 overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-700 p-5 text-white shadow-lg shadow-emerald-500/20"
+    >
+      <div class="absolute top-0 right-0 translate-x-4 -translate-y-4 transform opacity-10">
+        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"
+          ><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line
+            x1="16"
+            y1="2"
+            x2="16"
+            y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line
+            x1="3"
+            y1="10"
+            x2="21"
+            y2="10"></line></svg
+        >
       </div>
       <div class="relative z-10">
-        <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mb-1">Islamic Calendar</p>
+        <p class="mb-1 text-xs font-medium tracking-widest text-emerald-100 uppercase">
+          Islamic Calendar
+        </p>
         <h2 class="text-xl font-bold">Events Islami Tahunan</h2>
-        <p class="text-xs text-emerald-200 mt-1">Tanggal penting dalam kalender Hijriyah</p>
+        <p class="mt-1 text-xs text-emerald-200">Tanggal penting dalam kalender Hijriyah</p>
       </div>
     </div>
 
     <div class="space-y-4">
-      {eventsHijri.map((bulan) => (
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
-          <div class="p-4 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between border-b border-slate-100 dark:border-slate-700">
-            <h3 class="font-bold text-slate-800 dark:text-white text-sm">{bulan.bulan}</h3>
-            {bulan.events.length > 0 ? (
-              <span class="text-[10px] px-2 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-bold">{bulan.events.length} Event</span>
-            ) : (
-              <span class="text-[10px] px-2 py-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-400 font-bold">-</span>
-            )}
-          </div>
-          
-          <div class="divide-y divide-slate-50 dark:divide-slate-800/50">
-            {bulan.events.length > 0 ? (
-              bulan.events.map((event) => (
-                <div class="p-4 flex gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                  <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-sm font-bold text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800 flex-shrink-0">
-                    {event.tanggal}
+      {
+        eventsHijri.map((bulan) => (
+          <div class="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="flex items-center justify-between border-b border-slate-100 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+              <h3 class="text-sm font-bold text-slate-800 dark:text-white">{bulan.bulan}</h3>
+              {bulan.events.length > 0 ? (
+                <span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-bold text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400">
+                  {bulan.events.length} Event
+                </span>
+              ) : (
+                <span class="rounded-full bg-slate-200 px-2 py-1 text-[10px] font-bold text-slate-400 dark:bg-slate-700">
+                  -
+                </span>
+              )}
+            </div>
+
+            <div class="divide-y divide-slate-50 dark:divide-slate-800/50">
+              {bulan.events.length > 0 ? (
+                bulan.events.map((event) => (
+                  <div class="flex gap-3 p-4 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-amber-100 bg-amber-50 text-sm font-bold text-amber-600 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-400">
+                      {event.tanggal}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <h4 class="mb-0.5 text-sm font-bold text-slate-800 dark:text-white">
+                        {event.judul}
+                      </h4>
+                      <p class="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                        {event.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div class="flex-1 min-w-0">
-                    <h4 class="font-bold text-slate-800 dark:text-white text-sm mb-0.5">{event.judul}</h4>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{event.desc}</p>
-                  </div>
+                ))
+              ) : (
+                <div class="p-4 text-center text-xs text-slate-400 italic dark:text-slate-500">
+                  Tidak ada event besar di bulan ini
                 </div>
-              ))
-            ) : (
-              <div class="p-4 text-center text-xs text-slate-400 dark:text-slate-500 italic">
-                Tidak ada event besar di bulan ini
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
-    <div class="mt-8 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-100 dark:border-amber-800 text-center">
+    <div
+      class="mt-8 rounded-xl border border-amber-100 bg-amber-50 p-4 text-center dark:border-amber-800 dark:bg-amber-900/20"
+    >
       <p class="text-xs text-amber-800 dark:text-amber-200">
-        💡 <strong>Catatan:</strong> Tanggal di atas berdasarkan kalender Hijriyah. Tanggal Masehi dapat berubah sesuai hisab dan rukyat masing-masing.
+        💡 <strong>Catatan:</strong> Tanggal di atas berdasarkan kalender Hijriyah. Tanggal Masehi dapat
+        berubah sesuai hisab dan rukyat masing-masing.
       </p>
     </div>
-
   </div>
-
 </BaseLayout>

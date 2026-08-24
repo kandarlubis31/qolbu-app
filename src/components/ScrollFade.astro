@@ -1,0 +1,33 @@
+---
+interface Props {
+  id?: string;
+  ariaLabel?: string;
+}
+const { id, ariaLabel } = Astro.props;
+---
+
+<div class="relative -mx-4 px-4">
+  <div
+    id={id}
+    role="group"
+    aria-label={ariaLabel}
+    class="scrollbar-hide mb-2 flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth pb-4"
+    style="mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);"
+  >
+    <slot />
+  </div>
+  <div
+    class="pointer-events-none absolute top-0 right-0 bottom-4 w-8 bg-gradient-to-l from-slate-50 to-transparent opacity-60 sm:hidden dark:from-slate-950"
+    aria-hidden="true"
+  >
+  </div>
+</div>
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

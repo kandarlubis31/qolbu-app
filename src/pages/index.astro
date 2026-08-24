@@ -1,231 +1,395 @@
 ---
 // src/pages/index.astro
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
 
 // Helper Tanggal
-const today = new Date().toLocaleDateString("id-ID", {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
+const today = new Date().toLocaleDateString('id-ID', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
 });
 
 // DATABASE MENU (Updated with New Tools)
 const menus = [
   {
-    title: "Jadwal Sholat",
-    desc: "Waktu Sholat & Imsak",
-    href: "/sholat",
-    color: "bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400",
-    path: "M3 21h18 M5 21v-7l8-4 8 4v7 M12 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
+    title: 'Jadwal Sholat',
+    desc: 'Waktu Sholat & Imsak',
+    href: '/sholat',
+    color: 'bg-teal-100 text-teal-600 dark:bg-teal-500/20 dark:text-teal-400',
+    path: 'M3 21h18 M5 21v-7l8-4 8 4v7 M12 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
   },
   {
     title: "Al-Qur'an",
-    desc: "Baca Yasin & 114 Surat",
-    href: "/quran",
-    color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400",
-    path: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z",
+    desc: 'Baca Yasin & 114 Surat',
+    href: '/quran',
+    color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400',
+    path: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
   },
   {
-    title: "Doa Harian",
-    desc: "Kumpulan Doa Lengkap",
-    href: "/doa",
-    color: "bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400",
-    path: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z M12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z",
+    title: 'Doa Harian',
+    desc: 'Kumpulan Doa Lengkap',
+    href: '/doa',
+    color: 'bg-violet-100 text-violet-600 dark:bg-violet-500/20 dark:text-violet-400',
+    path: 'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z M12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z',
   },
   {
-    title: "Kalkulator Zakat",
-    desc: "Hitung Zakat Maal/Profesi",
-    href: "/zakat",
-    color: "bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
-    path: "M2 7h20v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm2-4h16v2H4V3zm4 8h2v2H8v-2zm6 0h2v2h-2v-2zm-6 4h2v2H8v-2zm6 0h2v2h-2v-2z",
+    title: 'Kalkulator Zakat',
+    desc: 'Hitung Zakat Maal/Profesi',
+    href: '/zakat',
+    color: 'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400',
+    path: 'M2 7h20v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7zm2-4h16v2H4V3zm4 8h2v2H8v-2zm6 0h2v2h-2v-2zm-6 4h2v2H8v-2zm6 0h2v2h-2v-2z',
   },
   {
-    title: "Panduan Sholat",
-    desc: "Bacaan & Gerakan",
-    href: "/sholat-guide",
-    color: "bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-400",
-    path: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z", 
+    title: 'Panduan Sholat',
+    desc: 'Bacaan & Gerakan',
+    href: '/sholat-guide',
+    color: 'bg-cyan-100 text-cyan-600 dark:bg-cyan-500/20 dark:text-cyan-400',
+    path: 'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z',
   },
   {
-    title: "Tahlil & Doa",
-    desc: "Doa Arwah",
-    href: "/tahlil",
-    color: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400",
-    path: "M10.29 2.227l1.378 1.379a7.653 7.653 0 0 1 1.777 8.35l-.42.923a1.5 1.5 0 0 1-2.73-.733l.42-.924a4.653 4.653 0 0 0-1.08-5.077L8.257 4.77a.75.75 0 0 0-1.06 1.06l1.378 1.379a7.653 7.653 0 0 1 0 10.828l-1.92 1.92a2.025 2.025 0 0 1-2.864 0l-1.92-1.92a7.653 7.653 0 0 1 0-10.828l3.197-3.197a3 3 0 0 1 4.242 0z",
+    title: 'Tahlil & Doa',
+    desc: 'Doa Arwah',
+    href: '/tahlil',
+    color: 'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
+    path: 'M10.29 2.227l1.378 1.379a7.653 7.653 0 0 1 1.777 8.35l-.42.923a1.5 1.5 0 0 1-2.73-.733l.42-.924a4.653 4.653 0 0 0-1.08-5.077L8.257 4.77a.75.75 0 0 0-1.06 1.06l1.378 1.379a7.653 7.653 0 0 1 0 10.828l-1.92 1.92a2.025 2.025 0 0 1-2.864 0l-1.92-1.92a7.653 7.653 0 0 1 0-10.828l3.197-3.197a3 3 0 0 1 4.242 0z',
   },
   {
-    title: "Asmaul Husna",
-    desc: "99 Nama Allah",
-    href: "/asmaul-husna",
-    color: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400",
-    path: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+    title: 'Asmaul Husna',
+    desc: '99 Nama Allah',
+    href: '/asmaul-husna',
+    color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400',
+    path: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
   },
   {
-    title: "Dzikir Pagi & Petang",
-    desc: "Bacaan Pagi & Petang",
-    href: "/dzikir",
-    color: "bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400",
-    path: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3",
+    title: 'Dzikir Pagi & Petang',
+    desc: 'Bacaan Pagi & Petang',
+    href: '/dzikir',
+    color: 'bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400',
+    path: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3',
   },
   {
-    title: "Surat Yasin",
+    title: 'Surat Yasin',
     desc: "Jantung Al-Qur'an",
-    href: "/quran/yasin",
-    color: "bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400",
-    path: "M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z M12 8v5l3 3",
+    href: '/quran/yasin',
+    color: 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400',
+    path: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z M12 8v5l3 3',
   },
   {
-    title: "Events Hijri",
-    desc: "Kalender Islami",
-    href: "/events-hijri",
-    color: "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
-    path: "M8 2v4 M16 2v4 M3 10h18 M21 14H3 M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z",
+    title: 'Events Hijri',
+    desc: 'Kalender Islami',
+    href: '/events-hijri',
+    color: 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400',
+    path: 'M8 2v4 M16 2v4 M3 10h18 M21 14H3 M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z',
   },
 ];
 ---
 
 <BaseLayout pageTitle="Home">
-  <div class="mb-8 pt-4 px-1">
-    <div class="flex justify-between items-start">
+  <div class="mb-8 px-1 pt-4">
+    <div class="flex items-start justify-between">
       <div>
-        <div class="flex items-center gap-2 mb-1 opacity-70">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500 dark:text-slate-400">
+        <div class="mb-1 flex items-center gap-2 opacity-70">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-slate-500 dark:text-slate-400"
+          >
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          <p class="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
             {today}
           </p>
         </div>
-        <h1 class="text-3xl font-black text-slate-800 dark:text-white leading-tight">
+        <h1 class="text-3xl leading-tight font-black text-slate-800 dark:text-white">
           Assalamualaikum, <br />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300">
+          <span
+            class="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent dark:from-emerald-400 dark:to-teal-300"
+          >
             Sobat Qolbu
           </span>
         </h1>
       </div>
-      <div class="w-11 h-11 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden p-1 flex-shrink-0">
-        <img src="/logo.png" alt="Profile" class="w-full h-full object-contain rounded-full" />
+      <div
+        class="flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+      >
+        <img src="/logo.png" alt="Profile" class="h-full w-full rounded-full object-contain" />
       </div>
     </div>
   </div>
 
   <!-- HIJRI EVENT BAR -->
-  <div id="hijri-event" class="hidden mb-3 mx-1 px-3 py-2 bg-amber-50 dark:bg-amber-900/15 border border-amber-200 dark:border-amber-800/40 rounded-xl flex items-center gap-2 text-xs">
+  <div
+    id="hijri-event"
+    class="mx-1 mb-3 flex hidden items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs dark:border-amber-800/40 dark:bg-amber-900/15"
+  >
     <span id="hijri-event-icon" class="text-base"></span>
     <span id="hijri-event-text" class="font-medium text-amber-800 dark:text-amber-300"></span>
-    <span id="hijri-event-days" class="ml-auto text-[10px] text-amber-600 dark:text-amber-400 whitespace-nowrap font-bold"></span>
+    <span
+      id="hijri-event-days"
+      class="ml-auto text-[10px] font-bold whitespace-nowrap text-amber-600 dark:text-amber-400"
+    ></span>
   </div>
 
   <!-- OFFLINE QURAN CACHE BADGE -->
-  <a href="/quran" id="cache-badge" class="hidden mb-3 mx-1 px-3 py-1.5 bg-slate-900 dark:bg-black rounded-full border border-slate-700 inline-flex items-center gap-1.5 self-start hover:border-emerald-700 transition-colors">
-    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-400"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M9 9h12"/><path d="M9 15h12"/></svg>
-    <span id="cache-badge-text" class="text-[10px] text-slate-300 font-medium">0 surah offline</span>
+  <a
+    href="/quran"
+    id="cache-badge"
+    class="mx-1 mb-3 hidden inline-flex items-center gap-1.5 self-start rounded-full border border-slate-700 bg-slate-900 px-3 py-1.5 transition-colors hover:border-emerald-700 dark:bg-black"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      class="text-emerald-400"
+      ><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path
+        d="M9 9h12"></path><path d="M9 15h12"></path></svg
+    >
+    <span id="cache-badge-text" class="text-[10px] font-medium text-slate-300">0 surah offline</span
+    >
   </a>
 
+  <!-- PRAYER CARD SKELETON (shown until cache loaded) -->
+  <div
+    id="prayer-card-skeleton"
+    class="animate-shimmer mx-1 mb-4 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+  >
+    <div class="mb-3 h-3 w-24 rounded bg-slate-200 dark:bg-slate-700"></div>
+    <div class="mb-3 h-8 w-32 rounded bg-slate-200 dark:bg-slate-700"></div>
+    <div class="grid grid-cols-5 gap-2">
+      <div class="h-8 rounded bg-slate-200 dark:bg-slate-700"></div><div
+        class="h-8 rounded bg-slate-200 dark:bg-slate-700"
+      >
+      </div><div class="h-8 rounded bg-slate-200 dark:bg-slate-700"></div><div
+        class="h-8 rounded bg-slate-200 dark:bg-slate-700"
+      >
+      </div><div class="h-8 rounded bg-slate-200 dark:bg-slate-700"></div>
+    </div>
+  </div>
   <!-- PRAYER CARD -->
-  <div id="prayer-card" class="hidden mb-4 mx-1 p-4 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-2xl text-white shadow-lg shadow-emerald-500/20 relative overflow-hidden">
+  <div
+    id="prayer-card"
+    class="relative mx-1 mb-4 hidden overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 p-4 text-white shadow-lg shadow-emerald-500/20"
+  >
     <div class="absolute top-0 right-0 opacity-10">
-      <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"
+        ><path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+        ></path></svg
+      >
     </div>
     <div class="relative z-10">
-      <div class="flex items-center justify-between mb-2">
-        <span id="prayer-next-label" class="text-[10px] text-emerald-100 uppercase tracking-wider font-bold">Menuju <span id="prayer-next-name" class="text-white">--</span></span>
+      <div class="mb-2 flex items-center justify-between">
+        <span
+          id="prayer-next-label"
+          class="text-[10px] font-bold tracking-wider text-emerald-100 uppercase"
+          >Menuju <span id="prayer-next-name" class="text-white">--</span></span
+        >
         <span id="prayer-qibla" class="text-[10px] text-emerald-100">🕋 --°</span>
       </div>
-      <div class="flex items-end gap-3 mb-3">
-        <span id="prayer-countdown" class="text-3xl font-black tabular-nums tracking-tight">--:--:--</span>
-        <span class="text-[10px] text-emerald-200 mb-1">tersisa</span>
+      <div class="mb-3 flex items-end gap-3">
+        <span id="prayer-countdown" class="text-3xl font-black tracking-tight tabular-nums"
+          >--:--:--</span
+        >
+        <span class="mb-1 text-[10px] text-emerald-200">tersisa</span>
       </div>
       <div id="prayer-times" class="grid grid-cols-5 gap-1 text-center">
-        <div><div class="text-[9px] text-emerald-200">Subuh</div><div class="text-xs font-bold" id="pt-Fajr">--:--</div></div>
-        <div><div class="text-[9px] text-emerald-200">Dzuhur</div><div class="text-xs font-bold" id="pt-Dhuhr">--:--</div></div>
-        <div><div class="text-[9px] text-emerald-200">Ashar</div><div class="text-xs font-bold" id="pt-Asr">--:--</div></div>
-        <div><div class="text-[9px] text-emerald-200">Maghrib</div><div class="text-xs font-bold" id="pt-Maghrib">--:--</div></div>
-        <div><div class="text-[9px] text-emerald-200">Isya</div><div class="text-xs font-bold" id="pt-Isha">--:--</div></div>
+        <div>
+          <div class="text-[9px] text-emerald-200">Subuh</div><div
+            class="text-xs font-bold"
+            id="pt-Fajr"
+          >
+            --:--
+          </div>
+        </div>
+        <div>
+          <div class="text-[9px] text-emerald-200">Dzuhur</div><div
+            class="text-xs font-bold"
+            id="pt-Dhuhr"
+          >
+            --:--
+          </div>
+        </div>
+        <div>
+          <div class="text-[9px] text-emerald-200">Ashar</div><div
+            class="text-xs font-bold"
+            id="pt-Asr"
+          >
+            --:--
+          </div>
+        </div>
+        <div>
+          <div class="text-[9px] text-emerald-200">Maghrib</div><div
+            class="text-xs font-bold"
+            id="pt-Maghrib"
+          >
+            --:--
+          </div>
+        </div>
+        <div>
+          <div class="text-[9px] text-emerald-200">Isya</div><div
+            class="text-xs font-bold"
+            id="pt-Isha"
+          >
+            --:--
+          </div>
+        </div>
       </div>
-      <a href="/sholat" class="mt-2 text-[10px] text-emerald-200 underline underline-offset-2 inline-block opacity-70 hover:opacity-100 transition-opacity">Lihat detail →</a>
+      <a
+        href="/sholat"
+        class="mt-2 inline-block text-[10px] text-emerald-200 underline underline-offset-2 opacity-70 transition-opacity hover:opacity-100"
+        >Lihat detail →</a
+      >
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4 mb-6 px-1">
-    {menus.map((item, index) => (
-      <a
-        href={item.href}
-        class={`group relative p-5 rounded-[2rem] border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
-          index === 0
-            ? "col-span-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-transparent shadow-emerald-500/25"
-            : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md dark:shadow-none"
-        }`}
-      >
-        <div class="flex items-start justify-between mb-4">
-          <div
-            class={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${
-              index === 0 ? "bg-white/20 text-white backdrop-blur-sm" : item.color
-            }`}
+  <div class="mb-6 grid grid-cols-2 gap-4 px-1">
+    {
+      menus.map((item, index) => (
+        <a
+          href={item.href}
+          class={`group relative rounded-[2rem] border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+            index === 0
+              ? 'col-span-2 border-transparent bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-emerald-500/25'
+              : 'border-slate-100 bg-white shadow-sm hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none'
+          }`}
+        >
+          <div class="mb-4 flex items-start justify-between">
+            <div
+              class={`flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 ${
+                index === 0 ? 'bg-white/20 text-white backdrop-blur-sm' : item.color
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d={item.path} />
+              </svg>
+            </div>
+
+            <div
+              class={`transition-opacity duration-300 ${
+                index === 0
+                  ? 'text-white/70 opacity-100'
+                  : 'text-slate-300 opacity-0 group-hover:opacity-100'
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </div>
+          </div>
+
+          <h3
+            class={`mb-1 text-lg leading-tight font-bold ${index === 0 ? 'text-white' : 'text-slate-800 dark:text-slate-100'}`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d={item.path} />
-            </svg>
-          </div>
+            {item.title}
+          </h3>
 
-          <div
-            class={`transition-opacity duration-300 ${
-              index === 0 ? "text-white/70 opacity-100" : "text-slate-300 opacity-0 group-hover:opacity-100"
-            }`}
+          <p
+            class={`line-clamp-1 text-xs font-medium ${index === 0 ? 'text-emerald-100' : 'text-slate-500 dark:text-slate-400'}`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-          </div>
-        </div>
+            {item.desc}
+          </p>
 
-        <h3 class={`font-bold text-lg mb-1 leading-tight ${index === 0 ? "text-white" : "text-slate-800 dark:text-slate-100"}`}>
-          {item.title}
-        </h3>
-
-        <p class={`text-xs font-medium line-clamp-1 ${index === 0 ? "text-emerald-100" : "text-slate-500 dark:text-slate-400"}`}>
-          {item.desc}
-        </p>
-
-        {index === 0 && (
-          <div class="absolute top-0 right-0 opacity-10 pointer-events-none transform translate-x-4 -translate-y-4">
-            <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-            </svg>
-          </div>
-        )}
-      </a>
-    ))}
+          {index === 0 && (
+            <div class="pointer-events-none absolute top-0 right-0 translate-x-4 -translate-y-4 transform opacity-10">
+              <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+              </svg>
+            </div>
+          )}
+        </a>
+      ))
+    }
   </div>
 
-  <div class="p-6 bg-slate-900 dark:bg-black rounded-[2rem] text-white shadow-2xl relative overflow-hidden group min-h-[160px] flex flex-col justify-center border border-slate-800 mx-1">
-    <div class="absolute top-0 right-0 opacity-5 transform translate-x-8 -translate-y-8 group-hover:scale-110 transition-transform duration-700">
+  <div
+    class="group relative mx-1 flex min-h-[160px] flex-col justify-center overflow-hidden rounded-[2rem] border border-slate-800 bg-slate-900 p-6 text-white shadow-2xl dark:bg-black"
+  >
+    <div
+      class="absolute top-0 right-0 translate-x-8 -translate-y-8 transform opacity-5 transition-transform duration-700 group-hover:scale-110"
+    >
       <svg width="180" height="180" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+        ></path>
       </svg>
     </div>
 
-    <div class="relative z-10 animate-fade-in">
-      <span class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest mb-4 backdrop-blur-md border border-white/10">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
-          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+    <div class="animate-fade-in relative z-10">
+      <span
+        class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-bold tracking-widest uppercase backdrop-blur-md"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"
+          ></path>
+          <path
+            d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"
+          ></path>
         </svg>
         Quote Of The Day
       </span>
 
-      <p id="quote-text" class="font-serif italic text-xl leading-relaxed text-slate-100 mb-5 transition-opacity duration-500 opacity-0">
-        "Memuat kata mutiara..."
+      <!-- Quote pertama dirender server-side (tanpa opacity gate) supaya kartu tidak
+           pernah kosong walau JS lambat/blokir. JS hanya menimpa dengan quote harian. -->
+      <p
+        id="quote-text"
+        class="mb-5 font-serif text-xl leading-relaxed text-slate-100 italic transition-opacity duration-500"
+      >
+        "Maka sesungguhnya bersama kesulitan ada kemudahan."
       </p>
 
-      <div class="flex items-center gap-3 opacity-80 transition-opacity duration-500" id="quote-source-container">
-        <div class="h-0.5 w-8 bg-emerald-500 rounded-full"></div>
-        <p id="quote-source" class="text-xs font-bold text-emerald-400 tracking-wide uppercase">
-          ...
+      <div
+        class="flex items-center gap-3 opacity-80 transition-opacity duration-500"
+        id="quote-source-container"
+      >
+        <div class="h-0.5 w-8 rounded-full bg-emerald-500"></div>
+        <p id="quote-source" class="text-xs font-bold tracking-wide text-emerald-400 uppercase">
+          QS. Al-Insyirah: 5
         </p>
       </div>
     </div>
@@ -233,775 +397,865 @@ const menus = [
 </BaseLayout>
 
 <script is:inline>
-(() => {
-const quotesData = [
-    {
-      text: "Maka sesungguhnya bersama kesulitan ada kemudahan.",
-      source: "QS. Al-Insyirah: 5",
-    },
-    {
-      text: "Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.",
-      source: "QS. Al-Baqarah: 286",
-    },
-    {
-      text: "Dan bersabarlah kamu, sesungguhnya janji Allah adalah benar.",
-      source: "QS. Ar-Rum: 60",
-    },
-    {
-      text: "Janganlah kamu berduka cita, sesungguhnya Allah bersama kita.",
-      source: "QS. At-Taubah: 40",
-    },
-    {
-      text: "Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram.",
-      source: "QS. Ar-Ra'd: 28",
-    },
-    {
-      text: "Dan barangsiapa bertakwa kepada Allah, niscaya Allah menjadikan baginya jalan keluar.",
-      source: "QS. At-Talaq: 2",
-    },
-    {
-      text: "Sesungguhnya shalat itu mencegah dari perbuatan keji dan mungkar.",
-      source: "QS. Al-Ankabut: 45",
-    },
-    {
-      text: "Berdoalah kepada-Ku, niscaya akan Kuperkenankan bagimu.",
-      source: "QS. Ghafir: 60",
-    },
-    {
-      text: "Maka nikmat Tuhan kamu yang manakah yang kamu dustakan?",
-      source: "QS. Ar-Rahman: 13",
-    },
-    {
-      text: "Dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling kenal-mengenal.",
-      source: "QS. Al-Hujurat: 13",
-    },
-    {
-      text: "Sesungguhnya Allah bersama orang-orang yang sabar.",
-      source: "QS. Al-Baqarah: 153",
-    },
-    {
-      text: "Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu.",
-      source: "QS. Al-Baqarah: 216",
-    },
-    {
-      text: "Barangsiapa beriman kepada Allah, niscaya Dia akan memberi petunjuk kepada hatinya.",
-      source: "QS. At-Taghabun: 11",
-    },
-    {
-      text: "Sesungguhnya rahmat Allah sangat dekat kepada orang-orang yang berbuat kebaikan.",
-      source: "QS. Al-A'raf: 56",
-    },
-    {
-      text: "Dan hanya kepada Tuhanmulah hendaknya kamu berharap.",
-      source: "QS. Al-Insyirah: 8",
-    },
-    {
-      text: "Kehidupan dunia hanyalah permainan dan senda gurau.",
-      source: "QS. Al-Hadid: 20",
-    },
-    {
-      text: "Jangan engkau merasa lemah dan jangan bersedih.",
-      source: "QS. Ali Imran: 139",
-    },
-    {
-      text: "Allah menyukai hamba yang bertawakal.",
-      source: "QS. Ali Imran: 159",
-    },
-    {
-      text: "Harta dan anak-anak adalah perhiasan dunia.",
-      source: "QS. Al-Kahfi: 46",
-    },
-    {
-      text: "Sesungguhnya pertolongan Allah itu dekat.",
-      source: "QS. Al-Baqarah: 214",
-    },
-    {
-      text: "Jadikan sabar dan shalat sebagai penolongmu.",
-      source: "QS. Al-Baqarah: 45",
-    },
-    {
-      text: "Sesungguhnya Allah Maha Mengetahui apa yang ada di langit dan di bumi.",
-      source: "QS. Al-Hajj: 70",
-    },
-    {
-      text: "Dan bertawakallah kepada Allah, cukuplah Allah sebagai pelindung.",
-      source: "QS. Al-Ahzab: 3",
-    },
-    {
-      text: "Sesungguhnya kehidupan akhirat itulah kehidupan yang sebenarnya.",
-      source: "QS. Al-Ankabut: 64",
-    },
-    {
-      text: "Allah bersama orang-orang yang bertakwa dan berbuat kebaikan.",
-      source: "QS. An-Nahl: 128",
-    },
-    {
-      text: "Dan barangsiapa yang bertawakal kepada Allah, niscaya Allah akan mencukupinya.",
-      source: "QS. At-Thalaq: 3",
-    },
-    {
-      text: "Sesungguhnya Allah tidak mengubah keadaan suatu kaum sehingga mereka mengubah keadaan diri mereka sendiri.",
-      source: "QS. Ar-Ra'd: 11",
-    },
-    {
-      text: "Dan Tuhanmu adalah Maha Pemurah, maka berilah ampunan kepada orang yang berbuat kesalahan.",
-      source: "QS. Al-Kahfi: 58",
-    },
-    {
-      text: "Dan katakanlah: 'Bekerjalah kamu, maka Allah dan Rasul-Nya serta orang-orang mukmin akan melihat pekerjaanmu itu.",
-      source: "QS. At-Taubah: 105",
-    },
-    {
-      text: "Dan berikanlah kepada keluarga yang dekat haknya, dan juga kepada orang miskin dan orang musafir.",
-      source: "QS. Al-Isra': 26",
-    },
-    {
-      text: "Dan orang-orang yang beriman dan beramal shalih, Kami akan tutupi kesalahan mereka.",
-      source: "QS. Al-Ankabut: 7",
-    },
-    {
-      text: "Wahai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu.",
-      source: "QS. Ali Imran: 200",
-    },
-    {
-      text: "Sesungguhnya orang-orang yang bertakwa berada dalam taman-taman dan mata air-mata air.",
-      source: "QS. Adz-Dzariyat: 15",
-    },
-    {
-      text: "Dan Kami ciptakan untukmu surga dari emas dan permata.",
-      source: "QS. Al-Insan: 12",
-    },
-    {
-      text: "Sesungguhnya shalat itu adalah kewajiban yang ditentukan waktunya.",
-      source: "QS. An-Nisa: 103",
-    },
-    {
-      text: "Dan mohonlah pertolongan kepada Allah dengan sabar dan shalat.",
-      source: "QS. Al-Baqarah: 45",
-    },
-    {
-      text: "Sesungguhnya Allah tidak menyukai orang-orang yang sombong dan membanggakan diri.",
-      source: "QS. An-Nisa: 36",
-    },
-    {
-      text: "Dan janganlah kamu berjalan di muka bumi dengan angkuh.",
-      source: "QS. Luqman: 18",
-    },
-    {
-      text: "Katakanlah: 'Wahai hamba-hamba-Ku yang melampaui batas, janganlah kamu berputus asa dari rahmat Allah.",
-      source: "QS. Az-Zumar: 53",
-    },
-    {
-      text: "Barangsiapa yang tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri sesuatu yang banyak.",
-      source: "HR. Ahmad",
-    },
-    {
-      text: "Dunia adalah perhiasan, dan sebaik-baik perhiasan dunia adalah wanita shalihah.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Senyummu di hadapan saudaramu adalah sedekah bagimu.",
-      source: "HR. Tirmidzi",
-    },
-    {
-      text: "Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia.",
-      source: "HR. Ahmad",
-    },
-    {
-      text: "Barangsiapa yang menempuh jalan untuk menuntut ilmu, Allah akan mudahkan baginya jalan menuju surga.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Kekayaan bukanlah dengan banyaknya harta, namun kekayaan adalah kekayaan hati.",
-      source: "HR. Bukhari",
-    },
-    { text: "Kebajikan itu adalah akhlak yang baik.", source: "HR. Muslim" },
-    {
-      text: "Setiap amal tergantung pada niatnya.",
-      source: "HR. Bukhari & Muslim",
-    },
-    {
-      text: "Sesungguhnya Allah itu indah dan menyukai keindahan.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Barangsiapa tidak mensyukuri yang sedikit, tidak akan mampu mensyukuri yang banyak.",
-      source: "HR. Ahmad",
-    },
-    {
-      text: "Allah mencintai jika salah seorang dari kalian bekerja, ia menyempurnakannya.",
-      source: "HR. Thabrani",
-    },
-    {
-      text: "Orang mukmin yang paling sempurna imannya adalah yang paling baik akhlaknya.",
-      source: "HR. Tirmidzi",
-    },
-    {
-      text: "Sesungguhnya Allah menolong hamba-Nya selama hamba itu menolong saudaranya.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Tidak ada yang lebih berat pada timbangan mukmin pada hari kiamat selain akhlak yang baik.",
-      source: "HR. Tirmidzi",
-    },
-    {
-      text: "Barangsiapa yang memudahkan kesulitan orang lain, Allah akan memudahkan kesulitannya di dunia dan akhirat.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Sesungguhnya Allah mengasihi orang yang lembut dalam segala urusan.",
-      source: "HR. Bukhari",
-    },
-    {
-      text: "Sesungguhnya orang yang paling dekat kepadaku adalah yang paling baik akhlaknya.",
-      source: "HR. Tirmidzi",
-    },
-    {
-      text: "Barangsiapa yang memelihara kehormatan saudaranya, Allah akan menjaga wajahnya dari api neraka.",
-      source: "HR. Bukhari",
-    },
-    {
-      text: "Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.",
-      source: "HR. Darimi",
-    },
-    {
-      text: "Sesungguhnya Allah menyukai hamba yang makan dan minum lalu bersyukur.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Tangan di atas lebih baik dari tangan di bawah.",
-      source: "HR. Bukhari",
-    },
-    {
-      text: "Pahlawan bukanlah orang yang berani meletakkan pedangnya ke pundak lawan, tetapi orang yang sanggup menguasai dirinya dikala ia marah.",
-      source: "HR. Bukhari",
-    },
-    {
-      text: "Barangsiapa yang beriman kepada Allah dan Hari Akhir, maka hendaklah ia berkata baik atau diam.",
-      source: "HR. Bukhari",
-    },
-    {
-      text: "Sebaik-baik kalian adalah yang paling baik kepada keluarganya.",
-      source: "HR. Tirmidzi",
-    },
-    {
-      text: "Shalat lima waktu dan Jumat ke Jumat adalah penghapus dosa di antara keduanya.",
-      source: "HR. Muslim",
-    },
-    {
-      text: "Aku sudah melihat segala bentuk rezeki, tapi tidak aku temukan rezeki yang lebih baik daripada kesabaran.",
-      source: "Umar bin Khattab",
-    },
-    {
-      text: "Jangan menjelaskan tentang dirimu kepada siapa pun, karena yang menyukaimu tidak butuh itu, dan yang membencimu tidak percaya itu.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Balas dendam terbaik adalah menjadikan dirimu lebih baik.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Ilmu itu seperti buruan dan tulisan adalah ikatannya. Ikatlah buruanmu dengan tali yang kuat.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Bila kau tak tahan lelahnya belajar, maka kau harus tahan menanggung perihnya kebodohan.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Hati yang sejuk adalah hati yang senantiasa berdzikir.",
-      source: "Ibnul Qayyim",
-    },
-    {
-      text: "Dunia ini ibarat bayangan. Kalau kau berusaha menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.",
-      source: "Ibnu Qayyim",
-    },
-    {
-      text: "Jangan berduka, apa saja yang hilang darimu akan kembali lagi dalam wujud lain.",
-      source: "Jalaluddin Rumi",
-    },
-    {
-      text: "Apa yang melewatkanku tidak akan pernah menjadi takdirku, dan apa yang ditakdirkan untukku tidak akan pernah melewatkanku.",
-      source: "Umar bin Khattab",
-    },
-    {
-      text: "Orang yang paling berani adalah orang yang mampu menahan hawa nafsunya.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Cintailah kekasihmu sekadarnya saja, boleh jadi ia akan menjadi musuhmu suatu hari nanti.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Waktu ibarat pedang, jika kau tidak menebasnya maka ialah yang akan menebasmu.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Cukuplah dirimu dengan ilmu, dan janganlah mencari ketenaran.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Hati yang kosong dari ilmu adalah padang rumput untuk setan.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Kesulitan adalah jembatan menuju kemudahan.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Jadilah orang yang bijaksana, tetapi jangan menunjukkan kebijaksanaanmu.",
-      source: "Ali bin Abi Thalib",
-    },
-    {
-      text: "Jika ilmu tanpa amal, ibarat pohon tanpa buah.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Barangsiapa belajar untuk dunia, maka ilmunya tidak akan melampaui langit.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Teman sejati adalah yang mengingatkanmu kepada Allah.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Jika engkau tidak bisa bermanfaat, janganlah membahayakan.",
-      source: "Imam Syafi'i",
-    },
-    {
-      text: "Dunia adalah ladang akhirat, maka tanamlah dengan amal shalih.",
-      source: "Imam Ghazali",
-    },
-    {
-      text: "Hati yang sakit tidak akan disembuhkan oleh dunia, melainkan oleh ilahi.",
-      source: "Imam Ghazali",
-    },
-    {
-      text: "Ketahuilah bahwa kebahagiaan sejati hanya didapat dengan kecintaan kepada Allah.",
-      source: "Imam Ghazali",
-    },
-    {
-      text: "Janganlah engkau menjual akhiratmu dengan dunia, karena dunia akan sirna dan akhirat kekal.",
-      source: "Imam Ghazali",
-    },
-    {
-      text: "Tawakal adalah cahaya yang menerangi jalan hamba.",
-      source: "Imam Ghazali",
-    },
-    {
-      text: "Cinta kepada Allah adalah fondasi segala kebaikan.",
-      source: "Ibnu Qayyim",
-    },
-    {
-      text: "Ketika Allah mencintai hamba-Nya, Dia uji hamba itu untuk membersihkannya.",
-      source: "Ibnu Qayyim",
-    },
-    {
-      text: "Tidak ada ketenangan hati kecuali dengan mengingat Allah.",
-      source: "Ibnu Qayyim",
-    },
-    {
-      text: "Hati akan berkarat karena dosa dan bersinar karena taubat.",
-      source: "Ibnu Qayyim",
-    },
-    {
-      text: "Jika engkau melihat Allah memberimu nikmat, bersyukurlah.",
-      source: "Ibnu Qayyim",
-    },
-    {
-      text: "Cahaya cinta-Nya akan memandumu dalam kegelapan.",
-      source: "Jalaluddin Rumi",
-    },
-    {
-      text: "Di mana ada rasa sakit, di situ ada obat. Di mana ada kesulitan, di situ ada kemudahan.",
-      source: "Jalaluddin Rumi",
-    },
-    {
-      text: "Hati adalah tempat tinggal Tuhan, jangan biarkan yang lain mendiami.",
-      source: "Jalaluddin Rumi",
-    },
-    {
-      text: "Jadilah seperti matahari, terus memberi cahaya tanpa mengharap balasan.",
-      source: "Jalaluddin Rumi",
-    },
-    {
-      text: "Cinta sejati adalah ketika engkau mencintai-Nya lebih dari dirimu sendiri.",
-      source: "Jalaluddin Rumi",
-    },
-    {
-      text: "Jadikanlah sabar dan shalat sebagai penolongmu.",
-      source: "Umar bin Khattab",
-    },
-    {
-      text: "Hiduplah di dunia seakan-akan kamu akan hidup selamanya, dan beramallah untuk akhirat seakan-akan kamu akan mati besok.",
-      source: "Umar bin Khattab",
-    },
-    {
-      text: "Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.",
-      source: "Umar bin Khattab",
-    },
-    {
-      text: "Janganlah kamu takut kecuali kepada dosa, dan jangan berharap kecuali kepada Rabbmu.",
-      source: "Umar bin Khattab",
-    },
-    {
-      text: "Hitunglah dirimu termasuk orang mati sebelum kematian datang menjemputmu.",
-      source: "Umar bin Khattab",
-    },
-  ];
-  
-  let quoteInterval = null;
+  (() => {
+    const quotesData = [
+      {
+        text: 'Maka sesungguhnya bersama kesulitan ada kemudahan.',
+        source: 'QS. Al-Insyirah: 5',
+      },
+      {
+        text: 'Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.',
+        source: 'QS. Al-Baqarah: 286',
+      },
+      {
+        text: 'Dan bersabarlah kamu, sesungguhnya janji Allah adalah benar.',
+        source: 'QS. Ar-Rum: 60',
+      },
+      {
+        text: 'Janganlah kamu berduka cita, sesungguhnya Allah bersama kita.',
+        source: 'QS. At-Taubah: 40',
+      },
+      {
+        text: 'Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram.',
+        source: "QS. Ar-Ra'd: 28",
+      },
+      {
+        text: 'Dan barangsiapa bertakwa kepada Allah, niscaya Allah menjadikan baginya jalan keluar.',
+        source: 'QS. At-Talaq: 2',
+      },
+      {
+        text: 'Sesungguhnya shalat itu mencegah dari perbuatan keji dan mungkar.',
+        source: 'QS. Al-Ankabut: 45',
+      },
+      {
+        text: 'Berdoalah kepada-Ku, niscaya akan Kuperkenankan bagimu.',
+        source: 'QS. Ghafir: 60',
+      },
+      {
+        text: 'Maka nikmat Tuhan kamu yang manakah yang kamu dustakan?',
+        source: 'QS. Ar-Rahman: 13',
+      },
+      {
+        text: 'Dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling kenal-mengenal.',
+        source: 'QS. Al-Hujurat: 13',
+      },
+      {
+        text: 'Sesungguhnya Allah bersama orang-orang yang sabar.',
+        source: 'QS. Al-Baqarah: 153',
+      },
+      {
+        text: 'Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu.',
+        source: 'QS. Al-Baqarah: 216',
+      },
+      {
+        text: 'Barangsiapa beriman kepada Allah, niscaya Dia akan memberi petunjuk kepada hatinya.',
+        source: 'QS. At-Taghabun: 11',
+      },
+      {
+        text: 'Sesungguhnya rahmat Allah sangat dekat kepada orang-orang yang berbuat kebaikan.',
+        source: "QS. Al-A'raf: 56",
+      },
+      {
+        text: 'Dan hanya kepada Tuhanmulah hendaknya kamu berharap.',
+        source: 'QS. Al-Insyirah: 8',
+      },
+      {
+        text: 'Kehidupan dunia hanyalah permainan dan senda gurau.',
+        source: 'QS. Al-Hadid: 20',
+      },
+      {
+        text: 'Jangan engkau merasa lemah dan jangan bersedih.',
+        source: 'QS. Ali Imran: 139',
+      },
+      {
+        text: 'Allah menyukai hamba yang bertawakal.',
+        source: 'QS. Ali Imran: 159',
+      },
+      {
+        text: 'Harta dan anak-anak adalah perhiasan dunia.',
+        source: 'QS. Al-Kahfi: 46',
+      },
+      {
+        text: 'Sesungguhnya pertolongan Allah itu dekat.',
+        source: 'QS. Al-Baqarah: 214',
+      },
+      {
+        text: 'Jadikan sabar dan shalat sebagai penolongmu.',
+        source: 'QS. Al-Baqarah: 45',
+      },
+      {
+        text: 'Sesungguhnya Allah Maha Mengetahui apa yang ada di langit dan di bumi.',
+        source: 'QS. Al-Hajj: 70',
+      },
+      {
+        text: 'Dan bertawakallah kepada Allah, cukuplah Allah sebagai pelindung.',
+        source: 'QS. Al-Ahzab: 3',
+      },
+      {
+        text: 'Sesungguhnya kehidupan akhirat itulah kehidupan yang sebenarnya.',
+        source: 'QS. Al-Ankabut: 64',
+      },
+      {
+        text: 'Allah bersama orang-orang yang bertakwa dan berbuat kebaikan.',
+        source: 'QS. An-Nahl: 128',
+      },
+      {
+        text: 'Dan barangsiapa yang bertawakal kepada Allah, niscaya Allah akan mencukupinya.',
+        source: 'QS. At-Thalaq: 3',
+      },
+      {
+        text: 'Sesungguhnya Allah tidak mengubah keadaan suatu kaum sehingga mereka mengubah keadaan diri mereka sendiri.',
+        source: "QS. Ar-Ra'd: 11",
+      },
+      {
+        text: 'Dan Tuhanmu adalah Maha Pemurah, maka berilah ampunan kepada orang yang berbuat kesalahan.',
+        source: 'QS. Al-Kahfi: 58',
+      },
+      {
+        text: "Dan katakanlah: 'Bekerjalah kamu, maka Allah dan Rasul-Nya serta orang-orang mukmin akan melihat pekerjaanmu itu.",
+        source: 'QS. At-Taubah: 105',
+      },
+      {
+        text: 'Dan berikanlah kepada keluarga yang dekat haknya, dan juga kepada orang miskin dan orang musafir.',
+        source: "QS. Al-Isra': 26",
+      },
+      {
+        text: 'Dan orang-orang yang beriman dan beramal shalih, Kami akan tutupi kesalahan mereka.',
+        source: 'QS. Al-Ankabut: 7',
+      },
+      {
+        text: 'Wahai orang-orang yang beriman, bersabarlah kamu dan kuatkanlah kesabaranmu.',
+        source: 'QS. Ali Imran: 200',
+      },
+      {
+        text: 'Sesungguhnya orang-orang yang bertakwa berada dalam taman-taman dan mata air-mata air.',
+        source: 'QS. Adz-Dzariyat: 15',
+      },
+      {
+        text: 'Dan Kami ciptakan untukmu surga dari emas dan permata.',
+        source: 'QS. Al-Insan: 12',
+      },
+      {
+        text: 'Sesungguhnya shalat itu adalah kewajiban yang ditentukan waktunya.',
+        source: 'QS. An-Nisa: 103',
+      },
+      {
+        text: 'Dan mohonlah pertolongan kepada Allah dengan sabar dan shalat.',
+        source: 'QS. Al-Baqarah: 45',
+      },
+      {
+        text: 'Sesungguhnya Allah tidak menyukai orang-orang yang sombong dan membanggakan diri.',
+        source: 'QS. An-Nisa: 36',
+      },
+      {
+        text: 'Dan janganlah kamu berjalan di muka bumi dengan angkuh.',
+        source: 'QS. Luqman: 18',
+      },
+      {
+        text: "Katakanlah: 'Wahai hamba-hamba-Ku yang melampaui batas, janganlah kamu berputus asa dari rahmat Allah.",
+        source: 'QS. Az-Zumar: 53',
+      },
+      {
+        text: 'Barangsiapa yang tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri sesuatu yang banyak.',
+        source: 'HR. Ahmad',
+      },
+      {
+        text: 'Dunia adalah perhiasan, dan sebaik-baik perhiasan dunia adalah wanita shalihah.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Senyummu di hadapan saudaramu adalah sedekah bagimu.',
+        source: 'HR. Tirmidzi',
+      },
+      {
+        text: 'Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia.',
+        source: 'HR. Ahmad',
+      },
+      {
+        text: 'Barangsiapa yang menempuh jalan untuk menuntut ilmu, Allah akan mudahkan baginya jalan menuju surga.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Kekayaan bukanlah dengan banyaknya harta, namun kekayaan adalah kekayaan hati.',
+        source: 'HR. Bukhari',
+      },
+      { text: 'Kebajikan itu adalah akhlak yang baik.', source: 'HR. Muslim' },
+      {
+        text: 'Setiap amal tergantung pada niatnya.',
+        source: 'HR. Bukhari & Muslim',
+      },
+      {
+        text: 'Sesungguhnya Allah itu indah dan menyukai keindahan.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Barangsiapa tidak mensyukuri yang sedikit, tidak akan mampu mensyukuri yang banyak.',
+        source: 'HR. Ahmad',
+      },
+      {
+        text: 'Allah mencintai jika salah seorang dari kalian bekerja, ia menyempurnakannya.',
+        source: 'HR. Thabrani',
+      },
+      {
+        text: 'Orang mukmin yang paling sempurna imannya adalah yang paling baik akhlaknya.',
+        source: 'HR. Tirmidzi',
+      },
+      {
+        text: 'Sesungguhnya Allah menolong hamba-Nya selama hamba itu menolong saudaranya.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Tidak ada yang lebih berat pada timbangan mukmin pada hari kiamat selain akhlak yang baik.',
+        source: 'HR. Tirmidzi',
+      },
+      {
+        text: 'Barangsiapa yang memudahkan kesulitan orang lain, Allah akan memudahkan kesulitannya di dunia dan akhirat.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Sesungguhnya Allah mengasihi orang yang lembut dalam segala urusan.',
+        source: 'HR. Bukhari',
+      },
+      {
+        text: 'Sesungguhnya orang yang paling dekat kepadaku adalah yang paling baik akhlaknya.',
+        source: 'HR. Tirmidzi',
+      },
+      {
+        text: 'Barangsiapa yang memelihara kehormatan saudaranya, Allah akan menjaga wajahnya dari api neraka.',
+        source: 'HR. Bukhari',
+      },
+      {
+        text: 'Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.',
+        source: 'HR. Darimi',
+      },
+      {
+        text: 'Sesungguhnya Allah menyukai hamba yang makan dan minum lalu bersyukur.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Tangan di atas lebih baik dari tangan di bawah.',
+        source: 'HR. Bukhari',
+      },
+      {
+        text: 'Pahlawan bukanlah orang yang berani meletakkan pedangnya ke pundak lawan, tetapi orang yang sanggup menguasai dirinya dikala ia marah.',
+        source: 'HR. Bukhari',
+      },
+      {
+        text: 'Barangsiapa yang beriman kepada Allah dan Hari Akhir, maka hendaklah ia berkata baik atau diam.',
+        source: 'HR. Bukhari',
+      },
+      {
+        text: 'Sebaik-baik kalian adalah yang paling baik kepada keluarganya.',
+        source: 'HR. Tirmidzi',
+      },
+      {
+        text: 'Shalat lima waktu dan Jumat ke Jumat adalah penghapus dosa di antara keduanya.',
+        source: 'HR. Muslim',
+      },
+      {
+        text: 'Aku sudah melihat segala bentuk rezeki, tapi tidak aku temukan rezeki yang lebih baik daripada kesabaran.',
+        source: 'Umar bin Khattab',
+      },
+      {
+        text: 'Jangan menjelaskan tentang dirimu kepada siapa pun, karena yang menyukaimu tidak butuh itu, dan yang membencimu tidak percaya itu.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Balas dendam terbaik adalah menjadikan dirimu lebih baik.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Ilmu itu seperti buruan dan tulisan adalah ikatannya. Ikatlah buruanmu dengan tali yang kuat.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Bila kau tak tahan lelahnya belajar, maka kau harus tahan menanggung perihnya kebodohan.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Hati yang sejuk adalah hati yang senantiasa berdzikir.',
+        source: 'Ibnul Qayyim',
+      },
+      {
+        text: 'Dunia ini ibarat bayangan. Kalau kau berusaha menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.',
+        source: 'Ibnu Qayyim',
+      },
+      {
+        text: 'Jangan berduka, apa saja yang hilang darimu akan kembali lagi dalam wujud lain.',
+        source: 'Jalaluddin Rumi',
+      },
+      {
+        text: 'Apa yang melewatkanku tidak akan pernah menjadi takdirku, dan apa yang ditakdirkan untukku tidak akan pernah melewatkanku.',
+        source: 'Umar bin Khattab',
+      },
+      {
+        text: 'Orang yang paling berani adalah orang yang mampu menahan hawa nafsunya.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Cintailah kekasihmu sekadarnya saja, boleh jadi ia akan menjadi musuhmu suatu hari nanti.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Waktu ibarat pedang, jika kau tidak menebasnya maka ialah yang akan menebasmu.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Cukuplah dirimu dengan ilmu, dan janganlah mencari ketenaran.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Hati yang kosong dari ilmu adalah padang rumput untuk setan.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Kesulitan adalah jembatan menuju kemudahan.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Jadilah orang yang bijaksana, tetapi jangan menunjukkan kebijaksanaanmu.',
+        source: 'Ali bin Abi Thalib',
+      },
+      {
+        text: 'Jika ilmu tanpa amal, ibarat pohon tanpa buah.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Barangsiapa belajar untuk dunia, maka ilmunya tidak akan melampaui langit.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Teman sejati adalah yang mengingatkanmu kepada Allah.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Tidak ada kebaikan dalam ilmu yang tidak bermanfaat.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Jika engkau tidak bisa bermanfaat, janganlah membahayakan.',
+        source: "Imam Syafi'i",
+      },
+      {
+        text: 'Dunia adalah ladang akhirat, maka tanamlah dengan amal shalih.',
+        source: 'Imam Ghazali',
+      },
+      {
+        text: 'Hati yang sakit tidak akan disembuhkan oleh dunia, melainkan oleh ilahi.',
+        source: 'Imam Ghazali',
+      },
+      {
+        text: 'Ketahuilah bahwa kebahagiaan sejati hanya didapat dengan kecintaan kepada Allah.',
+        source: 'Imam Ghazali',
+      },
+      {
+        text: 'Janganlah engkau menjual akhiratmu dengan dunia, karena dunia akan sirna dan akhirat kekal.',
+        source: 'Imam Ghazali',
+      },
+      {
+        text: 'Tawakal adalah cahaya yang menerangi jalan hamba.',
+        source: 'Imam Ghazali',
+      },
+      {
+        text: 'Cinta kepada Allah adalah fondasi segala kebaikan.',
+        source: 'Ibnu Qayyim',
+      },
+      {
+        text: 'Ketika Allah mencintai hamba-Nya, Dia uji hamba itu untuk membersihkannya.',
+        source: 'Ibnu Qayyim',
+      },
+      {
+        text: 'Tidak ada ketenangan hati kecuali dengan mengingat Allah.',
+        source: 'Ibnu Qayyim',
+      },
+      {
+        text: 'Hati akan berkarat karena dosa dan bersinar karena taubat.',
+        source: 'Ibnu Qayyim',
+      },
+      {
+        text: 'Jika engkau melihat Allah memberimu nikmat, bersyukurlah.',
+        source: 'Ibnu Qayyim',
+      },
+      {
+        text: 'Cahaya cinta-Nya akan memandumu dalam kegelapan.',
+        source: 'Jalaluddin Rumi',
+      },
+      {
+        text: 'Di mana ada rasa sakit, di situ ada obat. Di mana ada kesulitan, di situ ada kemudahan.',
+        source: 'Jalaluddin Rumi',
+      },
+      {
+        text: 'Hati adalah tempat tinggal Tuhan, jangan biarkan yang lain mendiami.',
+        source: 'Jalaluddin Rumi',
+      },
+      {
+        text: 'Jadilah seperti matahari, terus memberi cahaya tanpa mengharap balasan.',
+        source: 'Jalaluddin Rumi',
+      },
+      {
+        text: 'Cinta sejati adalah ketika engkau mencintai-Nya lebih dari dirimu sendiri.',
+        source: 'Jalaluddin Rumi',
+      },
+      {
+        text: 'Jadikanlah sabar dan shalat sebagai penolongmu.',
+        source: 'Umar bin Khattab',
+      },
+      {
+        text: 'Hiduplah di dunia seakan-akan kamu akan hidup selamanya, dan beramallah untuk akhirat seakan-akan kamu akan mati besok.',
+        source: 'Umar bin Khattab',
+      },
+      {
+        text: 'Tidak ada kebahagiaan tanpa kesabaran, dan tidak ada kesabaran tanpa rasa sakit.',
+        source: 'Umar bin Khattab',
+      },
+      {
+        text: 'Janganlah kamu takut kecuali kepada dosa, dan jangan berharap kecuali kepada Rabbmu.',
+        source: 'Umar bin Khattab',
+      },
+      {
+        text: 'Hitunglah dirimu termasuk orang mati sebelum kematian datang menjemputmu.',
+        source: 'Umar bin Khattab',
+      },
+    ];
 
-  const initQuote = () => {
-    if (window._quoteInitialized) return;
-    const textEl = document.getElementById("quote-text");
-    const sourceEl = document.getElementById("quote-source");
-    const container = document.getElementById("quote-source-container");
+    let quoteInterval = null;
 
-    if (!textEl || !sourceEl) return;
-    window._quoteInitialized = true;
+    const initQuote = () => {
+      if (window._quoteInitialized) return;
+      const textEl = document.getElementById('quote-text');
+      const sourceEl = document.getElementById('quote-source');
+      const container = document.getElementById('quote-source-container');
 
-    // Clear any existing interval from previous init
-    if (quoteInterval) clearInterval(quoteInterval);
+      if (!textEl || !sourceEl || !container) return;
+      window._quoteInitialized = true;
 
-    const pickAndShow = (fadeIn = true) => {
-      const randomIndex = Math.floor(Math.random() * quotesData.length);
-      const selectedQuote = quotesData[randomIndex];
+      // Clear sisa rotator dari init sebelumnya (jika ada)
+      clearInterval(quoteInterval);
+      clearTimeout(window._quoteTimeout || null);
+      window._quoteTimeout = null;
 
-      textEl.innerText = `"${selectedQuote.text}"`;
-      sourceEl.innerText = selectedQuote.source;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      if (fadeIn) {
-        textEl.style.opacity = 1;
-        if (container) container.style.opacity = '0.8';
-      }
-    };
+      // Quote harian deterministik (sesuai nama "Quote of the Day").
+      // Markup sudah menampilkan quote #0, jadi apply() di bawah hanya
+      // menimpa teks — kartu tidak pernah dalam keadaan kosong.
+      let current = Math.floor(Date.now() / 86400000) % quotesData.length;
 
-    const updateQuote = () => {
-      // 1. Fade Out
-      textEl.style.opacity = 0;
-      if (container) container.style.opacity = 0;
-
-      // 2. Wait, change text, then Fade In
-      setTimeout(() => {
-        pickAndShow(true);
-      }, 550);
-    };
-
-    // First show — skip the fade-out delay, show immediately
-    pickAndShow(true);
-
-    // Then auto-rotate every 10s with smooth fade
-    quoteInterval = setInterval(updateQuote, 10000);
-    window._quoteInterval = quoteInterval;
-  };
-
-  window._quoteInterval = null;
-
-  // ===== OFFLINE QURAN CACHE BADGE =====
-  const DB_NAME = 'qolbu-quran-cache';
-  const DB_VERSION = 1;
-  const STORE_NAME = 'surah-cache';
-
-  function openDBCache() {
-    return new Promise((resolve, reject) => {
-      if (!window.indexedDB) { reject('no indexeddb'); return; }
-      const req = indexedDB.open(DB_NAME, DB_VERSION);
-      req.onupgradeneeded = (e) => {
-        const db = e.target.result;
-        if (!db.objectStoreNames.contains(STORE_NAME)) {
-          db.createObjectStore(STORE_NAME, { keyPath: 'nomor' });
-        }
+      const apply = () => {
+        textEl.textContent = '"' + quotesData[current].text + '"';
+        sourceEl.textContent = quotesData[current].source;
       };
-      req.onsuccess = (e) => resolve(e.target.result);
-      req.onerror = (e) => reject(e.target.error);
-    });
-  }
+      apply();
 
-  async function getCachedCountFromDB() {
-    try {
-      const db = await openDBCache();
-      return new Promise((resolve) => {
-        const tx = db.transaction(STORE_NAME, 'readonly');
-        const req = tx.objectStore(STORE_NAME).count();
-        req.onsuccess = () => { db.close(); resolve(req.result); };
-        req.onerror = () => { db.close(); resolve(0); };
+      const rotate = () => {
+        // Lewati tick saat tab background — mencegah burst flicker
+        // akibat throttled timers saat user kembali fokus.
+        if (document.hidden) return;
+
+        let next;
+        do {
+          next = Math.floor(Math.random() * quotesData.length);
+        } while (quotesData.length > 1 && next === current);
+        current = next;
+
+        if (reduceMotion) {
+          apply();
+          return;
+        }
+
+        // Fade out → ganti teks → fade in; timeout dilacak agar bisa dibersihkan
+        textEl.style.opacity = '0';
+        container.style.opacity = '0';
+        window._quoteTimeout = setTimeout(() => {
+          window._quoteTimeout = null;
+          apply();
+          textEl.style.opacity = '1';
+          container.style.opacity = '0.8';
+        }, 550);
+      };
+
+      quoteInterval = setInterval(rotate, 10000);
+      window._quoteInterval = quoteInterval;
+    };
+
+    window._quoteInterval = null;
+
+    // ===== OFFLINE QURAN CACHE BADGE =====
+    const DB_NAME = 'qolbu-quran-cache';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'surah-cache';
+
+    function openDBCache() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          reject('no indexeddb');
+          return;
+        }
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'nomor' });
+          }
+        };
+        req.onsuccess = (e) => resolve(e.target.result);
+        req.onerror = (e) => reject(e.target.error);
       });
-    } catch { return 0; }
-  }
-
-  const initCacheBadge = async () => {
-    if (window._cacheBadgeInitialized) return;
-    const badge = document.getElementById('cache-badge');
-    const text = document.getElementById('cache-badge-text');
-    if (!badge || !text) return;
-    window._cacheBadgeInitialized = true;
-    const count = await getCachedCountFromDB();
-    if (count === 0) { badge.classList.add('hidden'); return; }
-    badge.classList.remove('hidden');
-    text.textContent = count + ' surah offline';
-  };
-
-  // ===== PRAYER CARD =====
-  const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-  const PRAYER_NAMES = { Fajr:'Subuh', Dhuhr:'Dzuhur', Asr:'Ashar', Maghrib:'Maghrib', Isha:'Isya' };
-  let prayerInterval = null;
-
-  function getPDate(timeStr) {
-    const [h, m] = timeStr.split(':').map(Number);
-    const d = new Date();
-    d.setHours(h, m, 0, 0);
-    return d;
-  }
-
-  function findNextPrayer(timings) {
-    const now = new Date();
-    for (let k of PRAYER_ORDER) {
-      const t = getPDate(timings[k]);
-      if (t > now) return { key: k, time: t, isTomorrow: false };
     }
-    const t = getPDate(timings['Fajr']);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(t.getHours(), t.getMinutes(), 0, 0);
-    return { key: 'Fajr', time: tomorrow, isTomorrow: true };
-  }
 
-  const initPrayerCard = () => {
-    if (window._prayerCardInitialized) return;
-    const card = document.getElementById('prayer-card');
-    if (!card) return;
-    window._prayerCardInitialized = true;
-
-    // Read settings to build cache key
-    let settings = {};
-    try { settings = JSON.parse(localStorage.getItem('sholat-settings') || '{}'); } catch {}
-    const lat = settings.lat || -6.2088;
-    const lng = settings.lng || 106.8456;
-    const method = settings.method || 20;
-    const correction = settings.correction || 2;
-
-    // Build cache key same as sholat.astro
-    const d = new Date();
-    const dateStr = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
-    const cacheKey = 'sholat-cache-' + dateStr + '-' + lat.toFixed(4) + '-' + lng.toFixed(4) + '-' + method + '-' + correction;
-
-    function loadCachedData() {
+    async function getCachedCountFromDB() {
       try {
-        const raw = localStorage.getItem(cacheKey);
-        if (!raw) return null;
-        const parsed = JSON.parse(raw);
-        if (parsed.date === new Date().toDateString()) return parsed;
-      } catch {}
-      return null;
+        const db = await openDBCache();
+        return new Promise((resolve) => {
+          const tx = db.transaction(STORE_NAME, 'readonly');
+          const req = tx.objectStore(STORE_NAME).count();
+          req.onsuccess = () => {
+            db.close();
+            resolve(req.result);
+          };
+          req.onerror = () => {
+            db.close();
+            resolve(0);
+          };
+        });
+      } catch {
+        return 0;
+      }
     }
 
-    const cached = loadCachedData();
-    if (!cached || !cached.data || !cached.data.timings) {
-      // No cached prayer data yet, silently hide
-      return;
-    }
-
-    const timings = cached.data.timings;
-
-    // Show card
-    card.classList.remove('hidden');
-
-    // Fill 5 times
-    PRAYER_ORDER.forEach(k => {
-      const el = document.getElementById('pt-' + k);
-      if (el && timings[k]) el.innerText = timings[k];
-    });
-
-    // Qibla
-    const qibla = document.getElementById('prayer-qibla');
-    if (qibla) {
-      const kaabaLat = 21.4225, kaabaLng = 39.8262;
-      const φ1 = lat * Math.PI / 180, φ2 = kaabaLat * Math.PI / 180;
-      const Δλ = (kaabaLng - lng) * Math.PI / 180;
-      const x = Math.sin(Δλ) * Math.cos(φ2);
-      const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
-      let q = Math.atan2(x, y) * 180 / Math.PI;
-      qibla.innerText = '🕋 ' + ((q + 360) % 360).toFixed(1) + '°';
-    }
-
-    // Countdown
-    function tick() {
-      const next = findNextPrayer(timings);
-      const now = new Date();
-      const diff = next.time - now;
-      if (diff <= 0) {
-        document.getElementById('prayer-countdown').innerText = '00:00:00';
+    const initCacheBadge = async () => {
+      if (window._cacheBadgeInitialized) return;
+      const badge = document.getElementById('cache-badge');
+      const text = document.getElementById('cache-badge-text');
+      if (!badge || !text) return;
+      window._cacheBadgeInitialized = true;
+      const count = await getCachedCountFromDB();
+      if (count === 0) {
+        badge.classList.add('hidden');
         return;
       }
-      const h = Math.floor(diff / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById('prayer-countdown').innerText =
-        h.toString().padStart(2,'0') + ':' + m.toString().padStart(2,'0') + ':' + s.toString().padStart(2,'0');
-      document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[next.key];
+      badge.classList.remove('hidden');
+      text.textContent = count + ' surah offline';
+    };
+
+    // ===== PRAYER CARD =====
+    const PRAYER_ORDER = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    const PRAYER_NAMES = {
+      Fajr: 'Subuh',
+      Dhuhr: 'Dzuhur',
+      Asr: 'Ashar',
+      Maghrib: 'Maghrib',
+      Isha: 'Isya',
+    };
+    let prayerInterval = null;
+
+    function getPDate(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      const d = new Date();
+      d.setHours(h, m, 0, 0);
+      return d;
     }
 
-    if (prayerInterval) clearInterval(prayerInterval);
-    tick();
-    prayerInterval = setInterval(tick, 1000);
-    window._prayerInterval = prayerInterval;
-  };
+    function findNextPrayer(timings) {
+      const now = new Date();
+      for (let k of PRAYER_ORDER) {
+        const t = getPDate(timings[k]);
+        if (t > now) return { key: k, time: t, isTomorrow: false };
+      }
+      const t = getPDate(timings['Fajr']);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(t.getHours(), t.getMinutes(), 0, 0);
+      return { key: 'Fajr', time: tomorrow, isTomorrow: true };
+    }
 
-  // ===== HIJRI EVENTS =====
-  const HIJRI_EVENTS = [
-    {month:'Muharram',day:1,name:'Tahun Baru Islam 1448 H',icon:'🌙'},
-    {month:'Muharram',day:10,name:'Hari Asyura (Puasa Sunnah)',icon:'🤲'},
-    {month:"Rabi' al-Awwal",day:12,name:'Maulid Nabi Muhammad ﷺ',icon:'🕌'},
-    {month:'Rajab',day:27,name:"Isra' Mi'raj Nabi ﷺ",icon:'🕋'},
-    {month:'Sha'ban',day:15,name:'Nisfu Sya\'ban',icon:'🌙'},
-    {month:'Ramadan',day:1,name:'Awal Puasa Ramadhan',icon:'🌙'},
-    {month:'Ramadan',day:17,name:"Nuzulul Qur'an",icon:'📖'},
-    {month:'Ramadan',day:27,name:'Lailatul Qadr (malam ganjil)',icon:'✨'},
-    {month:'Shawwal',day:1,name:'Idul Fitri 1448 H',icon:'🎉'},
-    {month:'Shawwal',day:2,name:'Idul Fitri — Hari Kedua',icon:'🎉'},
-    {month:'Dhu al-Hijjah',day:9,name:'Hari Arafah (Puasa Sunnah)',icon:'🤲'},
-    {month:'Dhu al-Hijjah',day:10,name:'Idul Adha 1448 H',icon:'🐑'}
-  ];
+    const initPrayerCard = () => {
+      if (window._prayerCardInitialized) return;
+      const card = document.getElementById('prayer-card');
+      if (!card) return;
+      window._prayerCardInitialized = true;
 
-  const HIJRI_MONTHS = ['Muharram','Safar',"Rabi' al-Awwal","Rabi' al-Thani",'Jumada al-Awwal','Jumada al-Thani','Rajab','Sha'ban','Ramadan','Shawwal','Dhu al-Qi'dah','Dhu al-Hijjah'];
+      // Read settings to build cache key
+      let settings = {};
+      try {
+        settings = JSON.parse(localStorage.getItem('sholat-settings') || '{}');
+      } catch {}
+      const lat = settings.lat || -6.2088;
+      const lng = settings.lng || 106.8456;
+      const method = settings.method || 20;
+      const correction = settings.correction || 2;
 
-  // Normalize Aladhan API month name variations to our standard format
-  const MONTH_ALIASES = {
-    'Jumada I': 'Jumada al-Awwal',
-    'Jumada al-Ula': 'Jumada al-Awwal',
-    'Jumada II': 'Jumada al-Thani',
-    'Jumada al-Akhirah': 'Jumada al-Thani',
-    "Rabi\u02bb I": "Rabi' al-Awwal",
-    "Rabi\u02bb II": "Rabi' al-Thani",
-    "Dhu\u02bbl-Qi\u02bbdah": "Dhu al-Qi'dah",
-    "Dhu\u02bbl-Hijjah": "Dhu al-Hijjah",
-  };
+      // Build cache key same as sholat.astro
+      const d = new Date();
+      const dateStr = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+      const cacheKey =
+        'sholat-cache-' +
+        dateStr +
+        '-' +
+        lat.toFixed(4) +
+        '-' +
+        lng.toFixed(4) +
+        '-' +
+        method +
+        '-' +
+        correction;
 
-  // Convert Hijri month name to index (0-based), handling aliases
-  function hijriMonthIndex(name) {
-    const normalized = MONTH_ALIASES[name] || name;
-    return HIJRI_MONTHS.indexOf(normalized);
-  }
+      function loadCachedData() {
+        try {
+          const raw = localStorage.getItem(cacheKey);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          if (parsed.date === new Date().toDateString()) return parsed;
+        } catch {}
+        return null;
+      }
 
-  // Check if event (m1,d1) is after or same as current (m2,d2)
-  function isAfterOrSame(m1, d1, m2, d2) {
-    return m1 > m2 || (m1 === m2 && d1 >= d2);
-  }
+      const cached = loadCachedData();
+      const skeleton = document.getElementById('prayer-card-skeleton');
+      if (!cached || !cached.data || !cached.data.timings) {
+        if (skeleton) skeleton.classList.add('hidden');
+        // Show CTA instead of card when no cache
+        card.innerHTML =
+          '<div class="text-center py-2"><p class="text-sm font-bold mb-2">Belum ada jadwal sholat</p><a href="/sholat" class="inline-flex items-center gap-1 px-4 py-2 bg-white text-emerald-600 rounded-full text-xs font-bold">Aktifkan GPS & Lihat Jadwal →</a></div>';
+        card.classList.remove('hidden');
+        if (skeleton) skeleton.classList.add('hidden');
+        return;
+      }
 
-  const initHijriEvent = () => {
-    if (window._hijriEventInitialized) return;
-    const bar = document.getElementById('hijri-event');
-    const icon = document.getElementById('hijri-event-icon');
-    const text = document.getElementById('hijri-event-text');
-    const daysEl = document.getElementById('hijri-event-days');
-    if (!bar || !icon || !text || !daysEl) return;
-    window._hijriEventInitialized = true;
+      const timings = cached.data.timings;
 
-    // Try to read today's Hijri date from sholat cache
-    let settings = {};
-    try { settings = JSON.parse(localStorage.getItem('sholat-settings') || '{}'); } catch {}
-    const lat = settings.lat || -6.2088;
-    const lng = settings.lng || 106.8456;
-    const method = settings.method || 20;
-    const correction = settings.correction || 2;
-    const d = new Date();
-    const dateStr = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
-    const cacheKey = 'sholat-cache-' + dateStr + '-' + lat.toFixed(4) + '-' + lng.toFixed(4) + '-' + method + '-' + correction;
+      // Show card, hide skeleton
+      if (skeleton) skeleton.classList.add('hidden');
+      card.classList.remove('hidden');
 
-    let hijriMonth, hijriDay;
-    try {
-      const raw = localStorage.getItem(cacheKey);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed.data && parsed.data.date && parsed.data.date.hijri) {
-          hijriMonth = parsed.data.date.hijri.month.en;
-          hijriDay = parseInt(parsed.data.date.hijri.day);
+      // Fill 5 times
+      PRAYER_ORDER.forEach((k) => {
+        const el = document.getElementById('pt-' + k);
+        if (el && timings[k]) el.innerText = timings[k];
+      });
+
+      // Qibla
+      const qibla = document.getElementById('prayer-qibla');
+      if (qibla) {
+        const kaabaLat = 21.4225,
+          kaabaLng = 39.8262;
+        const φ1 = (lat * Math.PI) / 180,
+          φ2 = (kaabaLat * Math.PI) / 180;
+        const Δλ = ((kaabaLng - lng) * Math.PI) / 180;
+        const x = Math.sin(Δλ) * Math.cos(φ2);
+        const y = Math.cos(φ1) * Math.sin(φ2) - Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+        let q = (Math.atan2(x, y) * 180) / Math.PI;
+        qibla.innerText = '🕋 ' + ((q + 360) % 360).toFixed(1) + '°';
+      }
+
+      // Countdown
+      function tick() {
+        const next = findNextPrayer(timings);
+        const now = new Date();
+        const diff = next.time - now;
+        if (diff <= 0) {
+          document.getElementById('prayer-countdown').innerText = '00:00:00';
+          return;
+        }
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('prayer-countdown').innerText =
+          h.toString().padStart(2, '0') +
+          ':' +
+          m.toString().padStart(2, '0') +
+          ':' +
+          s.toString().padStart(2, '0');
+        document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[next.key];
+      }
+
+      if (prayerInterval) clearInterval(prayerInterval);
+      tick();
+      prayerInterval = setInterval(tick, 1000);
+      window._prayerInterval = prayerInterval;
+    };
+
+    // ===== HIJRI EVENTS =====
+    const HIJRI_EVENTS = [
+      { month: 'Muharram', day: 1, name: 'Tahun Baru Islam 1448 H', icon: '🌙' },
+      { month: 'Muharram', day: 10, name: 'Hari Asyura (Puasa Sunnah)', icon: '🤲' },
+      { month: "Rabi' al-Awwal", day: 12, name: 'Maulid Nabi Muhammad ﷺ', icon: '🕌' },
+      { month: 'Rajab', day: 27, name: "Isra' Mi'raj Nabi ﷺ", icon: '🕋' },
+      { month: "Sha'ban", day: 15, name: "Nisfu Sya'ban", icon: '🌙' },
+      { month: 'Ramadan', day: 1, name: 'Awal Puasa Ramadhan', icon: '🌙' },
+      { month: 'Ramadan', day: 17, name: "Nuzulul Qur'an", icon: '📖' },
+      { month: 'Ramadan', day: 27, name: 'Lailatul Qadr (malam ganjil)', icon: '✨' },
+      { month: 'Shawwal', day: 1, name: 'Idul Fitri 1448 H', icon: '🎉' },
+      { month: 'Shawwal', day: 2, name: 'Idul Fitri — Hari Kedua', icon: '🎉' },
+      { month: 'Dhu al-Hijjah', day: 9, name: 'Hari Arafah (Puasa Sunnah)', icon: '🤲' },
+      { month: 'Dhu al-Hijjah', day: 10, name: 'Idul Adha 1448 H', icon: '🐑' },
+    ];
+
+    const HIJRI_MONTHS = [
+      'Muharram',
+      'Safar',
+      "Rabi' al-Awwal",
+      "Rabi' al-Thani",
+      'Jumada al-Awwal',
+      'Jumada al-Thani',
+      'Rajab',
+      "Sha'ban",
+      'Ramadan',
+      'Shawwal',
+      "Dhu al-Qi'dah",
+      'Dhu al-Hijjah',
+    ];
+
+    // Normalize Aladhan API month name variations to our standard format
+    const MONTH_ALIASES = {
+      'Jumada I': 'Jumada al-Awwal',
+      'Jumada al-Ula': 'Jumada al-Awwal',
+      'Jumada II': 'Jumada al-Thani',
+      'Jumada al-Akhirah': 'Jumada al-Thani',
+      'Rabi\u02bb I': "Rabi' al-Awwal",
+      'Rabi\u02bb II': "Rabi' al-Thani",
+      'Dhu\u02bbl-Qi\u02bbdah': "Dhu al-Qi'dah",
+      'Dhu\u02bbl-Hijjah': 'Dhu al-Hijjah',
+    };
+
+    // Convert Hijri month name to index (0-based), handling aliases
+    function hijriMonthIndex(name) {
+      const normalized = MONTH_ALIASES[name] || name;
+      return HIJRI_MONTHS.indexOf(normalized);
+    }
+
+    // Check if event (m1,d1) is after or same as current (m2,d2)
+    function isAfterOrSame(m1, d1, m2, d2) {
+      return m1 > m2 || (m1 === m2 && d1 >= d2);
+    }
+
+    const initHijriEvent = () => {
+      if (window._hijriEventInitialized) return;
+      const bar = document.getElementById('hijri-event');
+      const icon = document.getElementById('hijri-event-icon');
+      const text = document.getElementById('hijri-event-text');
+      const daysEl = document.getElementById('hijri-event-days');
+      if (!bar || !icon || !text || !daysEl) return;
+      window._hijriEventInitialized = true;
+
+      // Try to read today's Hijri date from sholat cache
+      let settings = {};
+      try {
+        settings = JSON.parse(localStorage.getItem('sholat-settings') || '{}');
+      } catch {}
+      const lat = settings.lat || -6.2088;
+      const lng = settings.lng || 106.8456;
+      const method = settings.method || 20;
+      const correction = settings.correction || 2;
+      const d = new Date();
+      const dateStr = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+      const cacheKey =
+        'sholat-cache-' +
+        dateStr +
+        '-' +
+        lat.toFixed(4) +
+        '-' +
+        lng.toFixed(4) +
+        '-' +
+        method +
+        '-' +
+        correction;
+
+      let hijriMonth, hijriDay;
+      try {
+        const raw = localStorage.getItem(cacheKey);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.data && parsed.data.date && parsed.data.date.hijri) {
+            hijriMonth = parsed.data.date.hijri.month.en;
+            hijriDay = parseInt(parsed.data.date.hijri.day);
+          }
+        }
+      } catch {}
+
+      if (!hijriMonth || !hijriDay) {
+        bar.classList.add('hidden');
+        return;
+      }
+
+      const curIdx = hijriMonthIndex(hijriMonth);
+      if (curIdx === -1) {
+        bar.classList.add('hidden');
+        return;
+      }
+
+      // Find next event (wrap around year)
+      let nextEvent = null;
+      for (const ev of HIJRI_EVENTS) {
+        const evIdx = hijriMonthIndex(ev.month);
+        if (evIdx === -1) continue;
+        if (isAfterOrSame(evIdx, ev.day, curIdx, hijriDay)) {
+          nextEvent = ev;
+          break;
         }
       }
-    } catch {}
+      // If no event found this year, pick first event of the year (wrap)
+      if (!nextEvent) nextEvent = HIJRI_EVENTS[0];
 
-    if (!hijriMonth || !hijriDay) {
-      bar.classList.add('hidden');
-      return;
-    }
-
-    const curIdx = hijriMonthIndex(hijriMonth);
-    if (curIdx === -1) { bar.classList.add('hidden'); return; }
-
-    // Find next event (wrap around year)
-    let nextEvent = null;
-    for (const ev of HIJRI_EVENTS) {
-      const evIdx = hijriMonthIndex(ev.month);
-      if (evIdx === -1) continue;
-      if (isAfterOrSame(evIdx, ev.day, curIdx, hijriDay)) {
-        nextEvent = ev;
-        break;
-      }
-    }
-    // If no event found this year, pick first event of the year (wrap)
-    if (!nextEvent) nextEvent = HIJRI_EVENTS[0];
-
-    // Calculate days until event (approximate: 29-30 days per month)
-    const evIdx = hijriMonthIndex(nextEvent.month);
-    let daysUntil = 0;
-    if (evIdx > curIdx || (evIdx === curIdx && nextEvent.day >= hijriDay)) {
-      // Same year, same month
-      if (evIdx === curIdx) {
-        daysUntil = nextEvent.day - hijriDay;
+      // Calculate days until event (approximate: 29-30 days per month)
+      const evIdx = hijriMonthIndex(nextEvent.month);
+      let daysUntil = 0;
+      if (evIdx > curIdx || (evIdx === curIdx && nextEvent.day >= hijriDay)) {
+        // Same year, same month
+        if (evIdx === curIdx) {
+          daysUntil = nextEvent.day - hijriDay;
+        } else {
+          // Different month: remaining days in current month + days in-between + event day
+          daysUntil = 30 - hijriDay + (evIdx - curIdx - 1) * 30 + nextEvent.day;
+        }
       } else {
-        // Different month: remaining days in current month + days in-between + event day
-        daysUntil = (30 - hijriDay) + (evIdx - curIdx - 1) * 30 + nextEvent.day;
+        // Wrap to next year
+        daysUntil = 30 - hijriDay + (11 - curIdx) * 30 + evIdx * 30 + nextEvent.day;
       }
-    } else {
-      // Wrap to next year
-      daysUntil = (30 - hijriDay) + (11 - curIdx) * 30 + evIdx * 30 + nextEvent.day;
-    }
 
-    // If it's today or tomorrow, show nice label
-    let daysLabel = '';
-    if (daysUntil === 0) {
-      daysLabel = 'Hari ini!';
-    } else if (daysUntil === 1) {
-      daysLabel = 'Besok!';
-    } else {
-      daysLabel = daysUntil + ' hari lagi';
-    }
+      // If it's today or tomorrow, show nice label
+      let daysLabel = '';
+      if (daysUntil === 0) {
+        daysLabel = 'Hari ini!';
+      } else if (daysUntil === 1) {
+        daysLabel = 'Besok!';
+      } else {
+        daysLabel = daysUntil + ' hari lagi';
+      }
 
-    icon.textContent = nextEvent.icon;
-    text.textContent = nextEvent.name;
-    daysEl.textContent = daysLabel;
-    bar.classList.remove('hidden');
-  };
+      icon.textContent = nextEvent.icon;
+      text.textContent = nextEvent.name;
+      daysEl.textContent = daysLabel;
+      bar.classList.remove('hidden');
+    };
 
-  document.addEventListener("astro:page-load", initQuote);
-  document.addEventListener("astro:page-load", initCacheBadge);
-  document.addEventListener("astro:page-load", initPrayerCard);
-  document.addEventListener("astro:page-load", initHijriEvent);
+    document.addEventListener('astro:page-load', initQuote);
+    document.addEventListener('astro:page-load', initCacheBadge);
+    document.addEventListener('astro:page-load', initPrayerCard);
+    document.addEventListener('astro:page-load', initHijriEvent);
 
-  // Clean up intervals on page unload (prevents memory leaks)
-  document.addEventListener('astro:before-swap', () => {
-    window._quoteInitialized = false;
-    window._cacheBadgeInitialized = false;
-    window._prayerCardInitialized = false;
-    window._hijriEventInitialized = false;
-    if (window._quoteInterval) { clearInterval(window._quoteInterval); window._quoteInterval = null; }
-    if (window._prayerInterval) { clearInterval(window._prayerInterval); window._prayerInterval = null; }
-  });
-})();
+    // Clean up intervals on page unload (prevents memory leaks)
+    document.addEventListener('astro:before-swap', () => {
+      window._quoteInitialized = false;
+      window._cacheBadgeInitialized = false;
+      window._prayerCardInitialized = false;
+      window._hijriEventInitialized = false;
+      if (window._quoteInterval) {
+        clearInterval(window._quoteInterval);
+        window._quoteInterval = null;
+      }
+      if (window._quoteTimeout) {
+        clearTimeout(window._quoteTimeout);
+        window._quoteTimeout = null;
+      }
+      if (window._prayerInterval) {
+        clearInterval(window._prayerInterval);
+        window._prayerInterval = null;
+      }
+    });
+  })();
 </script>
-
-<style>
-  #quote-text,
-  #quote-source-container {
-    transition: opacity 0.5s ease-in-out;
-  }
-</style>

@@ -1,289 +1,1216 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeaderBack from '../components/HeaderBack.astro';
+import HeaderSticky from '../components/HeaderSticky.astro';
 import SearchBar from '../components/SearchBar.astro';
 import Toast from '../components/Toast.astro';
 
 const asmaulHusna = [
-  { no:1, arab:"الرَّحْمَنُ", latin:"Ar-Rahmaan", arti:"Yang Maha Pengasih", fadhilah:"Membaca 'Yaa Rahmaan' 100x setiap selesai sholat fardhu akan mendapatkan hati yang penuh kasih sayang, dijauhkan dari sifat keras hati, dan dimudahkan dalam bergaul dengan sesama. Allah akan menanamkan rasa cinta di hati hamba-Nya kepada orang yang membaca-Nya.", dalil:"QS. Al-Fatihah: 1, 3; QS. Ar-Rahman: 1; QS. Al-Mulk: 29 — 'Bismillaahir Rahmaanir Rahiim'" },
-  { no:2, arab:"الرَّحِيمُ", latin:"Ar-Rahiim", arti:"Yang Maha Penyayang", fadhilah:"Membaca 'Yaa Rahiim' 100x setelah sholat Subuh akan mendapatkan perlindungan dari segala marabahaya, dimudahkan segala urusan, dan diberi rezeki dari arah yang tak terduga. Sifat penyayang Allah meliputi seluruh makhluk-Nya.", dalil:"QS. Al-Baqarah: 37, 54, 128, 143; QS. Al-Fatihah: 3 — '...ar-Rahmaanir Rahiim'" },
-  { no:3, arab:"الْمَلِكُ", latin:"Al-Malik", arti:"Yang Maha Merajai", fadhilah:"Membaca 'Yaa Malik' atau 'Al-Malik' secara rutin akan diberikan kemuliaan, wibawa, dan kepemimpinan yang adil. Hati akan dipenuhi rasa cukup (qana'ah) dan tidak diperbudak oleh dunia.", dalil:"QS. Al-Fatihah: 4; QS. Al-Mu'minun: 116 — 'Maaliki yaumid-diin'" },
-  { no:4, arab:"الْقُدُّوسُ", latin:"Al-Quddus", arti:"Yang Maha Suci", fadhilah:"Membaca 'Yaa Quddus' atau 'Subbuhun Quddusun' 100x akan mensucikan hati dari sifat-sifat buruk seperti iri, dengki, dan sombong. Hati menjadi tenang dan jiwa menjadi bersih. Malaikat pun menyucikan-Nya.", dalil:"QS. Al-Hasyr: 23; QS. Al-Jumu'ah: 1 — 'Al-Malikil Quddusil 'Aziizil Hakiim'" },
-  { no:5, arab:"السَّلاَمُ", latin:"As-Salaam", arti:"Yang Maha Memberi Kesejahteraan", fadhilah:"Membaca 'Yaa Salaam' 100x setiap pagi akan memberikan ketenangan hati, dijauhkan dari kegelisahan dan kecemasan. Rumah tangga yang sering membacanya akan dipenuhi kedamaian dan keberkahan.", dalil:"QS. Al-Hasyr: 23; QS. Al-An'am: 127; QS. Yunus: 25 — 'Lahum daarus salaami 'inda rabbihim'" },
-  { no:6, arab:"الْمُؤْمِنُ", latin:"Al-Mu'min", arti:"Yang Maha Memberi Keamanan", fadhilah:"Membaca 'Yaa Mu'min' 100x akan mendapatkan rasa aman dari segala ketakutan, dijaga dari gangguan makhluk halus, dan dikuatkan iman. Sangat baik dibaca saat merasa takut atau cemas.", dalil:"QS. Al-Hasyr: 23; QS. Quraisy: 4 — 'Alladzii ath'amahum min juu'iw wa aamanahum min khauf'" },
-  { no:7, arab:"الْمُهَيْمِنُ", latin:"Al-Muhaimin", arti:"Yang Maha Memelihara", fadhilah:"Membaca 'Yaa Muhaimin' 100x akan membuka mata hati (bashirah), diberikan kemampuan melihat kebenaran di balik tipu daya, dan dijaga dari kesesatan. Allah akan memelihara lahir dan batin pembacanya.", dalil:"QS. Al-Hasyr: 23; QS. Al-Ma'idah: 48 — 'Wa muhaiminan 'alaihi'" },
-  { no:8, arab:"الْعَزِيزُ", latin:"Al-'Aziiz", arti:"Yang Maha Perkasa", fadhilah:"Membaca 'Yaa 'Aziiz' 40x setiap habis sholat Subuh selama 40 hari akan diberikan kemuliaan, tidak direndahkan orang lain, dan dimenangkan dalam urusan yang benar. Allah akan memberikan kekuatan yang tak terkalahkan.", dalil:"QS. Al-Hasyr: 23; QS. Al-Ma'idah: 118 — 'Innaka antal 'aziizul hakiim'; QS. Ali Imran: 62" },
-  { no:9, arab:"الْجَبَّارُ", latin:"Al-Jabbar", arti:"Yang Maha Memaksa", fadhilah:"Membaca 'Yaa Jabbar' 226x setiap hari akan dijauhkan dari kedzaliman, dikuatkan jiwa saat teraniaya, dan dimenangkan melawan musuh. Allah akan memaksa hati yang keras menjadi lunak.", dalil:"QS. Al-Hasyr: 23; QS. Ibrahim: 15 — 'Wa khaaba kullu jabbaarin 'aniid'" },
-  { no:10, arab:"الْمُتَكَبِّرُ", latin:"Al-Mutakabbir", arti:"Yang Maha Megah", fadhilah:"Membaca 'Yaa Mutakabbir' 100x akan dijauhkan dari sifat sombong dan ujub. Hati akan dipenuhi rasa tawadhu' dan keagungan hanya disandarkan kepada Allah semata.", dalil:"QS. Al-Hasyr: 23; QS. An-Nahl: 60 — 'Lillahil matsalul a'laa'" },
-  { no:11, arab:"الْخَالِقُ", latin:"Al-Khaaliq", arti:"Yang Maha Pencipta", fadhilah:"Membaca 'Yaa Khaaliq' 100x setiap malam akan diberikan kecerdasan, kreativitas, dan kemampuan menciptakan solusi dari setiap masalah. Sangat baik bagi yang ingin menghasilkan karya bermanfaat.", dalil:"QS. Al-Hasyr: 24; QS. Al-Mu'minun: 14 — 'Fatabaarakallaahu ahsanul khaaliqiin'" },
-  { no:12, arab:"الْبَارِئُ", latin:"Al-Baari'", arti:"Yang Maha Melepaskan", fadhilah:"Membaca 'Yaa Baari'' 100x akan dilepaskan dari segala belenggu masalah, hutang, dan kesulitan. Allah akan membebaskan dari jeratan yang membelenggu hidup.", dalil:"QS. Al-Hasyr: 24; QS. Al-Baqarah: 54 — 'Fa tuubuu ilaa baari-ikum'" },
-  { no:13, arab:"الْمُصَوِّرُ", latin:"Al-Mushawwir", arti:"Yang Maha Membentuk Rupa", fadhilah:"Membaca 'Yaa Mushawwir' 100x setiap hari akan dikaruniai kemampuan melihat keindahan ciptaan Allah, hati menjadi bersyukur, dan anak keturunan dibentuk dengan akhlak yang baik.", dalil:"QS. Al-Hasyr: 24; QS. Ghafir: 64 — 'Wa shawwarakum fa ahsana shuwarakum'" },
-  { no:14, arab:"الْغَفَّارُ", latin:"Al-Ghaffaar", arti:"Yang Maha Pengampun", fadhilah:"Membaca 'Yaa Ghaffaar' 100x setelah sholat Jum'at akan diampuni dosa-dosa yang lalu. Sangat baik dibaca saat bertaubat untuk mendapatkan ampunan yang sempurna.", dalil:"QS. Nuh: 10; QS. Ghafir: 42; QS. Thaha: 82 — 'Wa innii la ghaffaarul liman taaba'" },
-  { no:15, arab:"الْقَهَّارُ", latin:"Al-Qahhaar", arti:"Yang Maha Menundukkan", fadhilah:"Membaca 'Yaa Qahhaar' 100x akan menundukkan hawa nafsu, mengalahkan musuh yang dzalim, dan menaklukkan sifat buruk dalam diri. Hati menjadi tunduk hanya kepada Allah.", dalil:"QS. Yusuf: 39; QS. Ar-Ra'd: 16; QS. Ghafir: 16 — 'Al-Waahidul Qahhaar'" },
-  { no:16, arab:"الْوَهَّابُ", latin:"Al-Wahhaab", arti:"Yang Maha Pemberi Karunia", fadhilah:"Membaca 'Yaa Wahhaab' 100x setelah sholat Dhuha akan dibukakan pintu rezeki yang tak terduga, dikaruniai anak shalih, dan dimudahkan mendapatkan pasangan hidup yang baik.", dalil:"QS. Ali Imran: 8; QS. Shad: 9, 35 — 'Innaka antal wahhaab'" },
-  { no:17, arab:"الرَّزَّاقُ", latin:"Ar-Razzaaq", arti:"Yang Maha Pemberi Rezeki", fadhilah:"Membaca 'Yaa Razzaaq' 1000x setiap pagi dan petang akan dibukakan 1000 pintu rezeki. Allah akan mencukupkan rezeki dari jalan yang tidak disangka-sangka. Rumah akan dipenuhi keberkahan.", dalil:"QS. Adz-Dzariyat: 58; QS. Hud: 6 — 'Innallaaha huwar razzaaqu dzul quwwatil matiin'" },
-  { no:18, arab:"الْفَتَّاحُ", latin:"Al-Fattaah", arti:"Yang Maha Pembuka Rahmat", fadhilah:"Membaca 'Yaa Fattaah' 100x setelah sholat Subuh akan dibukakan pintu rahmat, rezeki, ilmu, dan kemudahan. Masalah yang terasa buntu akan diberi jalan keluar oleh Allah.", dalil:"QS. Saba': 26; QS. Al-A'raf: 96 — 'Lafatahnaa 'alaihim barakaatim minas samaa-i wal ardh'" },
-  { no:19, arab:"الْعَلِيمُ", latin:"Al-'Aliim", arti:"Yang Maha Mengetahui", fadhilah:"Membaca 'Yaa 'Aliim' 100x setiap hari akan dibukakan pintu ilmu dan hikmah, dimudahkan dalam belajar, dan diberi pemahaman yang dalam. Allah akan menerangi hati dengan cahaya pengetahuan.", dalil:"QS. Al-Baqarah: 29, 32, 115; QS. Al-Anfal: 75 — 'Innallaaha bikulli syai-in 'aliim'" },
-  { no:20, arab:"الْقَابِضُ", latin:"Al-Qaabidh", arti:"Yang Maha Menyempitkan", fadhilah:"Membaca 'Yaa Qaabidh' saat mengalami kesempitan akan diberikan pemahaman bahwa setiap kesempitan adalah ujian. Allah akan menggantinya dengan kelapangan setelah kesabaran.", dalil:"QS. Al-Baqarah: 245 — 'Wallaahu yaqbidhu wa yabsuthu wa ilaihi turja'uun'" },
-  { no:21, arab:"الْبَاسِطُ", latin:"Al-Baasith", arti:"Yang Maha Melapangkan", fadhilah:"Membaca 'Yaa Baasith' 10x setelah sholat Dhuha dengan mengangkat tangan akan dilapangkan rezeki, hati, pikiran, dan segala urusan. Allah akan menghilangkan kesempitan hidup.", dalil:"QS. Ar-Ra'd: 26; QS. Al-Isra': 30 — 'Allaahu yabsuthur rizqa liman yasyaa'" },
-  { no:22, arab:"الْخَافِضُ", latin:"Al-Khaafidh", arti:"Yang Maha Merendahkan", fadhilah:"Membaca 'Yaa Khaafidh' akan menurunkan kesombongan dalam hati, merendahkan diri di hadapan Allah, dan menjatuhkan orang-orang dzalim dari kedudukannya.", dalil:"QS. Al-Waqi'ah: 3 — 'Khaafidhatun raafi'ah'" },
-  { no:23, arab:"الرَّافِعُ", latin:"Ar-Raafi'", arti:"Yang Maha Meninggikan", fadhilah:"Membaca 'Yaa Raafi'' 100x setiap hari akan diangkat derajatnya di dunia dan akhirat, ditinggikan martabat di hadapan manusia, dan dihormati tanpa diminta.", dalil:"QS. Al-An'am: 83; QS. Al-Waqi'ah: 3; QS. Fathir: 10 — 'Ilaihi yash'adul kalimuth thayyib'" },
-  { no:24, arab:"الْمُعِزُّ", latin:"Al-Mu'izz", arti:"Yang Maha Memuliakan", fadhilah:"Membaca 'Yaa Mu'izz' 140x setiap malam Senin atau Jum'at akan dimuliakan Allah, diberikan wibawa, dan disegani kawan maupun lawan. Tidak akan direndahkan oleh siapa pun.", dalil:"QS. Ali Imran: 26 — 'Tu'izzu man tasyaa-u wa tudzillu man tasyaa'" },
-  { no:25, arab:"الْمُذِلُّ", latin:"Al-Mudzill", arti:"Yang Maha Menghinakan", fadhilah:"Membaca 'Yaa Mudzill' saat menghadapi kedzaliman akan menghinakan musuh-musuh yang dzalim. Allah akan merendahkan orang yang berbuat aniaya. Dibaca dengan hati yang ikhlas dan tidak untuk sombong.", dalil:"QS. Ali Imran: 26 — 'Tu'izzu man tasyaa-u wa tudzillu man tasyaa'" },
-  { no:26, arab:"السَّمِيعُ", latin:"As-Samii'", arti:"Yang Maha Mendengar", fadhilah:"Membaca 'Yaa Samii'' 500x setiap Kamis setelah sholat Dhuha akan dikabulkan doa-doanya. Allah akan mendengar setiap permohonan dan keluhan hamba-Nya yang ikhlas.", dalil:"QS. Al-Baqarah: 127, 137, 256; QS. Ibrahim: 39 — 'Inna rabbii la samii'ud du'aa'" },
-  { no:27, arab:"الْبَصِيرُ", latin:"Al-Bashiir", arti:"Yang Maha Melihat", fadhilah:"Membaca 'Yaa Bashiir' 100x setelah sholat Jum'at akan diterangi mata hati, diberikan kemampuan melihat kebenaran, dan dijauhkan dari pandangan yang diharamkan.", dalil:"QS. Al-Baqarah: 110; QS. Al-Hadid: 4; QS. Fathir: 45 — 'Innallaaha bimaa ta'maluuna bashiir'" },
-  { no:28, arab:"الْحَكَمُ", latin:"Al-Hakam", arti:"Yang Maha Menetapkan", fadhilah:"Membaca 'Yaa Hakam' 100x setiap malam akan diberi kebijaksanaan dalam mengambil keputusan, dijauhkan dari kesalahan memilih, dan selalu berada di pihak yang benar.", dalil:"QS. An-Nisa: 58; QS. Al-Mu'min: 48 — 'Innallaaha ya'kumu bainakum'" },
-  { no:29, arab:"الْعَدْلُ", latin:"Al-'Adl", arti:"Yang Maha Adil", fadhilah:"Membaca 'Yaa 'Adl' 100x setiap hari akan ditanamkan sifat adil dalam hati, dijauhkan dari sifat curang dan dzalim, serta diberikan kemampuan memutuskan perkara dengan bijaksana.", dalil:"QS. Al-An'am: 115; QS. An-Nisa: 58; QS. Al-Hujurat: 9 — 'Innallaaha yuhibbul muqsithiin'" },
-  { no:30, arab:"اللَّطِيفُ", latin:"Al-Lathiif", arti:"Yang Maha Lembut", fadhilah:"Membaca 'Yaa Lathiif' 129x setiap pagi akan mendapatkan kelembutan Allah dalam setiap urusan, dimudahkan yang sulit, dan dilindungi dari bahaya yang tidak disadari. Rezeki datang dari arah tak terduga.", dalil:"QS. Al-An'am: 103; QS. Luqman: 16; QS. Al-Mulk: 14 — 'Innallaaha lathiifun khabiir'" },
-  { no:31, arab:"الْخَبِيرُ", latin:"Al-Khabiir", arti:"Yang Maha Mengenal", fadhilah:"Membaca 'Yaa Khabiir' 100x akan dibukakan pengetahuan tentang rahasia diri sendiri, mampu introspeksi dengan baik, dan memahami hakikat kehidupan.", dalil:"QS. Al-An'am: 18, 103; QS. Luqman: 34; QS. Al-Hujurat: 13 — 'Innallaaha 'aliimun khabiir'" },
-  { no:32, arab:"الْحَلِيمُ", latin:"Al-Haliim", arti:"Yang Maha Penyantun", fadhilah:"Membaca 'Yaa Haliim' 100x setiap hari akan dianugerahi sifat sabar, tidak mudah marah, mampu menahan amarah, dan disayangi orang-orang di sekitarnya.", dalil:"QS. Al-Baqarah: 235, 263; QS. Ali Imran: 155; QS. An-Nisa: 12 — 'Innallaaha haliimun ghafuur'" },
-  { no:33, arab:"الْعَظِيمُ", latin:"Al-'Azhiim", arti:"Yang Maha Agung", fadhilah:"Membaca 'Yaa 'Azhiim' 100x akan diberikan keagungan hati, dihormati sesama, dan dikaruniai pemahaman tentang kebesaran Allah. Sangat baik diamalkan saat merasa rendah diri.", dalil:"QS. Al-Baqarah: 255 (Ayat Kursi); QS. Al-Haqqah: 33, 52 — 'Wa huwal 'aliyyul 'azhiim'" },
-  { no:34, arab:"الْغَفُورُ", latin:"Al-Ghafuur", arti:"Yang Maha Pengampun", fadhilah:"Membaca 'Yaa Ghafuur' 100x setelah sholat fardhu akan diampuni dosa-dosa kecil yang tak disengaja. Menjadikan hati ringan dan tidak terbebani rasa bersalah.", dalil:"QS. An-Nisa: 23, 43; QS. Al-Ma'idah: 74; QS. Nuh: 10 — 'Innallaaha ghafuurun rahiim'" },
-  { no:35, arab:"الشَّكُورُ", latin:"Asy-Syakuur", arti:"Yang Maha Pembalas Budi", fadhilah:"Membaca 'Yaa Syakuur' 100x setiap hari akan menjadikan hati pandai bersyukur, nikmat terus bertambah, dan Allah akan membalas setiap amal kebaikan dengan berlipat ganda.", dalil:"QS. Fathir: 30, 34; QS. At-Taghabun: 17 — 'Innallaaha syaakirun 'aliim'" },
-  { no:36, arab:"الْعَلِيُّ", latin:"Al-'Aliy", arti:"Yang Maha Tinggi", fadhilah:"Membaca 'Yaa 'Aliy' 100x akan diangkat derajatnya, dimenangkan dalam setiap persaingan yang baik, dan dimudahkan mencapai cita-cita yang tinggi.", dalil:"QS. Al-Baqarah: 255; QS. Saba': 23; QS. Ghafir: 12 — 'Fa-innallaaha huwal 'aliyyul kabiir'" },
-  { no:37, arab:"الْكَبِيرُ", latin:"Al-Kabiir", arti:"Yang Maha Besar", fadhilah:"Membaca 'Yaa Kabiir' 100x akan diberikan kebesaran jiwa, tidak merasa kecil di hadapan masalah, dan selalu yakin bahwa Allah lebih besar dari segala persoalan hidup.", dalil:"QS. Saba': 23; QS. Ar-Ra'd: 9; QS. Luqman: 30 — 'Wa annallaaha huwal 'aliyyul kabiir'" },
-  { no:38, arab:"الْحَفِيظُ", latin:"Al-Hafiizh", arti:"Yang Maha Memelihara", fadhilah:"Membaca 'Yaa Hafiizh' 100x setiap pagi dan petang akan dijaga dari marabahaya, dipelihara kesehatan, keluarga, harta, dan keimanan. Allah akan menjaga dari segala arah.", dalil:"QS. Hud: 57; QS. Yusuf: 64; QS. Asy-Syura: 6 — 'Inna rabbii 'alaa kulli syai-in hafiizh'" },
-  { no:39, arab:"الْمُقِيتُ", latin:"Al-Muqiit", arti:"Yang Maha Pemberi Kecukupan", fadhilah:"Membaca 'Yaa Muqiit' 100x akan dicukupkan segala kebutuhan hidup, tidak merasa kekurangan, dan Allah akan memberi makanan untuk jiwa dan raga.", dalil:"QS. An-Nisa: 85 — 'Wakaanallaahu 'alaa kulli syai-in muqiitaa'" },
-  { no:40, arab:"الْحَسِيبُ", latin:"Al-Hasiib", arti:"Yang Maha Membuat Perhitungan", fadhilah:"Membaca 'Yaa Hasiib' 100x akan diberi kemampuan introspeksi yang tajam, selalu muhasabah diri, dan dijauhkan dari hisab yang berat di akhirat.", dalil:"QS. An-Nisa: 6, 86; QS. Al-Ahzab: 39 — 'Wa kafaa billaahi hasiibaa'" },
-  { no:41, arab:"الْجَلِيلُ", latin:"Al-Jaliil", arti:"Yang Maha Mulia", fadhilah:"Membaca 'Yaa Jaliil' 100x setiap Jum'at akan diberikan kemuliaan akhlak, ketenangan hati, dan wajah yang bersinar. Orang lain akan melihat kewibawaan pada dirinya.", dalil:"QS. Ar-Rahman: 27, 78 — 'Wa yabqaa wajhu rabbika dzul jalaali wal ikraam'" },
-  { no:42, arab:"الْكَرِيمُ", latin:"Al-Kariim", arti:"Yang Maha Mulia", fadhilah:"Membaca 'Yaa Kariim' 100x setiap malam akan dijadikan hamba yang mulia, dimudahkan rezeki, dimuliakan di hadapan manusia, dan diampuni dosa-dosanya.", dalil:"QS. An-Naml: 40; QS. Al-Infithar: 6 — 'Fagharrakal kariim'; QS. Al-Mu'minun: 116" },
-  { no:43, arab:"الرَّقِيبُ", latin:"Ar-Raqiib", arti:"Yang Maha Mengawasi", fadhilah:"Membaca 'Yaa Raqiib' 100x akan menumbuhkan rasa muraqabah (merasa selalu diawasi Allah), dijauhkan dari maksiat tersembunyi, dan selalu berhati-hati dalam bertindak.", dalil:"QS. An-Nisa: 1; QS. Al-Ma'idah: 117; QS. Al-Ahzab: 52 — 'Innallaaha kaana 'alaa kulli syai-in raqiibaa'" },
-  { no:44, arab:"الْمُجِيبُ", latin:"Al-Mujiib", arti:"Yang Maha Mengabulkan", fadhilah:"Membaca 'Yaa Mujiib' 100x setiap selesai berdoa akan mempercepat pengabulan doa. Allah akan menjawab setiap permohonan hamba-Nya yang yakin dan ikhlas.", dalil:"QS. Al-Baqarah: 186; QS. Hud: 61 — 'Inna rabbii qariibun mujiib'" },
-  { no:45, arab:"الْوَاسِعُ", latin:"Al-Waasi'", arti:"Yang Maha Luas", fadhilah:"Membaca 'Yaa Waasi'' 100x setiap pagi akan diluaskan rezeki, hati, pikiran, dan ilmu. Kesempitan hidup akan berganti kelapangan. Sangat baik dibaca saat merasa sempit.", dalil:"QS. Al-Baqarah: 115, 247, 261; QS. An-Nisa: 130 — 'Wakaanallaahu waasi'an hakiimaa'" },
-  { no:46, arab:"الْحَكِيمُ", latin:"Al-Hakiim", arti:"Yang Maha Bijaksana", fadhilah:"Membaca 'Yaa Hakiim' 100x akan diberi hikmah dalam setiap ucapan dan tindakan. Setiap keputusan yang diambil akan penuh kebijaksanaan dan membawa kebaikan.", dalil:"QS. Al-Baqarah: 32, 129, 209; QS. Ali Imran: 62; QS. Luqman: 27 — 'Innallaaha 'aziizun hakiim'" },
-  { no:47, arab:"الْوَدُودُ", latin:"Al-Waduud", arti:"Yang Maha Mengasihi", fadhilah:"Membaca 'Yaa Waduud' 100x setiap malam akan menanamkan rasa cinta antara suami-istri, mendamaikan yang berselisih, dan menjadikan hati disayangi sesama makhluk.", dalil:"QS. Hud: 90; QS. Al-Buruj: 14 — 'Wa huwal ghafuurul waduud'" },
-  { no:48, arab:"الْمَجِيدُ", latin:"Al-Majiid", arti:"Yang Maha Mulia", fadhilah:"Membaca 'Yaa Majiid' 100x akan diberikan kemuliaan akhlak, keluhuran budi, dan dijauhkan dari perbuatan hina. Nama baik akan dijaga oleh Allah.", dalil:"QS. Hud: 73; QS. Al-Buruj: 15 — 'Dzul 'arsyil majiid'" },
-  { no:49, arab:"الْبَاعِثُ", latin:"Al-Baa'its", arti:"Yang Maha Membangkitkan", fadhilah:"Membaca 'Yaa Baa'its' 100x sebelum tidur akan dibangkitkan semangat hidup, motivasi ibadah, dan dijauhkan dari futur (kemalasan beribadah).", dalil:"QS. Al-Hajj: 7; QS. An-Nahl: 38 — 'Innallaaha yab'atsu man fil qubuur'" },
-  { no:50, arab:"الشَّهِيدُ", latin:"Asy-Syahiid", arti:"Yang Maha Menyaksikan", fadhilah:"Membaca 'Yaa Syahiid' 100x akan ditanamkan kejujuran, dijauhkan dari saksi palsu, dan selalu berkata benar karena yakin Allah menyaksikan segalanya.", dalil:"QS. Ali Imran: 98; QS. Al-Ma'idah: 117; QS. Al-Hajj: 17 — 'Innallaaha 'alaa kulli syai-in syahiid'" },
-  { no:51, arab:"الْحَقُّ", latin:"Al-Haqq", arti:"Yang Maha Benar", fadhilah:"Membaca 'Yaa Haqq' 100x akan selalu dimudahkan membela kebenaran, diberi keberanian menyuarakan yang haq, dan dijauhkan dari kebathilan.", dalil:"QS. Al-An'am: 62; QS. Yunus: 32; QS. Al-Hajj: 6 — 'Dzaalika bi-annallaaha huwal haqq'" },
-  { no:52, arab:"الْوَكِيلُ", latin:"Al-Wakiil", arti:"Yang Maha Memelihara", fadhilah:"Membaca 'Yaa Wakiil' 100x akan diserahkan segala urusan kepada Allah dengan sempurna. Hati menjadi tenang karena yakin Allah adalah sebaik-baik penjaga dan pengatur urusan.", dalil:"QS. Ali Imran: 173; QS. An-Nisa: 81, 132, 171 — 'Hasbunallaahu wa ni'mal wakiil'" },
-  { no:53, arab:"الْقَوِيُّ", latin:"Al-Qawiyy", arti:"Yang Maha Kuat", fadhilah:"Membaca 'Yaa Qawiyy' 100x setiap pagi akan diberikan kekuatan fisik dan mental, tidak mudah lelah dalam beribadah, dan dikuatkan menghadapi ujian hidup.", dalil:"QS. Al-Anfal: 52; QS. Hud: 66; QS. Adz-Dzariyat: 58 — 'Innallaaha huwal razzaaqu dzul quwwatil matiin'" },
-  { no:54, arab:"الْمَتِينُ", latin:"Al-Matiin", arti:"Yang Maha Kokoh", fadhilah:"Membaca 'Yaa Matiin' 100x akan dikokohkan iman, dikuatkan pendirian dalam kebenaran, dan tidak mudah goyah oleh godaan dunia maupun bisikan syetan.", dalil:"QS. Adz-Dzariyat: 58; QS. Yunus: 91 — 'Innallaaha la qawiyyun matiin'" },
-  { no:55, arab:"الْوَلِيُّ", latin:"Al-Waliyy", arti:"Yang Maha Melindungi", fadhilah:"Membaca 'Yaa Waliyy' 100x setiap malam akan mendapatkan perlindungan sempurna dari Allah, dijauhkan dari musuh yang tak terlihat, dan diberi pertolongan di saat genting.", dalil:"QS. Ali Imran: 68; QS. Al-A'raf: 196; QS. Asy-Syura: 9 — 'Allaahu waliyyul ladziina aamanuu'" },
-  { no:56, arab:"الْحَمِيدُ", latin:"Al-Hamiid", arti:"Yang Maha Terpuji", fadhilah:"Membaca 'Yaa Hamiid' 100x akan dijadikan hamba yang terpuji akhlaknya, disenangi banyak orang, dan lisannya selalu basah dengan pujian kepada Allah.", dalil:"QS. Ibrahim: 1, 8; QS. Luqman: 12, 26; QS. Saba': 6 — 'Ilalladzii lahu maa fis samaawaati wa maa fil ardhi wa huwal hamiidul majiid'" },
-  { no:57, arab:"الْمُحْصِي", latin:"Al-Muhshii", arti:"Yang Maha Menghitung", fadhilah:"Membaca 'Yaa Muhshii' 100x akan diberi kemampuan menghitung nikmat Allah, pandai bersyukur, dan selalu merasa cukup dengan apa yang dimiliki.", dalil:"QS. An-Naba': 29; QS. Al-Mujadilah: 6 — 'Wa kulla syai-in ahshainaahu kitaabaa'" },
-  { no:58, arab:"الْمُبْدِئُ", latin:"Al-Mubdi'", arti:"Yang Maha Memulai", fadhilah:"Membaca 'Yaa Mubdi'' 100x akan dimudahkan memulai kebaikan, diberi ide-ide baru yang bermanfaat, dan selalu semangat mengawali amal shalih.", dalil:"QS. Al-Ankabut: 19; QS. Yunus: 34 — 'Innallaaha yabda'ul khalqa tsumma yu'iiduhuu'" },
-  { no:59, arab:"الْمُعِيدُ", latin:"Al-Mu'iid", arti:"Yang Maha Mengembalikan", fadhilah:"Membaca 'Yaa Mu'iid' 100x akan dikembalikan segala yang hilang (semangat, kesehatan, harta, hubungan) dan diingatkan untuk selalu kembali kepada Allah dalam setiap keadaan.", dalil:"QS. Yunus: 34; QS. Al-Ankabut: 19; QS. Ar-Rum: 27 — 'Wa huwalladzii yabda'ul khalqa tsumma yu'iiduhuu'" },
-  { no:60, arab:"الْمُحْيِي", latin:"Al-Muhyii", arti:"Yang Maha Menghidupkan", fadhilah:"Membaca 'Yaa Muhyii' 100x akan dihidupkan hati yang mati, semangat ibadah yang pudar, dan diberi kehidupan yang penuh berkah serta bermakna.", dalil:"QS. Ar-Rum: 19, 50; QS. Fushshilat: 39 — 'Yuhyil ardha ba'da mautihaa'" },
-  { no:61, arab:"الْمُمِيتُ", latin:"Al-Mumiit", arti:"Yang Maha Mematikan", fadhilah:"Membaca 'Yaa Mumiit' akan mematikan hawa nafsu, mengingatkan pada kematian, dan menjadikan hati selalu siap menghadap Allah. Membantu menghentikan kebiasaan buruk.", dalil:"QS. Ali Imran: 156; QS. Al-Mulk: 2 — 'Alladzii khalaqal mauta wal hayaata'" },
-  { no:62, arab:"الْحَيُّ", latin:"Al-Hayy", arti:"Yang Maha Hidup", fadhilah:"Membaca 'Yaa Hayy' 1000x setiap malam akan dipanjangkan umur dalam kebaikan, diberi kesehatan yang prima, dan hati selalu hidup dengan dzikir kepada Allah.", dalil:"QS. Al-Baqarah: 255 (Ayat Kursi); QS. Thaha: 111 — 'Allaahu laa ilaaha illaa huwal hayyul qayyuum'" },
-  { no:63, arab:"الْقَيُّومُ", latin:"Al-Qayyuum", arti:"Yang Maha Mandiri", fadhilah:"Membaca 'Yaa Qayyuum' 100x akan dijadikan hamba yang mandiri, tidak bergantung kepada makhluk, dan selalu berdiri tegak dalam kebenaran. Merupakan dzikir yang sangat dahsyat.", dalil:"QS. Al-Baqarah: 255; QS. Ali Imran: 2 — 'Allaahu laa ilaaha illaa huwal hayyul qayyuum'" },
-  { no:64, arab:"الْوَاجِدُ", latin:"Al-Waajid", arti:"Yang Maha Penemu", fadhilah:"Membaca 'Yaa Waajid' 100x akan dimudahkan menemukan solusi dari setiap masalah, menemukan jalan keluar, dan menemukan apa yang hilang atau dicari.", dalil:"QS. Adh-Dhuha: 6-8 — 'Alam yajidka yatiiman fa aawaa, wa wajadaka dhaallan fa hadaa, wa wajadaka 'aa-ilan fa aghnaa'" },
-  { no:65, arab:"الْمَاجِدُ", latin:"Al-Maajid", arti:"Yang Maha Mulia", fadhilah:"Membaca 'Yaa Maajid' 100x akan diberikan kemuliaan dan kehormatan, dijauhkan dari kehinaan, dan dijadikan pribadi yang bermartabat di mata manusia dan Allah.", dalil:"QS. Hud: 73; QS. Al-Buruj: 15, 21 — 'Bal huwa qur'aanun majiid'" },
-  { no:66, arab:"الْوَاحِدُ", latin:"Al-Waahid", arti:"Yang Maha Tunggal", fadhilah:"Membaca 'Yaa Waahid' 1000x setiap hari akan dipurnakan tauhidnya, dijauhkan dari syirik, dan hatinya hanya bergantung kepada Allah satu-satunya.", dalil:"QS. Al-Baqarah: 163; QS. Yusuf: 39; QS. Ar-Ra'd: 16 — 'Wa ilaahukum ilaahun waahid'" },
-  { no:67, arab:"الْأَحَدُ", latin:"Al-Ahad", arti:"Yang Maha Esa", fadhilah:"Membaca 'Yaa Ahad' 1000x akan mendapatkan keikhlasan sempurna, dijauhkan dari riya', dan amalnya murni hanya karena Allah. Setara dengan membaca sepertiga Al-Qur'an.", dalil:"QS. Al-Ikhlas: 1 — 'Qul huwallaahu ahad'" },
-  { no:68, arab:"الصَّمَدُ", latin:"Ash-Shamad", arti:"Yang Maha Dibutuhkan", fadhilah:"Membaca 'Yaa Shamad' 100x setiap malam akan dicukupkan segala kebutuhan, dijauhkan dari rasa meminta-minta kepada makhluk, dan Allah menjadi tempat bergantung satu-satunya.", dalil:"QS. Al-Ikhlas: 2 — 'Allaahush shamad'" },
-  { no:69, arab:"الْقَادِرُ", latin:"Al-Qaadir", arti:"Yang Maha Menentukan", fadhilah:"Membaca 'Yaa Qaadir' 100x akan diyakinkan bahwa Allah mampu melakukan segala sesuatu. Menghilangkan keraguan dan menumbuhkan optimisme dalam menghadapi hidup.", dalil:"QS. Al-An'am: 37, 65; QS. Al-Qiyamah: 40 — 'Alaisa dzaalika bi qaadirin 'alaa an yuhyiyal mautaa'" },
-  { no:70, arab:"الْمُقْتَدِرُ", latin:"Al-Muqtadir", arti:"Yang Maha Berkuasa", fadhilah:"Membaca 'Yaa Muqtadir' 100x akan diberi kemampuan dan kekuasaan untuk mengendalikan hawa nafsu, menguasai diri, dan memimpin dengan adil.", dalil:"QS. Al-Kahfi: 45; QS. Al-Qamar: 42, 55 — 'Inda maliikin muqtadir'" },
-  { no:71, arab:"الْمُقَدِّمُ", latin:"Al-Muqaddim", arti:"Yang Maha Mendahulukan", fadhilah:"Membaca 'Yaa Muqaddim' 100x akan dimudahkan mendahulukan kebaikan, diberi prioritas yang benar dalam hidup, dan didahulukan dalam setiap kebaikan.", dalil:"QS. Al-Waqi'ah: 13-14 — 'Tsullatum minal awwaliin, wa qaliilun minal aakhiriin'" },
-  { no:72, arab:"الْمُؤَخِّرُ", latin:"Al-Mu'akhkhir", arti:"Yang Maha Mengakhirkan", fadhilah:"Membaca 'Yaa Mu'akhkhir' akan diakhirkan dari keburukan, dijauhkan dari musibah, dan diberi kesabaran menanti ketetapan Allah yang terbaik.", dalil:"QS. Ibrahim: 42 — 'Wa laa tahsabannallaaha ghaafilan 'ammaa ya'maluzh zhaalimuun'" },
-  { no:73, arab:"الْأَوَّلُ", latin:"Al-Awwal", arti:"Yang Maha Awal", fadhilah:"Membaca 'Yaa Awwal' 100x akan diingatkan bahwa Allah adalah awal segala sesuatu, membantu memulai setiap amal dengan niat yang benar, dan dimudahkan mengawali proyek kebaikan.", dalil:"QS. Al-Hadid: 3 — 'Huwal awwalu wal aakhiru wazh zhaahiru wal baathinu'" },
-  { no:74, arab:"الْآخِرُ", latin:"Al-Aakhir", arti:"Yang Maha Akhir", fadhilah:"Membaca 'Yaa Aakhir' 100x akan selalu diingatkan pada akhir kehidupan, diberi husnul khatimah, dan setiap amalnya diakhiri dengan kebaikan.", dalil:"QS. Al-Hadid: 3 — 'Huwal awwalu wal aakhiru wazh zhaahiru wal baathinu'" },
-  { no:75, arab:"الظَّاهِرُ", latin:"Azh-Zhaahir", arti:"Yang Maha Nyata", fadhilah:"Membaca 'Yaa Zhaahir' 100x akan dibukakan mata hati untuk melihat tanda-tanda kebesaran Allah yang nyata di alam semesta, dan dijauhkan dari keraguan akan keberadaan-Nya.", dalil:"QS. Al-Hadid: 3; QS. Al-Fath: 28 — 'Huwalladzii arsala rasuulahu bil hudaa wa diinil haqqi liyuzh-hirahu 'alad diini kullih'" },
-  { no:76, arab:"الْبَاطِنُ", latin:"Al-Baathin", arti:"Yang Maha Ghaib", fadhilah:"Membaca 'Yaa Baathin' 100x akan diberi pemahaman tentang hal-hal ghaib, dijauhkan dari mempercayai tahayul, dan diyakinkan bahwa Allah mengetahui yang tersembunyi.", dalil:"QS. Al-Hadid: 3; QS. Al-Mulk: 13 — 'Wa asirruu qaulakum awijharuu bihii innahuu 'aliimun bidzaatis shuduur'" },
-  { no:77, arab:"الْوَالِي", latin:"Al-Waali", arti:"Yang Maha Memerintah", fadhilah:"Membaca 'Yaa Waali' 100x akan diberi kemampuan memimpin diri sendiri, keluarga, dan orang lain dengan adil dan bijaksana.", dalil:"QS. Ar-Ra'd: 11; QS. Asy-Syura: 9 — 'Wallahu waliyyul mu'miniin'; QS. Al-Jatsiyah: 19" },
-  { no:78, arab:"الْمُتَعَالِي", latin:"Al-Muta'aalii", arti:"Yang Maha Tinggi", fadhilah:"Membaca 'Yaa Muta'aalii' 100x akan ditinggikan cita-citanya, diangkat derajatnya, dan dimuliakan melebihi yang dibayangkan.", dalil:"QS. Ar-Ra'd: 9; QS. Ghafir: 15 — 'Rafii'ud darajaati dzul 'arsy'" },
-  { no:79, arab:"الْبَرُّ", latin:"Al-Barr", arti:"Yang Maha Penderma", fadhilah:"Membaca 'Yaa Barr' 100x setiap hari akan dijadikan hamba yang dermawan, ringan tangan membantu sesama, dan dimudahkan rezeki untuk bersedekah.", dalil:"QS. At-Thur: 28; QS. Al-Insan: 5-9 — 'Innahu huwal barrur rahiim'" },
-  { no:80, arab:"التَّوَّابُ", latin:"At-Tawwaab", arti:"Yang Maha Penerima Taubat", fadhilah:"Membaca 'Yaa Tawwaab' 100x setelah bertaubat akan diterima taubatnya dengan sempurna. Dijauhkan dari mengulangi dosa dan selalu dibimbing kembali ke jalan-Nya.", dalil:"QS. Al-Baqarah: 37, 54, 128, 160; QS. An-Nisa: 16, 64; QS. At-Tahrim: 8 — 'Innallaaha tawwaabun rahiim'" },
-  { no:81, arab:"الْمُنْتَقِمُ", latin:"Al-Muntaqim", arti:"Yang Maha Pemberi Balasan", fadhilah:"Membaca 'Yaa Muntaqim' akan ditolong Allah dari kedzaliman, dibalaskan kejahatan musuh dengan cara yang adil, dan dijauhkan dari dendam pribadi.", dalil:"QS. Ali Imran: 4; QS. Al-Ma'idah: 95; QS. Ibrahim: 47 — 'Innallaaha 'aziizun dzuntiqaam'; QS. Az-Zumar: 37" },
-  { no:82, arab:"الْعَفُوُّ", latin:"Al-'Afuww", arti:"Yang Maha Pemaaf", fadhilah:"Membaca 'Yaa 'Afuww' 100x setiap malam akan diampuni dosa-dosanya, dijauhkan dari dendam, dan hatinya dipenuhi sifat pemaaf kepada sesama.", dalil:"QS. An-Nisa: 43, 99, 149; QS. Al-Hajj: 60 — 'Innallaaha la 'afuwwun ghafuur'" },
-  { no:83, arab:"الرَّءُوفُ", latin:"Ar-Ra'uuf", arti:"Yang Maha Pengasih", fadhilah:"Membaca 'Yaa Ra'uuf' 100x akan ditanamkan rasa belas kasih yang mendalam, disayangi sesama, dan dijauhkan dari sifat kasar dan keras hati.", dalil:"QS. Al-Baqarah: 143, 207; QS. Ali Imran: 30; QS. An-Nur: 20 — 'Innallaaha ra'uufun rahiim'" },
-  { no:84, arab:"مَالِكُ الْمُلْكِ", latin:"Maalikul Mulk", arti:"Pemilik Kerajaan", fadhilah:"Membaca 'Yaa Maalikul Mulk' 100x akan diangkat derajatnya, diberikan kekuasaan atas diri sendiri, dan dijauhkan dari diperbudak dunia.", dalil:"QS. Ali Imran: 26; QS. Al-Fatihah: 4 — 'Qulillaahumma maalikal mulki tu'til mulka man tasyaa'" },
-  { no:85, arab:"ذُو الْجَلَالِ وَالْإِكْرَامِ", latin:"Dzul Jalaali wal Ikraam", arti:"Pemilik Kebesaran dan Kemuliaan", fadhilah:"Membaca 'Yaa Dzul Jalaali wal Ikraam' 100x setiap hari akan diberikan kemuliaan dan keagungan, dimuliakan di dunia dan akhirat, serta dijauhkan dari kehinaan.", dalil:"QS. Ar-Rahman: 27, 78 — 'Tabarakasmu rabbika dzil jalaali wal ikraam'" },
-  { no:86, arab:"الْمُقْسِطُ", latin:"Al-Muqsith", arti:"Yang Maha Pemberi Keadilan", fadhilah:"Membaca 'Yaa Muqsith' 100x akan ditanamkan sifat adil, tidak berat sebelah, dan selalu berpihak pada kebenaran tanpa memandang siapa pun.", dalil:"QS. Al-Hujurat: 9; QS. Al-Ma'idah: 42 — 'Innallaaha yuhibbul muqsithiin'" },
-  { no:87, arab:"الْجَامِعُ", latin:"Al-Jaami'", arti:"Yang Maha Mengumpulkan", fadhilah:"Membaca 'Yaa Jaami'' 100x akan dikumpulkan kembali dengan orang-orang yang dicintai di surga, dipertemukan dengan jodoh yang baik, dan dikumpulkan rezeki yang tercerai-berai.", dalil:"QS. Ali Imran: 9; QS. An-Nisa: 140 — 'Innallaaha jaami'ul munaafiqiina wal kaafiriina fii jahannama jamii'aa'" },
-  { no:88, arab:"الْغَنِيُّ", latin:"Al-Ghaniyy", arti:"Yang Maha Kaya", fadhilah:"Membaca 'Yaa Ghaniyy' 100x setiap hari akan dikayakan hati dengan rasa cukup (qana'ah), tidak tamak, dan dijauhkan dari cinta dunia yang berlebihan.", dalil:"QS. Al-Baqarah: 263, 267; QS. Fathir: 15; QS. Muhammad: 38 — 'Wallahu ghaniyyun wa antumul fuqaraa'" },
-  { no:89, arab:"الْمُغْنِي", latin:"Al-Mughnii", arti:"Yang Maha Pemberi Kekayaan", fadhilah:"Membaca 'Yaa Mughnii' 1000x setiap Jum'at akan dilapangkan rezekinya, dibukakan pintu kekayaan yang halal, dan dicukupkan dari segala kebutuhan.", dalil:"QS. An-Najm: 48; QS. At-Taubah: 28 — 'Wa annahuu huwa aghnaa wa aqnaa'; QS. Adh-Dhuha: 8" },
-  { no:90, arab:"الْمَانِعُ", latin:"Al-Maani'", arti:"Yang Maha Mencegah", fadhilah:"Membaca 'Yaa Maani'' 100x akan dicegah dari perbuatan maksiat, dijauhkan dari musibah yang akan menimpa, dan dilindungi dari godaan yang merusak iman.", dalil:"QS. Al-Mulk: 20-21 — 'Amman haadzalladzii yarzuqukum in amsaka rizqahuu'" },
-  { no:91, arab:"الضَّارُّ", latin:"Adh-Dhaarr", arti:"Yang Maha Pemberi Derita", fadhilah:"Membaca 'Yaa Dhaarr' akan menyadarkan bahwa setiap mudharat datang dengan izin Allah. Menjadikan hati menerima ujian dengan sabar dan yakin ada hikmah di baliknya.", dalil:"QS. Al-An'am: 17 — 'Wa in yamsaskallaahu bi dhurrin falaa kaasyifa lahuu illaa huwa'" },
-  { no:92, arab:"النَّافِعُ", latin:"An-Naafi'", arti:"Yang Maha Pemberi Manfaat", fadhilah:"Membaca 'Yaa Naafi'' 100x setiap pagi akan dijadikan hamba yang bermanfaat bagi sesama, segala karyanya membawa kebaikan, dan diberi umur yang barakah.", dalil:"QS. Ar-Ra'd: 16; QS. Al-Ma'idah: 76 — 'Qul hal yamliku lakum dharran wa laa naf'aa'" },
-  { no:93, arab:"النُّورُ", latin:"An-Nuur", arti:"Yang Maha Bercahaya", fadhilah:"Membaca 'Yaa Nuur' 100x setiap malam akan diterangi hatinya, wajahnya bersinar, pikirannya jernih, dan diberi petunjuk di saat kebingungan.", dalil:"QS. An-Nur: 35 — 'Allaahu nuurus samaawaati wal ardh'" },
-  { no:94, arab:"الْهَادِي", latin:"Al-Haadii", arti:"Yang Maha Pemberi Petunjuk", fadhilah:"Membaca 'Yaa Haadii' 100x setiap malam akan selalu diberi petunjuk dalam setiap langkah, dijauhkan dari kesesatan, dan dimudahkan menemukan jalan yang benar.", dalil:"QS. Al-Hajj: 54; QS. Al-Furqan: 31; QS. As-Sajdah: 3 — 'Wa innallaaha la haadil ladziina aamanuu'" },
-  { no:95, arab:"الْبَدِيعُ", latin:"Al-Badii'", arti:"Yang Maha Pencipta", fadhilah:"Membaca 'Yaa Badii'' 100x akan diberikan kreativitas, ide-ide orisinal, dan kemampuan menciptakan hal-hal baru yang bermanfaat bagi umat.", dalil:"QS. Al-Baqarah: 117; QS. Al-An'am: 101 — 'Badii'us samaawaati wal ardh'" },
-  { no:96, arab:"الْبَاقِي", latin:"Al-Baaqii", arti:"Yang Maha Kekal", fadhilah:"Membaca 'Yaa Baaqii' 100x setiap malam akan diingatkan bahwa hanya Allah yang kekal, pahala amal shalih abadi, dan dijauhkan dari mengejar dunia yang fana.", dalil:"QS. Ar-Rahman: 27; QS. Al-Qashash: 60, 88 — 'Kullu syai-in haalikun illaa wajhahu'" },
-  { no:97, arab:"الْوَارِثُ", latin:"Al-Waarits", arti:"Yang Maha Pewaris", fadhilah:"Membaca 'Yaa Waarits' 100x akan diwariskan kebaikan kepada anak keturunannya, hartanya diberkahi, dan namanya harum sepeninggalnya.", dalil:"QS. Ali Imran: 180; QS. Al-Hijr: 23; QS. Al-Qashash: 58 — 'Wa innnaa lanahnul waaritsuun'" },
-  { no:98, arab:"الرَّشِيدُ", latin:"Ar-Rasyiid", arti:"Yang Maha Pandai", fadhilah:"Membaca 'Yaa Rasyiid' 100x akan diberi kecerdasan dalam bertindak, selalu mengambil keputusan yang tepat, dan dijauhkan dari tindakan bodoh yang merugikan.", dalil:"QS. Hud: 78, 87; QS. Al-Jin: 10, 14, 21 — 'Innaa la nu'minu bihii wa lan nusyrika bi rabbinaa ahadaa'" },
-  { no:99, arab:"الصَّبُورُ", latin:"Ash-Shabuur", arti:"Yang Maha Sabar", fadhilah:"Membaca 'Yaa Shabuur' 100x setiap pagi akan dianugerahi kesabaran tiada batas, tidak mudah mengeluh, tabah menghadapi ujian, dan dijauhkan dari putus asa.", dalil:"QS. Ali Imran: 200; QS. Al-Baqarah: 153 — 'Yaa ayyuhalladziina aamanuu ista'iinuu bish shabri wash shalaah'" }
+  {
+    no: 1,
+    arab: 'الرَّحْمَنُ',
+    latin: 'Ar-Rahmaan',
+    arti: 'Yang Maha Pengasih',
+    fadhilah:
+      "Membaca 'Yaa Rahmaan' 100x setiap selesai sholat fardhu akan mendapatkan hati yang penuh kasih sayang, dijauhkan dari sifat keras hati, dan dimudahkan dalam bergaul dengan sesama. Allah akan menanamkan rasa cinta di hati hamba-Nya kepada orang yang membaca-Nya.",
+    dalil:
+      "QS. Al-Fatihah: 1, 3; QS. Ar-Rahman: 1; QS. Al-Mulk: 29 — 'Bismillaahir Rahmaanir Rahiim'",
+  },
+  {
+    no: 2,
+    arab: 'الرَّحِيمُ',
+    latin: 'Ar-Rahiim',
+    arti: 'Yang Maha Penyayang',
+    fadhilah:
+      "Membaca 'Yaa Rahiim' 100x setelah sholat Subuh akan mendapatkan perlindungan dari segala marabahaya, dimudahkan segala urusan, dan diberi rezeki dari arah yang tak terduga. Sifat penyayang Allah meliputi seluruh makhluk-Nya.",
+    dalil: "QS. Al-Baqarah: 37, 54, 128, 143; QS. Al-Fatihah: 3 — '...ar-Rahmaanir Rahiim'",
+  },
+  {
+    no: 3,
+    arab: 'الْمَلِكُ',
+    latin: 'Al-Malik',
+    arti: 'Yang Maha Merajai',
+    fadhilah:
+      "Membaca 'Yaa Malik' atau 'Al-Malik' secara rutin akan diberikan kemuliaan, wibawa, dan kepemimpinan yang adil. Hati akan dipenuhi rasa cukup (qana'ah) dan tidak diperbudak oleh dunia.",
+    dalil: "QS. Al-Fatihah: 4; QS. Al-Mu'minun: 116 — 'Maaliki yaumid-diin'",
+  },
+  {
+    no: 4,
+    arab: 'الْقُدُّوسُ',
+    latin: 'Al-Quddus',
+    arti: 'Yang Maha Suci',
+    fadhilah:
+      "Membaca 'Yaa Quddus' atau 'Subbuhun Quddusun' 100x akan mensucikan hati dari sifat-sifat buruk seperti iri, dengki, dan sombong. Hati menjadi tenang dan jiwa menjadi bersih. Malaikat pun menyucikan-Nya.",
+    dalil: "QS. Al-Hasyr: 23; QS. Al-Jumu'ah: 1 — 'Al-Malikil Quddusil 'Aziizil Hakiim'",
+  },
+  {
+    no: 5,
+    arab: 'السَّلاَمُ',
+    latin: 'As-Salaam',
+    arti: 'Yang Maha Memberi Kesejahteraan',
+    fadhilah:
+      "Membaca 'Yaa Salaam' 100x setiap pagi akan memberikan ketenangan hati, dijauhkan dari kegelisahan dan kecemasan. Rumah tangga yang sering membacanya akan dipenuhi kedamaian dan keberkahan.",
+    dalil:
+      "QS. Al-Hasyr: 23; QS. Al-An'am: 127; QS. Yunus: 25 — 'Lahum daarus salaami 'inda rabbihim'",
+  },
+  {
+    no: 6,
+    arab: 'الْمُؤْمِنُ',
+    latin: "Al-Mu'min",
+    arti: 'Yang Maha Memberi Keamanan',
+    fadhilah:
+      "Membaca 'Yaa Mu'min' 100x akan mendapatkan rasa aman dari segala ketakutan, dijaga dari gangguan makhluk halus, dan dikuatkan iman. Sangat baik dibaca saat merasa takut atau cemas.",
+    dalil:
+      "QS. Al-Hasyr: 23; QS. Quraisy: 4 — 'Alladzii ath'amahum min juu'iw wa aamanahum min khauf'",
+  },
+  {
+    no: 7,
+    arab: 'الْمُهَيْمِنُ',
+    latin: 'Al-Muhaimin',
+    arti: 'Yang Maha Memelihara',
+    fadhilah:
+      "Membaca 'Yaa Muhaimin' 100x akan membuka mata hati (bashirah), diberikan kemampuan melihat kebenaran di balik tipu daya, dan dijaga dari kesesatan. Allah akan memelihara lahir dan batin pembacanya.",
+    dalil: "QS. Al-Hasyr: 23; QS. Al-Ma'idah: 48 — 'Wa muhaiminan 'alaihi'",
+  },
+  {
+    no: 8,
+    arab: 'الْعَزِيزُ',
+    latin: "Al-'Aziiz",
+    arti: 'Yang Maha Perkasa',
+    fadhilah:
+      "Membaca 'Yaa 'Aziiz' 40x setiap habis sholat Subuh selama 40 hari akan diberikan kemuliaan, tidak direndahkan orang lain, dan dimenangkan dalam urusan yang benar. Allah akan memberikan kekuatan yang tak terkalahkan.",
+    dalil:
+      "QS. Al-Hasyr: 23; QS. Al-Ma'idah: 118 — 'Innaka antal 'aziizul hakiim'; QS. Ali Imran: 62",
+  },
+  {
+    no: 9,
+    arab: 'الْجَبَّارُ',
+    latin: 'Al-Jabbar',
+    arti: 'Yang Maha Memaksa',
+    fadhilah:
+      "Membaca 'Yaa Jabbar' 226x setiap hari akan dijauhkan dari kedzaliman, dikuatkan jiwa saat teraniaya, dan dimenangkan melawan musuh. Allah akan memaksa hati yang keras menjadi lunak.",
+    dalil: "QS. Al-Hasyr: 23; QS. Ibrahim: 15 — 'Wa khaaba kullu jabbaarin 'aniid'",
+  },
+  {
+    no: 10,
+    arab: 'الْمُتَكَبِّرُ',
+    latin: 'Al-Mutakabbir',
+    arti: 'Yang Maha Megah',
+    fadhilah:
+      "Membaca 'Yaa Mutakabbir' 100x akan dijauhkan dari sifat sombong dan ujub. Hati akan dipenuhi rasa tawadhu' dan keagungan hanya disandarkan kepada Allah semata.",
+    dalil: "QS. Al-Hasyr: 23; QS. An-Nahl: 60 — 'Lillahil matsalul a'laa'",
+  },
+  {
+    no: 11,
+    arab: 'الْخَالِقُ',
+    latin: 'Al-Khaaliq',
+    arti: 'Yang Maha Pencipta',
+    fadhilah:
+      "Membaca 'Yaa Khaaliq' 100x setiap malam akan diberikan kecerdasan, kreativitas, dan kemampuan menciptakan solusi dari setiap masalah. Sangat baik bagi yang ingin menghasilkan karya bermanfaat.",
+    dalil: "QS. Al-Hasyr: 24; QS. Al-Mu'minun: 14 — 'Fatabaarakallaahu ahsanul khaaliqiin'",
+  },
+  {
+    no: 12,
+    arab: 'الْبَارِئُ',
+    latin: "Al-Baari'",
+    arti: 'Yang Maha Melepaskan',
+    fadhilah:
+      "Membaca 'Yaa Baari'' 100x akan dilepaskan dari segala belenggu masalah, hutang, dan kesulitan. Allah akan membebaskan dari jeratan yang membelenggu hidup.",
+    dalil: "QS. Al-Hasyr: 24; QS. Al-Baqarah: 54 — 'Fa tuubuu ilaa baari-ikum'",
+  },
+  {
+    no: 13,
+    arab: 'الْمُصَوِّرُ',
+    latin: 'Al-Mushawwir',
+    arti: 'Yang Maha Membentuk Rupa',
+    fadhilah:
+      "Membaca 'Yaa Mushawwir' 100x setiap hari akan dikaruniai kemampuan melihat keindahan ciptaan Allah, hati menjadi bersyukur, dan anak keturunan dibentuk dengan akhlak yang baik.",
+    dalil: "QS. Al-Hasyr: 24; QS. Ghafir: 64 — 'Wa shawwarakum fa ahsana shuwarakum'",
+  },
+  {
+    no: 14,
+    arab: 'الْغَفَّارُ',
+    latin: 'Al-Ghaffaar',
+    arti: 'Yang Maha Pengampun',
+    fadhilah:
+      "Membaca 'Yaa Ghaffaar' 100x setelah sholat Jum'at akan diampuni dosa-dosa yang lalu. Sangat baik dibaca saat bertaubat untuk mendapatkan ampunan yang sempurna.",
+    dalil: "QS. Nuh: 10; QS. Ghafir: 42; QS. Thaha: 82 — 'Wa innii la ghaffaarul liman taaba'",
+  },
+  {
+    no: 15,
+    arab: 'الْقَهَّارُ',
+    latin: 'Al-Qahhaar',
+    arti: 'Yang Maha Menundukkan',
+    fadhilah:
+      "Membaca 'Yaa Qahhaar' 100x akan menundukkan hawa nafsu, mengalahkan musuh yang dzalim, dan menaklukkan sifat buruk dalam diri. Hati menjadi tunduk hanya kepada Allah.",
+    dalil: "QS. Yusuf: 39; QS. Ar-Ra'd: 16; QS. Ghafir: 16 — 'Al-Waahidul Qahhaar'",
+  },
+  {
+    no: 16,
+    arab: 'الْوَهَّابُ',
+    latin: 'Al-Wahhaab',
+    arti: 'Yang Maha Pemberi Karunia',
+    fadhilah:
+      "Membaca 'Yaa Wahhaab' 100x setelah sholat Dhuha akan dibukakan pintu rezeki yang tak terduga, dikaruniai anak shalih, dan dimudahkan mendapatkan pasangan hidup yang baik.",
+    dalil: "QS. Ali Imran: 8; QS. Shad: 9, 35 — 'Innaka antal wahhaab'",
+  },
+  {
+    no: 17,
+    arab: 'الرَّزَّاقُ',
+    latin: 'Ar-Razzaaq',
+    arti: 'Yang Maha Pemberi Rezeki',
+    fadhilah:
+      "Membaca 'Yaa Razzaaq' 1000x setiap pagi dan petang akan dibukakan 1000 pintu rezeki. Allah akan mencukupkan rezeki dari jalan yang tidak disangka-sangka. Rumah akan dipenuhi keberkahan.",
+    dalil: "QS. Adz-Dzariyat: 58; QS. Hud: 6 — 'Innallaaha huwar razzaaqu dzul quwwatil matiin'",
+  },
+  {
+    no: 18,
+    arab: 'الْفَتَّاحُ',
+    latin: 'Al-Fattaah',
+    arti: 'Yang Maha Pembuka Rahmat',
+    fadhilah:
+      "Membaca 'Yaa Fattaah' 100x setelah sholat Subuh akan dibukakan pintu rahmat, rezeki, ilmu, dan kemudahan. Masalah yang terasa buntu akan diberi jalan keluar oleh Allah.",
+    dalil:
+      "QS. Saba': 26; QS. Al-A'raf: 96 — 'Lafatahnaa 'alaihim barakaatim minas samaa-i wal ardh'",
+  },
+  {
+    no: 19,
+    arab: 'الْعَلِيمُ',
+    latin: "Al-'Aliim",
+    arti: 'Yang Maha Mengetahui',
+    fadhilah:
+      "Membaca 'Yaa 'Aliim' 100x setiap hari akan dibukakan pintu ilmu dan hikmah, dimudahkan dalam belajar, dan diberi pemahaman yang dalam. Allah akan menerangi hati dengan cahaya pengetahuan.",
+    dalil: "QS. Al-Baqarah: 29, 32, 115; QS. Al-Anfal: 75 — 'Innallaaha bikulli syai-in 'aliim'",
+  },
+  {
+    no: 20,
+    arab: 'الْقَابِضُ',
+    latin: 'Al-Qaabidh',
+    arti: 'Yang Maha Menyempitkan',
+    fadhilah:
+      "Membaca 'Yaa Qaabidh' saat mengalami kesempitan akan diberikan pemahaman bahwa setiap kesempitan adalah ujian. Allah akan menggantinya dengan kelapangan setelah kesabaran.",
+    dalil: "QS. Al-Baqarah: 245 — 'Wallaahu yaqbidhu wa yabsuthu wa ilaihi turja'uun'",
+  },
+  {
+    no: 21,
+    arab: 'الْبَاسِطُ',
+    latin: 'Al-Baasith',
+    arti: 'Yang Maha Melapangkan',
+    fadhilah:
+      "Membaca 'Yaa Baasith' 10x setelah sholat Dhuha dengan mengangkat tangan akan dilapangkan rezeki, hati, pikiran, dan segala urusan. Allah akan menghilangkan kesempitan hidup.",
+    dalil: "QS. Ar-Ra'd: 26; QS. Al-Isra': 30 — 'Allaahu yabsuthur rizqa liman yasyaa'",
+  },
+  {
+    no: 22,
+    arab: 'الْخَافِضُ',
+    latin: 'Al-Khaafidh',
+    arti: 'Yang Maha Merendahkan',
+    fadhilah:
+      "Membaca 'Yaa Khaafidh' akan menurunkan kesombongan dalam hati, merendahkan diri di hadapan Allah, dan menjatuhkan orang-orang dzalim dari kedudukannya.",
+    dalil: "QS. Al-Waqi'ah: 3 — 'Khaafidhatun raafi'ah'",
+  },
+  {
+    no: 23,
+    arab: 'الرَّافِعُ',
+    latin: "Ar-Raafi'",
+    arti: 'Yang Maha Meninggikan',
+    fadhilah:
+      "Membaca 'Yaa Raafi'' 100x setiap hari akan diangkat derajatnya di dunia dan akhirat, ditinggikan martabat di hadapan manusia, dan dihormati tanpa diminta.",
+    dalil:
+      "QS. Al-An'am: 83; QS. Al-Waqi'ah: 3; QS. Fathir: 10 — 'Ilaihi yash'adul kalimuth thayyib'",
+  },
+  {
+    no: 24,
+    arab: 'الْمُعِزُّ',
+    latin: "Al-Mu'izz",
+    arti: 'Yang Maha Memuliakan',
+    fadhilah:
+      "Membaca 'Yaa Mu'izz' 140x setiap malam Senin atau Jum'at akan dimuliakan Allah, diberikan wibawa, dan disegani kawan maupun lawan. Tidak akan direndahkan oleh siapa pun.",
+    dalil: "QS. Ali Imran: 26 — 'Tu'izzu man tasyaa-u wa tudzillu man tasyaa'",
+  },
+  {
+    no: 25,
+    arab: 'الْمُذِلُّ',
+    latin: 'Al-Mudzill',
+    arti: 'Yang Maha Menghinakan',
+    fadhilah:
+      "Membaca 'Yaa Mudzill' saat menghadapi kedzaliman akan menghinakan musuh-musuh yang dzalim. Allah akan merendahkan orang yang berbuat aniaya. Dibaca dengan hati yang ikhlas dan tidak untuk sombong.",
+    dalil: "QS. Ali Imran: 26 — 'Tu'izzu man tasyaa-u wa tudzillu man tasyaa'",
+  },
+  {
+    no: 26,
+    arab: 'السَّمِيعُ',
+    latin: "As-Samii'",
+    arti: 'Yang Maha Mendengar',
+    fadhilah:
+      "Membaca 'Yaa Samii'' 500x setiap Kamis setelah sholat Dhuha akan dikabulkan doa-doanya. Allah akan mendengar setiap permohonan dan keluhan hamba-Nya yang ikhlas.",
+    dalil: "QS. Al-Baqarah: 127, 137, 256; QS. Ibrahim: 39 — 'Inna rabbii la samii'ud du'aa'",
+  },
+  {
+    no: 27,
+    arab: 'الْبَصِيرُ',
+    latin: 'Al-Bashiir',
+    arti: 'Yang Maha Melihat',
+    fadhilah:
+      "Membaca 'Yaa Bashiir' 100x setelah sholat Jum'at akan diterangi mata hati, diberikan kemampuan melihat kebenaran, dan dijauhkan dari pandangan yang diharamkan.",
+    dalil:
+      "QS. Al-Baqarah: 110; QS. Al-Hadid: 4; QS. Fathir: 45 — 'Innallaaha bimaa ta'maluuna bashiir'",
+  },
+  {
+    no: 28,
+    arab: 'الْحَكَمُ',
+    latin: 'Al-Hakam',
+    arti: 'Yang Maha Menetapkan',
+    fadhilah:
+      "Membaca 'Yaa Hakam' 100x setiap malam akan diberi kebijaksanaan dalam mengambil keputusan, dijauhkan dari kesalahan memilih, dan selalu berada di pihak yang benar.",
+    dalil: "QS. An-Nisa: 58; QS. Al-Mu'min: 48 — 'Innallaaha ya'kumu bainakum'",
+  },
+  {
+    no: 29,
+    arab: 'الْعَدْلُ',
+    latin: "Al-'Adl",
+    arti: 'Yang Maha Adil',
+    fadhilah:
+      "Membaca 'Yaa 'Adl' 100x setiap hari akan ditanamkan sifat adil dalam hati, dijauhkan dari sifat curang dan dzalim, serta diberikan kemampuan memutuskan perkara dengan bijaksana.",
+    dalil:
+      "QS. Al-An'am: 115; QS. An-Nisa: 58; QS. Al-Hujurat: 9 — 'Innallaaha yuhibbul muqsithiin'",
+  },
+  {
+    no: 30,
+    arab: 'اللَّطِيفُ',
+    latin: 'Al-Lathiif',
+    arti: 'Yang Maha Lembut',
+    fadhilah:
+      "Membaca 'Yaa Lathiif' 129x setiap pagi akan mendapatkan kelembutan Allah dalam setiap urusan, dimudahkan yang sulit, dan dilindungi dari bahaya yang tidak disadari. Rezeki datang dari arah tak terduga.",
+    dalil: "QS. Al-An'am: 103; QS. Luqman: 16; QS. Al-Mulk: 14 — 'Innallaaha lathiifun khabiir'",
+  },
+  {
+    no: 31,
+    arab: 'الْخَبِيرُ',
+    latin: 'Al-Khabiir',
+    arti: 'Yang Maha Mengenal',
+    fadhilah:
+      "Membaca 'Yaa Khabiir' 100x akan dibukakan pengetahuan tentang rahasia diri sendiri, mampu introspeksi dengan baik, dan memahami hakikat kehidupan.",
+    dalil:
+      "QS. Al-An'am: 18, 103; QS. Luqman: 34; QS. Al-Hujurat: 13 — 'Innallaaha 'aliimun khabiir'",
+  },
+  {
+    no: 32,
+    arab: 'الْحَلِيمُ',
+    latin: 'Al-Haliim',
+    arti: 'Yang Maha Penyantun',
+    fadhilah:
+      "Membaca 'Yaa Haliim' 100x setiap hari akan dianugerahi sifat sabar, tidak mudah marah, mampu menahan amarah, dan disayangi orang-orang di sekitarnya.",
+    dalil:
+      "QS. Al-Baqarah: 235, 263; QS. Ali Imran: 155; QS. An-Nisa: 12 — 'Innallaaha haliimun ghafuur'",
+  },
+  {
+    no: 33,
+    arab: 'الْعَظِيمُ',
+    latin: "Al-'Azhiim",
+    arti: 'Yang Maha Agung',
+    fadhilah:
+      "Membaca 'Yaa 'Azhiim' 100x akan diberikan keagungan hati, dihormati sesama, dan dikaruniai pemahaman tentang kebesaran Allah. Sangat baik diamalkan saat merasa rendah diri.",
+    dalil: "QS. Al-Baqarah: 255 (Ayat Kursi); QS. Al-Haqqah: 33, 52 — 'Wa huwal 'aliyyul 'azhiim'",
+  },
+  {
+    no: 34,
+    arab: 'الْغَفُورُ',
+    latin: 'Al-Ghafuur',
+    arti: 'Yang Maha Pengampun',
+    fadhilah:
+      "Membaca 'Yaa Ghafuur' 100x setelah sholat fardhu akan diampuni dosa-dosa kecil yang tak disengaja. Menjadikan hati ringan dan tidak terbebani rasa bersalah.",
+    dalil: "QS. An-Nisa: 23, 43; QS. Al-Ma'idah: 74; QS. Nuh: 10 — 'Innallaaha ghafuurun rahiim'",
+  },
+  {
+    no: 35,
+    arab: 'الشَّكُورُ',
+    latin: 'Asy-Syakuur',
+    arti: 'Yang Maha Pembalas Budi',
+    fadhilah:
+      "Membaca 'Yaa Syakuur' 100x setiap hari akan menjadikan hati pandai bersyukur, nikmat terus bertambah, dan Allah akan membalas setiap amal kebaikan dengan berlipat ganda.",
+    dalil: "QS. Fathir: 30, 34; QS. At-Taghabun: 17 — 'Innallaaha syaakirun 'aliim'",
+  },
+  {
+    no: 36,
+    arab: 'الْعَلِيُّ',
+    latin: "Al-'Aliy",
+    arti: 'Yang Maha Tinggi',
+    fadhilah:
+      "Membaca 'Yaa 'Aliy' 100x akan diangkat derajatnya, dimenangkan dalam setiap persaingan yang baik, dan dimudahkan mencapai cita-cita yang tinggi.",
+    dalil:
+      "QS. Al-Baqarah: 255; QS. Saba': 23; QS. Ghafir: 12 — 'Fa-innallaaha huwal 'aliyyul kabiir'",
+  },
+  {
+    no: 37,
+    arab: 'الْكَبِيرُ',
+    latin: 'Al-Kabiir',
+    arti: 'Yang Maha Besar',
+    fadhilah:
+      "Membaca 'Yaa Kabiir' 100x akan diberikan kebesaran jiwa, tidak merasa kecil di hadapan masalah, dan selalu yakin bahwa Allah lebih besar dari segala persoalan hidup.",
+    dalil: "QS. Saba': 23; QS. Ar-Ra'd: 9; QS. Luqman: 30 — 'Wa annallaaha huwal 'aliyyul kabiir'",
+  },
+  {
+    no: 38,
+    arab: 'الْحَفِيظُ',
+    latin: 'Al-Hafiizh',
+    arti: 'Yang Maha Memelihara',
+    fadhilah:
+      "Membaca 'Yaa Hafiizh' 100x setiap pagi dan petang akan dijaga dari marabahaya, dipelihara kesehatan, keluarga, harta, dan keimanan. Allah akan menjaga dari segala arah.",
+    dalil:
+      "QS. Hud: 57; QS. Yusuf: 64; QS. Asy-Syura: 6 — 'Inna rabbii 'alaa kulli syai-in hafiizh'",
+  },
+  {
+    no: 39,
+    arab: 'الْمُقِيتُ',
+    latin: 'Al-Muqiit',
+    arti: 'Yang Maha Pemberi Kecukupan',
+    fadhilah:
+      "Membaca 'Yaa Muqiit' 100x akan dicukupkan segala kebutuhan hidup, tidak merasa kekurangan, dan Allah akan memberi makanan untuk jiwa dan raga.",
+    dalil: "QS. An-Nisa: 85 — 'Wakaanallaahu 'alaa kulli syai-in muqiitaa'",
+  },
+  {
+    no: 40,
+    arab: 'الْحَسِيبُ',
+    latin: 'Al-Hasiib',
+    arti: 'Yang Maha Membuat Perhitungan',
+    fadhilah:
+      "Membaca 'Yaa Hasiib' 100x akan diberi kemampuan introspeksi yang tajam, selalu muhasabah diri, dan dijauhkan dari hisab yang berat di akhirat.",
+    dalil: "QS. An-Nisa: 6, 86; QS. Al-Ahzab: 39 — 'Wa kafaa billaahi hasiibaa'",
+  },
+  {
+    no: 41,
+    arab: 'الْجَلِيلُ',
+    latin: 'Al-Jaliil',
+    arti: 'Yang Maha Mulia',
+    fadhilah:
+      "Membaca 'Yaa Jaliil' 100x setiap Jum'at akan diberikan kemuliaan akhlak, ketenangan hati, dan wajah yang bersinar. Orang lain akan melihat kewibawaan pada dirinya.",
+    dalil: "QS. Ar-Rahman: 27, 78 — 'Wa yabqaa wajhu rabbika dzul jalaali wal ikraam'",
+  },
+  {
+    no: 42,
+    arab: 'الْكَرِيمُ',
+    latin: 'Al-Kariim',
+    arti: 'Yang Maha Mulia',
+    fadhilah:
+      "Membaca 'Yaa Kariim' 100x setiap malam akan dijadikan hamba yang mulia, dimudahkan rezeki, dimuliakan di hadapan manusia, dan diampuni dosa-dosanya.",
+    dalil: "QS. An-Naml: 40; QS. Al-Infithar: 6 — 'Fagharrakal kariim'; QS. Al-Mu'minun: 116",
+  },
+  {
+    no: 43,
+    arab: 'الرَّقِيبُ',
+    latin: 'Ar-Raqiib',
+    arti: 'Yang Maha Mengawasi',
+    fadhilah:
+      "Membaca 'Yaa Raqiib' 100x akan menumbuhkan rasa muraqabah (merasa selalu diawasi Allah), dijauhkan dari maksiat tersembunyi, dan selalu berhati-hati dalam bertindak.",
+    dalil:
+      "QS. An-Nisa: 1; QS. Al-Ma'idah: 117; QS. Al-Ahzab: 52 — 'Innallaaha kaana 'alaa kulli syai-in raqiibaa'",
+  },
+  {
+    no: 44,
+    arab: 'الْمُجِيبُ',
+    latin: 'Al-Mujiib',
+    arti: 'Yang Maha Mengabulkan',
+    fadhilah:
+      "Membaca 'Yaa Mujiib' 100x setiap selesai berdoa akan mempercepat pengabulan doa. Allah akan menjawab setiap permohonan hamba-Nya yang yakin dan ikhlas.",
+    dalil: "QS. Al-Baqarah: 186; QS. Hud: 61 — 'Inna rabbii qariibun mujiib'",
+  },
+  {
+    no: 45,
+    arab: 'الْوَاسِعُ',
+    latin: "Al-Waasi'",
+    arti: 'Yang Maha Luas',
+    fadhilah:
+      "Membaca 'Yaa Waasi'' 100x setiap pagi akan diluaskan rezeki, hati, pikiran, dan ilmu. Kesempitan hidup akan berganti kelapangan. Sangat baik dibaca saat merasa sempit.",
+    dalil: "QS. Al-Baqarah: 115, 247, 261; QS. An-Nisa: 130 — 'Wakaanallaahu waasi'an hakiimaa'",
+  },
+  {
+    no: 46,
+    arab: 'الْحَكِيمُ',
+    latin: 'Al-Hakiim',
+    arti: 'Yang Maha Bijaksana',
+    fadhilah:
+      "Membaca 'Yaa Hakiim' 100x akan diberi hikmah dalam setiap ucapan dan tindakan. Setiap keputusan yang diambil akan penuh kebijaksanaan dan membawa kebaikan.",
+    dalil:
+      "QS. Al-Baqarah: 32, 129, 209; QS. Ali Imran: 62; QS. Luqman: 27 — 'Innallaaha 'aziizun hakiim'",
+  },
+  {
+    no: 47,
+    arab: 'الْوَدُودُ',
+    latin: 'Al-Waduud',
+    arti: 'Yang Maha Mengasihi',
+    fadhilah:
+      "Membaca 'Yaa Waduud' 100x setiap malam akan menanamkan rasa cinta antara suami-istri, mendamaikan yang berselisih, dan menjadikan hati disayangi sesama makhluk.",
+    dalil: "QS. Hud: 90; QS. Al-Buruj: 14 — 'Wa huwal ghafuurul waduud'",
+  },
+  {
+    no: 48,
+    arab: 'الْمَجِيدُ',
+    latin: 'Al-Majiid',
+    arti: 'Yang Maha Mulia',
+    fadhilah:
+      "Membaca 'Yaa Majiid' 100x akan diberikan kemuliaan akhlak, keluhuran budi, dan dijauhkan dari perbuatan hina. Nama baik akan dijaga oleh Allah.",
+    dalil: "QS. Hud: 73; QS. Al-Buruj: 15 — 'Dzul 'arsyil majiid'",
+  },
+  {
+    no: 49,
+    arab: 'الْبَاعِثُ',
+    latin: "Al-Baa'its",
+    arti: 'Yang Maha Membangkitkan',
+    fadhilah:
+      "Membaca 'Yaa Baa'its' 100x sebelum tidur akan dibangkitkan semangat hidup, motivasi ibadah, dan dijauhkan dari futur (kemalasan beribadah).",
+    dalil: "QS. Al-Hajj: 7; QS. An-Nahl: 38 — 'Innallaaha yab'atsu man fil qubuur'",
+  },
+  {
+    no: 50,
+    arab: 'الشَّهِيدُ',
+    latin: 'Asy-Syahiid',
+    arti: 'Yang Maha Menyaksikan',
+    fadhilah:
+      "Membaca 'Yaa Syahiid' 100x akan ditanamkan kejujuran, dijauhkan dari saksi palsu, dan selalu berkata benar karena yakin Allah menyaksikan segalanya.",
+    dalil:
+      "QS. Ali Imran: 98; QS. Al-Ma'idah: 117; QS. Al-Hajj: 17 — 'Innallaaha 'alaa kulli syai-in syahiid'",
+  },
+  {
+    no: 51,
+    arab: 'الْحَقُّ',
+    latin: 'Al-Haqq',
+    arti: 'Yang Maha Benar',
+    fadhilah:
+      "Membaca 'Yaa Haqq' 100x akan selalu dimudahkan membela kebenaran, diberi keberanian menyuarakan yang haq, dan dijauhkan dari kebathilan.",
+    dalil: "QS. Al-An'am: 62; QS. Yunus: 32; QS. Al-Hajj: 6 — 'Dzaalika bi-annallaaha huwal haqq'",
+  },
+  {
+    no: 52,
+    arab: 'الْوَكِيلُ',
+    latin: 'Al-Wakiil',
+    arti: 'Yang Maha Memelihara',
+    fadhilah:
+      "Membaca 'Yaa Wakiil' 100x akan diserahkan segala urusan kepada Allah dengan sempurna. Hati menjadi tenang karena yakin Allah adalah sebaik-baik penjaga dan pengatur urusan.",
+    dalil: "QS. Ali Imran: 173; QS. An-Nisa: 81, 132, 171 — 'Hasbunallaahu wa ni'mal wakiil'",
+  },
+  {
+    no: 53,
+    arab: 'الْقَوِيُّ',
+    latin: 'Al-Qawiyy',
+    arti: 'Yang Maha Kuat',
+    fadhilah:
+      "Membaca 'Yaa Qawiyy' 100x setiap pagi akan diberikan kekuatan fisik dan mental, tidak mudah lelah dalam beribadah, dan dikuatkan menghadapi ujian hidup.",
+    dalil:
+      "QS. Al-Anfal: 52; QS. Hud: 66; QS. Adz-Dzariyat: 58 — 'Innallaaha huwal razzaaqu dzul quwwatil matiin'",
+  },
+  {
+    no: 54,
+    arab: 'الْمَتِينُ',
+    latin: 'Al-Matiin',
+    arti: 'Yang Maha Kokoh',
+    fadhilah:
+      "Membaca 'Yaa Matiin' 100x akan dikokohkan iman, dikuatkan pendirian dalam kebenaran, dan tidak mudah goyah oleh godaan dunia maupun bisikan syetan.",
+    dalil: "QS. Adz-Dzariyat: 58; QS. Yunus: 91 — 'Innallaaha la qawiyyun matiin'",
+  },
+  {
+    no: 55,
+    arab: 'الْوَلِيُّ',
+    latin: 'Al-Waliyy',
+    arti: 'Yang Maha Melindungi',
+    fadhilah:
+      "Membaca 'Yaa Waliyy' 100x setiap malam akan mendapatkan perlindungan sempurna dari Allah, dijauhkan dari musuh yang tak terlihat, dan diberi pertolongan di saat genting.",
+    dalil:
+      "QS. Ali Imran: 68; QS. Al-A'raf: 196; QS. Asy-Syura: 9 — 'Allaahu waliyyul ladziina aamanuu'",
+  },
+  {
+    no: 56,
+    arab: 'الْحَمِيدُ',
+    latin: 'Al-Hamiid',
+    arti: 'Yang Maha Terpuji',
+    fadhilah:
+      "Membaca 'Yaa Hamiid' 100x akan dijadikan hamba yang terpuji akhlaknya, disenangi banyak orang, dan lisannya selalu basah dengan pujian kepada Allah.",
+    dalil:
+      "QS. Ibrahim: 1, 8; QS. Luqman: 12, 26; QS. Saba': 6 — 'Ilalladzii lahu maa fis samaawaati wa maa fil ardhi wa huwal hamiidul majiid'",
+  },
+  {
+    no: 57,
+    arab: 'الْمُحْصِي',
+    latin: 'Al-Muhshii',
+    arti: 'Yang Maha Menghitung',
+    fadhilah:
+      "Membaca 'Yaa Muhshii' 100x akan diberi kemampuan menghitung nikmat Allah, pandai bersyukur, dan selalu merasa cukup dengan apa yang dimiliki.",
+    dalil: "QS. An-Naba': 29; QS. Al-Mujadilah: 6 — 'Wa kulla syai-in ahshainaahu kitaabaa'",
+  },
+  {
+    no: 58,
+    arab: 'الْمُبْدِئُ',
+    latin: "Al-Mubdi'",
+    arti: 'Yang Maha Memulai',
+    fadhilah:
+      "Membaca 'Yaa Mubdi'' 100x akan dimudahkan memulai kebaikan, diberi ide-ide baru yang bermanfaat, dan selalu semangat mengawali amal shalih.",
+    dalil: "QS. Al-Ankabut: 19; QS. Yunus: 34 — 'Innallaaha yabda'ul khalqa tsumma yu'iiduhuu'",
+  },
+  {
+    no: 59,
+    arab: 'الْمُعِيدُ',
+    latin: "Al-Mu'iid",
+    arti: 'Yang Maha Mengembalikan',
+    fadhilah:
+      "Membaca 'Yaa Mu'iid' 100x akan dikembalikan segala yang hilang (semangat, kesehatan, harta, hubungan) dan diingatkan untuk selalu kembali kepada Allah dalam setiap keadaan.",
+    dalil:
+      "QS. Yunus: 34; QS. Al-Ankabut: 19; QS. Ar-Rum: 27 — 'Wa huwalladzii yabda'ul khalqa tsumma yu'iiduhuu'",
+  },
+  {
+    no: 60,
+    arab: 'الْمُحْيِي',
+    latin: 'Al-Muhyii',
+    arti: 'Yang Maha Menghidupkan',
+    fadhilah:
+      "Membaca 'Yaa Muhyii' 100x akan dihidupkan hati yang mati, semangat ibadah yang pudar, dan diberi kehidupan yang penuh berkah serta bermakna.",
+    dalil: "QS. Ar-Rum: 19, 50; QS. Fushshilat: 39 — 'Yuhyil ardha ba'da mautihaa'",
+  },
+  {
+    no: 61,
+    arab: 'الْمُمِيتُ',
+    latin: 'Al-Mumiit',
+    arti: 'Yang Maha Mematikan',
+    fadhilah:
+      "Membaca 'Yaa Mumiit' akan mematikan hawa nafsu, mengingatkan pada kematian, dan menjadikan hati selalu siap menghadap Allah. Membantu menghentikan kebiasaan buruk.",
+    dalil: "QS. Ali Imran: 156; QS. Al-Mulk: 2 — 'Alladzii khalaqal mauta wal hayaata'",
+  },
+  {
+    no: 62,
+    arab: 'الْحَيُّ',
+    latin: 'Al-Hayy',
+    arti: 'Yang Maha Hidup',
+    fadhilah:
+      "Membaca 'Yaa Hayy' 1000x setiap malam akan dipanjangkan umur dalam kebaikan, diberi kesehatan yang prima, dan hati selalu hidup dengan dzikir kepada Allah.",
+    dalil:
+      "QS. Al-Baqarah: 255 (Ayat Kursi); QS. Thaha: 111 — 'Allaahu laa ilaaha illaa huwal hayyul qayyuum'",
+  },
+  {
+    no: 63,
+    arab: 'الْقَيُّومُ',
+    latin: 'Al-Qayyuum',
+    arti: 'Yang Maha Mandiri',
+    fadhilah:
+      "Membaca 'Yaa Qayyuum' 100x akan dijadikan hamba yang mandiri, tidak bergantung kepada makhluk, dan selalu berdiri tegak dalam kebenaran. Merupakan dzikir yang sangat dahsyat.",
+    dalil:
+      "QS. Al-Baqarah: 255; QS. Ali Imran: 2 — 'Allaahu laa ilaaha illaa huwal hayyul qayyuum'",
+  },
+  {
+    no: 64,
+    arab: 'الْوَاجِدُ',
+    latin: 'Al-Waajid',
+    arti: 'Yang Maha Penemu',
+    fadhilah:
+      "Membaca 'Yaa Waajid' 100x akan dimudahkan menemukan solusi dari setiap masalah, menemukan jalan keluar, dan menemukan apa yang hilang atau dicari.",
+    dalil:
+      "QS. Adh-Dhuha: 6-8 — 'Alam yajidka yatiiman fa aawaa, wa wajadaka dhaallan fa hadaa, wa wajadaka 'aa-ilan fa aghnaa'",
+  },
+  {
+    no: 65,
+    arab: 'الْمَاجِدُ',
+    latin: 'Al-Maajid',
+    arti: 'Yang Maha Mulia',
+    fadhilah:
+      "Membaca 'Yaa Maajid' 100x akan diberikan kemuliaan dan kehormatan, dijauhkan dari kehinaan, dan dijadikan pribadi yang bermartabat di mata manusia dan Allah.",
+    dalil: "QS. Hud: 73; QS. Al-Buruj: 15, 21 — 'Bal huwa qur'aanun majiid'",
+  },
+  {
+    no: 66,
+    arab: 'الْوَاحِدُ',
+    latin: 'Al-Waahid',
+    arti: 'Yang Maha Tunggal',
+    fadhilah:
+      "Membaca 'Yaa Waahid' 1000x setiap hari akan dipurnakan tauhidnya, dijauhkan dari syirik, dan hatinya hanya bergantung kepada Allah satu-satunya.",
+    dalil: "QS. Al-Baqarah: 163; QS. Yusuf: 39; QS. Ar-Ra'd: 16 — 'Wa ilaahukum ilaahun waahid'",
+  },
+  {
+    no: 67,
+    arab: 'الْأَحَدُ',
+    latin: 'Al-Ahad',
+    arti: 'Yang Maha Esa',
+    fadhilah:
+      "Membaca 'Yaa Ahad' 1000x akan mendapatkan keikhlasan sempurna, dijauhkan dari riya', dan amalnya murni hanya karena Allah. Setara dengan membaca sepertiga Al-Qur'an.",
+    dalil: "QS. Al-Ikhlas: 1 — 'Qul huwallaahu ahad'",
+  },
+  {
+    no: 68,
+    arab: 'الصَّمَدُ',
+    latin: 'Ash-Shamad',
+    arti: 'Yang Maha Dibutuhkan',
+    fadhilah:
+      "Membaca 'Yaa Shamad' 100x setiap malam akan dicukupkan segala kebutuhan, dijauhkan dari rasa meminta-minta kepada makhluk, dan Allah menjadi tempat bergantung satu-satunya.",
+    dalil: "QS. Al-Ikhlas: 2 — 'Allaahush shamad'",
+  },
+  {
+    no: 69,
+    arab: 'الْقَادِرُ',
+    latin: 'Al-Qaadir',
+    arti: 'Yang Maha Menentukan',
+    fadhilah:
+      "Membaca 'Yaa Qaadir' 100x akan diyakinkan bahwa Allah mampu melakukan segala sesuatu. Menghilangkan keraguan dan menumbuhkan optimisme dalam menghadapi hidup.",
+    dalil:
+      "QS. Al-An'am: 37, 65; QS. Al-Qiyamah: 40 — 'Alaisa dzaalika bi qaadirin 'alaa an yuhyiyal mautaa'",
+  },
+  {
+    no: 70,
+    arab: 'الْمُقْتَدِرُ',
+    latin: 'Al-Muqtadir',
+    arti: 'Yang Maha Berkuasa',
+    fadhilah:
+      "Membaca 'Yaa Muqtadir' 100x akan diberi kemampuan dan kekuasaan untuk mengendalikan hawa nafsu, menguasai diri, dan memimpin dengan adil.",
+    dalil: "QS. Al-Kahfi: 45; QS. Al-Qamar: 42, 55 — 'Inda maliikin muqtadir'",
+  },
+  {
+    no: 71,
+    arab: 'الْمُقَدِّمُ',
+    latin: 'Al-Muqaddim',
+    arti: 'Yang Maha Mendahulukan',
+    fadhilah:
+      "Membaca 'Yaa Muqaddim' 100x akan dimudahkan mendahulukan kebaikan, diberi prioritas yang benar dalam hidup, dan didahulukan dalam setiap kebaikan.",
+    dalil: "QS. Al-Waqi'ah: 13-14 — 'Tsullatum minal awwaliin, wa qaliilun minal aakhiriin'",
+  },
+  {
+    no: 72,
+    arab: 'الْمُؤَخِّرُ',
+    latin: "Al-Mu'akhkhir",
+    arti: 'Yang Maha Mengakhirkan',
+    fadhilah:
+      "Membaca 'Yaa Mu'akhkhir' akan diakhirkan dari keburukan, dijauhkan dari musibah, dan diberi kesabaran menanti ketetapan Allah yang terbaik.",
+    dalil: "QS. Ibrahim: 42 — 'Wa laa tahsabannallaaha ghaafilan 'ammaa ya'maluzh zhaalimuun'",
+  },
+  {
+    no: 73,
+    arab: 'الْأَوَّلُ',
+    latin: 'Al-Awwal',
+    arti: 'Yang Maha Awal',
+    fadhilah:
+      "Membaca 'Yaa Awwal' 100x akan diingatkan bahwa Allah adalah awal segala sesuatu, membantu memulai setiap amal dengan niat yang benar, dan dimudahkan mengawali proyek kebaikan.",
+    dalil: "QS. Al-Hadid: 3 — 'Huwal awwalu wal aakhiru wazh zhaahiru wal baathinu'",
+  },
+  {
+    no: 74,
+    arab: 'الْآخِرُ',
+    latin: 'Al-Aakhir',
+    arti: 'Yang Maha Akhir',
+    fadhilah:
+      "Membaca 'Yaa Aakhir' 100x akan selalu diingatkan pada akhir kehidupan, diberi husnul khatimah, dan setiap amalnya diakhiri dengan kebaikan.",
+    dalil: "QS. Al-Hadid: 3 — 'Huwal awwalu wal aakhiru wazh zhaahiru wal baathinu'",
+  },
+  {
+    no: 75,
+    arab: 'الظَّاهِرُ',
+    latin: 'Azh-Zhaahir',
+    arti: 'Yang Maha Nyata',
+    fadhilah:
+      "Membaca 'Yaa Zhaahir' 100x akan dibukakan mata hati untuk melihat tanda-tanda kebesaran Allah yang nyata di alam semesta, dan dijauhkan dari keraguan akan keberadaan-Nya.",
+    dalil:
+      "QS. Al-Hadid: 3; QS. Al-Fath: 28 — 'Huwalladzii arsala rasuulahu bil hudaa wa diinil haqqi liyuzh-hirahu 'alad diini kullih'",
+  },
+  {
+    no: 76,
+    arab: 'الْبَاطِنُ',
+    latin: 'Al-Baathin',
+    arti: 'Yang Maha Ghaib',
+    fadhilah:
+      "Membaca 'Yaa Baathin' 100x akan diberi pemahaman tentang hal-hal ghaib, dijauhkan dari mempercayai tahayul, dan diyakinkan bahwa Allah mengetahui yang tersembunyi.",
+    dalil:
+      "QS. Al-Hadid: 3; QS. Al-Mulk: 13 — 'Wa asirruu qaulakum awijharuu bihii innahuu 'aliimun bidzaatis shuduur'",
+  },
+  {
+    no: 77,
+    arab: 'الْوَالِي',
+    latin: 'Al-Waali',
+    arti: 'Yang Maha Memerintah',
+    fadhilah:
+      "Membaca 'Yaa Waali' 100x akan diberi kemampuan memimpin diri sendiri, keluarga, dan orang lain dengan adil dan bijaksana.",
+    dalil: "QS. Ar-Ra'd: 11; QS. Asy-Syura: 9 — 'Wallahu waliyyul mu'miniin'; QS. Al-Jatsiyah: 19",
+  },
+  {
+    no: 78,
+    arab: 'الْمُتَعَالِي',
+    latin: "Al-Muta'aalii",
+    arti: 'Yang Maha Tinggi',
+    fadhilah:
+      "Membaca 'Yaa Muta'aalii' 100x akan ditinggikan cita-citanya, diangkat derajatnya, dan dimuliakan melebihi yang dibayangkan.",
+    dalil: "QS. Ar-Ra'd: 9; QS. Ghafir: 15 — 'Rafii'ud darajaati dzul 'arsy'",
+  },
+  {
+    no: 79,
+    arab: 'الْبَرُّ',
+    latin: 'Al-Barr',
+    arti: 'Yang Maha Penderma',
+    fadhilah:
+      "Membaca 'Yaa Barr' 100x setiap hari akan dijadikan hamba yang dermawan, ringan tangan membantu sesama, dan dimudahkan rezeki untuk bersedekah.",
+    dalil: "QS. At-Thur: 28; QS. Al-Insan: 5-9 — 'Innahu huwal barrur rahiim'",
+  },
+  {
+    no: 80,
+    arab: 'التَّوَّابُ',
+    latin: 'At-Tawwaab',
+    arti: 'Yang Maha Penerima Taubat',
+    fadhilah:
+      "Membaca 'Yaa Tawwaab' 100x setelah bertaubat akan diterima taubatnya dengan sempurna. Dijauhkan dari mengulangi dosa dan selalu dibimbing kembali ke jalan-Nya.",
+    dalil:
+      "QS. Al-Baqarah: 37, 54, 128, 160; QS. An-Nisa: 16, 64; QS. At-Tahrim: 8 — 'Innallaaha tawwaabun rahiim'",
+  },
+  {
+    no: 81,
+    arab: 'الْمُنْتَقِمُ',
+    latin: 'Al-Muntaqim',
+    arti: 'Yang Maha Pemberi Balasan',
+    fadhilah:
+      "Membaca 'Yaa Muntaqim' akan ditolong Allah dari kedzaliman, dibalaskan kejahatan musuh dengan cara yang adil, dan dijauhkan dari dendam pribadi.",
+    dalil:
+      "QS. Ali Imran: 4; QS. Al-Ma'idah: 95; QS. Ibrahim: 47 — 'Innallaaha 'aziizun dzuntiqaam'; QS. Az-Zumar: 37",
+  },
+  {
+    no: 82,
+    arab: 'الْعَفُوُّ',
+    latin: "Al-'Afuww",
+    arti: 'Yang Maha Pemaaf',
+    fadhilah:
+      "Membaca 'Yaa 'Afuww' 100x setiap malam akan diampuni dosa-dosanya, dijauhkan dari dendam, dan hatinya dipenuhi sifat pemaaf kepada sesama.",
+    dalil: "QS. An-Nisa: 43, 99, 149; QS. Al-Hajj: 60 — 'Innallaaha la 'afuwwun ghafuur'",
+  },
+  {
+    no: 83,
+    arab: 'الرَّءُوفُ',
+    latin: "Ar-Ra'uuf",
+    arti: 'Yang Maha Pengasih',
+    fadhilah:
+      "Membaca 'Yaa Ra'uuf' 100x akan ditanamkan rasa belas kasih yang mendalam, disayangi sesama, dan dijauhkan dari sifat kasar dan keras hati.",
+    dalil:
+      "QS. Al-Baqarah: 143, 207; QS. Ali Imran: 30; QS. An-Nur: 20 — 'Innallaaha ra'uufun rahiim'",
+  },
+  {
+    no: 84,
+    arab: 'مَالِكُ الْمُلْكِ',
+    latin: 'Maalikul Mulk',
+    arti: 'Pemilik Kerajaan',
+    fadhilah:
+      "Membaca 'Yaa Maalikul Mulk' 100x akan diangkat derajatnya, diberikan kekuasaan atas diri sendiri, dan dijauhkan dari diperbudak dunia.",
+    dalil:
+      "QS. Ali Imran: 26; QS. Al-Fatihah: 4 — 'Qulillaahumma maalikal mulki tu'til mulka man tasyaa'",
+  },
+  {
+    no: 85,
+    arab: 'ذُو الْجَلَالِ وَالْإِكْرَامِ',
+    latin: 'Dzul Jalaali wal Ikraam',
+    arti: 'Pemilik Kebesaran dan Kemuliaan',
+    fadhilah:
+      "Membaca 'Yaa Dzul Jalaali wal Ikraam' 100x setiap hari akan diberikan kemuliaan dan keagungan, dimuliakan di dunia dan akhirat, serta dijauhkan dari kehinaan.",
+    dalil: "QS. Ar-Rahman: 27, 78 — 'Tabarakasmu rabbika dzil jalaali wal ikraam'",
+  },
+  {
+    no: 86,
+    arab: 'الْمُقْسِطُ',
+    latin: 'Al-Muqsith',
+    arti: 'Yang Maha Pemberi Keadilan',
+    fadhilah:
+      "Membaca 'Yaa Muqsith' 100x akan ditanamkan sifat adil, tidak berat sebelah, dan selalu berpihak pada kebenaran tanpa memandang siapa pun.",
+    dalil: "QS. Al-Hujurat: 9; QS. Al-Ma'idah: 42 — 'Innallaaha yuhibbul muqsithiin'",
+  },
+  {
+    no: 87,
+    arab: 'الْجَامِعُ',
+    latin: "Al-Jaami'",
+    arti: 'Yang Maha Mengumpulkan',
+    fadhilah:
+      "Membaca 'Yaa Jaami'' 100x akan dikumpulkan kembali dengan orang-orang yang dicintai di surga, dipertemukan dengan jodoh yang baik, dan dikumpulkan rezeki yang tercerai-berai.",
+    dalil:
+      "QS. Ali Imran: 9; QS. An-Nisa: 140 — 'Innallaaha jaami'ul munaafiqiina wal kaafiriina fii jahannama jamii'aa'",
+  },
+  {
+    no: 88,
+    arab: 'الْغَنِيُّ',
+    latin: 'Al-Ghaniyy',
+    arti: 'Yang Maha Kaya',
+    fadhilah:
+      "Membaca 'Yaa Ghaniyy' 100x setiap hari akan dikayakan hati dengan rasa cukup (qana'ah), tidak tamak, dan dijauhkan dari cinta dunia yang berlebihan.",
+    dalil:
+      "QS. Al-Baqarah: 263, 267; QS. Fathir: 15; QS. Muhammad: 38 — 'Wallahu ghaniyyun wa antumul fuqaraa'",
+  },
+  {
+    no: 89,
+    arab: 'الْمُغْنِي',
+    latin: 'Al-Mughnii',
+    arti: 'Yang Maha Pemberi Kekayaan',
+    fadhilah:
+      "Membaca 'Yaa Mughnii' 1000x setiap Jum'at akan dilapangkan rezekinya, dibukakan pintu kekayaan yang halal, dan dicukupkan dari segala kebutuhan.",
+    dalil:
+      "QS. An-Najm: 48; QS. At-Taubah: 28 — 'Wa annahuu huwa aghnaa wa aqnaa'; QS. Adh-Dhuha: 8",
+  },
+  {
+    no: 90,
+    arab: 'الْمَانِعُ',
+    latin: "Al-Maani'",
+    arti: 'Yang Maha Mencegah',
+    fadhilah:
+      "Membaca 'Yaa Maani'' 100x akan dicegah dari perbuatan maksiat, dijauhkan dari musibah yang akan menimpa, dan dilindungi dari godaan yang merusak iman.",
+    dalil: "QS. Al-Mulk: 20-21 — 'Amman haadzalladzii yarzuqukum in amsaka rizqahuu'",
+  },
+  {
+    no: 91,
+    arab: 'الضَّارُّ',
+    latin: 'Adh-Dhaarr',
+    arti: 'Yang Maha Pemberi Derita',
+    fadhilah:
+      "Membaca 'Yaa Dhaarr' akan menyadarkan bahwa setiap mudharat datang dengan izin Allah. Menjadikan hati menerima ujian dengan sabar dan yakin ada hikmah di baliknya.",
+    dalil: "QS. Al-An'am: 17 — 'Wa in yamsaskallaahu bi dhurrin falaa kaasyifa lahuu illaa huwa'",
+  },
+  {
+    no: 92,
+    arab: 'النَّافِعُ',
+    latin: "An-Naafi'",
+    arti: 'Yang Maha Pemberi Manfaat',
+    fadhilah:
+      "Membaca 'Yaa Naafi'' 100x setiap pagi akan dijadikan hamba yang bermanfaat bagi sesama, segala karyanya membawa kebaikan, dan diberi umur yang barakah.",
+    dalil: "QS. Ar-Ra'd: 16; QS. Al-Ma'idah: 76 — 'Qul hal yamliku lakum dharran wa laa naf'aa'",
+  },
+  {
+    no: 93,
+    arab: 'النُّورُ',
+    latin: 'An-Nuur',
+    arti: 'Yang Maha Bercahaya',
+    fadhilah:
+      "Membaca 'Yaa Nuur' 100x setiap malam akan diterangi hatinya, wajahnya bersinar, pikirannya jernih, dan diberi petunjuk di saat kebingungan.",
+    dalil: "QS. An-Nur: 35 — 'Allaahu nuurus samaawaati wal ardh'",
+  },
+  {
+    no: 94,
+    arab: 'الْهَادِي',
+    latin: 'Al-Haadii',
+    arti: 'Yang Maha Pemberi Petunjuk',
+    fadhilah:
+      "Membaca 'Yaa Haadii' 100x setiap malam akan selalu diberi petunjuk dalam setiap langkah, dijauhkan dari kesesatan, dan dimudahkan menemukan jalan yang benar.",
+    dalil:
+      "QS. Al-Hajj: 54; QS. Al-Furqan: 31; QS. As-Sajdah: 3 — 'Wa innallaaha la haadil ladziina aamanuu'",
+  },
+  {
+    no: 95,
+    arab: 'الْبَدِيعُ',
+    latin: "Al-Badii'",
+    arti: 'Yang Maha Pencipta',
+    fadhilah:
+      "Membaca 'Yaa Badii'' 100x akan diberikan kreativitas, ide-ide orisinal, dan kemampuan menciptakan hal-hal baru yang bermanfaat bagi umat.",
+    dalil: "QS. Al-Baqarah: 117; QS. Al-An'am: 101 — 'Badii'us samaawaati wal ardh'",
+  },
+  {
+    no: 96,
+    arab: 'الْبَاقِي',
+    latin: 'Al-Baaqii',
+    arti: 'Yang Maha Kekal',
+    fadhilah:
+      "Membaca 'Yaa Baaqii' 100x setiap malam akan diingatkan bahwa hanya Allah yang kekal, pahala amal shalih abadi, dan dijauhkan dari mengejar dunia yang fana.",
+    dalil: "QS. Ar-Rahman: 27; QS. Al-Qashash: 60, 88 — 'Kullu syai-in haalikun illaa wajhahu'",
+  },
+  {
+    no: 97,
+    arab: 'الْوَارِثُ',
+    latin: 'Al-Waarits',
+    arti: 'Yang Maha Pewaris',
+    fadhilah:
+      "Membaca 'Yaa Waarits' 100x akan diwariskan kebaikan kepada anak keturunannya, hartanya diberkahi, dan namanya harum sepeninggalnya.",
+    dalil:
+      "QS. Ali Imran: 180; QS. Al-Hijr: 23; QS. Al-Qashash: 58 — 'Wa innnaa lanahnul waaritsuun'",
+  },
+  {
+    no: 98,
+    arab: 'الرَّشِيدُ',
+    latin: 'Ar-Rasyiid',
+    arti: 'Yang Maha Pandai',
+    fadhilah:
+      "Membaca 'Yaa Rasyiid' 100x akan diberi kecerdasan dalam bertindak, selalu mengambil keputusan yang tepat, dan dijauhkan dari tindakan bodoh yang merugikan.",
+    dalil:
+      "QS. Hud: 78, 87; QS. Al-Jin: 10, 14, 21 — 'Innaa la nu'minu bihii wa lan nusyrika bi rabbinaa ahadaa'",
+  },
+  {
+    no: 99,
+    arab: 'الصَّبُورُ',
+    latin: 'Ash-Shabuur',
+    arti: 'Yang Maha Sabar',
+    fadhilah:
+      "Membaca 'Yaa Shabuur' 100x setiap pagi akan dianugerahi kesabaran tiada batas, tidak mudah mengeluh, tabah menghadapi ujian, dan dijauhkan dari putus asa.",
+    dalil:
+      "QS. Ali Imran: 200; QS. Al-Baqarah: 153 — 'Yaa ayyuhalladziina aamanuu ista'iinuu bish shabri wash shalaah'",
+  },
 ];
 ---
 
 <BaseLayout pageTitle="Asmaul Husna - 99 Nama Allah">
-  
-  <HeaderBack title="Asmaul Husna" />
+  <HeaderSticky title="Asmaul Husna" />
 
-  <div class="pb-24 px-4 w-full max-w-md mx-auto">
-    
-    <div class="bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-5 text-white shadow-lg shadow-emerald-500/20 mb-6 relative overflow-hidden">
+  <div class="mx-auto w-full max-w-md px-4 pb-24">
+    <div
+      class="relative mb-6 overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-700 p-5 text-white shadow-lg shadow-emerald-500/20"
+    >
       <div class="relative z-10">
-        <p class="text-emerald-100 text-xs font-medium uppercase tracking-widest mb-1">99 Nama Indah</p>
-        <h2 class="text-xl font-bold mb-1">Asmaul Husna</h2>
-        <p class="text-xs text-emerald-200">Barangsiapa menghafalnya, masuk surga. Ketuk kartu untuk melihat keutamaan & dalil. Tap badge angka untuk bertasbih.</p>
+        <p class="mb-1 text-xs font-medium tracking-widest text-emerald-100 uppercase">
+          99 Nama Indah
+        </p>
+        <h2 class="mb-1 text-xl font-bold">Asmaul Husna</h2>
+        <p class="text-xs text-emerald-200">
+          Barangsiapa menghafalnya, masuk surga. Ketuk kartu untuk melihat keutamaan & dalil. Tap
+          badge angka untuk bertasbih.
+        </p>
       </div>
     </div>
 
-    <SearchBar id="search-input" placeholder="Cari nama, arti, atau fadhilah..." />
+    <SearchBar
+      id="search-input"
+      placeholder="Cari nama, arti, atau fadhilah..."
+      ariaLabel="Cari Asmaul Husna"
+    />
 
-    <div class="grid grid-cols-1 gap-3 mt-4" id="asmaul-container">
-      {asmaulHusna.map((item) => (
-        <div class="asmaul-card bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all hover:border-emerald-500/50 cursor-pointer overflow-hidden group">
-          
-          <div class="card-header flex items-center gap-4">
-            <button class="counter-btn relative w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-100 dark:border-emerald-800 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-800/40 flex-shrink-0 flex flex-col justify-center items-center active:scale-95" data-id={item.no} title="Tap: +1. Dbl-tap: reset.">
-              <span class="count-display text-sm tracking-tight" id={`count-${item.no}`}>0</span>
-              <span class="text-[8px] opacity-60 uppercase font-semibold mt-0.5">zikir</span>
-            </button>
-            
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center justify-between mb-0.5">
-                <p class="font-amiri text-xl text-slate-800 dark:text-slate-100 search-arab" dir="rtl">{item.arab}</p>
-                <button class="copy-btn text-slate-300 hover:text-emerald-500 transition-colors p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 opacity-0 group-hover:opacity-100 flex-shrink-0 active:scale-90" data-name={item.arab}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                </button>
+    <div
+      class="mt-4 grid grid-cols-1 gap-3"
+      id="asmaul-container"
+      style="content-visibility:auto; contain-intrinsic-size: 0 5000px;"
+    >
+      {
+        asmaulHusna.map((item) => (
+          <div class="asmaul-card group cursor-pointer overflow-hidden rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:border-emerald-500/50 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+            <div class="card-header flex items-center gap-4">
+              <button
+                class="counter-btn relative flex h-12 w-12 flex-shrink-0 flex-col items-center justify-center rounded-xl border border-emerald-100 bg-emerald-50 font-bold text-emerald-600 transition-colors hover:bg-emerald-100 active:scale-95 dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400 dark:hover:bg-emerald-800/40"
+                data-id={item.no}
+                title="Tap: +1. Dbl-tap: reset."
+              >
+                <span class="count-display text-sm tracking-tight" id={`count-${item.no}`}>
+                  0
+                </span>
+                <span class="mt-0.5 text-[8px] font-semibold uppercase opacity-60">zikir</span>
+              </button>
+
+              <div class="min-w-0 flex-1">
+                <div class="mb-0.5 flex items-center justify-between">
+                  <p
+                    class="font-amiri search-arab text-xl text-slate-800 dark:text-slate-100"
+                    dir="rtl"
+                  >
+                    {item.arab}
+                  </p>
+                  <button
+                    class="copy-btn flex-shrink-0 rounded-lg p-1.5 text-slate-300 opacity-0 transition-colors group-hover:opacity-100 hover:bg-slate-100 hover:text-emerald-500 active:scale-90 dark:hover:bg-slate-800"
+                    data-name={item.arab}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <>
+                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                      </>
+                    </svg>
+                  </button>
+                </div>
+                <p class="search-latin text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  {item.no}. {item.latin}
+                </p>
+                <p class="search-arti mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  {item.arti}
+                </p>
               </div>
-              <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 search-latin">{item.no}. {item.latin}</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 search-arti">{item.arti}</p>
             </div>
-          </div>
 
-          <div class="card-detail hidden mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
-            <div>
-              <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1 flex items-center gap-1.5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                Keutamaan / Fadhilah
-              </p>
-              <p class="text-[13px] text-slate-600 dark:text-slate-300 leading-relaxed search-fadhilah">{item.fadhilah}</p>
-            </div>
-            <div>
-              <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-1 flex items-center gap-1.5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-                Dalil
-              </p>
-              <p class="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed italic">{item.dalil}</p>
+            <div class="card-detail mt-4 hidden space-y-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+              <div>
+                <p class="mb-1 flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  Keutamaan / Fadhilah
+                </p>
+                <p class="search-fadhilah text-[13px] leading-relaxed text-slate-600 dark:text-slate-300">
+                  {item.fadhilah}
+                </p>
+              </div>
+              <div>
+                <p class="mb-1 flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+                  </svg>
+                  Dalil
+                </p>
+                <p class="text-[13px] leading-relaxed text-slate-500 italic dark:text-slate-400">
+                  {item.dalil}
+                </p>
+              </div>
             </div>
           </div>
-          
-        </div>
-      ))}
+        ))
+      }
     </div>
 
-    <div id="empty-state" class="hidden text-center py-12">
-      <div class="inline-block p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="m9 9 4 4"/><path d="m9 13 4-4"/></svg>
+    <div id="empty-state" class="hidden" aria-live="polite">
+      <div class="py-12 text-center">
+        <div
+          class="mb-3 inline-block rounded-full bg-slate-100 p-4 text-slate-400 dark:bg-slate-800"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path><path
+              d="m9 9 4 4"></path><path d="m9 13 4-4"></path></svg
+          >
+        </div>
+        <p class="mb-1 text-sm font-bold text-slate-800 dark:text-white">Nama tidak ditemukan</p>
+        <p class="mb-4 text-xs text-slate-500 dark:text-slate-400">Coba kata kunci lain</p>
+        <button
+          id="empty-reset-asmaul"
+          class="rounded-full bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700"
+          >Reset pencarian</button
+        >
       </div>
-      <p class="text-slate-500 dark:text-slate-400 text-sm">Nama tidak ditemukan.</p>
     </div>
 
     <Toast />
-
   </div>
 </BaseLayout>
 
 <script is:inline>
-(() => {
-  const initAsmaul = () => {
-    if (window._asmaulInitialized) return;
-    const cards = document.querySelectorAll('.asmaul-card');
-    if (!cards.length) return;
-    window._asmaulInitialized = true;
-    const LOCAL_KEY = 'qolbu-asmaul-counts';
-    
-    let counts = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}');
-    document.querySelectorAll('.count-display').forEach(el => {
-      const id = el.id.split('-')[1];
-      if (counts[id]) el.textContent = counts[id];
-    });
+  (() => {
+    const initAsmaul = () => {
+      if (window._asmaulInitialized) return;
+      const cards = document.querySelectorAll('.asmaul-card');
+      if (!cards.length) return;
+      window._asmaulInitialized = true;
+      const LOCAL_KEY = 'qolbu-asmaul-counts';
 
-    const saveCount = (id, val) => {
-      counts[id] = val;
-      localStorage.setItem(LOCAL_KEY, JSON.stringify(counts));
-      const display = document.getElementById(`count-${id}`);
-      if (display) display.textContent = val;
-      
-      // Milestone celebration
-      if (val === 33 || val === 66 || val === 99 || val === 100) {
-        window.showToast && window.showToast(`✅ ${val}x — Maa syaa Allah!`);
+      let counts = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}');
+      document.querySelectorAll('.count-display').forEach((el) => {
+        const id = el.id.split('-')[1];
+        if (counts[id]) el.textContent = counts[id];
+      });
+
+      const saveCount = (id, val) => {
+        counts[id] = val;
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(counts));
+        const display = document.getElementById(`count-${id}`);
+        if (display) display.textContent = val;
+
+        // Milestone celebration
+        if (val === 33 || val === 66 || val === 99 || val === 100) {
+          window.showToast && window.showToast(`✅ ${val}x — Maa syaa Allah!`);
+        }
+      };
+
+      // Counter: tap +1, dbl-tap reset (debounced to prevent race condition)
+      document.querySelectorAll('.counter-btn').forEach((btn) => {
+        const id = btn.getAttribute('data-id');
+        let clickTimer;
+
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (clickTimer) clearTimeout(clickTimer);
+          clickTimer = setTimeout(() => {
+            saveCount(id, (counts[id] ?? 0) + 1);
+            btn.classList.add('scale-110', 'bg-emerald-200', 'dark:bg-emerald-800');
+            setTimeout(
+              () => btn.classList.remove('scale-110', 'bg-emerald-200', 'dark:bg-emerald-800'),
+              150
+            );
+          }, 250);
+        });
+
+        btn.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
+          if (clickTimer) clearTimeout(clickTimer);
+          if (confirm('Reset hitungan zikir untuk nama ini?')) {
+            saveCount(id, 0);
+          }
+        });
+      });
+
+      // Expand/collapse detail
+      document.querySelectorAll('.asmaul-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          const detail = card.querySelector('.card-detail');
+          if (detail) detail.classList.toggle('hidden');
+        });
+      });
+
+      // Copy arabic name
+      document.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const name = btn.getAttribute('data-name');
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(name).then(() => {
+              window.showToast && window.showToast('Nama Arab disalin! 📋');
+            });
+          }
+        });
+      });
+
+      // Search
+      const searchInput = document.getElementById('search-input');
+      const emptyState = document.getElementById('empty-state');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const term = e.target.value.toLowerCase();
+          let hasVisible = false;
+
+          cards.forEach((card) => {
+            const searchText = [
+              card.querySelector('.search-latin')?.textContent,
+              card.querySelector('.search-arti')?.textContent,
+              card.querySelector('.search-arab')?.textContent,
+              card.querySelector('.search-fadhilah')?.textContent,
+            ]
+              .map((s) => (s || '').toLowerCase())
+              .join(' ');
+
+            if (searchText.includes(term)) {
+              card.classList.remove('hidden');
+              hasVisible = true;
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+
+          if (emptyState) emptyState.classList.toggle('hidden', hasVisible);
+        });
       }
     };
 
-    // Counter: tap +1, dbl-tap reset (debounced to prevent race condition)
-    document.querySelectorAll('.counter-btn').forEach(btn => {
-      const id = btn.getAttribute('data-id');
-      let clickTimer;
-
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (clickTimer) clearTimeout(clickTimer);
-        clickTimer = setTimeout(() => {
-          saveCount(id, (counts[id] ?? 0) + 1);
-          btn.classList.add('scale-110', 'bg-emerald-200', 'dark:bg-emerald-800');
-          setTimeout(() => btn.classList.remove('scale-110', 'bg-emerald-200', 'dark:bg-emerald-800'), 150);
-        }, 250);
-      });
-
-      btn.addEventListener('dblclick', (e) => {
-        e.stopPropagation();
-        if (clickTimer) clearTimeout(clickTimer);
-        if (confirm('Reset hitungan zikir untuk nama ini?')) {
-          saveCount(id, 0);
-        }
-      });
+    document.addEventListener('astro:page-load', initAsmaul);
+    document.addEventListener('astro:before-swap', () => {
+      window._asmaulInitialized = false;
     });
-
-    // Expand/collapse detail
-    document.querySelectorAll('.asmaul-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const detail = card.querySelector('.card-detail');
-        if (detail) detail.classList.toggle('hidden');
-      });
-    });
-
-    // Copy arabic name
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const name = btn.getAttribute('data-name');
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(name).then(() => {
-            window.showToast && window.showToast('Nama Arab disalin! 📋');
-          });
-        }
-      });
-    });
-
-    // Search
-    const searchInput = document.getElementById('search-input');
-    const cards = document.querySelectorAll('.asmaul-card');
-    const emptyState = document.getElementById('empty-state');
-
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        let hasVisible = false;
-        
-        cards.forEach(card => {
-          const searchText = [
-            card.querySelector('.search-latin')?.textContent,
-            card.querySelector('.search-arti')?.textContent,
-            card.querySelector('.search-arab')?.textContent,
-            card.querySelector('.search-fadhilah')?.textContent
-          ].map(s => (s || '').toLowerCase()).join(' ');
-
-          if (searchText.includes(term)) {
-            card.classList.remove('hidden');
-            hasVisible = true;
-          } else {
-            card.classList.add('hidden');
-          }
-        });
-        
-        if (emptyState) emptyState.classList.toggle('hidden', hasVisible);
-      });
-    }
-  };
-
-  document.addEventListener('astro:page-load', initAsmaul);
-  document.addEventListener('astro:before-swap', () => {
-    window._asmaulInitialized = false;
-  });
-})();
+  })();
 </script>

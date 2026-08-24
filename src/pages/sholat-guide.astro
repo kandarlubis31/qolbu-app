@@ -1,725 +1,1122 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeaderBack from '../components/HeaderBack.astro';
+import HeaderSticky from '../components/HeaderSticky.astro';
 import SearchBar from '../components/SearchBar.astro';
 import Toast from '../components/Toast.astro';
 
 // DATA PANDUAN SHOLAT LENGKAP - SUNNI (MAZHAB SYAFI'I)
 const guides = [
-
   // ============================================================
   // BAGIAN 0: SYARAT SAH SHOLAT
   // ============================================================
   {
-    id: "syarat_sah",
-    category: "Syarat Sah",
-    title: "1. Syarat Sah Sebelum Sholat",
-    arab: "",
-    latin: "",
-    arti: "",
+    id: 'syarat_sah',
+    category: 'Syarat Sah',
+    title: '1. Syarat Sah Sebelum Sholat',
+    arab: '',
+    latin: '',
+    arti: '',
     desc: "Pastikan 5 syarat terpenuhi sebelum sholat: (1) Suci dari hadats besar & kecil (wudhu/mandi wajib), (2) Suci badan, pakaian, dan tempat dari najis, (3) Menutup aurat — laki-laki: pusar hingga lutut; perempuan: seluruh tubuh kecuali wajah dan telapak tangan, (4) Menghadap kiblat (Ka'bah), (5) Masuk waktu sholat.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
   },
 
   // ============================================================
   // BAGIAN 1: NIAT
   // ============================================================
   {
-    id: "niat_subuh",
-    category: "Niat Sholat",
-    title: "2. Niat Sholat Subuh",
-    arab: "أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى",
+    id: 'niat_subuh',
+    category: 'Niat Sholat',
+    title: '2. Niat Sholat Subuh',
+    arab: 'أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى',
     latin: "Ushalli fardhas shubhi rak'ataini mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
     arti: "Aku berniat shalat fardhu Subuh dua rakaat menghadap kiblat karena Allah Ta'ala.",
-    desc: "Niat cukup dalam hati. Melafalkan niat hukumnya sunnah (khilaf dalam mazhab). Niat dilakukan bersamaan dengan Takbiratul Ihram.",
+    desc: 'Niat cukup dalam hati. Melafalkan niat hukumnya sunnah (khilaf dalam mazhab). Niat dilakukan bersamaan dengan Takbiratul Ihram.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`,
   },
   {
-    id: "niat_dhuhur",
-    category: "Niat Sholat",
-    title: "3. Niat Sholat Dhuhur",
-    arab: "أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى",
-    latin: "Ushalli fardhadh dhuhri arba'a raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
+    id: 'niat_dhuhur',
+    category: 'Niat Sholat',
+    title: '3. Niat Sholat Dhuhur',
+    arab: 'أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى',
+    latin:
+      "Ushalli fardhadh dhuhri arba'a raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
     arti: "Aku berniat shalat fardhu Dhuhur empat rakaat menghadap kiblat karena Allah Ta'ala.",
-    desc: "Sholat Dhuhur 4 rakaat. Waktu: setelah zawal (matahari condong ke barat) hingga bayangan benda sama panjang dengan bendanya.",
+    desc: 'Sholat Dhuhur 4 rakaat. Waktu: setelah zawal (matahari condong ke barat) hingga bayangan benda sama panjang dengan bendanya.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`,
   },
   {
-    id: "niat_ashar",
-    category: "Niat Sholat",
-    title: "4. Niat Sholat Ashar",
-    arab: "أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى",
-    latin: "Ushalli fardhal 'ashri arba'a raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
+    id: 'niat_ashar',
+    category: 'Niat Sholat',
+    title: '4. Niat Sholat Ashar',
+    arab: 'أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى',
+    latin:
+      "Ushalli fardhal 'ashri arba'a raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
     arti: "Aku berniat shalat fardhu Ashar empat rakaat menghadap kiblat karena Allah Ta'ala.",
-    desc: "Sholat Ashar 4 rakaat. Waktu: saat bayangan benda melebihi panjang bendanya hingga matahari terbenam.",
+    desc: 'Sholat Ashar 4 rakaat. Waktu: saat bayangan benda melebihi panjang bendanya hingga matahari terbenam.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`,
   },
   {
-    id: "niat_maghrib",
-    category: "Niat Sholat",
-    title: "5. Niat Sholat Maghrib",
-    arab: "أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى",
-    latin: "Ushalli fardhal maghribi tsalaatsa raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
+    id: 'niat_maghrib',
+    category: 'Niat Sholat',
+    title: '5. Niat Sholat Maghrib',
+    arab: 'أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى',
+    latin:
+      "Ushalli fardhal maghribi tsalaatsa raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
     arti: "Aku berniat shalat fardhu Maghrib tiga rakaat menghadap kiblat karena Allah Ta'ala.",
-    desc: "Sholat Maghrib 3 rakaat. Waktu: setelah matahari terbenam hingga mega merah hilang.",
+    desc: 'Sholat Maghrib 3 rakaat. Waktu: setelah matahari terbenam hingga mega merah hilang.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`,
   },
   {
-    id: "niat_isya",
-    category: "Niat Sholat",
-    title: "6. Niat Sholat Isya",
-    arab: "أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى",
-    latin: "Ushalli fardhal 'isyaa-i arba'a raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
+    id: 'niat_isya',
+    category: 'Niat Sholat',
+    title: '6. Niat Sholat Isya',
+    arab: 'أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى',
+    latin:
+      "Ushalli fardhal 'isyaa-i arba'a raka'aatin mustaqbilal qiblati adaa-an lillaahi ta'aalaa.",
     arti: "Aku berniat shalat fardhu Isya empat rakaat menghadap kiblat karena Allah Ta'ala.",
-    desc: "Sholat Isya 4 rakaat. Waktu: setelah mega merah hilang hingga sepertiga malam (ikhtiyar), boleh hingga sebelum Subuh (darurat).",
+    desc: 'Sholat Isya 4 rakaat. Waktu: setelah mega merah hilang hingga sepertiga malam (ikhtiyar), boleh hingga sebelum Subuh (darurat).',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v10"/><path d="M9 22h6"/><path d="M9 10h6"/></svg>`,
   },
 
   // ============================================================
   // BAGIAN 2: GERAKAN & BACAAN SHOLAT
   // ============================================================
   {
-    id: "takbir",
-    category: "Rukun Sholat",
-    title: "7. Takbiratul Ihram",
-    arab: "اللهُ أَكْبَرُ",
-    latin: "Allāhu Akbar",
-    arti: "Allah Maha Besar.",
-    desc: "RUKUN sholat. Angkat kedua tangan: laki-laki sejajar telinga (ibu jari menyentuh daun telinga), perempuan sejajar bahu. Jari-jari rapat, telapak menghadap kiblat. Niat dibarengi tepat saat mengucap takbir. Tangan bersedekap: kanan di atas kiri, diletakkan di antara dada dan pusar.",
+    id: 'takbir',
+    category: 'Rukun Sholat',
+    title: '7. Takbiratul Ihram',
+    arab: 'اللهُ أَكْبَرُ',
+    latin: 'Allāhu Akbar',
+    arti: 'Allah Maha Besar.',
+    desc: 'RUKUN sholat. Angkat kedua tangan: laki-laki sejajar telinga (ibu jari menyentuh daun telinga), perempuan sejajar bahu. Jari-jari rapat, telapak menghadap kiblat. Niat dibarengi tepat saat mengucap takbir. Tangan bersedekap: kanan di atas kiri, diletakkan di antara dada dan pusar.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M6 8c2 2 4 2 6 2s4 0 6-2"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M6 8c2 2 4 2 6 2s4 0 6-2"/></svg>`,
   },
   {
-    id: "iftitah",
-    category: "Rukun Sholat",
-    title: "8. Doa Iftitah (Sunnah)",
-    arab: "اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ، اللَّهُمَّ نَقِّنِي مِنَ الْخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الْأَبْيَضُ مِنَ الدَّنَسِ، اللَّهُمَّ اغْسِلْ خَطَايَايَ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ",
-    latin: "Allaahumma baa'id bainii wa baina khathaayaaya kamaa baa'adta bainal masyriqi wal maghrib. Allaahumma naqqinii minal khathaayaa kamaa yunaqqats tsaubul abyadhu minad danas. Allaahummaghsil khathaayaaya bil maa-i wats tsalji wal barad.",
-    arti: "Ya Allah, jauhkanlah antara aku dan kesalahanku sebagaimana Engkau jauhkan antara timur dan barat. Ya Allah, bersihkanlah aku dari kesalahan sebagaimana pakaian putih dibersihkan dari kotoran. Ya Allah, cucilah kesalahanku dengan air, salju, dan embun.",
+    id: 'iftitah',
+    category: 'Rukun Sholat',
+    title: '8. Doa Iftitah (Sunnah)',
+    arab: 'اللَّهُمَّ بَاعِدْ بَيْنِي وَبَيْنَ خَطَايَايَ كَمَا بَاعَدْتَ بَيْنَ الْمَشْرِقِ وَالْمَغْرِبِ، اللَّهُمَّ نَقِّنِي مِنَ الْخَطَايَا كَمَا يُنَقَّى الثَّوْبُ الْأَبْيَضُ مِنَ الدَّنَسِ، اللَّهُمَّ اغْسِلْ خَطَايَايَ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ',
+    latin:
+      "Allaahumma baa'id bainii wa baina khathaayaaya kamaa baa'adta bainal masyriqi wal maghrib. Allaahumma naqqinii minal khathaayaa kamaa yunaqqats tsaubul abyadhu minad danas. Allaahummaghsil khathaayaaya bil maa-i wats tsalji wal barad.",
+    arti: 'Ya Allah, jauhkanlah antara aku dan kesalahanku sebagaimana Engkau jauhkan antara timur dan barat. Ya Allah, bersihkanlah aku dari kesalahan sebagaimana pakaian putih dibersihkan dari kotoran. Ya Allah, cucilah kesalahanku dengan air, salju, dan embun.',
     desc: "SUNNAH. Dibaca pada rakaat pertama saja, setelah Takbiratul Ihram sebelum Al-Fatihah. Ada juga versi doa Iftitah yang lebih panjang (versi 'Allaahu Akbaru Kabiiraa...'). Keduanya shahih dari hadits.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M9 22h6"/><path d="M10 12h4"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M9 22h6"/><path d="M10 12h4"/></svg>`,
   },
   {
-    id: "taawudz",
-    category: "Rukun Sholat",
+    id: 'taawudz',
+    category: 'Rukun Sholat',
     title: "9. Ta'awudz (Sunnah)",
-    arab: "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ",
+    arab: 'أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
     latin: "A'uudzu billaahi minasy syaithaanir rajiim.",
-    arti: "Aku berlindung kepada Allah dari setan yang terkutuk.",
-    desc: "SUNNAH. Dibaca sebelum membaca Al-Fatihah pada tiap rakaat (ada ulama yang hanya mewajibkan di rakaat pertama). Dibaca pelan (sirr) meskipun dalam sholat jahriyyah.",
+    arti: 'Aku berlindung kepada Allah dari setan yang terkutuk.',
+    desc: 'SUNNAH. Dibaca sebelum membaca Al-Fatihah pada tiap rakaat (ada ulama yang hanya mewajibkan di rakaat pertama). Dibaca pelan (sirr) meskipun dalam sholat jahriyyah.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
   },
   {
-    id: "fatihah",
-    category: "Rukun Sholat",
-    title: "10. Membaca Al-Fatihah (Rukun)",
-    arab: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ ۝ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ۝ الرَّحْمَنِ الرَّحِيمِ ۝ مَالِكِ يَوْمِ الدِّينِ ۝ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ۝ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ۝ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
-    latin: "Bismillaahir rahmaanir rahiim (1). Alhamdu lillaahi rabbil 'aalamiin (2). Ar-rahmaanir rahiim (3). Maaliki yaumid diin (4). Iyyaaka na'budu wa iyyaaka nasta'iin (5). Ihdinash shiraathal mustaqiim (6). Shiraathal ladziina an'amta 'alaihim ghairil maghdhuubi 'alaihim wa ladh dhaallin (7).",
-    arti: "Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang (1). Segala puji bagi Allah, Tuhan semesta alam (2). Yang Maha Pengasih lagi Maha Penyayang (3). Pemilik hari pembalasan (4). Hanya kepada-Mu kami menyembah dan hanya kepada-Mu kami memohon pertolongan (5). Tunjukilah kami jalan yang lurus (6). Yaitu jalan orang-orang yang telah Engkau beri nikmat, bukan jalan mereka yang Engkau murkai dan bukan pula jalan mereka yang sesat (7).",
+    id: 'fatihah',
+    category: 'Rukun Sholat',
+    title: '10. Membaca Al-Fatihah (Rukun)',
+    arab: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ ۝ الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ ۝ الرَّحْمَنِ الرَّحِيمِ ۝ مَالِكِ يَوْمِ الدِّينِ ۝ إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ ۝ اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ ۝ صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',
+    latin:
+      "Bismillaahir rahmaanir rahiim (1). Alhamdu lillaahi rabbil 'aalamiin (2). Ar-rahmaanir rahiim (3). Maaliki yaumid diin (4). Iyyaaka na'budu wa iyyaaka nasta'iin (5). Ihdinash shiraathal mustaqiim (6). Shiraathal ladziina an'amta 'alaihim ghairil maghdhuubi 'alaihim wa ladh dhaallin (7).",
+    arti: 'Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang (1). Segala puji bagi Allah, Tuhan semesta alam (2). Yang Maha Pengasih lagi Maha Penyayang (3). Pemilik hari pembalasan (4). Hanya kepada-Mu kami menyembah dan hanya kepada-Mu kami memohon pertolongan (5). Tunjukilah kami jalan yang lurus (6). Yaitu jalan orang-orang yang telah Engkau beri nikmat, bukan jalan mereka yang Engkau murkai dan bukan pula jalan mereka yang sesat (7).',
     desc: "RUKUN — wajib dibaca pada setiap rakaat. Tidak sah sholat tanpanya. Dalam mazhab Syafi'i, Basmalah adalah ayat pertama Al-Fatihah dan wajib dibaca. Setelah selesai, baca 'Aamiin' (sunnah mu'akkadah). Pada sholat jahriyyah (Subuh, Maghrib rakaat 1-2, Isya rakaat 1-2), Aamiin dikeraskan.",
-    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3",
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16"/><path d="M12 10v10"/></svg>`
+    audio: 'https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/001001.mp3',
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16"/><path d="M12 10v10"/></svg>`,
   },
   {
-    id: "surat_pendek",
-    category: "Rukun Sholat",
-    title: "11. Surat Setelah Al-Fatihah (Sunnah)",
-    arab: "قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
-    latin: "Qul huwallaahu ahad (1). Allaahush shamad (2). Lam yalid wa lam yuulad (3). Wa lam yakul lahuu kufuwan ahad (4).",
-    arti: "Katakanlah: Dialah Allah Yang Maha Esa (1). Allah tempat bergantung segala sesuatu (2). Dia tidak beranak dan tidak pula diperanakkan (3). Dan tidak ada sesuatu pun yang setara dengan-Nya (4). — (QS. Al-Ikhlas)",
+    id: 'surat_pendek',
+    category: 'Rukun Sholat',
+    title: '11. Surat Setelah Al-Fatihah (Sunnah)',
+    arab: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ',
+    latin:
+      'Qul huwallaahu ahad (1). Allaahush shamad (2). Lam yalid wa lam yuulad (3). Wa lam yakul lahuu kufuwan ahad (4).',
+    arti: 'Katakanlah: Dialah Allah Yang Maha Esa (1). Allah tempat bergantung segala sesuatu (2). Dia tidak beranak dan tidak pula diperanakkan (3). Dan tidak ada sesuatu pun yang setara dengan-Nya (4). — (QS. Al-Ikhlas)',
     desc: "SUNNAH. Dibaca pada rakaat 1 dan 2 setelah Al-Fatihah. Dianjurkan membaca surat yang berbeda di tiap rakaat. Rakaat pertama lebih panjang dari rakaat kedua. Pada rakaat 3 dan 4 (sholat 4 rakaat), cukup Al-Fatihah saja menurut mazhab Syafi'i.",
-    audio: "https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/112001.mp3",
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`
+    audio: 'https://equran.nos.wjv-1.neo.id/audio-partial/Misyari-Rasyid-Al-Afasi/112001.mp3',
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>`,
   },
   {
-    id: "ruku",
-    category: "Rukun Sholat",
+    id: 'ruku',
+    category: 'Rukun Sholat',
     title: "12. Ruku'",
-    arab: "سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ",
+    arab: 'سُبْحَانَ رَبِّيَ الْعَظِيمِ وَبِحَمْدِهِ',
     latin: "Subhaana rabbiyal 'azhiimi wa bihamdih. (3x)",
-    arti: "Maha Suci Tuhanku Yang Maha Agung dan dengan memuji-Nya.",
+    arti: 'Maha Suci Tuhanku Yang Maha Agung dan dengan memuji-Nya.',
     desc: "RUKUN. Posisi: membungkuk, punggung lurus sejajar lantai, tangan memegang lutut dengan jari-jari terbuka. Pandangan ke tempat sujud. TUMAKNINAH wajib (diam sejenak minimal satu kali tasbih). Dibaca minimal 1x, sunnah 3x. Ada juga tambahan: 'Subbuuhun Qudduusun Rabbul Malaa-ikati war Ruuh.'",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="2"/><path d="M16 7l-6 2-4 8"/><path d="M10 9v13"/><path d="M10 22h4"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="2"/><path d="M16 7l-6 2-4 8"/><path d="M10 9v13"/><path d="M10 22h4"/></svg>`,
   },
   {
-    id: "itidal",
-    category: "Rukun Sholat",
+    id: 'itidal',
+    category: 'Rukun Sholat',
     title: "13. I'tidal",
-    arab: "سَمِعَ اللهُ لِمَنْ حَمِدَهُ",
+    arab: 'سَمِعَ اللهُ لِمَنْ حَمِدَهُ',
     latin: "Sami'allaahu liman hamidah.",
-    arti: "Allah mendengar orang yang memuji-Nya.",
+    arti: 'Allah mendengar orang yang memuji-Nya.',
     desc: "RUKUN. Bacaan 'Sami'allaahu liman hamidah' dibaca saat BANGKIT dari ruku'. Setelah berdiri tegak, baca: 'Rabbanaa lakal hamdu mil'us samaawaati wa mil'ul ardhi wa mil'a maa syi'ta min syai-in ba'du.' TUMAKNINAH wajib dalam posisi berdiri tegak.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M12 10l-4-3"/><path d="M12 10l4-3"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/><path d="M12 10l-4-3"/><path d="M12 10l4-3"/></svg>`,
   },
   {
-    id: "itidal_doa",
-    category: "Rukun Sholat",
+    id: 'itidal_doa',
+    category: 'Rukun Sholat',
     title: "14. Doa Setelah I'tidal (Sunnah)",
-    arab: "رَبَّنَا لَكَ الْحَمْدُ مِلْءَ السَّمَاوَاتِ وَمِلْءَ الْأَرْضِ وَمِلْءَ مَا شِئْتَ مِنْ شَيْءٍ بَعْدُ",
-    latin: "Rabbanaa lakal hamdu mil'us samaawaati wa mil'ul ardhi wa mil'a maa syi'ta min syai-in ba'du.",
-    arti: "Ya Tuhan kami, bagi-Mu segala puji sepenuh langit dan bumi dan sepenuh apa saja yang Engkau kehendaki sesudah itu.",
+    arab: 'رَبَّنَا لَكَ الْحَمْدُ مِلْءَ السَّمَاوَاتِ وَمِلْءَ الْأَرْضِ وَمِلْءَ مَا شِئْتَ مِنْ شَيْءٍ بَعْدُ',
+    latin:
+      "Rabbanaa lakal hamdu mil'us samaawaati wa mil'ul ardhi wa mil'a maa syi'ta min syai-in ba'du.",
+    arti: 'Ya Tuhan kami, bagi-Mu segala puji sepenuh langit dan bumi dan sepenuh apa saja yang Engkau kehendaki sesudah itu.',
     desc: "SUNNAH. Dibaca setelah berdiri tegak dari ruku'. Makmum mengucapkan 'Rabbanaa lakal hamdu...' setelah imam mengucap 'Sami'allaahu liman hamidah'. Imam dan munfarid membaca keduanya.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="4" r="2"/><path d="M12 6v16"/><path d="M8 22h8"/></svg>`,
   },
   {
-    id: "sujud",
-    category: "Rukun Sholat",
-    title: "15. Sujud",
-    arab: "سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ",
+    id: 'sujud',
+    category: 'Rukun Sholat',
+    title: '15. Sujud',
+    arab: 'سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ',
     latin: "Subhaana rabbiyal a'laa wa bihamdih. (3x)",
-    arti: "Maha Suci Tuhanku Yang Maha Tinggi dan dengan memuji-Nya.",
+    arti: 'Maha Suci Tuhanku Yang Maha Tinggi dan dengan memuji-Nya.',
     desc: "RUKUN. 7 anggota badan wajib menempel: dahi (beserta hidung — wajib menurut Syafi'i), kedua telapak tangan, kedua lutut, ujung jari kedua kaki. Perut tidak menempel paha. TUMAKNINAH wajib. Dibaca minimal 1x, sunnah 3x. Doa tambahan sunnah: 'Subbuuhun Qudduusun Rabbul Malaa-ikati war Ruuh.'",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="18" r="2"/><path d="M7 18h14"/><path d="M11 18l4-8-2-4"/><circle cx="15" cy="6" r="2"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="18" r="2"/><path d="M7 18h14"/><path d="M11 18l4-8-2-4"/><circle cx="15" cy="6" r="2"/></svg>`,
   },
   {
-    id: "duduk_dua_sujud",
-    category: "Rukun Sholat",
-    title: "16. Duduk di Antara Dua Sujud",
-    arab: "رَبِّ اغْفِرْ لِي وَارْحَمْنِي وَاجْبُرْنِي وَارْفَعْنِي وَارْزُقْنِي وَاهْدِنِي وَعَافِنِي وَاعْفُ عَنِّي",
-    latin: "Rabbighfirlii warhamnii wajburnii warfa'nii warzuqnii wahdinii wa 'aafinii wa'fu 'annii.",
-    arti: "Ya Tuhanku, ampunilah aku, rahmatilah aku, cukupkanlah aku, angkatlah derajatku, berilah aku rezeki, tunjukilah aku, sehatkanlah aku, dan maafkanlah aku.",
-    desc: "RUKUN. Posisi duduk iftirasy: duduk di atas kaki kiri yang terlipat, kaki kanan ditegakkan. TUMAKNINAH wajib. Jari tangan diletakkan di atas paha. Setelah ini, sujud kedua dilakukan dengan bacaan yang sama seperti sujud pertama.",
+    id: 'duduk_dua_sujud',
+    category: 'Rukun Sholat',
+    title: '16. Duduk di Antara Dua Sujud',
+    arab: 'رَبِّ اغْفِرْ لِي وَارْحَمْنِي وَاجْبُرْنِي وَارْفَعْنِي وَارْزُقْنِي وَاهْدِنِي وَعَافِنِي وَاعْفُ عَنِّي',
+    latin:
+      "Rabbighfirlii warhamnii wajburnii warfa'nii warzuqnii wahdinii wa 'aafinii wa'fu 'annii.",
+    arti: 'Ya Tuhanku, ampunilah aku, rahmatilah aku, cukupkanlah aku, angkatlah derajatku, berilah aku rezeki, tunjukilah aku, sehatkanlah aku, dan maafkanlah aku.',
+    desc: 'RUKUN. Posisi duduk iftirasy: duduk di atas kaki kiri yang terlipat, kaki kanan ditegakkan. TUMAKNINAH wajib. Jari tangan diletakkan di atas paha. Setelah ini, sujud kedua dilakukan dengan bacaan yang sama seperti sujud pertama.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v8"/><path d="M8 22h8"/><path d="M12 15H8l-2 7"/><path d="M12 15h4l2 7"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="5" r="2"/><path d="M12 7v8"/><path d="M8 22h8"/><path d="M12 15H8l-2 7"/><path d="M12 15h4l2 7"/></svg>`,
   },
   {
-    id: "qunut",
-    category: "Sunnah Sholat Subuh",
-    title: "17. Doa Qunut (Sunnah Sholat Subuh)",
-    arab: "اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلَا يُقْضَى عَلَيْكَ، وَإِنَّهُ لَا يَذِلُّ مَنْ وَالَيْتَ، وَلَا يَعِزُّ مَنْ عَادَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ",
-    latin: "Allaahummahdini fiiman hadait, wa 'aafinii fiiman 'aafait, wa tawallanii fiiman tawallait, wa baarik lii fiimaa a'thait, wa qinii syarra maa qadhait, fa innaka taqdhii wa laa yuqdhaa 'alaik, wa innahuu laa yadzillu maw waalait, wa laa ya'izzu man 'aadait, tabaarakta rabbanaa wa ta'aalait.",
-    arti: "Ya Allah, tunjukilah aku di antara orang yang Engkau tunjuki, sehatkanlah aku di antara orang yang Engkau sehatkan, pimpinlah aku di antara orang yang Engkau pimpin, berkahilah aku dalam apa yang Engkau berikan, lindungilah aku dari kejahatan yang Engkau tetapkan, sesungguhnya Engkaulah yang menetapkan dan tidak ada yang menetapkan atas-Mu, sesungguhnya tidak akan hina orang yang Engkau jadikan wali, dan tidak akan mulia orang yang Engkau musuhi, Maha Suci dan Maha Tinggi Engkau ya Tuhan kami.",
+    id: 'qunut',
+    category: 'Sunnah Sholat Subuh',
+    title: '17. Doa Qunut (Sunnah Sholat Subuh)',
+    arab: 'اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلَا يُقْضَى عَلَيْكَ، وَإِنَّهُ لَا يَذِلُّ مَنْ وَالَيْتَ، وَلَا يَعِزُّ مَنْ عَادَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ',
+    latin:
+      "Allaahummahdini fiiman hadait, wa 'aafinii fiiman 'aafait, wa tawallanii fiiman tawallait, wa baarik lii fiimaa a'thait, wa qinii syarra maa qadhait, fa innaka taqdhii wa laa yuqdhaa 'alaik, wa innahuu laa yadzillu maw waalait, wa laa ya'izzu man 'aadait, tabaarakta rabbanaa wa ta'aalait.",
+    arti: 'Ya Allah, tunjukilah aku di antara orang yang Engkau tunjuki, sehatkanlah aku di antara orang yang Engkau sehatkan, pimpinlah aku di antara orang yang Engkau pimpin, berkahilah aku dalam apa yang Engkau berikan, lindungilah aku dari kejahatan yang Engkau tetapkan, sesungguhnya Engkaulah yang menetapkan dan tidak ada yang menetapkan atas-Mu, sesungguhnya tidak akan hina orang yang Engkau jadikan wali, dan tidak akan mulia orang yang Engkau musuhi, Maha Suci dan Maha Tinggi Engkau ya Tuhan kami.',
     desc: "SUNNAH MU'AKKADAH dalam mazhab Syafi'i pada sholat Subuh. Dibaca pada rakaat kedua setelah bangkit dari ruku' (setelah i'tidal). Tangan diangkat setinggi bahu. Ditambah shalawat dan salam: 'Washallallaahu 'alaa sayyidinaa Muhammadin wa 'alaa aalihi wa shahbihii wa sallam.'",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M8 5.4A10 10 0 0 0 2 12"/><path d="M16 5.4A10 10 0 0 1 22 12"/><circle cx="12" cy="5" r="2"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M8 5.4A10 10 0 0 0 2 12"/><path d="M16 5.4A10 10 0 0 1 22 12"/><circle cx="12" cy="5" r="2"/></svg>`,
   },
 
   // ============================================================
   // BAGIAN 3: TASYAHUD
   // ============================================================
   {
-    id: "tasyahud_awal",
-    category: "Tasyahud",
-    title: "18. Tasyahud Awal (Rakaat ke-2 dari sholat 3/4 rakaat)",
-    arab: "التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللهِ",
-    latin: "Attahiyyaatul mubaarakaatush shalawaatuth thayyibaatu lillaah. Assalaamu 'alaika ayyuhan nabiyyu wa rahmatullaahi wa barakaatuh. Assalaamu 'alainaa wa 'alaa 'ibaadillaahish shaalihiin. Asyhadu an laa ilaaha illallaah wa asyhadu anna Muhammadan rasuulullaah.",
-    arti: "Segala penghormatan, keberkahan, shalawat, dan kebaikan hanya milik Allah. Semoga keselamatan, rahmat, dan berkah Allah tercurah kepadamu wahai Nabi. Semoga keselamatan terlimpah kepada kami dan kepada hamba-hamba Allah yang saleh. Aku bersaksi bahwa tidak ada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah.",
+    id: 'tasyahud_awal',
+    category: 'Tasyahud',
+    title: '18. Tasyahud Awal (Rakaat ke-2 dari sholat 3/4 rakaat)',
+    arab: 'التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللهِ',
+    latin:
+      "Attahiyyaatul mubaarakaatush shalawaatuth thayyibaatu lillaah. Assalaamu 'alaika ayyuhan nabiyyu wa rahmatullaahi wa barakaatuh. Assalaamu 'alainaa wa 'alaa 'ibaadillaahish shaalihiin. Asyhadu an laa ilaaha illallaah wa asyhadu anna Muhammadan rasuulullaah.",
+    arti: 'Segala penghormatan, keberkahan, shalawat, dan kebaikan hanya milik Allah. Semoga keselamatan, rahmat, dan berkah Allah tercurah kepadamu wahai Nabi. Semoga keselamatan terlimpah kepada kami dan kepada hamba-hamba Allah yang saleh. Aku bersaksi bahwa tidak ada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah.',
     desc: "RUKUN. Dilakukan pada rakaat ke-2 sholat Dhuhur, Ashar, Maghrib, dan Isya. Posisi duduk IFTIRASY (kaki kiri diduduki, kaki kanan ditegakkan). Jari telunjuk kanan diangkat saat mengucap 'illallaah'. Setelah tasyahud awal, TIDAK membaca shalawat (cukup sampai 'Rasuulullaah'), langsung berdiri untuk rakaat berikutnya.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`,
   },
   {
-    id: "tasyahud_akhir",
-    category: "Tasyahud",
-    title: "19. Tasyahud Akhir (Rakaat Terakhir)",
-    arab: "التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللهِ",
-    latin: "Attahiyyaatul mubaarakaatush shalawaatuth thayyibaatu lillaah. Assalaamu 'alaika ayyuhan nabiyyu wa rahmatullaahi wa barakaatuh. Assalaamu 'alainaa wa 'alaa 'ibaadillaahish shaalihiin. Asyhadu an laa ilaaha illallaah wa asyhadu anna Muhammadan rasuulullaah.",
-    arti: "Bacaan sama dengan Tasyahud Awal.",
-    desc: "RUKUN. Dilakukan pada rakaat terakhir semua sholat fardhu. Posisi duduk TAWARRUK: kaki kiri dimasukkan ke bawah kaki kanan dari arah kanan, pantat menempel lantai, kaki kanan ditegakkan. Setelah tasyahud, lanjutkan membaca Shalawat Ibrahimiyyah.",
+    id: 'tasyahud_akhir',
+    category: 'Tasyahud',
+    title: '19. Tasyahud Akhir (Rakaat Terakhir)',
+    arab: 'التَّحِيَّاتُ الْمُبَارَكَاتُ الصَّلَوَاتُ الطَّيِّبَاتُ لِلَّهِ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللهِ',
+    latin:
+      "Attahiyyaatul mubaarakaatush shalawaatuth thayyibaatu lillaah. Assalaamu 'alaika ayyuhan nabiyyu wa rahmatullaahi wa barakaatuh. Assalaamu 'alainaa wa 'alaa 'ibaadillaahish shaalihiin. Asyhadu an laa ilaaha illallaah wa asyhadu anna Muhammadan rasuulullaah.",
+    arti: 'Bacaan sama dengan Tasyahud Awal.',
+    desc: 'RUKUN. Dilakukan pada rakaat terakhir semua sholat fardhu. Posisi duduk TAWARRUK: kaki kiri dimasukkan ke bawah kaki kanan dari arah kanan, pantat menempel lantai, kaki kanan ditegakkan. Setelah tasyahud, lanjutkan membaca Shalawat Ibrahimiyyah.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>`,
   },
   {
-    id: "shalawat_ibrahim",
-    category: "Tasyahud",
-    title: "20. Shalawat Ibrahimiyyah (Rukun)",
-    arab: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ فِي الْعَالَمِينَ، إِنَّكَ حَمِيدٌ مَجِيدٌ",
-    latin: "Allaahumma shalli 'alaa Muhammadin wa 'alaa aali Muhammad, kamaa shallaita 'alaa Ibraahiima wa 'alaa aali Ibraahiim. Wa baarik 'alaa Muhammadin wa 'alaa aali Muhammad, kamaa baarakta 'alaa Ibraahiima wa 'alaa aali Ibraahiima fil 'aalamiin. Innaka Hamiidun Majiid.",
-    arti: "Ya Allah, limpahkanlah rahmat kepada Nabi Muhammad dan keluarganya, sebagaimana Engkau telah melimpahkan rahmat kepada Nabi Ibrahim dan keluarganya. Dan berkahilah Nabi Muhammad dan keluarganya, sebagaimana Engkau telah memberkahi Nabi Ibrahim dan keluarganya di seluruh alam. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia.",
+    id: 'shalawat_ibrahim',
+    category: 'Tasyahud',
+    title: '20. Shalawat Ibrahimiyyah (Rukun)',
+    arab: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، وَبَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ فِي الْعَالَمِينَ، إِنَّكَ حَمِيدٌ مَجِيدٌ',
+    latin:
+      "Allaahumma shalli 'alaa Muhammadin wa 'alaa aali Muhammad, kamaa shallaita 'alaa Ibraahiima wa 'alaa aali Ibraahiim. Wa baarik 'alaa Muhammadin wa 'alaa aali Muhammad, kamaa baarakta 'alaa Ibraahiima wa 'alaa aali Ibraahiima fil 'aalamiin. Innaka Hamiidun Majiid.",
+    arti: 'Ya Allah, limpahkanlah rahmat kepada Nabi Muhammad dan keluarganya, sebagaimana Engkau telah melimpahkan rahmat kepada Nabi Ibrahim dan keluarganya. Dan berkahilah Nabi Muhammad dan keluarganya, sebagaimana Engkau telah memberkahi Nabi Ibrahim dan keluarganya di seluruh alam. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia.',
     desc: "RUKUN dalam mazhab Syafi'i. Dibaca setelah Tasyahud Akhir. Minimal yang wajib: 'Allaahumma shalli 'alaa Muhammad.' Namun dianjurkan membaca yang lengkap (Shalawat Ibrahimiyyah).",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 15H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 15H7a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   },
   {
-    id: "doa_tasyahud_akhir",
-    category: "Tasyahud",
-    title: "21. Doa Sebelum Salam (Sunnah)",
-    arab: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، وَمِنْ عَذَابِ النَّارِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ",
-    latin: "Allaahumma innii a'uudzu bika min 'adzaabil qabri, wa min 'adzaabin naar, wa min fitnatil mahyaa wal mamaat, wa min fitnatil masiihid dajjaal.",
-    arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari siksa kubur, dari siksa neraka, dari fitnah kehidupan dan kematian, serta dari fitnah Al-Masih Ad-Dajjal.",
-    desc: "SUNNAH. Diriwayatkan dari hadits shahih (HR. Bukhari & Muslim). Dibaca setelah Shalawat Ibrahimiyyah sebelum salam. Boleh juga ditambahkan doa-doa pribadi dalam bahasa Arab sebelum salam.",
+    id: 'doa_tasyahud_akhir',
+    category: 'Tasyahud',
+    title: '21. Doa Sebelum Salam (Sunnah)',
+    arab: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، وَمِنْ عَذَابِ النَّارِ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ',
+    latin:
+      "Allaahumma innii a'uudzu bika min 'adzaabil qabri, wa min 'adzaabin naar, wa min fitnatil mahyaa wal mamaat, wa min fitnatil masiihid dajjaal.",
+    arti: 'Ya Allah, sesungguhnya aku berlindung kepada-Mu dari siksa kubur, dari siksa neraka, dari fitnah kehidupan dan kematian, serta dari fitnah Al-Masih Ad-Dajjal.',
+    desc: 'SUNNAH. Diriwayatkan dari hadits shahih (HR. Bukhari & Muslim). Dibaca setelah Shalawat Ibrahimiyyah sebelum salam. Boleh juga ditambahkan doa-doa pribadi dalam bahasa Arab sebelum salam.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>`,
   },
 
   // ============================================================
   // BAGIAN 4: SALAM & PENUTUP
   // ============================================================
   {
-    id: "salam",
-    category: "Penutup Sholat",
-    title: "22. Salam (Rukun)",
-    arab: "السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ",
+    id: 'salam',
+    category: 'Penutup Sholat',
+    title: '22. Salam (Rukun)',
+    arab: 'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللهِ',
     latin: "Assalaamu 'alaikum wa rahmatullaah.",
-    arti: "Semoga keselamatan dan rahmat Allah tercurah kepada kalian.",
+    arti: 'Semoga keselamatan dan rahmat Allah tercurah kepada kalian.',
     desc: "RUKUN. Menoleh ke kanan hingga pipi kanan terlihat dari belakang, lalu ke kiri. Menurut mazhab Syafi'i, salam WAJIB dua kali (kanan dan kiri). Salam pertama (ke kanan) wajib, salam kedua (ke kiri) sunnah menurut satu pendapat. Namun lebih afdhal dan merupakan jumhur ulama Syafi'i bahwa keduanya wajib.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
   },
 
   // ============================================================
   // BAGIAN 5: DZIKIR & DOA SETELAH SHOLAT
   // ============================================================
   {
-    id: "istighfar",
-    category: "Dzikir Setelah Sholat",
-    title: "23. Istighfar (3x)",
-    arab: "أَسْتَغْفِرُ اللهَ الْعَظِيمَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ",
-    latin: "Astaghfirullahal 'azhiimal ladzii laa ilaaha illaa huwal hayyul qayyuumu wa atuubu ilaih. (3x)",
-    arti: "Aku memohon ampun kepada Allah Yang Maha Agung, yang tidak ada Tuhan selain Dia, Yang Maha Hidup lagi Maha Berdiri Sendiri, dan aku bertaubat kepada-Nya.",
-    desc: "SUNNAH. Dibaca 3 kali setelah salam. Keutamaan: siapa yang membacanya diampuni dosanya meski sebesar buih lautan. (Dasar: HR. Abu Dawud, Tirmidzi)",
+    id: 'istighfar',
+    category: 'Dzikir Setelah Sholat',
+    title: '23. Istighfar (3x)',
+    arab: 'أَسْتَغْفِرُ اللهَ الْعَظِيمَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ وَأَتُوبُ إِلَيْهِ',
+    latin:
+      "Astaghfirullahal 'azhiimal ladzii laa ilaaha illaa huwal hayyul qayyuumu wa atuubu ilaih. (3x)",
+    arti: 'Aku memohon ampun kepada Allah Yang Maha Agung, yang tidak ada Tuhan selain Dia, Yang Maha Hidup lagi Maha Berdiri Sendiri, dan aku bertaubat kepada-Nya.',
+    desc: 'SUNNAH. Dibaca 3 kali setelah salam. Keutamaan: siapa yang membacanya diampuni dosanya meski sebesar buih lautan. (Dasar: HR. Abu Dawud, Tirmidzi)',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`,
   },
   {
-    id: "dzikir_allahumma",
-    category: "Dzikir Setelah Sholat",
-    title: "24. Doa Allahumma Antas Salaam",
-    arab: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
-    latin: "Allaahumma antas salaam, wa minkas salaam, tabaarakta yaa dzal jalaali wal ikraam.",
-    arti: "Ya Allah, Engkaulah As-Salaam (Yang Maha Sejahtera) dan dari-Mu segala keselamatan. Maha Berkah Engkau wahai Dzat Yang Memiliki Keagungan dan Kemuliaan.",
-    desc: "SUNNAH. Dibaca setelah istighfar 3x. Berdasarkan hadits shahih riwayat Muslim dari Tsauban.",
+    id: 'dzikir_allahumma',
+    category: 'Dzikir Setelah Sholat',
+    title: '24. Doa Allahumma Antas Salaam',
+    arab: 'اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ',
+    latin: 'Allaahumma antas salaam, wa minkas salaam, tabaarakta yaa dzal jalaali wal ikraam.',
+    arti: 'Ya Allah, Engkaulah As-Salaam (Yang Maha Sejahtera) dan dari-Mu segala keselamatan. Maha Berkah Engkau wahai Dzat Yang Memiliki Keagungan dan Kemuliaan.',
+    desc: 'SUNNAH. Dibaca setelah istighfar 3x. Berdasarkan hadits shahih riwayat Muslim dari Tsauban.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/></svg>`,
   },
   {
-    id: "ayat_kursi",
-    category: "Dzikir Setelah Sholat",
-    title: "25. Ayat Kursi",
-    arab: "اللهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ",
-    latin: "Allaahu laa ilaaha illaa huwal hayyul qayyuum, laa ta'khudzhuu sinatuw wa laa naum, lahuu maa fis samaawaati wa maa fil ardh, man dzal ladzii yasyfa'u 'indahuu illaa bi idznih, ya'lamu maa baina aidiihim wa maa khalfahum, wa laa yuhiithuuna bi syai-im min 'ilmihii illaa bi maa syaa', wasi'a kursiyyuhus samaawaati wal ardh, wa laa ya-uudhuu hifzhuhumaa, wa huwal 'aliyyul 'azhiim.",
-    arti: "Allah, tidak ada Tuhan selain Dia, Yang Maha Hidup lagi Maha Berdiri Sendiri, tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan di bumi. Siapakah yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya? Dia mengetahui apa yang ada di hadapan dan di belakang mereka, sedangkan mereka tidak mengetahui sesuatupun dari ilmu-Nya kecuali apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Pemeliharaan keduanya tidak membebani-Nya. Dialah Yang Maha Tinggi lagi Maha Agung. (QS. Al-Baqarah: 255)",
+    id: 'ayat_kursi',
+    category: 'Dzikir Setelah Sholat',
+    title: '25. Ayat Kursi',
+    arab: 'اللهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ',
+    latin:
+      "Allaahu laa ilaaha illaa huwal hayyul qayyuum, laa ta'khudzhuu sinatuw wa laa naum, lahuu maa fis samaawaati wa maa fil ardh, man dzal ladzii yasyfa'u 'indahuu illaa bi idznih, ya'lamu maa baina aidiihim wa maa khalfahum, wa laa yuhiithuuna bi syai-im min 'ilmihii illaa bi maa syaa', wasi'a kursiyyuhus samaawaati wal ardh, wa laa ya-uudhuu hifzhuhumaa, wa huwal 'aliyyul 'azhiim.",
+    arti: 'Allah, tidak ada Tuhan selain Dia, Yang Maha Hidup lagi Maha Berdiri Sendiri, tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan di bumi. Siapakah yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya? Dia mengetahui apa yang ada di hadapan dan di belakang mereka, sedangkan mereka tidak mengetahui sesuatupun dari ilmu-Nya kecuali apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi. Pemeliharaan keduanya tidak membebani-Nya. Dialah Yang Maha Tinggi lagi Maha Agung. (QS. Al-Baqarah: 255)',
     desc: "SUNNAH SANGAT DIANJURKAN. Keutamaan: Barang siapa membaca Ayat Kursi setiap selesai sholat fardhu, tidak ada penghalang baginya untuk masuk surga kecuali kematian. (HR. An-Nasa'i, dishahihkan Al-Albani)",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16"/><path d="M12 10v10"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16"/><path d="M12 10v10"/></svg>`,
   },
   {
-    id: "tasbih_tahmid_takbir",
-    category: "Dzikir Setelah Sholat",
-    title: "26. Tasbih, Tahmid, Takbir (33x tiap-tiap)",
-    arab: "سُبْحَانَ اللهِ ×٣٣ • الْحَمْدُ لِلهِ ×٣٣ • اللهُ أَكْبَرُ ×٣٣",
-    latin: "Subhaanallaah (33x) — Alhamdulillaah (33x) — Allaahu Akbar (33x)",
-    arti: "Maha Suci Allah (33x) — Segala Puji bagi Allah (33x) — Allah Maha Besar (33x).",
+    id: 'tasbih_tahmid_takbir',
+    category: 'Dzikir Setelah Sholat',
+    title: '26. Tasbih, Tahmid, Takbir (33x tiap-tiap)',
+    arab: 'سُبْحَانَ اللهِ ×٣٣ • الْحَمْدُ لِلهِ ×٣٣ • اللهُ أَكْبَرُ ×٣٣',
+    latin: 'Subhaanallaah (33x) — Alhamdulillaah (33x) — Allaahu Akbar (33x)',
+    arti: 'Maha Suci Allah (33x) — Segala Puji bagi Allah (33x) — Allah Maha Besar (33x).',
     desc: "SUNNAH. Masing-masing dibaca 33x, total 99. Setelah itu genapi dengan kalimat: 'Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai-in qadiir.' (Tidak ada Tuhan selain Allah, tidak ada sekutu bagi-Nya, milik-Nya segala kerajaan dan pujian, Dia Maha Kuasa atas segala sesuatu.) Keutamaan: diampuni dosanya meski sebanyak buih lautan. (HR. Muslim)",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>`,
   },
   {
-    id: "doa_penutup",
-    category: "Dzikir Setelah Sholat",
-    title: "27. Doa Penutup Setelah Sholat",
-    arab: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
-    latin: "Allaahumma innii as-aluka 'ilman naafi'aa, wa rizqan thayyibaa, wa 'amalan mutaqabbalaa.",
-    arti: "Ya Allah, sesungguhnya aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang baik, dan amal yang diterima.",
-    desc: "SUNNAH. Doa ringkas yang dianjurkan dibaca setelah sholat Subuh (HR. Ibnu Majah, shahih). Setelah semua dzikir, dianjurkan menutup dengan doa sesuai hajat masing-masing.",
+    id: 'doa_penutup',
+    category: 'Dzikir Setelah Sholat',
+    title: '27. Doa Penutup Setelah Sholat',
+    arab: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا',
+    latin:
+      "Allaahumma innii as-aluka 'ilman naafi'aa, wa rizqan thayyibaa, wa 'amalan mutaqabbalaa.",
+    arti: 'Ya Allah, sesungguhnya aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang baik, dan amal yang diterima.',
+    desc: 'SUNNAH. Doa ringkas yang dianjurkan dibaca setelah sholat Subuh (HR. Ibnu Majah, shahih). Setelah semua dzikir, dianjurkan menutup dengan doa sesuai hajat masing-masing.',
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
   },
 
   // ============================================================
   // BAGIAN 6: RINGKASAN RAKAAT
   // ============================================================
   {
-    id: "struktur_rakaat",
-    category: "Ringkasan Rakaat",
-    title: "28. Struktur Rakaat per Sholat",
-    arab: "",
-    latin: "",
-    arti: "",
+    id: 'struktur_rakaat',
+    category: 'Ringkasan Rakaat',
+    title: '28. Struktur Rakaat per Sholat',
+    arab: '',
+    latin: '',
+    arti: '',
     desc: "SUBUH (2 rakaat): R1 & R2 — Fatihah + Surat. Qunut di R2 setelah i'tidal. Tasyahud Akhir + Shalawat + Doa + Salam. || MAGHRIB (3 rakaat): R1 & R2 — Fatihah + Surat (jahriyyah). Tasyahud Awal di R2. R3 — Fatihah saja (sirriyyah). Tasyahud Akhir + Shalawat + Doa + Salam. || DHUHUR & ASHAR & ISYA (4 rakaat): R1 & R2 — Fatihah + Surat. Tasyahud Awal di R2. R3 & R4 — Fatihah saja (sirriyyah untuk Dhuhur & Ashar; Isya R3 & R4 sirriyyah). Tasyahud Akhir + Shalawat + Doa + Salam.",
     audio: null,
-    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`
-  }
+    icon: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`,
+  },
 ];
 
-const enrichedGuides = guides.map(g => ({ ...g, displayTitle: g.title.replace(/^\d+\.\s*/, '') }));
+const enrichedGuides = guides.map((g) => ({
+  ...g,
+  displayTitle: g.title.replace(/^\d+\.\s*/, ''),
+}));
 ---
 
 <BaseLayout pageTitle="Panduan Sholat Lengkap">
-  
-  <HeaderBack title="Panduan Sholat">
-    <button id="view-bookmarks" slot="right" class="flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-emerald-600 transition-colors p-2 -mr-2 rounded-lg active:bg-slate-100 dark:active:bg-slate-800 relative">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-      <span id="bookmark-badge" class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full hidden"></span>
+  <HeaderSticky title="Panduan Sholat" rightSlot>
+    <button
+      id="view-bookmarks"
+      slot="right"
+      class="relative -mr-2 flex items-center gap-1 rounded-lg p-2 text-slate-600 transition-colors hover:text-emerald-600 active:bg-slate-100 dark:text-slate-400 dark:active:bg-slate-800"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg
+      >
+      <span
+        id="bookmark-badge"
+        class="absolute top-1 right-1 hidden h-2 w-2 rounded-full bg-rose-500"></span>
     </button>
-  </HeaderBack>
+  </HeaderSticky>
 
-  <div class="pb-24 px-4 w-full max-w-md mx-auto">
-    
+  <div class="mx-auto w-full max-w-md px-4 pb-24">
     <SearchBar id="search-input" placeholder="Cari bacaan (misal: Qunut, Tasyahud)..." />
 
-    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm mb-6 sticky top-32 z-30 transition-all">
-      <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-2 font-bold uppercase tracking-wider">
+    <div
+      class="sticky top-32 z-30 mb-6 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800"
+    >
+      <div
+        class="mb-2 flex justify-between text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400"
+      >
         <span>Progress Belajar</span>
-        <span><span id="current-step-text" class="text-emerald-600 dark:text-emerald-400">0</span> / {enrichedGuides.length}</span>
+        <span
+          ><span id="current-step-text" class="text-emerald-600 dark:text-emerald-400">0</span> / {
+            enrichedGuides.length
+          }</span
+        >
       </div>
-      <div class="bg-slate-100 dark:bg-slate-700 rounded-full h-2 mb-4 overflow-hidden">
-        <div id="progress-bar" class="bg-emerald-500 h-full transition-all duration-500 ease-out" style="width: 0%"></div>
+      <div class="mb-4 h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700">
+        <div
+          id="progress-bar"
+          class="h-full bg-emerald-500 transition-all duration-500 ease-out"
+          style="width: 0%"
+        >
+        </div>
       </div>
       <div class="flex gap-2">
-        <button id="practice-btn" class="flex-1 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-500/20 active:scale-95">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="play-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <button
+          id="practice-btn"
+          class="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-500/20 transition-all hover:bg-emerald-700 active:scale-95"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="play-icon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg
+          >
           <span class="btn-text">Mulai Praktik</span>
         </button>
-        <button id="reset-progress" class="py-2.5 px-3.5 rounded-xl text-sm font-bold transition-all bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95" title="Reset Progress">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <button
+          id="reset-progress"
+          class="rounded-xl bg-slate-100 px-3.5 py-2.5 text-sm font-bold text-slate-500 transition-all hover:bg-slate-200 active:scale-95 dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-slate-600"
+          title="Reset Progress"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"
+            ></path></svg
+          >
         </button>
       </div>
-      <p id="practice-hint" class="text-[10px] text-center text-slate-400 mt-2 italic">Mode Praktik memutar bacaan berurutan tiap 15 detik.</p>
+      <p id="practice-hint" class="mt-2 text-center text-[10px] text-slate-400 italic">
+        Mode Praktik memutar bacaan berurutan tiap 15 detik.
+      </p>
     </div>
 
     <div class="space-y-4" id="guide-container">
-      {enrichedGuides.map((item, index) => (
-        <details class="group border border-slate-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 open:shadow-lg open:border-emerald-500/50" data-index={index} data-id={item.id}>
-          
-          <summary class="flex justify-between items-center p-4 cursor-pointer list-none select-none bg-slate-50/50 dark:bg-slate-800/50 group-open:bg-emerald-50 dark:group-open:bg-emerald-900/10 transition-colors">
-            <div class="flex items-center gap-3">
-              <span class="step-badge w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-sm font-bold group-open:bg-emerald-500 group-open:text-white transition-colors flex-shrink-0">
-                {index + 1}
-              </span>
-              <div>
-                <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold block mb-0.5">{item.category}</span>
-                <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm group-open:text-emerald-700 dark:group-open:text-emerald-400 transition-colors line-clamp-1">
-                  {item.displayTitle}
-                </h3>
+      {
+        enrichedGuides.map((item, index) => (
+          <details
+            class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-300 open:border-emerald-500/50 open:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+            data-index={index}
+            data-id={item.id}
+          >
+            <summary class="flex cursor-pointer list-none items-center justify-between bg-slate-50/50 p-4 transition-colors select-none group-open:bg-emerald-50 dark:bg-slate-800/50 dark:group-open:bg-emerald-900/10">
+              <div class="flex items-center gap-3">
+                <span class="step-badge flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-slate-200 text-sm font-bold text-slate-600 transition-colors group-open:bg-emerald-500 group-open:text-white dark:bg-slate-700 dark:text-slate-300">
+                  {index + 1}
+                </span>
+                <div>
+                  <span class="mb-0.5 block text-[10px] font-bold tracking-widest text-slate-400 uppercase">
+                    {item.category}
+                  </span>
+                  <h3 class="line-clamp-1 text-sm font-bold text-slate-700 transition-colors group-open:text-emerald-700 dark:text-slate-200 dark:group-open:text-emerald-400">
+                    {item.displayTitle}
+                  </h3>
+                </div>
+              </div>
+              <div class="flex items-center gap-1">
+                <button
+                  class="bookmark-btn z-20 rounded-full p-2 text-slate-300 transition-colors hover:bg-slate-100 hover:text-rose-500 dark:hover:bg-slate-800"
+                  data-id={item.id}
+                  title="Simpan Bookmark"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                  </svg>
+                </button>
+                <span class="transform p-1 text-slate-400 transition-transform group-open:rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </div>
+            </summary>
+
+            <div class="animate-fade-in border-t border-slate-100 px-5 pt-3 pb-6 dark:border-slate-800">
+              <div class="mb-5 flex items-start gap-4">
+                <div
+                  class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-700 dark:bg-slate-800"
+                  set:html={item.icon}
+                />
+                <p class="flex-1 pt-1 text-xs leading-relaxed text-slate-600 italic dark:text-slate-300">
+                  {item.desc}
+                </p>
+              </div>
+
+              {item.arab && (
+                <div class="relative mb-4 rounded-xl border border-slate-100 bg-slate-50 p-4 text-right dark:border-slate-700/50 dark:bg-slate-800/50">
+                  <p
+                    class="font-amiri text-3xl leading-[2.2] text-slate-800 dark:text-slate-100"
+                    dir="rtl"
+                  >
+                    {item.arab}
+                  </p>
+                </div>
+              )}
+
+              {item.latin && (
+                <div class="mb-5 space-y-1.5 px-1">
+                  <p class="text-sm leading-relaxed font-bold text-emerald-600 dark:text-emerald-400">
+                    {item.latin}
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">"{item.arti}"</p>
+                </div>
+              )}
+
+              <div class="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
+                <button
+                  class="audio-btn flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-600 transition-colors hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-900/20 dark:text-emerald-400"
+                  data-audio={item.audio}
+                  disabled={!item.audio}
+                >
+                  {item.audio ? (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        stroke="none"
+                        class="ic-play"
+                      >
+                        <polygon points="5 3 19 12 5 21 5 3" />
+                      </svg>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        stroke="none"
+                        class="ic-pause hidden"
+                      >
+                        <rect x="6" y="4" width="4" height="16" />
+                        <rect x="14" y="4" width="4" height="16" />
+                      </svg>
+                      <span class="btn-text">Dengarkan</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                        <path d="M9 9v6a3 3 0 0 0 5.12 2.12M15 9.34V4h3m-6 9.77a3 3 0 0 1-3-2.12" />
+                      </svg>
+                      <span>Audio N/A</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  class="mark-complete-btn flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs font-bold text-slate-500 transition-colors hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+                  data-id={item.id}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="ic-check hidden"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  <span class="btn-text">Tandai Selesai</span>
+                </button>
               </div>
             </div>
-            <div class="flex items-center gap-1">
-               <button class="bookmark-btn p-2 text-slate-300 hover:text-rose-500 transition-colors z-20 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800" data-id={item.id} title="Simpan Bookmark">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-               </button>
-               <span class="transform group-open:rotate-180 transition-transform text-slate-400 p-1">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-               </span>
-            </div>
-          </summary>
-
-          <div class="px-5 pb-6 pt-3 border-t border-slate-100 dark:border-slate-800 animate-fade-in">
-            
-            <div class="flex gap-4 mb-5 items-start">
-              <div class="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center flex-shrink-0 border border-slate-200 dark:border-slate-700" set:html={item.icon}></div>
-              <p class="text-xs text-slate-600 dark:text-slate-300 italic leading-relaxed flex-1 pt-1">
-                {item.desc}
-              </p>
-            </div>
-            
-            {item.arab && (
-              <div class="text-right mb-4 relative bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700/50">
-                <p class="font-amiri text-3xl text-slate-800 dark:text-slate-100 leading-[2.2]" dir="rtl">{item.arab}</p>
-              </div>
-            )}
-
-            {item.latin && (
-              <div class="space-y-1.5 mb-5 px-1">
-                <p class="text-sm font-bold text-emerald-600 dark:text-emerald-400 leading-relaxed">{item.latin}</p>
-                <p class="text-xs text-slate-500 dark:text-slate-400">"{item.arti}"</p>
-              </div>
-            )}
-
-            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-               <button 
-                 class="audio-btn flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold hover:bg-emerald-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                 data-audio={item.audio}
-                 disabled={!item.audio}
-               >
-                 {item.audio ? (
-                   <>
-                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ic-play"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ic-pause hidden"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                     <span class="btn-text">Dengarkan</span>
-                   </>
-                 ) : (
-                   <>
-                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M9 9v6a3 3 0 0 0 5.12 2.12M15 9.34V4h3m-6 9.77a3 3 0 0 1-3-2.12"></path></svg>
-                     <span>Audio N/A</span>
-                   </>
-                 )}
-               </button>
-               
-               <button class="mark-complete-btn px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700 flex items-center gap-1.5" data-id={item.id}>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ic-check hidden"><path d="M20 6 9 17l-5-5"/></svg>
-                 <span class="btn-text">Tandai Selesai</span>
-               </button>
-            </div>
-          </div>
-        </details>
-      ))}
+          </details>
+        ))
+      }
     </div>
 
-    <div id="empty-state" class="hidden text-center py-12">
-      <div class="inline-block p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="m9 9 4 4"/><path d="m9 13 4-4"/></svg>
+    <div id="empty-state" class="hidden py-12 text-center">
+      <div class="mb-3 inline-block rounded-full bg-slate-100 p-4 text-slate-400 dark:bg-slate-800">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path><path d="m9 9 4 4"
+          ></path><path d="m9 13 4-4"></path></svg
+        >
       </div>
-      <p class="text-slate-500 dark:text-slate-400 text-sm">Langkah tidak ditemukan.</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Langkah tidak ditemukan.</p>
     </div>
 
-    <div id="bookmarks-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 relative shadow-2xl animate-slide-up">
-        <button id="close-bookmarks" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-full transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <div
+      id="bookmarks-modal"
+      class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+    >
+      <div
+        class="animate-slide-up relative w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl dark:bg-slate-900"
+      >
+        <button
+          id="close-bookmarks"
+          class="absolute top-5 right-5 rounded-full bg-slate-100 p-1.5 text-slate-400 transition-colors hover:text-slate-600 dark:bg-slate-800 dark:hover:text-slate-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            ><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"
+            ></line></svg
+          >
         </button>
-        <h2 class="text-lg font-bold text-slate-800 dark:text-white mb-5 flex items-center gap-2">
-           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-rose-500"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-           Langkah Disimpan
+        <h2 class="mb-5 flex items-center gap-2 text-lg font-bold text-slate-800 dark:text-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="text-rose-500"
+            ><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg
+          >
+          Langkah Disimpan
         </h2>
-        <div id="bookmarks-list" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1"></div>
+        <div id="bookmarks-list" class="max-h-[60vh] space-y-2 overflow-y-auto pr-1"></div>
       </div>
     </div>
 
     <Toast />
-
   </div>
-
 </BaseLayout>
 
 <script is:inline>
-(() => {
-  const initGuide = () => {
-    if (window._guideInitialized) return;
-    const allDetails = document.querySelectorAll('details');
-    const progressBar = document.getElementById('progress-bar');
-    const stepText = document.getElementById('current-step-text');
-    const practiceBtn = document.getElementById('practice-btn');
-    const resetBtn = document.getElementById('reset-progress');
-    if (!allDetails.length || !stepText) return;
-    window._guideInitialized = true;
-    const practiceHint = document.getElementById('practice-hint');
-    const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
-    const audioBtns = document.querySelectorAll('.audio-btn');
-    const markCompleteBtns = document.querySelectorAll('.mark-complete-btn');
-    const searchInput = document.getElementById('search-input');
-    const bookmarksModal = document.getElementById('bookmarks-modal');
-    const viewBookmarksBtn = document.getElementById('view-bookmarks');
-    const closeBookmarksBtn = document.getElementById('close-bookmarks');
-    const bookmarksList = document.getElementById('bookmarks-list');
-    const bookmarkBadge = document.getElementById('bookmark-badge');
-    const emptyState = document.getElementById('empty-state');
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toast-msg');
-    
-    let practiceMode = false;
-    let practiceTimer = null;
-    let currentStep = 0;
-    let currentAudio = null; window._guideAudio = null;
-    let currentAudioBtn = null;
-    window._guideTimer = null;
-    window._guideAudio = null;
-    let completedSteps = JSON.parse(localStorage.getItem('sholat-completed') || '[]');
+  (() => {
+    const initGuide = () => {
+      if (window._guideInitialized) return;
+      const allDetails = document.querySelectorAll('details');
+      const progressBar = document.getElementById('progress-bar');
+      const stepText = document.getElementById('current-step-text');
+      const practiceBtn = document.getElementById('practice-btn');
+      const resetBtn = document.getElementById('reset-progress');
+      if (!allDetails.length || !stepText) return;
+      window._guideInitialized = true;
+      const practiceHint = document.getElementById('practice-hint');
+      const bookmarkBtns = document.querySelectorAll('.bookmark-btn');
+      const audioBtns = document.querySelectorAll('.audio-btn');
+      const markCompleteBtns = document.querySelectorAll('.mark-complete-btn');
+      const searchInput = document.getElementById('search-input');
+      const bookmarksModal = document.getElementById('bookmarks-modal');
+      const viewBookmarksBtn = document.getElementById('view-bookmarks');
+      const closeBookmarksBtn = document.getElementById('close-bookmarks');
+      const bookmarksList = document.getElementById('bookmarks-list');
+      const bookmarkBadge = document.getElementById('bookmark-badge');
+      const emptyState = document.getElementById('empty-state');
 
-
-    const updateProgress = () => {
-      const val = completedSteps.length;
-      const pct = (val / allDetails.length) * 100;
-      progressBar.style.width = `${pct}%`;
-      stepText.innerText = val;
-      
-      allDetails.forEach(el => {
-        const id = el.getAttribute('data-id');
-        const badge = el.querySelector('.step-badge');
-        const markBtn = el.querySelector('.mark-complete-btn');
-
-        if (completedSteps.includes(id)) {
-          badge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
-          badge.classList.add('bg-emerald-500', 'text-white');
-          badge.classList.remove('bg-slate-200', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
-          if(markBtn) {
-            markBtn.querySelector('.btn-text').textContent = 'Selesai';
-            markBtn.querySelector('.ic-check').classList.remove('hidden');
-            markBtn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400', 'border-emerald-200', 'dark:border-emerald-800');
-            markBtn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400', 'border-slate-200', 'dark:border-slate-700');
-          }
-        } else {
-          const idx = parseInt(el.getAttribute('data-index')) + 1;
-          badge.innerHTML = idx;
-          badge.classList.remove('bg-emerald-500', 'text-white');
-          badge.classList.add('bg-slate-200', 'dark:bg-slate-700', 'text-slate-600', 'dark:text-slate-300');
-          if(markBtn) {
-            markBtn.querySelector('.btn-text').textContent = 'Tandai Selesai';
-            markBtn.querySelector('.ic-check').classList.add('hidden');
-            markBtn.classList.remove('bg-emerald-100', 'dark:bg-emerald-900/30', 'text-emerald-600', 'dark:text-emerald-400', 'border-emerald-200', 'dark:border-emerald-800');
-            markBtn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-500', 'dark:text-slate-400', 'border-slate-200', 'dark:border-slate-700');
-          }
-        }
-      });
-    };
-
-    allDetails.forEach(el => {
-      el.addEventListener('toggle', () => {
-        if (el.open && !practiceMode) {
-          allDetails.forEach(other => { if (other !== el && other.open) other.open = false; });
-        }
-      });
-    });
-
-    const stopPractice = () => {
-      practiceMode = false;
-      clearInterval(practiceTimer);
-      practiceTimer = null;
+      let practiceMode = false;
+      let practiceTimer = null;
+      let currentStep = 0;
+      let currentAudio = null;
+      window._guideAudio = null;
+      let currentAudioBtn = null;
       window._guideTimer = null;
-      if(currentAudio) currentAudio.pause();
-      practiceBtn.querySelector('.play-icon').innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
-      practiceBtn.querySelector('.btn-text').textContent = "Mulai Praktik";
-      practiceBtn.classList.remove('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
-      practiceBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
-      practiceHint.textContent = "Mode Praktik memutar bacaan berurutan tiap 15 detik.";
-    };
+      window._guideAudio = null;
+      let completedSteps = JSON.parse(localStorage.getItem('sholat-completed') || '[]');
 
-    const startPractice = () => {
-      practiceMode = true;
-      currentStep = 0;
-      practiceBtn.querySelector('.play-icon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
-      practiceBtn.querySelector('.btn-text').textContent = "Hentikan Praktik";
-      practiceBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'shadow-emerald-500/20');
-      practiceBtn.classList.add('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
-      practiceHint.textContent = "Sedang berjalan... Klik tombol di atas untuk berhenti.";
-      allDetails.forEach(el => el.open = false);
+      const updateProgress = () => {
+        const val = completedSteps.length;
+        const pct = (val / allDetails.length) * 100;
+        progressBar.style.width = `${pct}%`;
+        stepText.innerText = val;
 
-      const runStep = () => {
-        if (currentStep >= allDetails.length) { stopPractice(); window.showToast("Alhamdulillah, praktik selesai!"); return; }
-        if(currentStep > 0) allDetails[currentStep - 1].open = false;
-        const target = allDetails[currentStep];
-        target.open = true;
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        const audioBtn = target.querySelector('.audio-btn');
-        if(audioBtn && !audioBtn.disabled) audioBtn.click();
-        currentStep++;
+        allDetails.forEach((el) => {
+          const id = el.getAttribute('data-id');
+          const badge = el.querySelector('.step-badge');
+          const markBtn = el.querySelector('.mark-complete-btn');
+
+          if (completedSteps.includes(id)) {
+            badge.innerHTML =
+              '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+            badge.classList.add('bg-emerald-500', 'text-white');
+            badge.classList.remove(
+              'bg-slate-200',
+              'dark:bg-slate-700',
+              'text-slate-600',
+              'dark:text-slate-300'
+            );
+            if (markBtn) {
+              markBtn.querySelector('.btn-text').textContent = 'Selesai';
+              markBtn.querySelector('.ic-check').classList.remove('hidden');
+              markBtn.classList.add(
+                'bg-emerald-100',
+                'dark:bg-emerald-900/30',
+                'text-emerald-600',
+                'dark:text-emerald-400',
+                'border-emerald-200',
+                'dark:border-emerald-800'
+              );
+              markBtn.classList.remove(
+                'bg-slate-100',
+                'dark:bg-slate-800',
+                'text-slate-500',
+                'dark:text-slate-400',
+                'border-slate-200',
+                'dark:border-slate-700'
+              );
+            }
+          } else {
+            const idx = parseInt(el.getAttribute('data-index')) + 1;
+            badge.innerHTML = idx;
+            badge.classList.remove('bg-emerald-500', 'text-white');
+            badge.classList.add(
+              'bg-slate-200',
+              'dark:bg-slate-700',
+              'text-slate-600',
+              'dark:text-slate-300'
+            );
+            if (markBtn) {
+              markBtn.querySelector('.btn-text').textContent = 'Tandai Selesai';
+              markBtn.querySelector('.ic-check').classList.add('hidden');
+              markBtn.classList.remove(
+                'bg-emerald-100',
+                'dark:bg-emerald-900/30',
+                'text-emerald-600',
+                'dark:text-emerald-400',
+                'border-emerald-200',
+                'dark:border-emerald-800'
+              );
+              markBtn.classList.add(
+                'bg-slate-100',
+                'dark:bg-slate-800',
+                'text-slate-500',
+                'dark:text-slate-400',
+                'border-slate-200',
+                'dark:border-slate-700'
+              );
+            }
+          }
+        });
       };
 
-      runStep();
-      practiceTimer = setInterval(runStep, 15000);
-      window._guideTimer = practiceTimer;
-    };
-
-    practiceBtn.addEventListener('click', () => { if (practiceMode) stopPractice(); else startPractice(); });
-
-    resetBtn.addEventListener('click', () => {
-      if (confirm('Reset semua progress belajar Anda?')) {
-        completedSteps = [];
-        localStorage.setItem('sholat-completed', '[]');
-        updateProgress();
-        window.showToast("Progress direset");
-      }
-    });
-
-    const loadBookmarks = () => {
-      const saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
-      if(saved.length > 0) bookmarkBadge.classList.remove('hidden');
-      else bookmarkBadge.classList.add('hidden');
-      bookmarkBtns.forEach(btn => {
-        const id = btn.getAttribute('data-id');
-        const svg = btn.querySelector('svg');
-        if(saved.includes(id)) { svg.setAttribute('fill', 'currentColor'); btn.classList.add('text-rose-500'); btn.classList.remove('text-slate-300'); }
-        else { svg.setAttribute('fill', 'none'); btn.classList.remove('text-rose-500'); btn.classList.add('text-slate-300'); }
+      allDetails.forEach((el) => {
+        el.addEventListener('toggle', () => {
+          if (el.open && !practiceMode) {
+            allDetails.forEach((other) => {
+              if (other !== el && other.open) other.open = false;
+            });
+          }
+        });
       });
-      return saved;
-    };
 
-    const renderBookmarksList = () => {
-      const saved = loadBookmarks();
-      bookmarksList.innerHTML = '';
-      if(saved.length === 0) { bookmarksList.innerHTML = '<p class="text-center text-sm text-slate-400 py-6">Belum ada langkah yang disimpan.</p>'; return; }
-      saved.forEach(id => {
-        const el = document.querySelector(`details[data-id="${id}"]`);
-        if(el) {
-          const title = el.querySelector('h3').innerText;
-          const cat = el.querySelector('span.uppercase').innerText;
-          const item = document.createElement('div');
-          item.className = 'p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex justify-between items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer border border-slate-100 dark:border-slate-700';
-          item.innerHTML = `<div><p class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">${cat}</p><h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 line-clamp-1">${title}</h4></div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="text-emerald-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
-          item.onclick = () => { bookmarksModal.classList.add('hidden'); el.open = true; setTimeout(() => el.scrollIntoView({behavior: 'smooth', block: 'center'}), 100); };
-          bookmarksList.appendChild(item);
+      const stopPractice = () => {
+        practiceMode = false;
+        clearInterval(practiceTimer);
+        practiceTimer = null;
+        window._guideTimer = null;
+        if (currentAudio) currentAudio.pause();
+        practiceBtn.querySelector('.play-icon').innerHTML =
+          '<polygon points="5 3 19 12 5 21 5 3"/>';
+        practiceBtn.querySelector('.btn-text').textContent = 'Mulai Praktik';
+        practiceBtn.classList.remove('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+        practiceBtn.classList.add(
+          'bg-emerald-600',
+          'hover:bg-emerald-700',
+          'shadow-emerald-500/20'
+        );
+        practiceHint.textContent = 'Mode Praktik memutar bacaan berurutan tiap 15 detik.';
+      };
+
+      const startPractice = () => {
+        practiceMode = true;
+        currentStep = 0;
+        practiceBtn.querySelector('.play-icon').innerHTML =
+          '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        practiceBtn.querySelector('.btn-text').textContent = 'Hentikan Praktik';
+        practiceBtn.classList.remove(
+          'bg-emerald-600',
+          'hover:bg-emerald-700',
+          'shadow-emerald-500/20'
+        );
+        practiceBtn.classList.add('bg-rose-600', 'hover:bg-rose-700', 'shadow-rose-500/20');
+        practiceHint.textContent = 'Sedang berjalan... Klik tombol di atas untuk berhenti.';
+        allDetails.forEach((el) => (el.open = false));
+
+        const runStep = () => {
+          if (currentStep >= allDetails.length) {
+            stopPractice();
+            window.showToast('Alhamdulillah, praktik selesai!');
+            return;
+          }
+          if (currentStep > 0) allDetails[currentStep - 1].open = false;
+          const target = allDetails[currentStep];
+          target.open = true;
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const audioBtn = target.querySelector('.audio-btn');
+          if (audioBtn && !audioBtn.disabled) audioBtn.click();
+          currentStep++;
+        };
+
+        runStep();
+        practiceTimer = setInterval(runStep, 15000);
+        window._guideTimer = practiceTimer;
+      };
+
+      practiceBtn.addEventListener('click', () => {
+        if (practiceMode) stopPractice();
+        else startPractice();
+      });
+
+      resetBtn.addEventListener('click', () => {
+        if (confirm('Reset semua progress belajar Anda?')) {
+          completedSteps = [];
+          localStorage.setItem('sholat-completed', '[]');
+          updateProgress();
+          window.showToast('Progress direset');
         }
       });
-    };
 
-    bookmarkBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        const id = btn.getAttribute('data-id');
-        let saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
-        if(saved.includes(id)) { saved = saved.filter(s => s !== id); window.showToast("Dihapus dari tersimpan"); }
-        else { saved.push(id); window.showToast("Langkah disimpan"); }
-        localStorage.setItem('sholat-bookmarks', JSON.stringify(saved));
-        loadBookmarks();
-      });
-    });
+      const loadBookmarks = () => {
+        const saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
+        if (saved.length > 0) bookmarkBadge.classList.remove('hidden');
+        else bookmarkBadge.classList.add('hidden');
+        bookmarkBtns.forEach((btn) => {
+          const id = btn.getAttribute('data-id');
+          const svg = btn.querySelector('svg');
+          if (saved.includes(id)) {
+            svg.setAttribute('fill', 'currentColor');
+            btn.classList.add('text-rose-500');
+            btn.classList.remove('text-slate-300');
+          } else {
+            svg.setAttribute('fill', 'none');
+            btn.classList.remove('text-rose-500');
+            btn.classList.add('text-slate-300');
+          }
+        });
+        return saved;
+      };
 
-    viewBookmarksBtn.addEventListener('click', () => { renderBookmarksList(); bookmarksModal.classList.remove('hidden'); });
-    closeBookmarksBtn.addEventListener('click', () => bookmarksModal.classList.add('hidden'));
-    bookmarksModal.addEventListener('click', (e) => { if(e.target === bookmarksModal) bookmarksModal.classList.add('hidden'); });
-
-    const resetAllAudioBtns = () => {
-      document.querySelectorAll('.audio-btn').forEach(b => {
-        b.classList.remove('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
-        b.classList.add('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
-        const icPlay = b.querySelector('.ic-play'); const icPause = b.querySelector('.ic-pause'); const t = b.querySelector('.btn-text');
-        if(icPlay) icPlay.classList.remove('hidden'); if(icPause) icPause.classList.add('hidden'); if(t) t.innerText = "Dengarkan";
-      });
-    };
-
-    audioBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const src = btn.getAttribute('data-audio');
-        if(!src) return;
-        const icPlay = btn.querySelector('.ic-play'); const icPause = btn.querySelector('.ic-pause'); const txt = btn.querySelector('.btn-text');
-        if (currentAudioBtn === btn && currentAudio) {
-          if (!currentAudio.paused) { currentAudio.pause(); btn.classList.remove('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400'); btn.classList.add('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400'); icPlay.classList.remove('hidden'); icPause.classList.add('hidden'); if(txt) txt.innerText = "Dengarkan"; }
-          else { currentAudio.play(); btn.classList.add('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400'); btn.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400'); icPlay.classList.add('hidden'); icPause.classList.remove('hidden'); if(txt) txt.innerText = "Jeda"; }
+      const renderBookmarksList = () => {
+        const saved = loadBookmarks();
+        bookmarksList.innerHTML = '';
+        if (saved.length === 0) {
+          bookmarksList.innerHTML =
+            '<p class="text-center text-sm text-slate-400 py-6">Belum ada langkah yang disimpan.</p>';
           return;
         }
-        if (currentAudio) { currentAudio.pause(); resetAllAudioBtns(); }
-        currentAudio = new Audio(src); window._guideAudio = currentAudio; currentAudioBtn = btn;
-        btn.classList.remove('bg-emerald-50', 'dark:bg-emerald-900/20', 'text-emerald-600', 'dark:text-emerald-400');
-        btn.classList.add('animate-pulse', 'bg-rose-100', 'dark:bg-rose-900/40', 'text-rose-600', 'dark:text-rose-400');
-        icPlay.classList.add('hidden'); icPause.classList.remove('hidden'); if(txt) txt.innerText = "Memuat...";
-        currentAudio.play().then(() => { if(txt) txt.innerText = "Jeda"; }).catch(() => { window.showToast("Gagal memutar audio. Cek koneksi."); resetAllAudioBtns(); currentAudio = null; window._guideAudio = null; currentAudioBtn = null; });
-        currentAudio.onended = () => { resetAllAudioBtns(); currentAudio = null; window._guideAudio = null; currentAudioBtn = null; };
+        saved.forEach((id) => {
+          const el = document.querySelector(`details[data-id="${id}"]`);
+          if (el) {
+            const title = el.querySelector('h3').innerText;
+            const cat = el.querySelector('span.uppercase').innerText;
+            const item = document.createElement('div');
+            item.className =
+              'p-3 bg-slate-50 dark:bg-slate-800 rounded-xl flex justify-between items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer border border-slate-100 dark:border-slate-700';
+            item.innerHTML = `<div><p class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">${cat}</p><h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 line-clamp-1">${title}</h4></div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="text-emerald-500 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
+            item.onclick = () => {
+              bookmarksModal.classList.add('hidden');
+              el.open = true;
+              setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+            };
+            bookmarksList.appendChild(item);
+          }
+        });
+      };
+
+      bookmarkBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          let saved = JSON.parse(localStorage.getItem('sholat-bookmarks') || '[]');
+          if (saved.includes(id)) {
+            saved = saved.filter((s) => s !== id);
+            window.showToast('Dihapus dari tersimpan');
+          } else {
+            saved.push(id);
+            window.showToast('Langkah disimpan');
+          }
+          localStorage.setItem('sholat-bookmarks', JSON.stringify(saved));
+          loadBookmarks();
+        });
       });
-    });
 
-    markCompleteBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const id = btn.getAttribute('data-id');
-        if (completedSteps.includes(id)) { completedSteps = completedSteps.filter(s => s !== id); window.showToast("Dibatalkan"); }
-        else { completedSteps.push(id); window.showToast("Ditandai Selesai ✓"); }
-        localStorage.setItem('sholat-completed', JSON.stringify(completedSteps));
-        updateProgress();
+      viewBookmarksBtn.addEventListener('click', () => {
+        renderBookmarksList();
+        bookmarksModal.classList.remove('hidden');
       });
-    });
-
-    searchInput.addEventListener('input', (e) => {
-      const term = e.target.value.toLowerCase();
-      let hasVisible = false;
-      allDetails.forEach(el => {
-        const text = el.innerText.toLowerCase();
-        if (text.includes(term)) { el.classList.remove('hidden'); hasVisible = true; } else { el.classList.add('hidden'); }
+      closeBookmarksBtn.addEventListener('click', () => bookmarksModal.classList.add('hidden'));
+      bookmarksModal.addEventListener('click', (e) => {
+        if (e.target === bookmarksModal) bookmarksModal.classList.add('hidden');
       });
-      if (hasVisible) emptyState.classList.add('hidden'); else emptyState.classList.remove('hidden');
+
+      const resetAllAudioBtns = () => {
+        document.querySelectorAll('.audio-btn').forEach((b) => {
+          b.classList.remove(
+            'animate-pulse',
+            'bg-rose-100',
+            'dark:bg-rose-900/40',
+            'text-rose-600',
+            'dark:text-rose-400'
+          );
+          b.classList.add(
+            'bg-emerald-50',
+            'dark:bg-emerald-900/20',
+            'text-emerald-600',
+            'dark:text-emerald-400'
+          );
+          const icPlay = b.querySelector('.ic-play');
+          const icPause = b.querySelector('.ic-pause');
+          const t = b.querySelector('.btn-text');
+          if (icPlay) icPlay.classList.remove('hidden');
+          if (icPause) icPause.classList.add('hidden');
+          if (t) t.innerText = 'Dengarkan';
+        });
+      };
+
+      audioBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const src = btn.getAttribute('data-audio');
+          if (!src) return;
+          const icPlay = btn.querySelector('.ic-play');
+          const icPause = btn.querySelector('.ic-pause');
+          const txt = btn.querySelector('.btn-text');
+          if (currentAudioBtn === btn && currentAudio) {
+            if (!currentAudio.paused) {
+              currentAudio.pause();
+              btn.classList.remove(
+                'animate-pulse',
+                'bg-rose-100',
+                'dark:bg-rose-900/40',
+                'text-rose-600',
+                'dark:text-rose-400'
+              );
+              btn.classList.add(
+                'bg-emerald-50',
+                'dark:bg-emerald-900/20',
+                'text-emerald-600',
+                'dark:text-emerald-400'
+              );
+              icPlay.classList.remove('hidden');
+              icPause.classList.add('hidden');
+              if (txt) txt.innerText = 'Dengarkan';
+            } else {
+              currentAudio.play();
+              btn.classList.add(
+                'animate-pulse',
+                'bg-rose-100',
+                'dark:bg-rose-900/40',
+                'text-rose-600',
+                'dark:text-rose-400'
+              );
+              btn.classList.remove(
+                'bg-emerald-50',
+                'dark:bg-emerald-900/20',
+                'text-emerald-600',
+                'dark:text-emerald-400'
+              );
+              icPlay.classList.add('hidden');
+              icPause.classList.remove('hidden');
+              if (txt) txt.innerText = 'Jeda';
+            }
+            return;
+          }
+          if (currentAudio) {
+            currentAudio.pause();
+            resetAllAudioBtns();
+          }
+          currentAudio = new Audio(src);
+          window._guideAudio = currentAudio;
+          currentAudioBtn = btn;
+          btn.classList.remove(
+            'bg-emerald-50',
+            'dark:bg-emerald-900/20',
+            'text-emerald-600',
+            'dark:text-emerald-400'
+          );
+          btn.classList.add(
+            'animate-pulse',
+            'bg-rose-100',
+            'dark:bg-rose-900/40',
+            'text-rose-600',
+            'dark:text-rose-400'
+          );
+          icPlay.classList.add('hidden');
+          icPause.classList.remove('hidden');
+          if (txt) txt.innerText = 'Memuat...';
+          currentAudio
+            .play()
+            .then(() => {
+              if (txt) txt.innerText = 'Jeda';
+            })
+            .catch(() => {
+              window.showToast('Gagal memutar audio. Cek koneksi.');
+              resetAllAudioBtns();
+              currentAudio = null;
+              window._guideAudio = null;
+              currentAudioBtn = null;
+            });
+          currentAudio.onended = () => {
+            resetAllAudioBtns();
+            currentAudio = null;
+            window._guideAudio = null;
+            currentAudioBtn = null;
+          };
+        });
+      });
+
+      markCompleteBtns.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          if (completedSteps.includes(id)) {
+            completedSteps = completedSteps.filter((s) => s !== id);
+            window.showToast('Dibatalkan');
+          } else {
+            completedSteps.push(id);
+            window.showToast('Ditandai Selesai ✓');
+          }
+          localStorage.setItem('sholat-completed', JSON.stringify(completedSteps));
+          updateProgress();
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        let hasVisible = false;
+        allDetails.forEach((el) => {
+          const text = el.innerText.toLowerCase();
+          if (text.includes(term)) {
+            el.classList.remove('hidden');
+            hasVisible = true;
+          } else {
+            el.classList.add('hidden');
+          }
+        });
+        if (hasVisible) emptyState.classList.add('hidden');
+        else emptyState.classList.remove('hidden');
+      });
+
+      updateProgress();
+      loadBookmarks();
+    };
+
+    document.addEventListener('astro:page-load', initGuide);
+    document.addEventListener('astro:before-swap', () => {
+      window._guideInitialized = false;
+      if (window._guideTimer) {
+        clearInterval(window._guideTimer);
+        window._guideTimer = null;
+      }
+      if (window._guideAudio) {
+        window._guideAudio.pause();
+        window._guideAudio = null;
+      }
     });
-
-    updateProgress();
-    loadBookmarks();
-  };
-
-  document.addEventListener('astro:page-load', initGuide);
-  document.addEventListener('astro:before-swap', () => {
-    window._guideInitialized = false;
-    if (window._guideTimer) { clearInterval(window._guideTimer); window._guideTimer = null; }
-    if (window._guideAudio) { window._guideAudio.pause(); window._guideAudio = null; }
-  });
-})();
+  })();
 </script>

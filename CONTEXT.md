@@ -1,359 +1,376 @@
 # Qolbu App — Project Context
 
 > Aplikasi Ibadah Harian Terlengkap berbasis web (PWA-ready).
-> Dibangun dengan **Astro 5 + Tailwind CSS 4 + TypeScript**.
+> Dibangun dengan **Astro 5 + Tailwind CSS 4 + TypeScript** — zero client framework, mobile-first `max-w-md`.
 
 ---
 
-> 📘 **Canonical source of truth:** [`docs/PRD.md`](./docs/PRD.md) — Product Requirements Document yang mencakup seluruh spesifikasi, fitur, komponen, data, storage, API, dan arsitektur proyek secara detail.
+> 📘 **Canonical source of truth:** [`docs/PRD.md`](./docs/PRD.md) — Product Requirements Document lengkap (spesifikasi, fitur, komponen, data, storage, API, arsitektur).
 >
-> File ini (`CONTEXT.md`) adalah ringkasan cepat (_quick reference_). Selalu rujuk ke `docs/PRD.md` untuk informasi paling lengkap dan akurat.
+> File ini (`CONTEXT.md`) adalah ringkasan cepat (_quick reference_). Selalu rujuk ke `docs/PRD.md` untuk detail paling akurat. Jika ada perbedaan, `docs/PRD.md` yang berlaku.
 
 ---
 
 ## 🏗 Arsitektur
 
 ### Stack Inti
-| Teknologi | Versi | Kegunaan |
-|-----------|-------|----------|
-| Astro | ^5.17.1 | Static Site Generator + SSR-ready |
-| Tailwind CSS | ^4.1.18 | Utility-first styling |
-| TypeScript | via Astro | Strict type checking |
+
+| Teknologi    | Versi                 | Kegunaan                                                     |
+| ------------ | --------------------- | ------------------------------------------------------------ |
+| Astro        | ^5.17.1               | SSG (127 pages) + View Transitions                           |
+| Tailwind CSS | ^4.1.18               | Utility-first, @theme tokens                                 |
+| TypeScript   | via Astro `strict`    | Strict type checking (`astro check`)                         |
+| PWA          | Workbox vanilla       | `manifest.json` + `sw.js` v6                                 |
+| Fonts        | Self-host             | Inter Variable WOFF2 (23KB) + Amiri TTF, `font-display:swap` |
+| Testing      | Vitest 4 + Playwright | Unit 30, E2E 48, CI split jobs                               |
+| Lint/Format  | ESLint 9 + Prettier   | `eslint-plugin-astro/tailwindcss`, Husky + lint-staged       |
 
 ### Struktur Direktori
 
 ```
 /
-├── public/                  # Static assets
-│   ├── logo.png            # Logo aplikasi (2000x2000, fallback)
-│   ├── logo-192.png        # Logo 192x192 (PWA icon)
-│   ├── logo-512.png        # Logo 512x512 (PWA icon)
-│   ├── manifest.json       # PWA manifest
-│   └── sw.js               # Service Worker (offline cache)
+├── public/
+│   ├── fonts/               # Inter-VariableFont_wght.woff2 (23KB), Amiri-*.ttf
+│   ├── logo.png / 192 / 512
+│   ├── manifest.json
+│   └── sw.js                # v6: font precache, audio cache-first, HTML network-first
 ├── src/
-│   ├── components/         # Komponen Astro reusable
-│   │   ├── HeaderBack.astro
-│   │   ├── SearchBar.astro
-│   │   ├── SettingsModal.astro
-│   │   └── Toast.astro
-│   ├── data/               # Data JSON statis
-│   │   ├── doa.json        # 40+ Doa Harian
-│   │   ├── dzikir.json     # 22 Dzikir Pagi & Petang
-│   │   ├── events-hijri.json # 12 Event Islam (Hijriah)
-│   │   ├── asmaul-husna.json # 99 Asmaul Husna
-│   │   ├── tahlil.json     # Bacaan Tahlil
-│   │   └── yasin.json      # Ayat Surat Yasin
-│   ├── docs/
-│   │   └── PRD.md          # Canonical PRD (Product Requirements Document)
+│   ├── components/
+│   │   ├── HeaderSticky.astro  # Sticky top-16, truncate, leftSlot/rightSlot, history.back
+│   │   ├── SearchBar.astro     # type=search, aria-label, sr-only label
+│   │   ├── SettingsModal.astro # Bottom sheet, backdrop, Esc, focus-trap
+│   │   ├── Toast.astro         # Fixed bottom, queue + click dismiss, role=status
+│   │   ├── BottomNav.astro     # Mobile thumb-zone (Home/Sholat/Qur'an/Doa), auto-hide scroll
+│   │   ├── ScrollFade.astro    # Mask fade untuk pills overflow
+│   │   ├── EmptyState.astro    # icon + title + desc + CTA Reset
+│   │   └── Skeleton.astro      # Variants: prayer/quran/dzikir/card/avatar, shimmer
+│   ├── data/
+│   │   ├── doa.json            # 47 Doa (9 kategori)
+│   │   ├── dzikir.json         # 32 Dzikir (6 kategori: pagi/petang/subuh/sesudah/tidur/umum)
+│   │   ├── events-hijri.json   # 12 bulan, detail deskripsi (dipakai page + dashboard bar)
+│   │   ├── asmaul-husna.json   # 99 Nama
+│   │   ├── tahlil.json         # 7 Bacaan
+│   │   └── yasin.json          # 5 ayat sample (page yasin fetch 83 via API)
+│   ├── lib/
+│   │   ├── utils.ts            # addMinutes, qibla, zakat, rupiah, hijri helpers
+│   │   └── utils.test.ts       # 30 unit tests
 │   ├── layouts/
-│   │   └── BaseLayout.astro # Layout utama (header, footer, theme, SEO, PWA)
+│   │   └── BaseLayout.astro    # header sticky + theme + BottomNav + skip-link + SEO + PWA + ClientRouter
 │   ├── pages/
-│   │   ├── index.astro      # Dashboard (prayer card, hijri events, menu grid, quote)
-│   │   ├── asmaul-husna.astro # 99 Nama Allah (searchable)
-│   │   ├── doa.astro        # Ensiklopedia Doa Harian
-│   │   ├── dzikir.astro     # Dzikir Pagi & Petang (tab filter)
-│   │   ├── sholat.astro     # Jadwal Sholat + Arah Kiblat
-│   │   ├── sholat-guide.astro # Panduan Sholat Lengkap
-│   │   ├── tahlil.astro     # Tahlil & Doa Arwah
-│   │   ├── tasbih.astro     # Tasbih Digital
-│   │   ├── zakat.astro      # Kalkulator Zakat
-│   │   ├── offline.astro    # Offline fallback page
+│   │   ├── index.astro         # Dashboard: prayer-card skeleton+CTA, hijri bar, cache badge, menu 10, quote
+│   │   ├── asmaul-husna.astro  # 99 + counter + search + EmptyState
+│   │   ├── doa.astro           # 47 filter + ScrollFade + search + EmptyState + aria-pressed
+│   │   ├── dzikir.astro        # 32 via <script type="application/json">, ScrollFade, 6 tabs
+│   │   ├── events-hijri.astro  # Import JSON, HeaderSticky
+│   │   ├── sholat.astro        # Countdown, qibla needle, Skeleton prayer, correction, GPS
+│   │   ├── sholat-guide.astro  # 28 langkah accordion, progress, bookmark modal
+│   │   ├── tahlil.astro        # 7 step + SettingsModal
+│   │   ├── tasbih.astro        # Circle 72, haptic, Web Audio, progress, aria-labels
+│   │   ├── zakat.astro         # Tabs role=tablist, Rupiah cursor preserve, disabled btn
+│   │   ├── offline.astro
 │   │   └── quran/
-│   │       ├── index.astro  # Daftar Surat & Juz (cache, bookmark)
-│   │       ├── [nomor].astro # Detail Surat (audio, bookmark, auto-cache)
-│   │       └── yasin.astro  # Surat Yasin Lengkap
-│   └── styles/
-│       └── global.css       # Global styles + Tailwind directives
-├── astro.config.mjs         # Astro config (Tailwind Vite plugin)
-├── tsconfig.json            # Strict TypeScript config
-├── package.json
-├── CONTEXT.md               # Ringkasan arsitektur (quick reference)
-├── docs/PRD.md              # Canonical PRD — source of truth lengkap
-└── README.md                # Panduan pengguna
+│   │       ├── index.astro     # 114 surat + 30 juz, tabs ARIA, content-visibility
+│   │       ├── [nomor].astro   # Per surat: header leftSlot/rightSlot + SettingsModal (single id), Per Ayat/Mushaf tabs ARIA, audio, share-btn (Web Share)
+│   │       └── yasin.astro
+│   ├── styles/global.css       # @font-face variable, @theme tokens, scroll-padding, shimmer, content-visibility
+│   └── env.d.ts                # Window globals (_sholatInterval, _quranDetailInitialized, etc.)
+├── e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih (48)
+├── .github/workflows/ci.yml    # jobs: test (typecheck+lint+unit+build) + e2e (chromium)
+├── playwright.config.ts
+├── vitest.config.mjs + vitest.setup.ts
+├── eslint.config.mjs           # flat, astro+tailwind, ignores e2e
+├── .prettierrc / .prettierignore
+├── astro.config.mjs (Tailwind Vite)
+├── tsconfig.json (extends astro/tsconfigs/strict)
+├── package.json (scripts: dev/build/preview/typecheck/lint/test/test:e2e/format)
+└── README.md / CONTEXT.md / docs/PRD.md
 ```
 
-### Layout (BaseLayout.astro)
-- Header sticky dengan logo + theme toggle (dark/light)
-- Main content wrapper `max-w-md mx-auto` (mobile-first)
-- Footer dengan credit ke PakLubis
-- **PWA:** manifest.json link + service worker registration otomatis
-- **SEO:** Open Graph + Twitter Cards meta tags per halaman
-- **Inline script** untuk theme: membaca `localStorage('theme')` → fallback `prefers-color-scheme`
-- HTML `<html lang="id">` dengan `scroll-smooth`
-- **View Transitions API** — `astro:transitions/ClientRouter` untuk animasi halaman:
-  - `<ClientRouter />` di `<head>` — mengaktifkan client-side navigation
-  - `transition:animate="slide"` pada `<html>` — slide-from-right antar halaman
-  - `transition:name="site-header"` — header persistent morphing tanpa kedip
-  - `transition:persist` pada tombol theme toggle — state tetap terjaga
+### Layout `BaseLayout.astro:1`
+
+- `<html lang="id" scroll-smooth>` `max-w-md mx-auto` `overflow-x-hidden`
+- Header `sticky top-0 z-50 backdrop-blur-xl` `transition:name="site-header"` + logo + `#theme-toggle` `transition:persist`
+- `<a href="#main-content" sr-only>` skip-link + `<main id="main-content" min-h-[50vh] flex-1>`
+- Footer PakLubis + `<BottomNav>` mobile `md:hidden` auto-hide on scroll
+- **PWA:** `manifest link` + `sw.js` register on `load`
+- **SEO:** OG + Twitter per `pageTitle`
+- **Theme inline:** `localStorage('theme')` → `prefers-color-scheme`, re-apply `astro:after-swap`, `colorScheme` dark/light
+- **Viewport:** `width=device-width, initial-scale=1.0, maximum-scale=5.0` (A11y zoom)
+- **Fonts preload:** `Inter-VariableFont_wght.woff2` + `Amiri-Regular.ttf` `crossorigin`, `font-display:swap`
 
 ---
 
 ## 🧩 Komponen Reusable
 
-### `HeaderBack.astro`
-Back navigation header sticky dengan slot untuk tombol kanan.
+### `HeaderSticky.astro:1` — Pengganti `HeaderBack`
 
-| Prop | Default | Deskripsi |
-|------|---------|-----------|
-| `href` | `"/"` | Link tujuan tombol back |
-| `label` | `"Kembali"` | Teks tombol back |
-| `title` | — | Judul tengah (jika ada) |
-| `rightSlot` | `false` | Aktifkan `<slot name="right">` |
+Sticky `top-16 z-40 -mx-4 px-4 mb-4 gap-2` dengan truncate & history.back fallback.
 
-**Dipakai di:** doa, zakat, quran/index, tahlil, sholat-guide
+| Prop                   | Default   | Desc                                          |
+| ---------------------- | --------- | --------------------------------------------- |
+| `title`                | —         | Judul, `truncate max-w-[140px] sm:180 flex-1` |
+| `href`                 | `/`       | Back target                                   |
+| `backLabel`            | `Kembali` | `hidden xs:inline`                            |
+| `leftSlot`/`rightSlot` | `false`   | Aktifkan `<slot name="left                    | right">` |
 
-### `SearchBar.astro`
-Input pencarian dengan icon search.
+Dipakai: **semua halaman** (doa, dzikir, asma, zakat, tahlil, sholat-guide, quran/index, events-hijri, quran/[nomor] leftSlot+rightSlot, quran/yasin).
 
-| Prop | Default | Deskripsi |
-|------|---------|-----------|
-| `placeholder` | `"Cari..."` | Placeholder text |
-| `id` | `"search-input"` | ID element |
+### `SearchBar.astro:1`
 
-**Dipakai di:** doa
+`type="search"` + `sr-only label` + `aria-label` fallback placeholder.
+
+| Prop          | Default        |
+| ------------- | -------------- |
+| `placeholder` | `Cari...`      |
+| `id`          | `search-input` |
+| `ariaLabel`   | `placeholder`  |
+
+Dipakai: doa, dzikir, asmaul, quran/index.
 
 ### `SettingsModal.astro`
-Bottom sheet modal reusable — menyediakan overlay backdrop, tombol close, animasi slide-up. **Fully self-contained UX:** Escape key close, focus trapping (Tab cycle), backdrop click to close, autofocus on close button.
 
-| Prop | Default | Deskripsi |
-|------|---------|-----------|
-| `modalId` | `"settings-modal"` | ID modal container |
-| `overlayId` | `"overlay"` | ID backdrop overlay |
-| `closeId` | `"close-settings"` | ID tombol close |
-| `title` | `"Pengaturan Tampilan"` | Judul modal |
+Bottom sheet `max-h-[85vh]` `animate-slide-up`, backdrop blur, `Esc` close, focus-trap Tab cycle, `aria-modal`.
 
-**Dipakai di:** sholat, tahlil, quran/[nomor]
+| Prop        | Default               |
+| ----------- | --------------------- |
+| `modalId`   | `settings-modal`      |
+| `overlayId` | `overlay`             |
+| `closeId`   | `close-settings`      |
+| `title`     | `Pengaturan Tampilan` |
 
-### `Toast.astro`
-Notifikasi snackbar bawah dengan **global debounced `window.showToast(msg, duration)`** — semua halaman mendelegasikan ke fungsi ini, timeout otomatis di-clear sebelum toast baru (mencegah rapid-toast bug).
+Dipakai: `quran/[nomor]` (single id, sebelumnya duplikat dihapus `quran/[nomor].astro:151`).
 
-| Prop | Default | Deskripsi |
-|------|---------|-----------|
-| `id` | `"toast"` | ID container |
-| `msgId` | `"toast-msg"` | ID span pesan |
+### `Toast.astro:1`
 
-**Dipakai di:** sholat, sholat-guide, doa, dzikir, quran/[nomor]
+Fixed `bottom-6 left-1/2` `role=status aria-live` `truncate`, queue via `clearTimeout`, click dismiss.
+Global `window.showToast(msg,duration=2500)`.
+Dipakai: sholat, sholat-guide, doa, dzikir, quran/[nomor], asmaul.
 
----
+### `BottomNav.astro` (baru)
 
-## 📄 Halaman & Fitur
+Mobile `fixed bottom-0 md:hidden` 4 item (Home/Sholat/Qur'an/Doa) `aria-current=page`, auto-hide on scroll `translateY`.
+Dipakai: `BaseLayout` global.
 
-### 1. Dashboard (`/`)
-- **Prayer Card** — live countdown to next prayer + 5 waktu + arah kiblat (reads from sholat-cache localStorage)
-- **Hijri Event Bar** — bar amber: event Islam terdekat (baca dari sholat-cache, reuse data Aladhan)
-- **Quran Offline Badge** — compact badge jumlah surah tersimpan di IndexedDB
-- Menu grid 2 kolom (9 menu utama):
-  - Jadwal Sholat (featured — full-width gradient card)
-  - Al-Qur'an
-  - Doa Harian
-  - Kalkulator Zakat
-  - Panduan Sholat
-  - Tahlil & Doa
-  - Tasbih Digital
-  - Asmaul Husna
-  - Dzikir Pagi & Petang
-- **Quote of the Day** — random dari 100+ quotes (Al-Qur'an, Hadits, Ulama), auto-rotasi 10 detik
-- Animasi fade-in
+### `ScrollFade.astro` (baru)
 
-### 2. Jadwal Sholat (`/sholat`)
-- **API:** aladhan.com/v1/timings
-- **GPS:** navigator.geolocation → reverse geocoding via nominatim.openstreetmap.org
-- **Countdown** ke waktu sholat berikutnya (real-time per detik)
-- **Kompas Kiblat** — sensor deviceorientation (iOS permission handling)
-- **Pengaturan:**
-  - Koreksi Ihtiyat (± menit)
-  - Manual location (lat/lng)
-  - Metode perhitungan (Kemenag, MWL, ISNA, dll.)
-  - Notifikasi Adzan & Pengingat (10 menit sebelumnya)
-- **Data persistence:** localStorage('sholat-settings')
-- **Qibla:** rumus spherical trigonometry (Ka'bah: 21.4225, 39.8262)
+Wrapper pills `overflow-x-auto snap-x` + mask `linear-gradient` + `role=group`.
+Dipakai: doa `category-container`, dzikir `category-container`.
 
-### 3. Al-Qur'an (`/quran`)
-- **API:** equran.id/api/v2/surat
-- Tab view: Daftar Surat (searchable) & Daftar Juz
-- **Static paths:** getStaticPaths() — build-time pre-render semua 114 surat
-- **Offline Cache:** IndexedDB (`qolbu-quran-cache`, store `surah-cache`) — cache semua 114 surat (batch 5, progress bar)
-- **Audio Cache:** Opsional — download audio files (~500MB-2GB, cache-first via SW)
-- **Lanjut Baca** banner — dari localStorage `quran-last-read`
-- **Bookmark Surah** — localStorage `quran-bookmarks` dengan list di index
-- Tampilan Per Ayat (arab + latin + terjemah) dan Mushaf Mode
-- **Audio:** Misyari Rasyid Al-Afasi (equran.nos.wjv-1.neo.id)
-- Auto-play ayat berurutan, prefetch 3 ayat berikutnya
-- **Pengaturan:** ukuran font arab (range slider), toggle latin & terjemah
+### `EmptyState.astro` (baru)
 
-### 4. Asmaul Husna (`/asmaul-husna`)
-- **Data:** `src/data/asmaul-husna.json` (99 nama)
-- Search filter by latin name & arabic text
-- Tampilan: nomor + latin + meaning + arabic
-- Layout sederhana, gradient header
+`icon=search|book|inbox` + `title` + `desc` + `actionLabel/actionId` CTA `bg-emerald-600`.
+Dipakai: doa, dzikir, asmaul (juga quran/index error fallback).
 
-### 5. Dzikir Pagi & Petang (`/dzikir`)
-- **Data:** `src/data/dzikir.json` (22 dzikir dengan arab, latin, arti, sumber, jumlah)
-- **Tab filter:** Pagi, Petang, Keduanya
-  - Tab Pagi: dzikir waktu pagi + keduanya
-  - Tab Petang: dzikir waktu petang + keduanya
-  - Tab Keduanya: semua dzikir
-- **Info badge:** jumlah pengulangan ("33x", "100x")
-- **Copy to clipboard** — formatted latin + arti
-- Amber theme
+### `Skeleton.astro` (baru)
 
-### 6. Doa Harian (`/doa`)
-- **Inline data:** 40+ doa dalam berbagai kategori
-- **Kategori filter:** Semua, Sehari-hari, Al-Qur'an, Sholat, Rizki, Keluarga, Sakit, Perjalanan, Taubat
-- Search (by title, latin, arti)
-- Copy-to-clipboard dengan format rapi
-
-### 7. Panduan Sholat (`/sholat-guide`)
-- **Inline data:** 28 langkah (syarat sah → niat → gerakan → dzikir)
-- Accordion UI (hanya 1 terbuka dalam satu waktu)
-- **Progress tracker** — localStorage('sholat-completed')
-- **Bookmark** — localStorage('sholat-bookmarks') dengan badge notif
-- **Mode Praktik** — auto-play tiap 15 detik
-- **Audio** — untuk bacaan Al-Fatihah & Surat Pendek
-- Search langkah
-
-### 8. Tahlil (`/tahlil`)
-- Data dari tahlil.json (7 item)
-- Pengaturan ukuran font arab & toggle latin/terjemah
-- Layout sederhana step-by-step
-
-### 9. Tasbih Digital (`/tasbih`)
-- Counter lingkaran besar dengan feedback:
-  - **Haptic:** navigator.vibrate() (15ms per hitung)
-  - **Audio:** Web Audio API (oscillator sine wave)
-  - **Animasi:** scale + color pulse
-- Target: 33, 99, 100, atau tanpa batas
-- Modal sukses saat target tercapai
-- Keyboard shortcut: Spasi / Enter
-- Statistik harian: total hitungan, sesi, streak
-- Pemilihan dzikir: Subhanallah, Alhamdulillah, Allahu Akbar, Laa ilaaha illallah
-
-### 10. Kalkulator Zakat (`/zakat`)
-- Dua mode: **Zakat Maal** (haul 1 tahun, nishab 85gr emas) & **Zakat Penghasilan**
-- Input dengan format Rupiah (otomatis ribuan)
-- Harga emas: default Rp1.200.000/gram (bisa diubah)
-- Menampilkan status nishab & jumlah zakat 2.5%
+`variant=text|title|card|avatar|circle|prayer|quran|dzikir` + `animate-shimmer` light/dark.
+Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 
 ---
 
-## 🎨 Theming & Styling
+## 📄 Halaman & Fitur (Update)
 
-- **Dark mode:** class-based (`dark` class on `<html>`)
-- **Palette:** Emerald sebagai primary, slate/neutral untuk teks & background
-- **Font:** Inter (body) + Amiri (Arabic)
-- **Layout:** Mobile-first (max-w-md: 448px), border-radius ekstra (`rounded-2xl`, `rounded-[2rem]`)
-- **Animasi:** Tailwind transitions + CSS `@keyframes` (fadeIn, slideUp) — **semua animasi keyframe didefinisikan terpusat di `global.css`**, halaman hanya menggunakan class utility `.animate-fade-in` / `.animate-slide-up`
+### 1. Dashboard `/` `index.astro:1`
+
+- **Prayer Card + Skeleton:** `prayer-card` hidden → skeleton `prayer-card-skeleton` shimmer sampai `sholat-cache-*` ada; jika kosong tampil CTA `Aktifkan GPS → /sholat`
+- **Hijri Event Bar:** amber bar hidden sampai hijri dari cache terparse, `HIJRI_EVENTS` 12 item + `MONTH_ALIASES` normalization
+- **Cache Badge:** `qolbu-quran-cache` count via IndexedDB
+- **Grid 10 menu** (sebelumnya 9, tambah Events Hijri): Jadwal Sholat `col-span-2 gradient`, Al-Qur'an, Doa, Zakat, Panduan, Tahlil, Tasbih, Asmaul, Dzikir, **Surat Yasin + Events Hijri**
+- **Quote Of The Day** `quotesData` inline ~100 quotes, `setInterval 10s` fade, cleanup `astro:before-swap`
+
+### 2. Jadwal Sholat `/sholat` `sholat.astro:1`
+
+- API Aladhan + Nominatim, `addMinutes` modulo 1440, ihtiyat hanya Fajr/Dhuhr/Asr/Maghrib/Isha+Imsak
+- Countdown `setInterval 1s`, `getNextPrayerTime` post-midnight fix, `fetchInFlight` dedup
+- Qibla spherical `21.4225,39.8262`, preview needle `800ms`, full modal `z-[200]` DeviceOrientation + iOS permission `ios-permission-btn`
+- Settings: ihtiyat ±, GPS toggle + manual lat/lng validated, method, adzan/remind + volume + test, **tabs tidak** — single modal
+- **Skeleton:** `Skeleton prayer` 5 items sebelum fetch
+- **A11y:** `aria-label` settings-btn, `type="search"` tidak ada (sholat tidak pakai SearchBar)
+- **Storage:** `sholat-settings`, `sholat-cache-*`, `sholat-notified-*`
+
+### 3. Al-Qur'an `/quran` `quran/index.astro:1`
+
+- `fetch equran.id` SSG 114, `daftarJuz` 30 static
+- Tabs `role=tablist` `aria-selected` + `aria-controls`, toggle `aria-selected` via JS `quran/index.astro:127`
+- Search `ariaLabel="Cari surat Al-Qur'an"`, filter `surat-nama` + empty `EmptyState`
+- Card `content-visibility:auto` + `contain-intrinsic-size`
+- Yasin navigasi via `page.goto('/quran/yasin')` (tidak ada featured card lagi di index)
+
+### 4. Detail Surat `/quran/[nomor].astro:1`
+
+- `getStaticPaths` 114, `toArabic` map `٠-٩`
+- Header `HeaderSticky leftSlot rightSlot`: left = back + `Per Ayat/Mushaf` tabs `role=tablist`, right = `settings-btn aria-label`
+- Tabs `Per Ayat/Mushaf` `role=tab aria-selected` toggle
+- Ayat card `ayat-card` arab `font-amiri 2rem` + latin + terjemah, `view-terjemah` vs `view-mushaf` `role=tabpanel`
+- **Audio:** `btn-audio data-audio` play/pause `Audio()`, `window._quranDetailAudio` cleanup `astro:before-swap`, auto-next + scroll
+- **Share:** `share-btn` `data-share` → `navigator.share` fallback `clipboard.writeText` + toast (baru)
+- **Settings:** single `SettingsModal` (duplikat dihapus), font slider 1-5 `arabSizes`, toggles latin/arti → `localStorage('quran-settings')`
+- **Scroll hash:** `#ayat-10` smooth
+
+### 5. Asmaul Husna `/asmaul-husna.astro:1`
+
+- `SearchBar ariaLabel="Cari Asmaul Husna"` + `content-visibility`, grid 99, `EmptyState` + `empty-reset-asmaul` + `aria-live`
+- Counter `counter-btn` tap+1 dbl-tap reset, copy `copy-btn`, detail `card-detail` toggle
+
+### 6. Dzikir `/dzikir.astro:1`
+
+- **Data:** `import dzikirData from '../data/dzikir.json'` 32 item (6 cat) via `<script type="application/json" set:html>` + `JSON.parse(textContent)` (sebelumnya hidden div 60KB)
+- `ScrollFade` kategori 7 pills `snap-start aria-pressed`, `SearchBar ariaLabel`
+- Render `dzikir-container` + `EmptyState` + `empty-count` live, copy via delegation `clipboard.writeText` + `window.showToast`
+
+### 7. Events Hijri `/events-hijri.astro:1`
+
+- `import eventsHijri from '../data/events-hijri.json'` (sebelumnya inline 12 bulan)
+- `HeaderSticky` (sebelumnya custom sticky)
+- List per bulan badge, fallback `-`, disclaimer hisab/rukyat
+
+### 8. Doa Harian `/doa.astro:1`
+
+- `ScrollFade` 9 kategori + `aria-pressed`, `SearchBar ariaLabel="Cari doa harian"`, `EmptyState` + `empty-reset` CTA
+- Render 47 inline `doaData`, copy delegation, `card-anim` stagger
+
+### 9. Panduan Sholat `/sholat-guide.astro`
+
+- 28 langkah inline, accordion single open, progress `localStorage('sholat-completed')`, bookmark `sholat-bookmarks` + badge, praktik 15s, audio Fatihah, search, `HeaderSticky rightSlot` bookmark, sticky progress `top-32`
+
+### 10. Tahlil `/tahlil.astro` + 11. Tasbih `/tasbih.astro` + 12. Zakat `/zakat.astro`
+
+- **Tahlil:** 7 item JSON, `HeaderSticky rightSlot` settings, modal font/latin
+- **Tasbih:** Circle 288px `active:scale-95`, `select target` `aria-label`, `reset-btn aria-label`, haptic 15ms + Web Audio sine, `progress-bar` + stats, `HeaderSticky` (custom sebelumnya — sekarang masih custom tapi dengan aria)
+- **Zakat:** `role=tablist` Maal/Penghasilan + `tabpanel`, Rupiah `formatRupiah` preserve `selectionStart`, `btn-calculate disabled opacity-50` sampai input valid, `scrollIntoView` result, nishab 85gr/12
+
+---
+
+## 🎨 Theming & Styling `global.css:1`
+
+- **Dark:** `class` on `<html>` `colorScheme` dark/light, `BaseLayout` inline script anti-FOIT + `astro:after-swap`
+- **Palette:** Emerald primary, slate/neutral, amber for hijri, slate-900/black for quote
+- **Fonts:** `Inter Variable WOFF2` (23KB, 100-900, `font-display:swap`) + `Amiri` TTF 400/700, preload `Inter-Variable + Amiri-Regular`, `@font-face` swap
+- **Tokens:** `@theme { --radius-card:1rem; --radius-sheet:1.5rem; --shadow-card }`, `scroll-padding-top:112px` (header+sticky), `content-visibility:auto` untuk `.surat-card/.asmaul-card`
+- **Anim:** `slideUp 0.3s cb(0.16,1,0.3,1)`, `fadeIn 0.4s`, `shimmer 1.5s` + `dark` variant, `animate-fade-in/slide-up/shimmer`, skeleton utilities
+- **Layout:** `max-w-md 448px` `flex-1 min-h-[50vh]` + `sr-only skip-link` `Lompat ke konten`
 - **Selection:** `selection:bg-emerald-500 selection:text-white`
 
 ---
 
 ## 💾 Data & Storage
 
-| Storage Key | Tipe | Kegunaan |
-|-------------|------|----------|
-| `theme` | `"dark" \| "light"` | Tema global |
-| `sholat-settings` | JSON | Lokasi, metode, notifikasi, koreksi |
-| `sholat-data` | JSON | (legacy — tidak dipakai) |
-| `sholat-cache-*` | JSON | Cache jadwal sholat per tanggal/koordinat |
-| `sholat-notified-adhan` | JSON | Deduplikasi notifikasi adzan |
-| `sholat-notified-remind` | JSON | Deduplikasi notifikasi pengingat |
-| `yasin-settings` | JSON | Ukuran font, toggle latin/terjemah untuk Yasin |
-| `tasbih-autocycle` | boolean | Auto-cycle dzikir ON/OFF |
-| `quran-last-read` | JSON | Posisi baca terakhir (surah, ayat, timestamp) |
-| `quran-settings` | JSON | Ukuran font, toggle latin/terjemah |
-| `tahlil-settings` | JSON | Ukuran font, toggle latin/terjemah |
-| `sholat-completed` | `string[]` | ID step yang sudah selesai |
-| `sholat-bookmarks` | `string[]` | ID step yang di-bookmark |
-| `tasbih-count` | number | Hitungan tasbih |
-| `tasbih-target` | number | Target hitungan |
-| `tasbih-dhikr` | string | Dzikir yang dipilih |
-| `tasbih-vibrate` | boolean | Getar ON/OFF |
-| `tasbih-sound` | boolean | Suara ON/OFF |
-| `tasbih-stats` | JSON | Statistik harian |
-| `quran-bookmarks` | JSON | Bookmark surah & ayat |
-| `quran-settings` | JSON | Ukuran font, toggle latin/terjemah |
+| Key                                                     | Tipe                                               | Kegunaan                                                       |
+| ------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------------------- |
+| `theme`                                                 | `dark\|light`                                      | Theme                                                          |
+| `sholat-settings`                                       | JSON                                               | lat,lng,city,method,useGPS,adhan,remind,adhanVolume,correction |
+| `sholat-cache-*`                                        | JSON                                               | Timings per date/coords, juga dipakai dashboard prayer+ hijri  |
+| `sholat-notified-adhan/remind`                          | JSON                                               | Dedup notif                                                    |
+| `quran-settings` / `yasin-settings` / `tahlil-settings` | JSON                                               | size, showLatin, showArti                                      |
+| `quran-last-read`                                       | JSON                                               | surah, ayat, surahName, timestamp                              |
+| `quran-bookmarks`                                       | JSON                                               | [{surah,surahName,ayat}]                                       |
+| `sholat-completed` / `sholat-bookmarks`                 | `string[]`                                         | Panduan sholat                                                 |
+| `tasbih-*`                                              | `count/target/dhikr/vibrate/sound/autocycle/stats` | Tasbih                                                         |
+| `qolbu-asmaul-counts`                                   | JSON                                               | Counter per Asmaul                                             |
+| `qolbu-quran-cache`                                     | IndexedDB `surah-cache`                            | Offline 114 surat                                              |
+
+**Static JSON:** `doa.json 47`, `dzikir.json 32`, `events-hijri.json 12 bulan detail`, `asmaul 99`, `tahlil 7`, `yasin 5` (page fetch 83).
 
 ---
 
 ## 🔌 API Eksternal
 
-| API | Endpoint | Penggunaan |
-|-----|----------|------------|
-| **Aladhan** | `api.aladhan.com/v1/timings` | Jadwal sholat berdasarkan koordinat |
-| **Equran.id** | `equran.id/api/v2/surat` | Daftar & detail surat Al-Qur'an |
-| **Nominatim** | `nominatim.openstreetmap.org/reverse` | Reverse geocoding (GPS → nama kota) |
-| **EveryAyat** | `everyayah.com/data/Alafasy_128kbps/` | Audio Qur'an (Yasin, via yasin.json) |
-| **Equran Audio** | `equran.nos.wjv-1.neo.id/audio-partial/...` | Audio per ayat surat |
+| API          | Endpoint                                           | Pakai                  |
+| ------------ | -------------------------------------------------- | ---------------------- |
+| Aladhan      | `api.aladhan.com/v1/timings/{date}?lat&lng&method` | Sholat                 |
+| Equran.id    | `equran.id/api/v2/surat` + `/{nomor}`              | Quran list/detail, SSG |
+| Nominatim    | `nominatim.openstreetmap.org/reverse`              | GPS → kota             |
+| EveryAyat    | `everyayah.com/.../Alafasy_128kbps/`               | Yasin fallback audio   |
+| Equran Audio | `equran.nos.wjv-1.neo.id/audio-partial/...`        | Per ayat               |
 
 ---
 
-## ⚡ Performance
+## ⚡ Performance & PWA
 
-- **Cache Stale-While-Revalidate** — jadwal sholat di-cache ke localStorage + background refresh
-- **Static Site Generation** — semua halaman di-pre-render saat build (126 pages)
-- **Mobile-first** — layout max-w-md, optimasi touch interactions
-- **View Transitions** — navigasi SPA-like dengan animasi slide, <html> persist, header morphing
+- **SSG 127 pages** (10 top + 114 surat + yasin + offline) `dist/`, `getStaticPaths` build-time fetch equran.id
+- **SW v6** `public/sw.js`: precache `/` `/offline` `/fonts` `/*.png` `/dzikir/.../quran/yasin`, cleanup old `qolbu-cache-*`, **Audio cache-first** (equran.nos, everyayah, download.quranicaudio), **HTML network-first**, **Assets stale-while-revalidate** + `isFresh` 7 days, `message cleanup-cache`
+- **Fonts:** Variable WOFF2 23KB + preload, `font-display:swap`, `content-visibility` untuk list 99/114
+- **View Transitions:** `ClientRouter` slide, `site-header` morph, `theme-toggle persist`
+- **Skeletons:** `Skeleton.astro` + shimmer, `prayer-card-skeleton` di dashboard, `Skeleton prayer` di sholat
 
 ---
 
-## 🧪 Catatan Penting
+## 🧪 Testing & CI `package.json:scripts`
 
-> **⚠️ Referensi utama:** Semua detail fitur, interaksi, komponen, data, storage keys, dan API dijelaskan secara lengkap di [`docs/PRD.md`](./docs/PRD.md).
-> File ini hanya ringkasan. Jika ada perbedaan, `docs/PRD.md` yang berlaku (_canonical source of truth_).
+| Script          | Desk                                                         |
+| --------------- | ------------------------------------------------------------ |
+| `dev`           | `astro dev` :4321                                            |
+| `build`         | `astro build` → `dist/`                                      |
+| `preview`       | `astro preview`                                              |
+| `typecheck`     | `astro check`                                                |
+| `lint`          | `eslint . --ext .astro,.js,.ts,.mjs` (flat + astro/tailwind) |
+| `test`          | `vitest run`                                                 |
+| `test:watch`    | `vitest`                                                     |
+| `test:coverage` | `vitest run --coverage`                                      |
+| `test:e2e`      | `playwright test`                                            |
+| `format`        | `prettier --write`                                           |
 
-- **Semua script client-side menggunakan `is:inline`** — tidak ada client-side framework (React/Vue)
-- **Data doa** sudah dipisah ke `src/data/doa.json`
-- **Data tahlil** diambil dari `src/data/tahlil.json`
-- **PWA** sudah aktif dengan manifest + service worker
-- **yasin.json** sudah digunakan di halaman `/quran/yasin`
-- **File `databasequotes`** sudah dihapus (duplikat dari index.astro)
+**Unit `src/lib/utils.ts:1` 30 tests `utils.test.ts`:**
+`addMinutes` modulo, `qibla`, `zakatMaal/Penghasilan`, `rupiah`, `hijriMonthIndex`, `daysUntil`. `vitest.setup.ts` mock localStorage, geolocation, Notification, AudioContext, vibrate.
+
+**E2E `e2e/` 48 tests** (chromium, mobile-chrome, mobile-safari): home 7, sholat 7, quran 6, quran-detail 8, doa 7, tasbih 6. Run via `webServer: npm run preview`.
+
+**CI `.github/workflows/ci.yml`:** jobs `test` (typecheck+lint+unit+build) + `e2e` needs test (install chromium, build, `test:e2e`, upload report).
+
+**Husky:** `pre-commit` `lint-staged` eslint --fix + prettier.
 
 ---
 
 ## 🛡 Code Quality Patterns
 
-Semua halaman mengikuti pola standar untuk mencegah bug umum:
+**Guard Flag:** `window._xxxInitialized` `astro:page-load` + `astro:before-swap` reset — `asmaul, tahlil, zakat, quran/index, quran/[nomor], dzikir, tasbih, doa, sholat-guide, index (quote/cache/prayer/hijri)` (`docs/PRD.md` §8).
 
-### Guard Flag (Duplicate Listener Prevention)
-Setiap halaman dengan `DOMContentLoaded` + `astro:after-swap` menggunakan flag `window._xxxInitialized` untuk mencegah registrasi listener ganda:
+**Memory Leak Cleanup `astro:before-swap`:**
+
 ```js
-const initPage = () => {
-  if (window._pageInitialized) return;
-  window._pageInitialized = true;
-  // ... register event listeners
-};
-document.addEventListener('DOMContentLoaded', initPage);
-document.addEventListener('astro:after-swap', initPage);
-document.addEventListener('astro:before-swap', () => { window._pageInitialized = false; });
+if (window._timer) clearInterval(...); window._audio.pause();
 ```
-**Diterapkan di:** asmaul-husna, tahlil, zakat, quran/index, quran/[nomor], dzikir, tasbih
 
-### Memory Leak Cleanup (astro:before-swap)
-Halaman dengan timer/interval/audio/scroll listeners membersihkan resource saat navigasi keluar:
-```js
-document.addEventListener('astro:before-swap', () => {
-  if (window._timer) { clearInterval(window._timer); delete window._timer; }
-  if (window._audio) { window._audio.pause(); delete window._audio; }
-});
-```
-**Diterapkan di:** sholat, sholat-guide, yasin, quran/[nomor], index, dzikir
+`sholat, sholat-guide, yasin, quran/[nomor], index, dzikir` + `quran/[nomor]` `window._quranDetailAudio`.
 
-### XSS Prevention
-- **onclick attributes:** Semua interpolasi string ke `onclick` di-escape dari single quote (`'` → `\'`)
-- **innerHTML:** Data dari localStorage/user di-escape menggunakan helper `textContent`-based escaping:
-  ```js
-  const htmlEscape = (() => { const el = document.createElement('div'); return (s) => { el.textContent = String(s); return el.innerHTML; }; })();
-  ```
-- **innerText / textContent diprioritaskan** untuk data user (hindari innerHTML jika tidak perlu)
-**Diterapkan di:** doa, dzikir, quran/index
+**XSS Prevention:**
 
-### CSS DRY (Single Source)
-- Semua `@keyframes` didefinisikan satu kali di `global.css`
-- Halaman hanya menggunakan class utility (`.animate-fade-in`, `.animate-slide-up`)
-- Tidak ada duplikasi `<style>` block antar halaman
+- `onclick` escape `'` → `\'`
+- `htmlEscape` via `textContent` helper, `innerText` prioritas
+- `doa, dzikir, quran/index, quran/[nomor]`
 
-### Sholat Time Math
-- `addMinutes` menggunakan modulo 1440 arithmetic (mencegah midnight wrap: 23:59 + 2 = 00:01)
-- `getNextPrayerTime` menangani post-midnight scenario (00:00–Fajr mengembalikan Fajr hari ini, bukan besok)
-- Koreksi ihtiyat hanya diterapkan ke 5 waktu sholat + Imsak (Sunrise tidak dikoreksi — aman untuk Fajr timing)
-- GPS fetch deduplication via `fetchInFlight` map (mencegah double API call saat GPS retry)
+**CSS DRY:** `@keyframes` hanya di `global.css` (`slideUp`, `fadeIn`, `shimmer`), pages pakai `.animate-*`, no duplikat `<style>`.
+
+**Sholat Math:**
+
+- `addMinutes` modulo 1440 `sholat.astro:332`, `utils.ts:7`
+- `getNextPrayerTime` post-midnight `utils.ts`
+- Ihtiyat hanya 5 waktu + Imsak
+- `fetchInFlight` dedup
+
+**A11y (baru Fase 1):**
+
+- Viewport `maximum-scale=5.0` (sebelumnya 1.0) `BaseLayout.astro:16`
+- `Skip-link` `sr-only focus:not-sr-only` `BaseLayout.astro:70`
+- `SearchBar` `type=search` `sr-only label` `aria-label`
+- Tabs `role=tablist/tab` `aria-selected` + JS toggle `setAttribute` (`zakat.astro:12`, `quran/index.astro:59`, `quran/[nomor].astro:50`)
+- Icon btn `aria-label` (`quran/[nomor]:60`, `tasbih:20`)
+- Pills `aria-pressed` + `ScrollFade role=group`
+- `EmptyState` `aria-live` + `role=status` Toast
+- `scroll-padding-top:112px`
+
+---
+
+## 📝 Catatan Penting
+
+> **Referensi utama `docs/PRD.md`**. File ini ringkas; jika beda, PRD berlaku.
+
+- Semua client script `is:inline` vanilla JS, no React/Vue. Data JSON import via frontmatter + `<script type="application/json" set:html>` untuk dzikir (bukan hidden div).
+- `HeaderSticky` (baru) ganti `HeaderBack` — dipakai semua halaman, truncate `max-w-[140px]` + `leftSlot/rightSlot` + `history.back` fallback.
+- `BottomNav` mobile only `md:hidden` auto-hide on scroll, skip-link, safe-area.
+- Fonts: Inter Variable WOFF2 23KB (sebelumnya 5×TTF 1.6MB), Amiri TTF, `font-display:swap`, preload variable.
+- `Skeleton` shimmer light/dark, `content-visibility:auto` untuk list 99/114.
+- SW v6 bump cache version, font precache, audio CDN cache-first, HTML network-first, cleanup 7d.
+- Zakat `getInt` preserve `selectionStart`, `btn-calculate disabled opacity-50` sampai input valid.
+- Share per ayat `quran/[nomor].astro:110` `share-btn` → `navigator.share` fallback `clipboard`.
+- Prayer skeleton + CTA `Aktifkan GPS → /sholat` di dashboard jika `sholat-cache` kosong.

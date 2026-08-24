@@ -1,159 +1,224 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import HeaderBack from '../../components/HeaderBack.astro';
+import HeaderSticky from '../../components/HeaderSticky.astro';
 import SearchBar from '../../components/SearchBar.astro';
+
+interface SuratListItem {
+  nomor: number;
+  nama: string;
+  namaLatin: string;
+  jumlahAyat: number;
+  tempatTurun: string;
+  arti: string;
+}
 
 const res = await fetch('https://equran.id/api/v2/surat');
 const json = await res.json();
-const daftarSurat = json.data;
+const daftarSurat = json.data as SuratListItem[];
 
 const daftarJuz = [
-  { juz: 1, start: "Al-Fatihah", ayat: 1, id: 1 },
-  { juz: 2, start: "Al-Baqarah", ayat: 142, id: 2 },
-  { juz: 3, start: "Al-Baqarah", ayat: 253, id: 2 },
+  { juz: 1, start: 'Al-Fatihah', ayat: 1, id: 1 },
+  { juz: 2, start: 'Al-Baqarah', ayat: 142, id: 2 },
+  { juz: 3, start: 'Al-Baqarah', ayat: 253, id: 2 },
   { juz: 4, start: "Ali 'Imran", ayat: 93, id: 3 },
   { juz: 5, start: "An-Nisa'", ayat: 24, id: 4 },
   { juz: 6, start: "An-Nisa'", ayat: 148, id: 4 },
   { juz: 7, start: "Al-Ma'idah", ayat: 82, id: 5 },
   { juz: 8, start: "Al-An'am", ayat: 111, id: 6 },
   { juz: 9, start: "Al-A'raf", ayat: 88, id: 7 },
-  { juz: 10, start: "Al-Anfal", ayat: 41, id: 8 },
-  { juz: 11, start: "At-Taubah", ayat: 93, id: 9 },
-  { juz: 12, start: "Hud", ayat: 6, id: 11 },
-  { juz: 13, start: "Yusuf", ayat: 53, id: 12 },
-  { juz: 14, start: "Al-Hijr", ayat: 1, id: 15 },
+  { juz: 10, start: 'Al-Anfal', ayat: 41, id: 8 },
+  { juz: 11, start: 'At-Taubah', ayat: 93, id: 9 },
+  { juz: 12, start: 'Hud', ayat: 6, id: 11 },
+  { juz: 13, start: 'Yusuf', ayat: 53, id: 12 },
+  { juz: 14, start: 'Al-Hijr', ayat: 1, id: 15 },
   { juz: 15, start: "Al-Isra'", ayat: 1, id: 17 },
-  { juz: 16, start: "Al-Kahfi", ayat: 75, id: 18 },
+  { juz: 16, start: 'Al-Kahfi', ayat: 75, id: 18 },
   { juz: 17, start: "Al-Anbiya'", ayat: 1, id: 21 },
   { juz: 18, start: "Al-Mu'minun", ayat: 1, id: 23 },
-  { juz: 19, start: "Al-Furqan", ayat: 21, id: 25 },
-  { juz: 20, start: "An-Naml", ayat: 56, id: 27 },
+  { juz: 19, start: 'Al-Furqan', ayat: 21, id: 25 },
+  { juz: 20, start: 'An-Naml', ayat: 56, id: 27 },
   { juz: 21, start: "Al-'Ankabut", ayat: 46, id: 29 },
-  { juz: 22, start: "Al-Ahzab", ayat: 31, id: 33 },
-  { juz: 23, start: "Yasin", ayat: 28, id: 36 },
-  { juz: 24, start: "Az-Zumar", ayat: 32, id: 39 },
-  { juz: 25, start: "Fussilat", ayat: 47, id: 41 },
-  { juz: 26, start: "Al-Ahqaf", ayat: 1, id: 46 },
-  { juz: 27, start: "Az-Zariyat", ayat: 31, id: 51 },
-  { juz: 28, start: "Al-Mujadilah", ayat: 1, id: 58 },
-  { juz: 29, start: "Al-Mulk", ayat: 1, id: 67 },
-  { juz: 30, start: "An-Naba'", ayat: 1, id: 78 }
+  { juz: 22, start: 'Al-Ahzab', ayat: 31, id: 33 },
+  { juz: 23, start: 'Yasin', ayat: 28, id: 36 },
+  { juz: 24, start: 'Az-Zumar', ayat: 32, id: 39 },
+  { juz: 25, start: 'Fussilat', ayat: 47, id: 41 },
+  { juz: 26, start: 'Al-Ahqaf', ayat: 1, id: 46 },
+  { juz: 27, start: 'Az-Zariyat', ayat: 31, id: 51 },
+  { juz: 28, start: 'Al-Mujadilah', ayat: 1, id: 58 },
+  { juz: 29, start: 'Al-Mulk', ayat: 1, id: 67 },
+  { juz: 30, start: "An-Naba'", ayat: 1, id: 78 },
 ];
 ---
 
 <BaseLayout pageTitle="Al-Qur'an">
+  <HeaderSticky title="Al-Qur'an" href="/" />
 
-  <HeaderBack title="Al-Qur'an" href="/" />
-
-  <div class="pb-24 px-4 w-full max-w-md mx-auto">
-    
-    <div class="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl mb-6">
-      <button id="tab-surat" class="flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all">Daftar Surat</button>
-      <button id="tab-juz" class="flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all">Daftar Juz</button>
+  <div class="mx-auto w-full max-w-md px-4 pb-24">
+    <div
+      class="mb-6 flex rounded-xl bg-slate-100 p-1 dark:bg-slate-800"
+      role="tablist"
+      aria-label="Daftar Al-Qur'an"
+    >
+      <button
+        id="tab-surat"
+        role="tab"
+        aria-selected="true"
+        aria-controls="view-surat"
+        class="flex-1 rounded-lg bg-white py-2 text-sm font-bold text-emerald-600 shadow-sm transition-all dark:bg-slate-700"
+        >Daftar Surat</button
+      >
+      <button
+        id="tab-juz"
+        role="tab"
+        aria-selected="false"
+        aria-controls="view-juz"
+        class="flex-1 rounded-lg py-2 text-sm font-bold text-slate-500 transition-all hover:text-emerald-600 dark:text-slate-400"
+        >Daftar Juz</button
+      >
     </div>
 
-    <div id="view-surat">
-      <SearchBar id="search-surat" placeholder="Cari surat..." />
+    <div id="view-surat" role="tabpanel" aria-labelledby="tab-surat">
+      <SearchBar id="search-surat" placeholder="Cari surat..." ariaLabel="Cari surat Al-Qur'an" />
 
       <div id="surat-list" class="grid gap-3">
-        {daftarSurat.map((surat) => (
-          <a href={`/quran/${surat.nomor}`} class="surat-card group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-emerald-500 dark:hover:border-emerald-500 shadow-sm hover:shadow-md transition-all">
+        {
+          daftarSurat.map((surat) => (
+            <a
+              href={`/quran/${surat.nomor}`}
+              class="surat-card group flex items-center justify-between rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:border-emerald-500 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-500"
+            >
+              <div class="flex items-center gap-4">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white dark:border-slate-700 dark:bg-slate-800 dark:text-emerald-400">
+                  {surat.nomor}
+                </div>
+                <div>
+                  <h3 class="surat-nama text-base font-bold text-slate-800 dark:text-white">
+                    {surat.namaLatin}
+                  </h3>
+                  <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                    {surat.tempatTurun} • {surat.jumlahAyat} Ayat
+                  </p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p
+                  class="font-amiri text-xl text-slate-800 transition-colors group-hover:text-emerald-600 dark:text-white dark:group-hover:text-emerald-400"
+                  dir="rtl"
+                >
+                  {surat.nama}
+                </p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      <div id="empty-state" class="hidden py-12 text-center">
+        <p class="text-sm text-slate-500 dark:text-slate-400">Surat tidak ditemukan.</p>
+      </div>
+    </div>
+
+    <div id="view-juz" role="tabpanel" aria-labelledby="tab-juz" class="grid hidden gap-3">
+      {
+        daftarJuz.map((juz) => (
+          <a
+            href={`/quran/${juz.id}#ayat-${juz.ayat}`}
+            class="group flex items-center justify-between rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-all hover:border-emerald-500 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-500"
+          >
             <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-sm font-bold text-emerald-600 dark:text-emerald-400 border border-slate-100 dark:border-slate-700 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                {surat.nomor}
+              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-sm font-bold text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white dark:bg-emerald-900/20 dark:text-emerald-400">
+                {juz.juz}
               </div>
               <div>
-                <h3 class="font-bold text-slate-800 dark:text-white text-base surat-nama">{surat.namaLatin}</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{surat.tempatTurun} • {surat.jumlahAyat} Ayat</p>
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">Juz {juz.juz}</h3>
+                <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                  Mulai: {juz.start} ayat {juz.ayat}
+                </p>
               </div>
             </div>
-            <div class="text-right">
-              <p class="font-amiri text-xl text-slate-800 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" dir="rtl">{surat.nama}</p>
-            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-slate-300 transition-colors group-hover:text-emerald-500"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
           </a>
-        ))}
-      </div>
-      
-      <div id="empty-state" class="hidden text-center py-12">
-        <p class="text-slate-500 dark:text-slate-400 text-sm">Surat tidak ditemukan.</p>
-      </div>
+        ))
+      }
     </div>
-
-    <div id="view-juz" class="hidden grid gap-3">
-      {daftarJuz.map((juz) => (
-        <a href={`/quran/${juz.id}#ayat-${juz.ayat}`} class="group flex items-center justify-between p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-emerald-500 dark:hover:border-emerald-500 shadow-sm hover:shadow-md transition-all">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center text-sm font-bold text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-              {juz.juz}
-            </div>
-            <div>
-              <h3 class="font-bold text-slate-800 dark:text-white text-sm">Juz {juz.juz}</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Mulai: {juz.start} ayat {juz.ayat}</p>
-            </div>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-300 group-hover:text-emerald-500 transition-colors"><path d="m9 18 6-6-6-6"/></svg>
-        </a>
-      ))}
-    </div>
-
   </div>
-
 </BaseLayout>
 
 <script is:inline>
-(() => {
-  const initQuranIndex = () => {
-    if (window._quranIndexInitialized) return;
-    const searchInput = document.getElementById('search-surat');
-    const suratCards = document.querySelectorAll('.surat-card');
-    if (!searchInput || !suratCards.length) return;
-    window._quranIndexInitialized = true;
-    const emptyState = document.getElementById('empty-state');
-    
-    const tabSurat = document.getElementById('tab-surat');
-    const tabJuz = document.getElementById('tab-juz');
-    const viewSurat = document.getElementById('view-surat');
-    const viewJuz = document.getElementById('view-juz');
+  (() => {
+    const initQuranIndex = () => {
+      if (window._quranIndexInitialized) return;
+      const searchInput = document.getElementById('search-surat');
+      const suratCards = document.querySelectorAll('.surat-card');
+      if (!searchInput || !suratCards.length) return;
+      window._quranIndexInitialized = true;
+      const emptyState = document.getElementById('empty-state');
 
-    tabSurat.addEventListener('click', () => {
-      tabSurat.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all";
-      tabJuz.className = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all";
-      viewSurat.classList.remove('hidden');
-      viewJuz.classList.add('hidden');
-    });
+      const tabSurat = document.getElementById('tab-surat');
+      const tabJuz = document.getElementById('tab-juz');
+      const viewSurat = document.getElementById('view-surat');
+      const viewJuz = document.getElementById('view-juz');
 
-    tabJuz.addEventListener('click', () => {
-      tabJuz.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all";
-      tabSurat.className = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all";
-      viewJuz.classList.remove('hidden');
-      viewSurat.classList.add('hidden');
-    });
-
-    searchInput.addEventListener('input', (e) => {
-      const term = e.target.value.toLowerCase();
-      let hasVisible = false;
-
-      suratCards.forEach(card => {
-        const nama = card.querySelector('.surat-nama').textContent.toLowerCase();
-        if (nama.includes(term)) {
-          card.classList.remove('hidden');
-          hasVisible = true;
-        } else {
-          card.classList.add('hidden');
-        }
+      tabSurat.addEventListener('click', () => {
+        tabSurat.className =
+          'flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all';
+        tabSurat.setAttribute('aria-selected', 'true');
+        tabJuz.className =
+          'flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all';
+        tabJuz.setAttribute('aria-selected', 'false');
+        viewSurat.classList.remove('hidden');
+        viewJuz.classList.add('hidden');
       });
 
-      if (hasVisible) {
-        emptyState.classList.add('hidden');
-      } else {
-        emptyState.classList.remove('hidden');
-      }
-    });
-  };
+      tabJuz.addEventListener('click', () => {
+        tabJuz.className =
+          'flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all';
+        tabJuz.setAttribute('aria-selected', 'true');
+        tabSurat.className =
+          'flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all';
+        tabSurat.setAttribute('aria-selected', 'false');
+        viewJuz.classList.remove('hidden');
+        viewSurat.classList.add('hidden');
+      });
 
-  document.addEventListener('astro:page-load', initQuranIndex);
-  document.addEventListener('astro:before-swap', () => {
-    window._quranIndexInitialized = false;
-  });
-})();
+      searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        let hasVisible = false;
+
+        suratCards.forEach((card) => {
+          const nama = card.querySelector('.surat-nama').textContent.toLowerCase();
+          if (nama.includes(term)) {
+            card.classList.remove('hidden');
+            hasVisible = true;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        if (hasVisible) {
+          emptyState.classList.add('hidden');
+        } else {
+          emptyState.classList.remove('hidden');
+        }
+      });
+    };
+
+    document.addEventListener('astro:page-load', initQuranIndex);
+    document.addEventListener('astro:before-swap', () => {
+      window._quranIndexInitialized = false;
+    });
+  })();
 </script>

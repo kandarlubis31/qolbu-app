@@ -1,164 +1,247 @@
 ---
 // src/pages/quran/yasin.astro
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import HeaderBack from '../../components/HeaderBack.astro';
+import HeaderSticky from '../../components/HeaderSticky.astro';
 import Toast from '../../components/Toast.astro';
 
+interface SuratAyat {
+  nomorAyat: number;
+  teksArab: string;
+  teksLatin: string;
+  teksIndonesia: string;
+  audio: Record<string, string>;
+}
+
+interface SuratDetailResponse {
+  nama: string;
+  namaLatin: string;
+  arti: string;
+  jumlahAyat: number;
+  ayat: SuratAyat[];
+}
+
 // Fetch full Surah Yasin (surah 36) from API
-let suratData;
+let suratData: SuratDetailResponse | null = null;
 try {
   const resDetail = await fetch('https://equran.id/api/v2/surat/36');
   const jsonDetail = await resDetail.json();
-  suratData = jsonDetail.data;
+  suratData = jsonDetail.data as SuratDetailResponse;
 } catch (e) {
   suratData = null;
 }
 ---
 
 <BaseLayout pageTitle="Surat Yasin">
-  
-  <HeaderBack title="Surat Yasin" href="/quran" backLabel="Al-Qur'an">
-    <button id="settings-btn" slot="right" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 transition-colors hover:bg-emerald-100 dark:hover:bg-emerald-900/30">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  <HeaderSticky title="Surat Yasin" href="/quran" backLabel="Al-Qur'an" rightSlot>
+    <button
+      id="settings-btn"
+      slot="right"
+      class="rounded-full bg-slate-100 p-2 text-slate-600 transition-colors hover:bg-emerald-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-emerald-900/30"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><circle cx="12" cy="12" r="3"></circle><path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2-2h.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+        ></path></svg
+      >
     </button>
-  </HeaderBack>
+  </HeaderSticky>
 
-  <div class="pb-24 px-4 w-full max-w-md mx-auto">
-    
-    {suratData ? (
-      <>
-        <div class="text-center mb-8 mt-2 bg-gradient-to-br from-emerald-500 to-teal-700 rounded-3xl p-6 text-white shadow-lg shadow-emerald-500/20 relative overflow-hidden">
-          <div class="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
-            <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-          </div>
-          <h1 class="font-amiri text-5xl mb-2 relative z-10">{suratData.nama}</h1>
-          <h2 class="text-xl font-bold relative z-10">Surat {suratData.namaLatin}</h2>
-          <p class="text-sm text-emerald-100 mt-1 relative z-10">{suratData.arti} • {suratData.jumlahAyat} Ayat</p>
-        </div>
-
-        <div class="bg-amber-50 dark:bg-amber-900/20 p-4 rounded-xl border border-amber-100 dark:border-amber-800 mb-6">
-          <p class="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
-            💡 <strong>Fadhilah Surat Yasin:</strong> Jantung Al-Qur'an. Barang siapa membacanya, Allah akan mencatat pahala baginya seakan-akan ia telah mengkhatamkan Al-Qur'an sepuluh kali. (HR. Tirmidzi)
-          </p>
-        </div>
-
-        <div class="space-y-6">
-          {suratData.ayat.map((ayat) => (
-            <div id={`ayat-${ayat.nomorAyat}`} class="ayat-card bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:shadow-md scroll-mt-24">
-              <div class="flex justify-between items-center mb-4 border-b border-slate-50 dark:border-slate-800/50 pb-3">
-                <div class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                  {ayat.nomorAyat}
-                </div>
-                <button 
-                  type="button"
-                  data-audio={ayat.audio['05']} 
-                  class="btn-audio p-2.5 rounded-xl text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 transition-colors active:scale-90"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" class="icon-play pointer-events-none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" class="icon-pause hidden pointer-events-none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                </button>
-              </div>
-
-              <div class="text-right mb-6">
-                <p class="text-arab font-amiri text-[2rem] leading-[2.4] text-slate-800 dark:text-slate-100 transition-all duration-300" dir="rtl">
-                  {ayat.teksArab}
-                </p>
-              </div>
-
-              <div class="space-y-2 border-t border-slate-50 dark:border-slate-800/50 pt-4">
-                <p class="text-latin text-emerald-700 dark:text-emerald-400 font-medium italic text-[0.95rem] leading-relaxed">
-                  {ayat.teksLatin}
-                </p>
-                <p class="text-arti text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                  {ayat.teksIndonesia}
-                </p>
-              </div>
+  <div class="mx-auto w-full max-w-md px-4 pb-24">
+    {
+      suratData ? (
+        <>
+          <div class="relative mt-2 mb-8 overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-700 p-6 text-center text-white shadow-lg shadow-emerald-500/20">
+            <div class="absolute top-0 right-0 translate-x-4 -translate-y-4 transform opacity-10">
+              <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+              </svg>
             </div>
-          ))}
-        </div>
-      </>
-    ) : (
-      <div class="text-center py-20">
-        <div class="inline-block p-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.33 9"/><path d="M1.67 9a16 16 0 0 1 12.95-3.95"/></svg>
-        </div>
-        <p class="text-slate-500 dark:text-slate-400 font-medium">Gagal memuat Surat Yasin</p>
-        <p class="text-xs text-slate-400 mt-1">Periksa koneksi internet Anda</p>
-      </div>
-    )}
+            <h1 class="font-amiri relative z-10 mb-2 text-5xl">{suratData.nama}</h1>
+            <h2 class="relative z-10 text-xl font-bold">Surat {suratData.namaLatin}</h2>
+            <p class="relative z-10 mt-1 text-sm text-emerald-100">
+              {suratData.arti} • {suratData.jumlahAyat} Ayat
+            </p>
+          </div>
 
+          <div class="mb-6 rounded-xl border border-amber-100 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
+            <p class="text-xs leading-relaxed text-amber-800 dark:text-amber-200">
+              💡 <strong>Fadhilah Surat Yasin:</strong> Jantung Al-Qur'an. Barang siapa membacanya,
+              Allah akan mencatat pahala baginya seakan-akan ia telah mengkhatamkan Al-Qur'an
+              sepuluh kali. (HR. Tirmidzi)
+            </p>
+          </div>
+
+          <div class="space-y-6">
+            {suratData.ayat.map((ayat) => (
+              <div
+                id={`ayat-${ayat.nomorAyat}`}
+                class="ayat-card scroll-mt-24 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+              >
+                <div class="mb-4 flex items-center justify-between border-b border-slate-50 pb-3 dark:border-slate-800/50">
+                  <div class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-sm font-bold text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    {ayat.nomorAyat}
+                  </div>
+                  <button
+                    type="button"
+                    data-audio={ayat.audio['05']}
+                    class="btn-audio rounded-xl bg-emerald-50 p-2.5 text-emerald-600 transition-colors hover:bg-emerald-100 active:scale-90 dark:bg-emerald-900/20"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      stroke-width="1"
+                      class="icon-play pointer-events-none"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      stroke="currentColor"
+                      class="icon-pause pointer-events-none hidden"
+                    >
+                      <rect x="6" y="4" width="4" height="16" />
+                      <rect x="14" y="4" width="4" height="16" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="mb-6 text-right">
+                  <p
+                    class="text-arab font-amiri text-[2rem] leading-[2.4] text-slate-800 transition-all duration-300 dark:text-slate-100"
+                    dir="rtl"
+                  >
+                    {ayat.teksArab}
+                  </p>
+                </div>
+
+                <div class="space-y-2 border-t border-slate-50 pt-4 dark:border-slate-800/50">
+                  <p class="text-latin text-[0.95rem] leading-relaxed font-medium text-emerald-700 italic dark:text-emerald-400">
+                    {ayat.teksLatin}
+                  </p>
+                  <p class="text-arti text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    {ayat.teksIndonesia}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div class="py-20 text-center">
+          <div class="mb-4 inline-block rounded-full bg-slate-100 p-4 text-slate-400 dark:bg-slate-800">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <>
+                <line x1="1" y1="1" x2="23" y2="23" />
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55" />
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39" />
+                <path d="M10.71 5.05A16 16 0 0 1 22.33 9" />
+                <path d="M1.67 9a16 16 0 0 1 12.95-3.95" />
+              </>
+            </svg>
+          </div>
+          <p class="font-medium text-slate-500 dark:text-slate-400">Gagal memuat Surat Yasin</p>
+          <p class="mt-1 text-xs text-slate-400">Periksa koneksi internet Anda</p>
+        </div>
+      )
+    }
   </div>
 
-    <Toast />
-
+  <Toast />
 </BaseLayout>
 
 <script is:inline>
-(() => {
-  const initYasin = () => {
-    if (window._yasinInitialized) return;
-    const audioBtnsArr = Array.from(document.querySelectorAll('.btn-audio'));
-    if (!audioBtnsArr.length && !document.getElementById('settings-btn')) return;
-    window._yasinInitialized = true;
-    let currentAudio = null;
-    let currentBtn = null;
-    const toast = document.getElementById('toast');
-    const toastMsg = document.getElementById('toast-msg');
+  (() => {
+    const initYasin = () => {
+      if (window._yasinInitialized) return;
+      const audioBtnsArr = Array.from(document.querySelectorAll('.btn-audio'));
+      if (!audioBtnsArr.length && !document.getElementById('settings-btn')) return;
+      window._yasinInitialized = true;
+      let currentAudio = null;
+      let currentBtn = null;
 
-audioBtnsArr.forEach((btn, index) => {
-      btn.addEventListener('click', function() {
-        const url = this.getAttribute('data-audio');
-        const iconPlay = this.querySelector('.icon-play');
-        const iconPause = this.querySelector('.icon-pause');
+      audioBtnsArr.forEach((btn, index) => {
+        btn.addEventListener('click', function () {
+          const url = this.getAttribute('data-audio');
+          const iconPlay = this.querySelector('.icon-play');
+          const iconPause = this.querySelector('.icon-pause');
 
-        if (currentBtn === this && currentAudio) {
-          if (!currentAudio.paused) {
+          if (currentBtn === this && currentAudio) {
+            if (!currentAudio.paused) {
+              currentAudio.pause();
+              iconPlay.classList.remove('hidden');
+              iconPause.classList.add('hidden');
+            } else {
+              currentAudio.play();
+              iconPlay.classList.add('hidden');
+              iconPause.classList.remove('hidden');
+            }
+            return;
+          }
+
+          if (currentAudio) {
             currentAudio.pause();
+            document.querySelectorAll('.icon-pause').forEach((el) => el.classList.add('hidden'));
+            document.querySelectorAll('.icon-play').forEach((el) => el.classList.remove('hidden'));
+          }
+
+          currentAudio = new Audio(url);
+          window._yasinAudio = currentAudio;
+          currentBtn = this;
+          currentAudio.play();
+          iconPlay.classList.add('hidden');
+          iconPause.classList.remove('hidden');
+
+          currentAudio.onended = () => {
             iconPlay.classList.remove('hidden');
             iconPause.classList.add('hidden');
-          } else {
-            currentAudio.play();
-            iconPlay.classList.add('hidden');
-            iconPause.classList.remove('hidden');
-          }
-          return;
-        }
-
-        if (currentAudio) {
-          currentAudio.pause();
-          document.querySelectorAll('.icon-pause').forEach(el => el.classList.add('hidden'));
-          document.querySelectorAll('.icon-play').forEach(el => el.classList.remove('hidden'));
-        }
-
-        currentAudio = new Audio(url); window._yasinAudio = currentAudio;
-        currentBtn = this;
-        currentAudio.play();
-        iconPlay.classList.add('hidden');
-        iconPause.classList.remove('hidden');
-
-        currentAudio.onended = () => {
-          iconPlay.classList.remove('hidden');
-          iconPause.classList.add('hidden');
-          if (index + 1 < audioBtnsArr.length) {
-            const nextBtn = audioBtnsArr[index + 1];
-            nextBtn.click();
-            const nextCard = nextBtn.closest('.ayat-card');
-            nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          } else {
-            currentAudio = null; window._yasinAudio = null;
-            currentBtn = null;
-          }
-        };
+            if (index + 1 < audioBtnsArr.length) {
+              const nextBtn = audioBtnsArr[index + 1];
+              nextBtn.click();
+              const nextCard = nextBtn.closest('.ayat-card');
+              nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              currentAudio = null;
+              window._yasinAudio = null;
+              currentBtn = null;
+            }
+          };
+        });
       });
-    });
 
-    // Settings modal
-    const settingsBtn = document.getElementById('settings-btn');
-    if (settingsBtn) {
-      settingsBtn.addEventListener('click', () => {
-        const modal = document.createElement('div');
-        modal.className = 'fixed inset-0 z-[100]';
-        modal.innerHTML = `<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="overlay-yasin"></div>
+      // Settings modal
+      const settingsBtn = document.getElementById('settings-btn');
+      if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+          const modal = document.createElement('div');
+          modal.className = 'fixed inset-0 z-[100]';
+          modal.innerHTML = `<div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="overlay-yasin"></div>
           <div class="absolute bottom-0 left-0 w-full bg-white dark:bg-slate-900 rounded-t-3xl p-6 shadow-2xl animate-slide-up" style="max-width: 28rem; left: 50%; transform: translateX(-50%);">
             <div class="flex justify-between items-center mb-6">
               <h3 class="font-bold text-lg text-slate-800 dark:text-white">Tampilan Bacaan</h3>
@@ -189,53 +272,63 @@ audioBtnsArr.forEach((btn, index) => {
               </div>
             </div>
           </div>`;
-        document.body.appendChild(modal);
+          document.body.appendChild(modal);
 
-        const closeBtn = modal.querySelector('#close-settings-yasin');
-        const overlayEl = modal.querySelector('#overlay-yasin');
-        const fontRange = modal.querySelector('#font-size-range-yasin');
-        const toggleLatinEl = modal.querySelector('#toggle-latin-yasin');
-        const toggleArtiEl = modal.querySelector('#toggle-arti-yasin');
+          const closeBtn = modal.querySelector('#close-settings-yasin');
+          const overlayEl = modal.querySelector('#overlay-yasin');
+          const fontRange = modal.querySelector('#font-size-range-yasin');
+          const toggleLatinEl = modal.querySelector('#toggle-latin-yasin');
+          const toggleArtiEl = modal.querySelector('#toggle-arti-yasin');
 
-        const hide = () => { modal.remove(); };
+          const hide = () => {
+            modal.remove();
+          };
 
-        closeBtn.addEventListener('click', hide);
-        overlayEl.addEventListener('click', hide);
+          closeBtn.addEventListener('click', hide);
+          overlayEl.addEventListener('click', hide);
 
-        const saved = localStorage.getItem('yasin-settings');
-        if (saved) {
-          const { size, showLatin, showArti } = JSON.parse(saved);
-          fontRange.value = size;
-          toggleLatinEl.checked = showLatin;
-          toggleArtiEl.checked = showArti;
-        }
+          const saved = localStorage.getItem('yasin-settings');
+          if (saved) {
+            const { size, showLatin, showArti } = JSON.parse(saved);
+            fontRange.value = size;
+            toggleLatinEl.checked = showLatin;
+            toggleArtiEl.checked = showArti;
+          }
 
-        const apply = () => {
-          const size = parseInt(fontRange.value);
-          const showLatin = toggleLatinEl.checked;
-          const showArti = toggleArtiEl.checked;
-          const sizes = ['1.4rem', '1.7rem', '2rem', '2.5rem', '3rem'];
-          document.querySelectorAll('.text-arab').forEach(el => { el.style.fontSize = sizes[size - 1]; });
-          document.querySelectorAll('.text-latin').forEach(el => { el.style.display = showLatin ? 'block' : 'none'; });
-          document.querySelectorAll('.text-arti').forEach(el => { el.style.display = showArti ? 'block' : 'none'; });
-          localStorage.setItem('yasin-settings', JSON.stringify({ size, showLatin, showArti }));
-        };
+          const apply = () => {
+            const size = parseInt(fontRange.value);
+            const showLatin = toggleLatinEl.checked;
+            const showArti = toggleArtiEl.checked;
+            const sizes = ['1.4rem', '1.7rem', '2rem', '2.5rem', '3rem'];
+            document.querySelectorAll('.text-arab').forEach((el) => {
+              el.style.fontSize = sizes[size - 1];
+            });
+            document.querySelectorAll('.text-latin').forEach((el) => {
+              el.style.display = showLatin ? 'block' : 'none';
+            });
+            document.querySelectorAll('.text-arti').forEach((el) => {
+              el.style.display = showArti ? 'block' : 'none';
+            });
+            localStorage.setItem('yasin-settings', JSON.stringify({ size, showLatin, showArti }));
+          };
 
-        fontRange.addEventListener('input', apply);
-        toggleLatinEl.addEventListener('change', apply);
-        toggleArtiEl.addEventListener('change', apply);
-        apply();
-      });
-    }
-  };
+          fontRange.addEventListener('input', apply);
+          toggleLatinEl.addEventListener('change', apply);
+          toggleArtiEl.addEventListener('change', apply);
+          apply();
+        });
+      }
+    };
 
-  document.addEventListener('astro:page-load', initYasin);
-  document.addEventListener('astro:before-swap', () => {
-    window._yasinInitialized = false;
-    if (window._yasinAudio) { window._yasinAudio.pause(); window._yasinAudio = null; }
-  });
-})();
+    document.addEventListener('astro:page-load', initYasin);
+    document.addEventListener('astro:before-swap', () => {
+      window._yasinInitialized = false;
+      if (window._yasinAudio) {
+        window._yasinAudio.pause();
+        window._yasinAudio = null;
+      }
+    });
+  })();
 </script>
 
-<style>
-</style>
+<style></style>

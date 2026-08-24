@@ -1,15 +1,23 @@
-// Qolbu App Service Worker - Perbaikan Validasi Cache & SPA-Routing Astro
-const CACHE_VERSION = 'v4';
+// Qolbu App Service Worker - Enhanced caching strategy
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `qolbu-cache-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline';
+const MAX_CACHE_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const PRECACHE_URLS = [
   '/',
   '/offline',
   '/manifest.json',
   '/logo.png',
+  '/logo-192.png',
+  '/logo-512.png',
   '/favicon.ico',
   '/favicon.svg',
+  // Fonts - variable WOFF2 23KB vs 1.6MB TTF
+  '/fonts/Inter-VariableFont_wght.woff2',
+  '/fonts/Amiri-Regular.ttf',
+  '/fonts/Amiri-Bold.ttf',
+  // Pages
   '/dzikir',
   '/asmaul-husna',
   '/doa',
@@ -18,11 +26,25 @@ const PRECACHE_URLS = [
   '/zakat',
   '/sholat-guide',
   '/sholat',
+  '/events-hijri',
   '/quran',
-  '/quran/yasin'
+  '/quran/yasin',
+  '/quran/index',
 ];
 
-// INSTALL & ACTIVATE Events tetap aman (Gunakan implementasi allSettled kamu yang sudah bagus)
+// Audio CDN domains for cache-first strategy
+const AUDIO_CDNS = ['equran.nos.wjv-1.neo.id', 'everyayah.com', 'download.quranicaudio.com'];
+
+// API domains to bypass cache
+const API_DOMAINS = [
+  'equran.id',
+  'api.aladhan.com',
+  'nominatim.openstreetmap.org',
+  'googleapis.com',
+  'gstatic.com',
+];
+
+// INSTALL
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -36,6 +58,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
+// ACTIVATE
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -49,24 +72,60 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// ─── FETCH STRATEGY UPDATE ───────────────────────────────────────────
+// Helper: Check if URL is audio
+function isAudioRequest(url) {
+  return (
+    AUDIO_CDNS.some((domain) => url.hostname.includes(domain)) ||
+    (url.pathname.includes('audio') && url.pathname.endsWith('.mp3'))
+  );
+}
+
+// Helper: Check if URL is API
+function isApiRequest(url) {
+  return API_DOMAINS.some((domain) => url.hostname.includes(domain));
+}
+
+// Helper: Check if response is fresh
+function isFresh(response) {
+  const dateHeader = response.headers.get('date');
+  if (!dateHeader) return true;
+  const responseDate = new Date(dateHeader).getTime();
+  return Date.now() - responseDate < MAX_CACHE_AGE;
+}
+
+// FETCH STRATEGY
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
+  // Skip non-HTTP or non-GET
   if (!url.protocol.startsWith('http') || request.method !== 'GET') return;
 
-  // Bypass External APIs & CDN
-  if (
-    url.hostname.includes('googleapis.com') || 
-    url.hostname.includes('gstatic.com') ||
-    url.hostname.includes('nominatim.openstreetmap.org') ||
-    url.hostname.includes('equran.id') || 
-    url.hostname.includes('equran.nos')
-  ) return;
+  // Bypass APIs
+  if (isApiRequest(url)) return;
 
-  // Deteksi Navigasi: Berlaku untuk request 'navigate' murni ATAU request halaman HTML via Astro Router
-  const isHtmlNavigation = request.mode === 'navigate' || 
+  // Audio files - Cache First
+  if (isAudioRequest(url)) {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request)
+          .then((response) => {
+            if (response.ok) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+            }
+            return response;
+          })
+          .catch(() => cached);
+      })
+    );
+    return;
+  }
+
+  // HTML Navigation - Network First with Cache Fallback
+  const isHtmlNavigation =
+    request.mode === 'navigate' ||
     (request.headers.get('accept') && request.headers.get('accept').includes('text/html'));
 
   if (isHtmlNavigation) {
@@ -88,12 +147,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Assets (CSS, JS, Images) -> Stale-While-Revalidate
+  // Assets (CSS, JS, Images, Fonts) - Stale While Revalidate
   event.respondWith(
     caches.match(request).then((cached) => {
       const fetchPromise = fetch(request)
         .then((response) => {
-          if (response.ok) {
+          if (response.ok && isFresh(response)) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           }
@@ -101,7 +160,25 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => cached);
 
+      // Return cached immediately, update in background
       return cached || fetchPromise;
     })
   );
+});
+
+// Periodic cleanup of old cache entries
+self.addEventListener('message', (event) => {
+  if (event.data === 'cleanup-cache') {
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.keys().then((keys) => {
+        keys.forEach((request) => {
+          cache.match(request).then((response) => {
+            if (response && !isFresh(response)) {
+              cache.delete(request);
+            }
+          });
+        });
+      });
+    });
+  }
 });
