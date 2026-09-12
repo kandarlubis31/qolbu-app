@@ -64,7 +64,7 @@ const daftarJuz = [
         role="tab"
         aria-selected="true"
         aria-controls="view-surat"
-        class="flex-1 rounded-lg bg-white py-2 text-sm font-bold text-emerald-600 shadow-sm transition-all dark:bg-slate-700"
+        class="flex-1 rounded-lg py-2 text-sm font-bold text-slate-500 transition-colors aria-selected:bg-white aria-selected:text-emerald-600 aria-selected:shadow-sm dark:text-slate-400 dark:aria-selected:bg-slate-700 dark:aria-selected:text-emerald-400"
         >Daftar Surat</button
       >
       <button
@@ -72,7 +72,7 @@ const daftarJuz = [
         role="tab"
         aria-selected="false"
         aria-controls="view-juz"
-        class="flex-1 rounded-lg py-2 text-sm font-bold text-slate-500 transition-all hover:text-emerald-600 dark:text-slate-400"
+        class="flex-1 rounded-lg py-2 text-sm font-bold text-slate-500 transition-colors aria-selected:bg-white aria-selected:text-emerald-600 aria-selected:shadow-sm dark:text-slate-400 dark:aria-selected:bg-slate-700 dark:aria-selected:text-emerald-400"
         >Daftar Juz</button
       >
     </div>
@@ -88,7 +88,7 @@ const daftarJuz = [
               class="surat-card group flex items-center justify-between rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-[colors,box-shadow] md:hover:border-emerald-500 md:hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:md:hover:border-emerald-500"
             >
               <div class="flex items-center gap-4">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white dark:border-slate-700 dark:bg-slate-800 dark:text-emerald-400">
+                <div class="surat-nomor flex h-10 w-10 items-center justify-center rounded-xl border border-slate-100 bg-slate-50 text-sm font-bold text-emerald-600 transition-colors group-hover:bg-emerald-500 group-hover:text-white dark:border-slate-700 dark:bg-slate-800 dark:text-emerald-400">
                   {surat.nomor}
                 </div>
                 <div>
@@ -172,27 +172,14 @@ const daftarJuz = [
       const viewSurat = document.getElementById('view-surat');
       const viewJuz = document.getElementById('view-juz');
 
-      tabSurat.addEventListener('click', () => {
-        tabSurat.className =
-          'flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all';
-        tabSurat.setAttribute('aria-selected', 'true');
-        tabJuz.className =
-          'flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all';
-        tabJuz.setAttribute('aria-selected', 'false');
-        viewSurat.classList.remove('hidden');
-        viewJuz.classList.add('hidden');
-      });
-
-      tabJuz.addEventListener('click', () => {
-        tabJuz.className =
-          'flex-1 py-2 text-sm font-bold rounded-lg bg-white dark:bg-slate-700 shadow-sm text-emerald-600 transition-all';
-        tabJuz.setAttribute('aria-selected', 'true');
-        tabSurat.className =
-          'flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 transition-all';
-        tabSurat.setAttribute('aria-selected', 'false');
-        viewJuz.classList.remove('hidden');
-        viewSurat.classList.add('hidden');
-      });
+      // Styling aktif ditangani CSS variant aria-selected: — JS cukup toggle atribut + panel
+      const selectTab = (idx) => {
+        [tabSurat, tabJuz].forEach((t, i) => t.setAttribute('aria-selected', String(i === idx)));
+        viewSurat.classList.toggle('hidden', idx !== 0);
+        viewJuz.classList.toggle('hidden', idx !== 1);
+      };
+      tabSurat.addEventListener('click', () => selectTab(0));
+      tabJuz.addEventListener('click', () => selectTab(1));
 
       searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
@@ -200,7 +187,9 @@ const daftarJuz = [
 
         suratCards.forEach((card) => {
           const nama = card.querySelector('.surat-nama').textContent.toLowerCase();
-          if (nama.includes(term)) {
+          const nomor = card.querySelector('.surat-nomor').textContent.trim();
+          // Cocokkan nama (substring) atau nomor (exact — "1" tidak menabrak 10-19)
+          if (nama.includes(term) || nomor === term) {
             card.classList.remove('hidden');
             hasVisible = true;
           } else {

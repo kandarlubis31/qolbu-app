@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeaderSticky from '../../components/HeaderSticky.astro';
 import SettingsModal from '../../components/SettingsModal.astro';
+import Toast from '../../components/Toast.astro';
 
 // Type definitions for API responses
 interface SuratListItem {
@@ -267,7 +268,7 @@ const toArabic = (num: number): string => {
 
             <div class="mb-6 text-right">
               <p
-                class="text-arab font-amiri text-[2rem] leading-[2.4] text-slate-800 transition-all duration-300 dark:text-slate-100"
+                class="text-arab font-amiri text-[2rem] leading-[2.4] text-slate-800 transition-[font-size] duration-300 dark:text-slate-100"
                 dir="rtl"
               >
                 {ayat.teksArab}
@@ -294,7 +295,7 @@ const toArabic = (num: number): string => {
       class="hidden rounded-2xl border border-slate-100 bg-white p-6 leading-[3] shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
       <p
-        class="text-arab-mushaf font-amiri text-justify text-[2.2rem] text-slate-800 transition-all duration-300 dark:text-slate-100"
+        class="text-arab-mushaf font-amiri text-justify text-[2.2rem] text-slate-800 transition-[font-size] duration-300 dark:text-slate-100"
         dir="rtl"
       >
         {
@@ -310,6 +311,8 @@ const toArabic = (num: number): string => {
       </p>
     </div>
   </div>
+
+  <Toast />
 </BaseLayout>
 
 <script is:inline>
@@ -382,7 +385,16 @@ const toArabic = (num: number): string => {
           currentAudio = new Audio(url);
           window._quranDetailAudio = currentAudio;
           currentBtn = this;
-          currentAudio.play();
+          currentAudio.play().catch(() => {
+            // Offline / URL mati — pulihkan UI supaya tombol tidak nyangkut pause
+            window.showToast && window.showToast('Gagal memutar audio. Cek koneksi.');
+            iconPlay.classList.remove('hidden');
+            iconPause.classList.add('hidden');
+            card.classList.remove('ring-2', 'ring-emerald-500', 'shadow-md');
+            currentAudio = null;
+            window._quranDetailAudio = null;
+            currentBtn = null;
+          });
 
           iconPlay.classList.add('hidden');
           iconPause.classList.remove('hidden');
@@ -470,10 +482,14 @@ const toArabic = (num: number): string => {
 
       const saved = localStorage.getItem('quran-settings');
       if (saved) {
-        const { size, showLatin, showArti } = JSON.parse(saved);
-        fontSizeRange.value = size;
-        toggleLatin.checked = showLatin;
-        toggleArti.checked = showArti;
+        try {
+          const { size, showLatin, showArti } = JSON.parse(saved);
+          fontSizeRange.value = size;
+          toggleLatin.checked = showLatin;
+          toggleArti.checked = showArti;
+        } catch {
+          /* settings korup — pakai default */
+        }
       }
       applySettings();
 

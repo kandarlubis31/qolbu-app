@@ -43,6 +43,9 @@ declare global {
     // Events page
     _eventsTabsInit: boolean;
 
+    // Masuk Islam page
+    _masukIslamInitialized: boolean;
+
     // Global toast function
     showToast: (msg: string, duration?: number) => void;
 

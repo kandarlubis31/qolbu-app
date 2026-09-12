@@ -74,9 +74,10 @@ try {
 
           <div class="mb-6 rounded-xl border border-amber-100 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
             <p class="text-xs leading-relaxed text-amber-800 dark:text-amber-200">
-              💡 <strong>Fadhilah Surat Yasin:</strong> Jantung Al-Qur'an. Barang siapa membacanya,
-              Allah akan mencatat pahala baginya seakan-akan ia telah mengkhatamkan Al-Qur'an
-              sepuluh kali. (HR. Tirmidzi)
+              💡 <strong>Fadhilah Surat Yasin:</strong> Jantung Al-Qur'an. Membacanya dianjurkan
+              (sunnah); dalam sebuah riwayat disebut Allah mencatat pahala baginya seakan-akan ia
+              telah mengkhatamkan Al-Qur'an sepuluh kali. (HR. Tirmidzi — derajatnya dinilai beragam
+              oleh ulama, namun keutamaan membacanya disepakati)
             </p>
           </div>
 
@@ -124,7 +125,7 @@ try {
 
                 <div class="mb-6 text-right">
                   <p
-                    class="text-arab font-amiri text-[2rem] leading-[2.4] text-slate-800 transition-all duration-300 dark:text-slate-100"
+                    class="text-arab font-amiri text-[2rem] leading-[2.4] text-slate-800 transition-[font-size] duration-300 dark:text-slate-100"
                     dir="rtl"
                   >
                     {ayat.teksArab}
@@ -214,7 +215,14 @@ try {
           currentAudio = new Audio(url);
           window._yasinAudio = currentAudio;
           currentBtn = this;
-          currentAudio.play();
+          currentAudio.play().catch(() => {
+            window.showToast && window.showToast('Gagal memutar audio. Cek koneksi.');
+            iconPlay.classList.remove('hidden');
+            iconPause.classList.add('hidden');
+            currentAudio = null;
+            window._yasinAudio = null;
+            currentBtn = null;
+          });
           iconPlay.classList.add('hidden');
           iconPause.classList.remove('hidden');
 
@@ -289,10 +297,14 @@ try {
 
           const saved = localStorage.getItem('yasin-settings');
           if (saved) {
-            const { size, showLatin, showArti } = JSON.parse(saved);
-            fontRange.value = size;
-            toggleLatinEl.checked = showLatin;
-            toggleArtiEl.checked = showArti;
+            try {
+              const { size, showLatin, showArti } = JSON.parse(saved);
+              fontRange.value = size;
+              toggleLatinEl.checked = showLatin;
+              toggleArtiEl.checked = showArti;
+            } catch {
+              /* settings korup — pakai default */
+            }
           }
 
           const apply = () => {
@@ -330,5 +342,3 @@ try {
     });
   })();
 </script>
-
-<style></style>

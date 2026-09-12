@@ -68,10 +68,13 @@ test.describe('Quran Surah Detail Page', () => {
       el.dispatchEvent(new Event('input'));
     });
 
-    // Check that font size changed
+    // Tunggu transisi font-size selesai — poll computed style sampai nilai final
     const arabText = page.locator('.text-arab').first();
-    const fontSize = await arabText.evaluate((el) => window.getComputedStyle(el).fontSize);
-    expect(parseInt(fontSize)).toBeGreaterThan(30); // 3rem = 48px for size 5
+    await expect
+      .poll(() => arabText.evaluate((el) => parseInt(window.getComputedStyle(el).fontSize)), {
+        timeout: 5000,
+      })
+      .toBe(48); // 3rem untuk size 5
   });
 
   test('should toggle latin text', async ({ page }) => {
@@ -93,5 +96,25 @@ test.describe('Quran Surah Detail Page', () => {
   test('should navigate back to quran index', async ({ page }) => {
     await page.click('a[href="/quran"]');
     await expect(page).toHaveURL(/\/quran$/);
+  });
+
+  test('should share ayat via navigator.share', async ({ page }) => {
+    // Spy navigator.share — deterministik lintas engine (headless tidak punya share sheet)
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'share', {
+        value: async (data) => {
+          window.__lastShare = data;
+        },
+        configurable: true,
+      });
+    });
+    await page.goto('/quran/1');
+
+    await page.locator('.share-btn').first().click();
+    await expect
+      .poll(() => page.evaluate(() => window.__lastShare?.text || ''))
+      .toContain('Al-Fatihah');
+    const shared = await page.evaluate(() => window.__lastShare);
+    expect(shared.url).toContain('/quran/1#ayat-1');
   });
 });

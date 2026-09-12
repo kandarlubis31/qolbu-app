@@ -1,0 +1,967 @@
+---
+// src/pages/masuk-islam.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeaderSticky from '../components/HeaderSticky.astro';
+import Toast from '../components/Toast.astro';
+
+// --- DATA KISAH MUALAF (cerita yang menyentuh hati) ---
+const stories = [
+  {
+    id: 'kisah-malik',
+    tag: 'Kisah Tabi\u2019in',
+    title: 'Malik bin Dinar: Dari Pecandu Arak Menjadi Imam Terhormat',
+    paragraphs: [
+      'Di kota Bashrah hiduplah seorang lelaki bernama Malik, terkenal sebagai pemabuk dan preman yang ditakuti. Arak telah memakan masa mudanya, dan nyaris tak ada yang percaya lelaki itu bisa berubah.',
+      'Pada suatu malam, di tengah pesta minumannya, telinga Malik menangkap lantunan bacaan Al-Qur\u2019an dari rumah tetangga: \u201cIngatlah, hanya dengan mengingat Allah hati menjadi tenteram\u201d (QS. Ar-Ra\u2019d: 28).',
+      'Air mata laki-laki itu tiba-tiba membanjir. Malam itu juga ia tumpahkan seluruh araknya, bertaubat, lalu berbenah mempelajari agama. Lelaki yang dulu ditolak masyarakat itu kemudian dikenal sebagai Malik bin Dinar — salah satu ulama tabi\u2019in paling terhormat dan teladan ketaatan di Bashrah.',
+    ],
+  },
+  {
+    id: 'kisah-kaab',
+    tag: 'Kisah Sahabat',
+    title: 'Ka\u2019ab bin Zuhair: Penyair yang Diampuni dengan Sekain Putih',
+    paragraphs: [
+      'Ka\u2019ab bin Zuhair adalah penyair piatu yang dulu menyerang Nabi Muhammad ﷺ lewat puisi-puisi sindiran. Ketika Islam menang di Makkah, namanya masuk daftar orang yang dituntut. Ia melarikan diri dan bersembunyi.',
+      'Namun hatinya gelisah. Diam-diam ia datang ke Masjid Nabawi, dan setelah sholat Subuh, lelaki yang ketakutan itu berdiri di hadapan Rasulullah ﷺ, membacakan syair penebusannya: qasidah \u201cBanat Su\u2019ad\u201d.',
+      'Ketika bait pujian untuk Rasulullah ﷺ selesai dibaca, Nabi ﷺ melemparkan kain burdah (selimut putih) ke tubuhnya — tanda ampunan penuh. Dari situ lahir sebutan legendarisnya, syair \u201cAl-Burdah\u201d, yang hingga kini menjadi salah satu puisi pujian paling masyhur dalam sejarah Islam. Tidak ada yang terlalu jauh untuk kembali.',
+    ],
+  },
+  {
+    id: 'kisah-pickthall',
+    tag: 'Kisah dari Barat',
+    title: 'Marmaduke Pickthall: Novelis Inggris yang Menemukan Jawaban',
+    paragraphs: [
+      'Marmaduke Pickthall lahir di London, seorang novelis dan jurnalis Inggris yang dikenal luas di kalangan sastranya. Namun kehidupan modern Barat meninggalkan kekosongan yang tak bisa ia jawab.',
+      'Perjalanannya ke Timur Tengah membawanya mengamati langsung kehidupan kaum Muslim: kesederhanaan ibadah, persaudaraan lintas ras, dan kedekatan hamba dengan Penciptanya tanpa perantara. Pada 1917, ia menyatakan Islam.',
+      'Beliau kemudian mengerjakan proyek agung: menerjemahkan Al-Qur\u2019an ke bahasa Inggris — \u201cThe Meaning of the Glorious Koran\u201d (1930) — terjemahan pertama oleh seorang muslim berbahasa Inggris yang menguasai bahasa Arab. Kini bukunya menjadi jembatan jutaan orang Barat mengenal Islam.',
+    ],
+  },
+];
+
+// --- KENAPA ISLAM MENARIK ---
+const highlights = [
+  {
+    title: 'Tauhid yang Murni',
+    desc: 'Hanya satu Tuhan, tanpa perantara, tanpa batu dan patung. Konsep paling sederhana namun paling dalam: Allah Maha Esa.',
+    path: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+  },
+  {
+    title: 'Bertemu Tuhan Tanpa Perantara',
+    desc: 'Setiap muslim bersujud langsung kepada Allah. Tidak ada calo doa, tidak ada biaya tiket surga.',
+    path: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+  },
+  {
+    title: 'Pedoman Hidup Lengkap',
+    desc: 'Bukan sekadar ritual: Islam mengatur ibadah, akhlak, keluarga, ekonomi, hingga cara tidur dan makan yang sehat.',
+    path: 'M4 19.5A2.5 2.5 0 0 1 6.5 17H20 M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z',
+  },
+  {
+    title: 'Terus Bertumbuh',
+    desc: 'Lebih dari 2 miliar jiwa di hampir semua negara. Riset Pew Research menempatkan Islam sebagai agama dengan pertumbuhan tercepat hingga 2050.',
+    path: 'M23 6l-9.5 9.5-5-5L1 18 M17 6h6v6',
+  },
+];
+
+// --- 9 LANGKAH TATA CARA MASUK ISLAM ---
+const steps = [
+  {
+    id: 'langkah-1',
+    cat: 'Persiapan',
+    title: 'Kenal Islam dari Sumbernya',
+    body: [
+      'Sebelum mengucapkan syahadat, pahami dulu ke mana hatimu melangkah: siapa Allah, siapa Nabi Muhammad ﷺ, dan apa yang diyakini seorang muslim. Tidak perlu menunggu jadi ahli — para sahabat pun mulai dari nol.',
+      'Mulai dari hal kecil: baca Al-Qur\u2019an terjemahannya, simak kisah para mualaf, atau bertanya langsung kepada kenalan yang muslim. Pintu Allah terbuka bagi siapa pun yang ikhlas mencari.',
+    ],
+    link: '/quran',
+    linkLabel: "Mulai baca Al-Qur'an",
+  },
+  {
+    id: 'langkah-2',
+    cat: 'Persiapan',
+    title: 'Lepas Keyakinan Lama dengan Tulus',
+    body: [
+      'Syahadat berarti pengakuan sepenuh hati bahwa tidak ada tuhan selain Allah. Jika sebelumnya memeluk keyakinan lain, lepaskan dengan tulus — tanpa paksaan, tanpa gengsi, hanya karena hati telah yakin.',
+      'Ingat, \u201ctidak ada paksaan dalam agama\u201d (QS. Al-Baqarah: 256). Islam datang menyapa hati, bukan menakut-nakuti.',
+    ],
+  },
+  {
+    id: 'langkah-3',
+    cat: 'Persiapan',
+    title: 'Bulatan Keputusan di Hati (Niat)',
+    body: [
+      'Tanyakan pada dirimu: apakah ini murni karena keinginan mendekat kepada Allah? Bukan tren, bukan demi menikah semata, bukan untuk mencari keuntungan dunia.',
+      'Niat yang ikhlas adalah fondasi. Rasulullah ﷺ bersabda bahwa amalan itu tergantung niatnya — dan menjadi muslim pun dimulai dari sana.',
+    ],
+  },
+  {
+    id: 'langkah-4',
+    cat: 'Persiapan',
+    title: 'Mandi Suci (Ghusl)',
+    body: [
+      'Sebelum mengucapkan syahadat, disunnahkan mandi suci: mensucikan seluruh tubuh dengan air, dimulai dengan niat di dalam hati.',
+      'Ini simbol dimulainya babak baru — tubuh yang bersih untuk jiwa yang baru. Mandi wajib juga menjadi ciri khas ibadah seorang muslim: sholat, menyentuh mushaf, dan haji mensyaratkan kesucian.',
+    ],
+  },
+  {
+    id: 'langkah-5',
+    cat: 'Langkah Inti',
+    title: 'Mengucapkan Dua Kalimat Syahadat',
+    body: [
+      'Inilah pintu masuk Islam. Ucapkan dengan lantang atau dalam hati, dengan ilmu (memahami artinya), yakin, dan ikhlas. Boleh dilakukan sendirian dan tetap sah — meski dianjurkan di hadapan saksi atau ustadz agar mendapat bimbingan.',
+      'Dengan syahadat, seluruh dosa masa lalu dihapus. Rasulullah ﷺ bersabda: \u201cIslam menghapus dosa-dosa sebelumnya\u201d — halaman baru dimulai dari nol.',
+    ],
+    arab: 'أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ',
+    latin:
+      'Asy-hadu all\u0101 il\u0101ha illall\u0101h, wa asy-hadu anna Mu\u1e25ammadan ras\u016blull\u0101h',
+    arti: 'Aku bersaksi bahwa tiada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah.',
+  },
+  {
+    id: 'langkah-6',
+    cat: 'Sunnah Setelah Syahadat',
+    title: 'Ditegakkan Adzan di Telinga',
+    body: [
+      'Sunnah mengumandangkan adzan di telinga kanan dan iqamah di telinga kiri orang yang baru bersyahadat — sebagaimana yang dilakukan untuk bayi baru lahir.',
+      'Ia menjadi kabar gembira: kalimat teragung di dunia (adzan) menjadi hal pertama yang menyambutmu di pintu Islam.',
+    ],
+  },
+  {
+    id: 'langkah-7',
+    cat: 'Awal Ibadah',
+    title: 'Belajar Wudhu & Menjaga Kebersihan',
+    body: [
+      'Sholat sah dimulai dari bersuci. Pelajari wudhu: membasuh wajah, kedua tangan, mengusap kepala, dan membasuh kaki dengan tertib.',
+      'Rasulullah ﷺ menyebut kesucian separuh keimanan. Dari titik ini, hidupmu menjadi lebih tertata — bersuci sebelum beribadah, jujur sebelum berbicara.',
+    ],
+    link: '/sholat-guide',
+    linkLabel: 'Panduan lengkap bersuci & sholat',
+  },
+  {
+    id: 'langkah-8',
+    cat: 'Awal Ibadah',
+    title: 'Sholat Dua Rakaat Pertama',
+    body: [
+      'Setelah syahadat, disunnahkan langsung sholat dua rakaat sebagai tanda syukur. Tak perlu takut salah — semua orang muslim pernah ada di posisimu hari ini.',
+      'Panduan sholat di aplikasi ini menyajikan 28 langkah lengkap: niat, gerakan, hingga bacaannya — lengkap dengan mode praktik. Pelajari pelan-pelan, satu langkah sehari pun cukup.',
+    ],
+    link: '/sholat-guide',
+    linkLabel: 'Buka Panduan Sholat',
+  },
+  {
+    id: 'langkah-9',
+    cat: 'Awal Ibadah',
+    title: 'Belajar Bertahap & Bergabung dengan Komunitas',
+    body: [
+      'Islam tidak membebani: belajarlah secara bertahap, mulai dari yang wajib (syahadat, sholat) lalu bertambah kecil demi kecil. Yang penting jangan berhenti.',
+      'Cari masjid terdekat atau kelompok kelas mualaf (LPK) untuk didampingi — dan sampaikan kepada keluarga dengan cara yang baik. Justru akhlakmu yang akan menjadi dakwah paling indah bagi mereka.',
+    ],
+  },
+];
+
+// --- FAQ ---
+const faqs = [
+  {
+    id: 'faq-1',
+    title: 'Apakah harus ada saksi atau ustadz saat syahadat?',
+    body: 'Tidak wajib. Syahadat sah jika diucapkan sendirian dengan hati yang yakin. Namun dianjurkan didampingi ustadz atau sahabat muslim agar mendapat bimbingan, plus surat syahadat yang berguna untuk urusan administrasi (menikah, haji, dan sebagainya).',
+  },
+  {
+    id: 'faq-2',
+    title: 'Bagaimana jika keluarga belum menyetujui?',
+    body: 'Sampaikan dengan lembut dan jujur, tanpa dramatisasi. Tetap berbakti kepada mereka — akhlak yang baik adalah dakwah yang paling meyakinkan. Banyak mualaf mengatakan keluarganya akhirnya menerima setelah melihat perubahan pribadinya.',
+  },
+  {
+    id: 'faq-3',
+    title: 'Apakah dosa masa lalu benar-benar dihapus?',
+    body: 'Ya. Rasulullah ﷺ bersabda: \u201cSyahadat menghapus dosa-dosa sebelumnya\u201d (HR. Muslim). Seolah bayi yang baru lahir tanpa dosa. Amalan baikmu kemudian bahkan bisa menyaingi amalan orang yang sudah lama beriman.',
+  },
+  {
+    id: 'faq-4',
+    title: 'Bagaimana jika masih ada keraguan di hati?',
+    body: 'Sangat wajar — bahkan sahabat pun pernah merasakannya. Was-was bukan penghalang syahadat selama hati dasarnya yakin. Teruslah belajar dan berdoa: \u201cYa Allah, teguhkanlah aku.\u201d Iman itu bertumbuh, bukan langsung sempurna.',
+  },
+  {
+    id: 'faq-5',
+    title: 'Apakah saya harus mengganti nama?',
+    body: 'Tidak wajib. Mengganti nama dengan nama berpandu Islam hanyalah sunnah atau pilihan pribadi. Banyak mualaf mempertahankan namanya — yang penting adalah isi hatinya, bukan sekadar labelnya.',
+  },
+  {
+    id: 'faq-6',
+    title: 'Dapatkah saya beribadah sambil terus belajar?',
+    body: 'Justru begitulah caranya. Setelah syahadat, mulailah sholat walau masih membaca panduan, berpuasa pelan-pelan, dan bertanya selagi bertumbuh. Islam membebani seseorang sesuai kesanggapannya.',
+  },
+];
+---
+
+<BaseLayout pageTitle="Masuk Islam">
+  <HeaderSticky title="Masuk Islam" />
+
+  <div class="mx-auto w-full max-w-md px-4 pb-24">
+    <!-- Hero -->
+    <section
+      class="animate-fade-in relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-700 p-6 text-white shadow-xl shadow-emerald-500/20"
+    >
+      <div class="relative z-10">
+        <p class="font-amiri mb-3 text-center text-2xl leading-relaxed" dir="rtl">
+          بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+        </p>
+        <h2 class="text-2xl leading-snug font-black">Panduan Masuk Islam</h2>
+        <p class="mt-2 text-sm leading-relaxed text-emerald-50/90">
+          Untukmu yang sedang mencari ketenangan: tata cara lengkap, kisah para penemu jalan, dan
+          pendampingan langkah demi langkah. Tak ada yang terlambat, tak ada yang terlalu jauh.
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold backdrop-blur-sm"
+            >9 langkah sederhana</span
+          >
+          <span class="rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold backdrop-blur-sm"
+            >Dosa lalu dihapus</span
+          >
+          <span class="rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold backdrop-blur-sm"
+            >±2 miliar saudara baru</span
+          >
+        </div>
+      </div>
+      <div
+        class="absolute -right-10 -bottom-14 h-44 w-44 rounded-full bg-white/10"
+        aria-hidden="true"
+      >
+      </div>
+      <div class="absolute -top-12 -left-10 h-32 w-32 rounded-full bg-white/10" aria-hidden="true">
+      </div>
+    </section>
+
+    <!-- Ayat pembuka -->
+    <section
+      class="mt-6 rounded-2xl border border-amber-200/70 bg-amber-50 p-4 dark:border-amber-500/20 dark:bg-amber-500/10"
+    >
+      <p class="font-amiri text-2xl leading-loose text-amber-700" dir="rtl">
+        أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ
+      </p>
+      <p class="mt-1 text-xs leading-relaxed font-medium text-amber-800 dark:text-amber-300">
+        “Ingatlah, hanya dengan mengingat Allah hati menjadi tenteram.”
+        <span class="font-bold">— QS. Ar-Ra’d: 28</span>
+      </p>
+    </section>
+
+    <!-- Kisah-kisah menarik -->
+    <section class="mt-10">
+      <p
+        class="text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
+      >
+        Kisah yang Menyentuh Hati
+      </p>
+      <h3 class="mt-1 mb-4 text-xl font-black text-slate-800 dark:text-white">
+        Mereka Pernah di Posisimu
+      </h3>
+
+      <div class="space-y-4">
+        {
+          stories.map((story) => (
+            <details class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-[colors,box-shadow] duration-300 open:border-emerald-500/50 open:shadow-lg md:hover:border-emerald-500/50 dark:border-slate-800 dark:bg-slate-900">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-3 bg-slate-50/50 p-4 transition-colors select-none group-open:bg-emerald-50 dark:bg-slate-800/50 dark:group-open:bg-emerald-900/10">
+                <div>
+                  <span class="mb-0.5 block text-[10px] font-bold tracking-widest text-emerald-500 uppercase">
+                    {story.tag}
+                  </span>
+                  <h4 class="text-sm leading-snug font-bold text-slate-700 transition-colors group-open:text-emerald-700 dark:text-slate-200 dark:group-open:text-emerald-400">
+                    {story.title}
+                  </h4>
+                </div>
+                <span class="shrink-0 p-1 text-slate-400 transition-transform group-open:rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </summary>
+              <div class="animate-fade-in space-y-3 border-t border-slate-100 px-5 pt-4 pb-6 dark:border-slate-800">
+                {story.paragraphs.map((p) => (
+                  <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{p}</p>
+                ))}
+                <p class="border-t border-slate-100 pt-3 text-xs font-bold text-emerald-600 italic dark:border-slate-800 dark:text-emerald-400">
+                  ♥ Tidak ada yang terlalu jauh untuk kembali.
+                </p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Kenapa Islam menarik -->
+    <section class="mt-10">
+      <p
+        class="text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
+      >
+        Melangkah Lebih Dekat
+      </p>
+      <h3 class="mt-1 mb-4 text-xl font-black text-slate-800 dark:text-white">
+        Mengapa Jutaan Orang Tertarik pada Islam?
+      </h3>
+
+      <div class="grid grid-cols-2 gap-3">
+        {
+          highlights.map((h) => (
+            <div class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-[colors,box-shadow] dark:border-slate-800 dark:bg-slate-900 dark:shadow-none">
+              <div
+                class={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d={h.path} />
+                </svg>
+              </div>
+              <h4 class="text-xs leading-snug font-bold text-slate-700 dark:text-slate-200">
+                {h.title}
+              </h4>
+              <p class="mt-1.5 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+                {h.desc}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Syarat & Rukun -->
+    <section class="mt-10 grid gap-4">
+      <div
+        class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
+      >
+        <h3 class="mb-2 flex items-center gap-2 text-sm font-black text-slate-800 dark:text-white">
+          <span
+            class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+              ></path></svg
+            >
+          </span>
+          Syarat Utama Masuk Islam
+        </h3>
+        <ul class="space-y-2 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+          <li class="flex gap-2">
+            <span class="font-bold text-emerald-600 dark:text-emerald-400">1.</span>
+            Berakal sehat dan sudah baligh (dewasa/cukup umur).
+          </li>
+          <li class="flex gap-2">
+            <span class="font-bold text-emerald-600 dark:text-emerald-400">2.</span>
+            Meyakini kebenaran dua kalimat syahadat sepenuh hati.
+          </li>
+          <li class="flex gap-2">
+            <span class="font-bold text-emerald-600 dark:text-emerald-400">3.</span>
+            Mengucapkannya dengan ikhlas, tanpa paksaan siapa pun.
+          </li>
+        </ul>
+      </div>
+
+      <div
+        class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
+      >
+        <h3 class="mb-2 flex items-center gap-2 text-sm font-black text-slate-800 dark:text-white">
+          <span
+            class="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path
+                d="M8 2v4 M16 2v4 M3 10h18 M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"
+              ></path></svg
+            >
+          </span>
+          5 Rukun Islam — Peta Perjalananmu
+        </h3>
+        <ol class="space-y-1.5 text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+          <li class="flex gap-2">
+            <span
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              >1</span
+            >
+            <span><b>Syahadat</b> — kalimat ikrar masuk Islam.</span>
+          </li>
+          <li class="flex gap-2">
+            <span
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              >2</span
+            >
+            <span><b>Sholat</b> — 5 waktu pengingat harian.</span>
+          </li>
+          <li class="flex gap-2">
+            <span
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              >3</span
+            >
+            <span><b>Zakat</b> — membersihkan harta, menyantuni.</span>
+          </li>
+          <li class="flex gap-2">
+            <span
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              >4</span
+            >
+            <span><b>Puasa Ramadan</b> — latihan kendali diri.</span>
+          </li>
+          <li class="flex gap-2">
+            <span
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+              >5</span
+            >
+            <span><b>Haji</b> — bagi yang mampu, sekali seumur hidup.</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Progress tracker -->
+    <section class="mt-10">
+      <p
+        class="text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
+      >
+        Tata Cara Lengkap
+      </p>
+      <h3 class="mt-1 text-xl font-black text-slate-800 dark:text-white">9 Langkah Masuk Islam</h3>
+      <p class="mt-1 mb-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+        Buka satu per satu, tandai yang sudah selesai. Progresmu tersimpan otomatis di perangkat
+        ini.
+      </p>
+
+      <div
+        class="mb-5 rounded-2xl border border-emerald-500/30 bg-emerald-50/60 p-4 dark:border-emerald-500/20 dark:bg-emerald-500/10"
+      >
+        <div class="flex items-center justify-between">
+          <p
+            id="progress-text"
+            class="text-xs font-bold text-emerald-700 dark:text-emerald-400"
+            aria-live="polite"
+          >
+            0 dari 9 langkah selesai
+          </p>
+          <button
+            id="reset-progress"
+            class="flex items-center gap-1 rounded-lg p-1.5 text-[10px] font-bold text-slate-400 transition-colors hover:text-rose-500"
+            title="Reset Progres"
+            aria-label="Reset progres belajar"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"
+              ></path></svg
+            >
+            Reset
+          </button>
+        </div>
+        <div class="mt-2 h-2 overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-900/40">
+          <div
+            id="progress-bar"
+            class="h-full w-0 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="9"
+            aria-valuenow="0"
+          >
+          </div>
+        </div>
+      </div>
+
+      <!-- Langkah accordion -->
+      <div class="space-y-4" id="steps-container">
+        {
+          steps.map((item, index) => (
+            <details
+              class="step-item group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-[colors,box-shadow] duration-300 open:border-emerald-500/50 open:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+              data-index={index}
+              data-id={item.id}
+            >
+              <summary class="flex cursor-pointer list-none items-center justify-between bg-slate-50/50 p-4 transition-colors select-none group-open:bg-emerald-50 dark:bg-slate-800/50 dark:group-open:bg-emerald-900/10">
+                <div class="flex items-center gap-3">
+                  <span class="step-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-sm font-bold text-slate-600 transition-colors group-open:bg-emerald-500 group-open:text-white dark:bg-slate-700 dark:text-slate-300">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <span class="mb-0.5 block text-[10px] font-bold tracking-widest text-slate-400 uppercase">
+                      {item.cat}
+                    </span>
+                    <h4 class="line-clamp-1 text-sm font-bold text-slate-700 transition-colors group-open:text-emerald-700 dark:text-slate-200 dark:group-open:text-emerald-400">
+                      {item.title}
+                    </h4>
+                  </div>
+                </div>
+                <span class="shrink-0 p-1 text-slate-400 transition-transform group-open:rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </summary>
+
+              <div class="animate-fade-in border-t border-slate-100 px-5 pt-4 pb-6 dark:border-slate-800">
+                <div class="space-y-3">
+                  {item.body.map((p) => (
+                    <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{p}</p>
+                  ))}
+                </div>
+
+                {item.arab && (
+                  <div class="mt-4 rounded-xl border border-slate-100 bg-slate-50 p-4 text-right dark:border-slate-700/50 dark:bg-slate-800/50">
+                    <p
+                      class="font-amiri text-2xl leading-[2.1] text-slate-800 dark:text-slate-100"
+                      dir="rtl"
+                    >
+                      {item.arab}
+                    </p>
+                  </div>
+                )}
+
+                {item.latin && (
+                  <div class="mt-4 space-y-1.5 px-1">
+                    <p class="text-sm leading-relaxed font-bold text-emerald-600 dark:text-emerald-400">
+                      {item.latin}
+                    </p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">"{item.arti}"</p>
+                  </div>
+                )}
+
+                {item.link && (
+                  <a
+                    href={item.link}
+                    class="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-600 transition-colors hover:bg-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400"
+                  >
+                    {item.linkLabel}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </a>
+                )}
+
+                <div class="mt-4 flex justify-end border-t border-slate-100 pt-3 dark:border-slate-800">
+                  <button
+                    class="mark-complete-btn flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs font-bold text-slate-500 transition-colors dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"
+                    aria-label={`Tandai langkah ${index + 1} selesai`}
+                  >
+                    <svg
+                      class="ic-check hidden"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                    <span class="btn-text">Tandai Selesai</span>
+                  </button>
+                </div>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Bacaan Syahadat (highlight) -->
+    <section
+      class="mt-10 overflow-hidden rounded-3xl border border-emerald-500/40 bg-gradient-to-b from-emerald-50 to-white shadow-lg shadow-emerald-500/10 dark:border-emerald-500/20 dark:from-emerald-900/20 dark:to-slate-900"
+    >
+      <div class="bg-emerald-600 px-5 py-3 text-center">
+        <h3 class="text-sm font-black tracking-wide text-white">✦ Kalimat Penentu ✦</h3>
+        <p class="mt-0.5 text-[10px] font-medium text-emerald-100">
+          Baca ini dengan penuh kesadaran dan keyakinan
+        </p>
+      </div>
+      <div class="px-6 py-6 text-center">
+        <p class="font-amiri text-3xl leading-[2.1] text-slate-800 dark:text-slate-100" dir="rtl">
+          أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ
+        </p>
+        <p class="mt-4 text-sm leading-relaxed font-bold text-emerald-600 dark:text-emerald-400">
+          Asy-hadu allā ilāha illallāh, wa asy-hadu anna Muḥammadan rasūlullāh
+        </p>
+        <p class="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+          "Aku bersaksi bahwa tiada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah
+          utusan Allah."
+        </p>
+        <button
+          id="copy-syahadat"
+          class="mt-5 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-xs font-bold text-white transition-transform active:scale-95 md:hover:bg-emerald-700"
+          aria-label="Salin bacaan syahadat"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+          </svg>
+          Salin Bacaan Syahadat
+        </button>
+        <p class="mt-3 text-[10px] leading-relaxed text-slate-400">
+          Ucapkan saat hati telah siap — dan selamat datang di rumah yang baru. 🌱
+        </p>
+      </div>
+    </section>
+
+    <!-- Setelah syahadat -->
+    <section class="mt-10">
+      <p
+        class="text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
+      >
+        Setelah Syahadat
+      </p>
+      <h3 class="mt-1 mb-4 text-xl font-black text-slate-800 dark:text-white">
+        Empat Hal untuk Dipelajari Pertama
+      </h3>
+      <div class="grid grid-cols-2 gap-3">
+        <a
+          href="/sholat-guide"
+          class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-[colors,box-shadow] md:hover:border-emerald-500/50 md:hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
+        >
+          <div class="mb-2 text-lg">🕌</div>
+          <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200">Wudhu & Sholat</h4>
+          <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+            Panduan 28 langkah lengkap dengan praktik.
+          </p>
+        </a>
+        <a
+          href="/quran"
+          class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-[colors,box-shadow] md:hover:border-emerald-500/50 md:hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
+        >
+          <div class="mb-2 text-lg">📖</div>
+          <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200">Baca Al-Qur'an</h4>
+          <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+            114 surat lengkap dengan terjemahan & audio.
+          </p>
+        </a>
+        <a
+          href="/dzikir"
+          class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-[colors,box-shadow] md:hover:border-emerald-500/50 md:hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
+        >
+          <div class="mb-2 text-lg">📿</div>
+          <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200">Dzikir Harian</h4>
+          <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+            Pagi & petang — temukan ketenangan hati.
+          </p>
+        </a>
+        <a
+          href="/doa"
+          class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition-[colors,box-shadow] md:hover:border-emerald-500/50 md:hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:shadow-none"
+        >
+          <div class="mb-2 text-lg">🤲</div>
+          <h4 class="text-xs font-bold text-slate-700 dark:text-slate-200">Doa Sehari-hari</h4>
+          <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+            47 doa: bangun tidur, makan, hingga bepergian.
+          </p>
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-10">
+      <p
+        class="text-[10px] font-bold tracking-widest text-emerald-600 uppercase dark:text-emerald-400"
+      >
+        Sering Ditanyakan
+      </p>
+      <h3 class="mt-1 mb-4 text-xl font-black text-slate-800 dark:text-white">
+        Pertanyaan & Jawaban
+      </h3>
+
+      <div class="space-y-3">
+        {
+          faqs.map((faq) => (
+            <details class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-[colors,box-shadow] dark:border-slate-800 dark:bg-slate-900">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-3 p-4 transition-colors select-none">
+                <h4 class="text-xs leading-snug font-bold text-slate-700 transition-colors group-open:text-emerald-600 dark:text-slate-200 dark:group-open:text-emerald-400">
+                  {faq.title}
+                </h4>
+                <span class="shrink-0 p-1 text-slate-400 transition-transform group-open:rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </summary>
+              <div class="animate-fade-in border-t border-slate-100 px-4 py-4 dark:border-slate-800">
+                <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300">{faq.body}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Penutup + disclaimer -->
+    <section class="mt-10 rounded-3xl bg-slate-900 p-6 text-center dark:bg-slate-800/60">
+      <p class="font-amiri text-2xl leading-loose text-emerald-300" dir="rtl">
+        اللَّهُمَّ اهْدِنِي وَسَدِّدْنِي
+      </p>
+      <p class="mt-1 text-xs font-bold text-emerald-400">
+        "Ya Allah, berilah aku petunjuk dan luruskanlah aku" (HR. Muslim)
+      </p>
+      <p class="mt-4 text-xs leading-relaxed text-slate-300">
+        Ya Allah, untuk siapa pun yang membaca halaman ini dan kelak memutuskan masuk Islam —
+        bimbinglah ia, mudahkanlah langkahnya, dan jadikanlah ia hamba yang Engkau ridhai. Aamiin.
+      </p>
+    </section>
+
+    <div
+      class="mt-6 rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900"
+    >
+      <p class="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+        <b class="text-slate-600 dark:text-slate-300">Catatan:</b> Halaman ini adalah pegangan awal yang
+        ringkas. Untuk keputusan besar dalam hidup, dampingi dirimu dengan ustadz atau takmir masjid terdekat
+        — banyak masjid menyelenggarakan kelas mualaf (LPK) yang ramah dan terbuka untuk siapa saja.
+      </p>
+    </div>
+
+    <Toast />
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const initMasukIslam = () => {
+      if (window._masukIslamInitialized) return;
+      const stepDetails = document.querySelectorAll('details.step-item');
+      const progressBar = document.getElementById('progress-bar');
+      const progressText = document.getElementById('progress-text');
+      const resetBtn = document.getElementById('reset-progress');
+      const copyBtn = document.getElementById('copy-syahadat');
+      if (!stepDetails.length || !progressBar || !progressText) return;
+      window._masukIslamInitialized = true;
+
+      const TOTAL = stepDetails.length;
+      const CHECK_SVG =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+      // Safe-parse: data korup tidak boleh mematikan halaman
+      const safeParse = (key) => {
+        try {
+          return JSON.parse(localStorage.getItem(key) || '[]');
+        } catch {
+          return [];
+        }
+      };
+      let completed = safeParse('masuk-islam-completed');
+      if (!Array.isArray(completed)) completed = [];
+
+      const updateProgress = () => {
+        stepDetails.forEach((el) => {
+          const id = el.getAttribute('data-id');
+          const badge = el.querySelector('.step-badge');
+          const markBtn = el.querySelector('.mark-complete-btn');
+          if (!badge) return;
+
+          if (completed.includes(id)) {
+            badge.innerHTML = CHECK_SVG;
+            badge.classList.add('bg-emerald-500', 'text-white');
+            badge.classList.remove(
+              'bg-slate-200',
+              'dark:bg-slate-700',
+              'text-slate-600',
+              'dark:text-slate-300'
+            );
+            if (markBtn) {
+              markBtn.querySelector('.btn-text').textContent = 'Selesai ✓';
+              markBtn.classList.add(
+                'bg-emerald-100',
+                'dark:bg-emerald-900/30',
+                'text-emerald-600',
+                'dark:text-emerald-400',
+                'border-emerald-200',
+                'dark:border-emerald-800'
+              );
+              markBtn.classList.remove(
+                'bg-slate-100',
+                'dark:bg-slate-800',
+                'text-slate-500',
+                'dark:text-slate-400',
+                'border-slate-200',
+                'dark:border-slate-700'
+              );
+            }
+          } else {
+            const idx = parseInt(el.getAttribute('data-index')) + 1;
+            badge.innerHTML = idx;
+            badge.classList.remove('bg-emerald-500', 'text-white');
+            badge.classList.add(
+              'bg-slate-200',
+              'dark:bg-slate-700',
+              'text-slate-600',
+              'dark:text-slate-300'
+            );
+            if (markBtn) {
+              markBtn.querySelector('.btn-text').textContent = 'Tandai Selesai';
+              markBtn.classList.remove(
+                'bg-emerald-100',
+                'dark:bg-emerald-900/30',
+                'text-emerald-600',
+                'dark:text-emerald-400',
+                'border-emerald-200',
+                'dark:border-emerald-800'
+              );
+              markBtn.classList.add(
+                'bg-slate-100',
+                'dark:bg-slate-800',
+                'text-slate-500',
+                'dark:text-slate-400',
+                'border-slate-200',
+                'dark:border-slate-700'
+              );
+            }
+          }
+        });
+
+        const pct = (completed.length / TOTAL) * 100;
+        progressBar.style.width = `${pct}%`;
+        progressText.innerText = `${completed.length} dari ${TOTAL} langkah selesai`;
+        progressBar.setAttribute('aria-valuenow', String(completed.length));
+      };
+
+      // Accordion: hanya satu langkah terbuka
+      stepDetails.forEach((el) => {
+        el.addEventListener('toggle', () => {
+          if (el.open) {
+            stepDetails.forEach((other) => {
+              if (other !== el && other.open) other.open = false;
+            });
+          }
+        });
+
+        const markBtn = el.querySelector('.mark-complete-btn');
+        if (markBtn) {
+          markBtn.addEventListener('click', () => {
+            const id = el.getAttribute('data-id');
+            if (completed.includes(id)) {
+              completed = completed.filter((c) => c !== id);
+            } else {
+              completed.push(id);
+              if (window.showToast) window.showToast('MasyaAllah! Langkah selesai 🎉');
+            }
+            localStorage.setItem('masuk-islam-completed', JSON.stringify(completed));
+            updateProgress();
+          });
+        }
+      });
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (confirm('Reset progres langkah masuk Islam?')) {
+            completed = [];
+            localStorage.setItem('masuk-islam-completed', '[]');
+            updateProgress();
+            if (window.showToast) window.showToast('Progres direset');
+          }
+        });
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          const text = [
+            'Dua Kalimat Syahadat',
+            '',
+            'أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ اللَّهِ',
+            '',
+            'Asy-hadu allā ilāha illallāh, wa asy-hadu anna Muḥammadan rasūlullāh',
+            '"Aku bersaksi bahwa tiada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah."',
+            '',
+            'Dibagikan via Qolbu App',
+          ].join('\n');
+          try {
+            await navigator.clipboard.writeText(text);
+            if (window.showToast) window.showToast('Bacaan syahadat disalin!');
+          } catch {
+            if (window.showToast) window.showToast('Gagal menyalin teks');
+          }
+        });
+      }
+
+      updateProgress();
+    };
+
+    document.addEventListener('astro:page-load', initMasukIslam);
+    document.addEventListener('astro:before-swap', () => {
+      window._masukIslamInitialized = false;
+    });
+  })();
+</script>
