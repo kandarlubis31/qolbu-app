@@ -9,6 +9,7 @@ Aplikasi Ibadah Harian Terlengkap berbasis web (PWA-ready). Dibangun dengan **As
 - **🤲 Doa Harian** — 47 doa dalam 9 kategori dengan pencarian & copy-to-clipboard
 - **📿 Dzikir Pagi & Petang** — 25+ dzikir (6 kategori), tab filter, info pengulangan
 - **📅 Kalender Hijriah** — 12 bulan, event Islami penting, disclaimer hisab/rukyat
+- **🌱 Panduan Masuk Islam** — 9 langkah tata cara, kisah mualaf, bacaan syahadat, FAQ
 - **📋 Panduan Sholat** — 28 langkah (syarat sah → niat → rukun → dzikir), progress tracker, bookmark, mode praktik
 - **📜 Tahlil & Doa Arwah** — 7 bacaan lengkap, pengaturan font
 - **🔢 Tasbih Digital** — Counter haptic/sound, 4 dzikr, auto-cycle, statistik harian
@@ -81,7 +82,7 @@ qolbu-app/
 │   │   └── yasin.json (5 ayat)
 │   ├── layouts/
 │   │   └── BaseLayout.astro # Global layout: header, footer, PWA, SEO, theme
-│   ├── pages/              # 127 static routes (SSG)
+│   ├── pages/              # 128 static routes (SSG)
 │   │   ├── index.astro     # Dashboard
 │   │   ├── quran/[nomor].astro # 114 surat detail
 │   │   └── ...
@@ -163,7 +164,7 @@ Upload folder `dist/` ke web server
 - **Zero client-side framework**: Semua JS inline vanilla (`is:inline`)
 - **View Transitions**: SPA-like navigation dengan slide animation
 - **Mobile-first**: Layout `max-w-md` (448px), touch-optimized
-- **127 halaman SSG**: Dashboard + 11 fitur + 114 surat Qur'an
+- **128 halaman SSG**: Dashboard + 12 fitur + 114 surat Qur'an
 - **Type-safe**: Global types di `src/env.d.ts` untuk window extensions
 
 ## 📄 Lisensi

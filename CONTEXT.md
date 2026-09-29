@@ -17,7 +17,7 @@
 
 | Teknologi    | Versi                 | Kegunaan                                                                                                      |
 | ------------ | --------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Astro        | ^5.17.1               | SSG (127 pages) + View Transitions                                                                            |
+| Astro        | ^5.17.1               | SSG (128 pages) + View Transitions                                                                            |
 | Tailwind CSS | ^4.1.18               | Utility-first, @theme tokens                                                                                  |
 | TypeScript   | via Astro `strict`    | Strict type checking (`astro check`)                                                                          |
 | PWA          | Workbox vanilla       | `manifest.json` + `sw.js` v7                                                                                  |
@@ -33,7 +33,7 @@
 â”‚   â”œâ”€â”€ fonts/               # PlusJakartaSans-Variable.woff2 (27KB), AmiriArabic/Latin-*.woff2
 â”‚   â”œâ”€â”€ logo.png / 192 / 512
 â”‚   â”œâ”€â”€ manifest.json
-â”‚   â””â”€â”€ sw.js                # v7: font precache, audio cache-first, HTML network-first
+â”‚   â””â”€â”€ sw.js                # v8: font precache, audio cache-first, HTML network-first
 â”œâ”€â”€ src/
 â”‚   â”œâ”€â”€ components/
 â”‚   â”‚   â”œâ”€â”€ HeaderSticky.astro  # Sticky top-16, truncate, leftSlot/rightSlot, history.back
@@ -62,6 +62,7 @@
 â”‚   â”‚   â”œâ”€â”€ doa.astro           # 47 filter + ScrollFade + search + EmptyState + aria-pressed
 â”‚   â”‚   â”œâ”€â”€ dzikir.astro        # 32 via <script type="application/json">, ScrollFade, 6 tabs
 â”‚   â”‚   â”œâ”€â”€ events-hijri.astro  # Import JSON, HeaderSticky
+â”‚   â”‚   â”œâ”€â”€ masuk-islam.astro   # 9 langkah accordion + progress, kisah mualaf, syahadat, FAQ
 â”‚   â”‚   â”œâ”€â”€ sholat.astro        # Countdown, qibla needle, Skeleton prayer, correction, GPS
 â”‚   â”‚   â”œâ”€â”€ sholat-guide.astro  # 28 langkah accordion, progress, bookmark modal
 â”‚   â”‚   â”œâ”€â”€ tahlil.astro        # 7 step + SettingsModal
@@ -74,7 +75,7 @@
 â”‚   â”‚       â””â”€â”€ yasin.astro
 â”‚   â”œâ”€â”€ styles/global.css       # @font-face variable, @theme tokens, scroll-padding, shimmer, content-visibility
 â”‚   â””â”€â”€ env.d.ts                # Window globals (_sholatInterval, _quranDetailInitialized, etc.)
-â”œâ”€â”€ e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih, events, guide \(66\)
+â”œâ”€â”€ e2e/                        # Playwright: home, sholat, quran, quran-detail, doa, tasbih, events, guide, masuk-islam \(75\)
 â”œâ”€â”€ .github/workflows/ci.yml    # jobs: test (typecheck+lint+unit+build) + e2e (chromium)
 â”œâ”€â”€ playwright.config.ts
 â”œâ”€â”€ vitest.config.mjs + vitest.setup.ts
@@ -272,6 +273,7 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 | `quran-last-read`                                       | JSON                                               | surah, ayat, surahName, timestamp                                                                   |
 | `quran-bookmarks`                                       | JSON                                               | [{surah,surahName,ayat}]                                                                            |
 | `sholat-completed` / `sholat-bookmarks`                 | `string[]`                                         | Panduan sholat                                                                                      |
+| `masuk-islam-completed`                                 | `string[]`                                         | Progres 9 langkah halaman Masuk Islam                                                               |
 | `tasbih-*`                                              | `count/target/dhikr/vibrate/sound/autocycle/stats` | Tasbih                                                                                              |
 | `qolbu-asmaul-counts`                                   | JSON                                               | Counter per Asmaul                                                                                  |
 | `qolbu-quran-cache`                                     | IndexedDB `surah-cache`                            | Offline 114 surat                                                                                   |
@@ -294,8 +296,8 @@ Dipakai: `sholat.astro:86` `count={5}` untuk prayer list.
 
 ## âš¡ Performance & PWA
 
-- **SSG 127 pages** (10 top + 114 surat + yasin + offline) `dist/`, `getStaticPaths` build-time fetch equran.id
-- **SW v7** `public/sw.js`: precache `/` `/offline` `/fonts` `/*.png` `/dzikir/.../quran/yasin`, cleanup old `qolbu-cache-*`, **Audio cache-first** (equran.nos, everyayah, download.quranicaudio), **HTML network-first**, **Assets stale-while-revalidate** + `isFresh` 7 days, `message cleanup-cache`
+- **SSG 128 pages** (11 top + 114 surat + yasin + offline) `dist/`, `getStaticPaths` build-time fetch equran.id
+- **SW v8** `public/sw.js`: precache `/` `/offline` `/fonts` `/*.png` `/dzikir/.../quran/yasin`, cleanup old `qolbu-cache-*`, **Audio cache-first** (equran.nos, everyayah, download.quranicaudio), **HTML network-first**, **Assets stale-while-revalidate** + `isFresh` 7 days, `message cleanup-cache`
 - **Fonts:** Variable WOFF2 23KB + preload, `font-display:swap`, `content-visibility` untuk list 99/114
 - **View Transitions:** `ClientRouter` slide, `site-header` morph, `theme-toggle persist`
 - **Skeletons:** `Skeleton.astro` + shimmer, `prayer-card-skeleton` di dashboard, `Skeleton prayer` di sholat

@@ -48,16 +48,20 @@ test.describe('Home Page', () => {
     await expect(page.locator('text=Sobat Qolbu')).toBeVisible();
   });
 
-  test('should show menu grid with 9 items (Jadwal Sholat tile removed — widget card covers it)', async ({
-    page,
-  }) => {
+  test('should show menu grid with 10 items (incl. Masuk Islam)', async ({ page }) => {
     const menuCards = page.locator('[href^="/"]:has(svg)').filter({
       hasText:
-        /Al-Qur'an|Doa Harian|Kalkulator Zakat|Panduan Sholat|Tahlil|Tasbih|Asmaul Husna|Dzikir|Events/,
+        /Al-Qur'an|Doa Harian|Kalkulator Zakat|Panduan Sholat|Tahlil|Tasbih|Asmaul Husna|Dzikir|Events|Masuk Islam/,
     });
-    await expect(menuCards).toHaveCount(9);
+    await expect(menuCards).toHaveCount(10);
     // Widget card tetap jadi satu-satunya kartu sholat hijau di atas grid
     await expect(page.locator('#prayer-card')).toHaveCount(1);
+  });
+
+  test('should navigate to Masuk Islam page from menu', async ({ page }) => {
+    await page.click('a[href="/masuk-islam"]');
+    await expect(page).toHaveURL(/\/masuk-islam/);
+    await expect(page.locator('text=9 Langkah Masuk Islam')).toBeVisible();
   });
 
   test('should show quote of the day without placeholder', async ({ page }) => {

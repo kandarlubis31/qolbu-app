@@ -1,5 +1,5 @@
 // Qolbu App Service Worker - Enhanced caching strategy
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME = `qolbu-cache-${CACHE_VERSION}`;
 const OFFLINE_URL = '/offline';
 const MAX_CACHE_AGE = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -28,6 +28,7 @@ const PRECACHE_URLS = [
   '/sholat-guide',
   '/sholat',
   '/events-hijri',
+  '/masuk-islam',
   '/quran',
   '/quran/yasin',
   '/quran/index',
