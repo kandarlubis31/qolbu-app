@@ -95,8 +95,6 @@ qolbu-app/
 ├── tsconfig.json
 ├── eslint.config.mjs
 ├── .prettierrc
-├── CONTEXT.md              # Architecture quick reference
-├── docs/PRD.md             # Product Requirements Document
 └── package.json
 ```
 
