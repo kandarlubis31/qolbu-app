@@ -2,22 +2,22 @@
 
 Aplikasi Ibadah Harian Terlengkap berbasis web (PWA-ready). Dibangun dengan **Astro 5 + Tailwind CSS 4 + TypeScript**.
 
-## ✨ Fitur Utama
+## Fitur Utama
 
-- **🕐 Jadwal Sholat & Arah Kiblat** — GPS otomatis, countdown real-time, kompas kiblat, notifikasi adzan
-- **📖 Al-Qur'an** — 114 surat pre-rendered (SSG), offline cache via IndexedDB, audio per-ayat (Misyari Rasyid Al-Afasi)
-- **🤲 Doa Harian** — 47 doa dalam 9 kategori dengan pencarian & copy-to-clipboard
-- **📿 Dzikir Pagi & Petang** — 25+ dzikir (6 kategori), tab filter, info pengulangan
-- **📅 Kalender Hijriah** — 12 bulan, event Islami penting, disclaimer hisab/rukyat
-- **🌱 Panduan Masuk Islam** — 9 langkah tata cara, kisah mualaf, bacaan syahadat, FAQ
-- **📋 Panduan Sholat** — 28 langkah (syarat sah → niat → rukun → dzikir), progress tracker, bookmark, mode praktik
-- **📜 Tahlil & Doa Arwah** — 7 bacaan lengkap, pengaturan font
-- **🔢 Tasbih Digital** — Counter haptic/sound, 4 dzikr, auto-cycle, statistik harian
-- **💰 Kalkulator Zakat** — Zakat Maal & Penghasilan, format Rupiah, nishab 85gr emas
-- **🌟 Asmaul Husna** — 99 nama Allah dengan search
-- **💬 Quote of the Day** — 100+ quotes rotasi 10 detik
+- **Jadwal Sholat & Arah Kiblat** — GPS otomatis, countdown real-time, kompas kiblat, notifikasi adzan
+- **Al-Qur'an** — 114 surat pre-rendered (SSG), offline cache via IndexedDB, audio per-ayat (Misyari Rasyid Al-Afasi)
+- **Doa Harian** — 47 doa dalam 9 kategori dengan pencarian & copy-to-clipboard
+- **Dzikir Pagi & Petang** — 25+ dzikir (6 kategori), tab filter, info pengulangan
+- **Kalender Hijriah** — 12 bulan, event Islami penting, disclaimer hisab/rukyat
+- **Panduan Masuk Islam** — 9 langkah tata cara, kisah mualaf, bacaan syahadat, FAQ
+- **Panduan Sholat** — 28 langkah (syarat sah → niat → rukun → dzikir), progress tracker, bookmark, mode praktik
+- **Tahlil & Doa Arwah** — 7 bacaan lengkap, pengaturan font
+- **Tasbih Digital** — Counter haptic/sound, 4 dzikr, auto-cycle, statistik harian
+- **Kalkulator Zakat** — Zakat Maal & Penghasilan, format Rupiah, nishab 85gr emas
+- **Asmaul Husna** — 99 nama Allah dengan search
+- **Quote of the Day** — 100+ quotes rotasi 10 detik
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prasyarat
 
@@ -50,7 +50,7 @@ npm run preview
 2. Klik menu browser → "Install App" / "Add to Home Screen"
 3. App bisa diakses offline setelah install
 
-## 🛠 Scripts
+## Scripts
 
 | Command             | Description                              |
 | ------------------- | ---------------------------------------- |
@@ -62,7 +62,7 @@ npm run preview
 | `npm run format`    | Prettier format all files                |
 | `npm run prepare`   | Setup Husky git hooks                    |
 
-## 🏗 Arsitektur
+## Arsitektur
 
 ```
 qolbu-app/
@@ -98,7 +98,7 @@ qolbu-app/
 └── package.json
 ```
 
-## 🔧 Tech Stack
+## Tech Stack
 
 | Layer       | Technology                                                    |
 | ----------- | ------------------------------------------------------------- |
@@ -109,21 +109,21 @@ qolbu-app/
 | Animations  | View Transitions API (slide, header morphing)                 |
 | Icons       | Inline SVG                                                    |
 
-## 📱 PWA Features
+## PWA Features
 
 - **Manifest**: `display: standalone`, icons 192×192 & 512×512
 - **Service Worker**: Network-first untuk halaman, Cache-first untuk audio Qur'an
 - **Offline Page**: `/offline` fallback dengan daftar fitur available offline
 - **Theme Persistence**: localStorage + View Transitions `transition:persist`
 
-## 📋 Code Quality
+## Code Quality
 
 - **TypeScript**: Strict mode via `astro/tsconfigs/strict`
 - **ESLint**: Flat config with `eslint-plugin-astro`, `eslint-plugin-tailwindcss`, `@typescript-eslint`
 - **Prettier**: With `prettier-plugin-astro` & `prettier-plugin-tailwindcss`
 - **Husky + lint-staged**: Pre-commit auto-fix & format
 
-## 🔌 External APIs
+## External APIs
 
 | API          | Endpoint                                 | Usage                       |
 | ------------ | ---------------------------------------- | --------------------------- |
@@ -133,7 +133,7 @@ qolbu-app/
 | EveryAyah    | `everyayah.com/data/Alafasy_128kbps/`    | Yasin audio fallback        |
 | Equran Audio | `equran.nos.wjv-1.neo.id/audio-partial/` | Per-ayat audio              |
 
-## 📦 Deploy
+## Deploy
 
 ### Netlify (Recommended)
 
@@ -157,7 +157,7 @@ npx vercel deploy dist --prod
 
 Upload folder `dist/` ke web server
 
-## 📝 Catatan Pengembangan
+## Catatan Pengembangan
 
 - **Zero client-side framework**: Semua JS inline vanilla (`is:inline`)
 - **View Transitions**: SPA-like navigation dengan slide animation
@@ -165,6 +165,16 @@ Upload folder `dist/` ke web server
 - **128 halaman SSG**: Dashboard + 12 fitur + 114 surat Qur'an
 - **Type-safe**: Global types di `src/env.d.ts` untuk window extensions
 
-## 📄 Lisensi
+---
+
+## English
+
+**Qolbu App** is a daily-worship web app for Muslims, built as an installable PWA with Astro 5, Tailwind CSS 4, and TypeScript.
+
+It bundles prayer times with a GPS-based qibla compass and adzan reminders, the full Quran (114 surah pre-rendered, offline cache, per-verse audio), 47 daily prayers, morning and evening dzikir, and a Qibla/prayer tracker.
+
+---
+
+## Lisensi
 
 MIT License — Dibuat oleh [PakLubis](https://paklubis.my.id)
